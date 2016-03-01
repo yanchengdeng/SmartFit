@@ -36,7 +36,7 @@ public class BaseActivity extends FragmentActivity {
         }
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.status_bar_bg);//通知栏所需颜色
+        tintManager.setStatusBarTintResource(R.color.common_header_bg);//通知栏所需颜色
         mrequest = Volley.newRequestQueue(getApplicationContext());
         mSVProgressHUD = new SVProgressHUD(this);
     }

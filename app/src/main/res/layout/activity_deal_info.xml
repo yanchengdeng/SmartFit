@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    tools:context="com.smartfit.activities.DealInfoActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="30dp"
+    android:layout_marginRight="40dp"
+    android:layout_marginLeft="40dp"
+    android:layout_marginBottom="30dp"
+    android:scrollbarStyle="outsideInset"
+    >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="@string/app_regiter_tittle"
+        android:textSize="@dimen/text_normal"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/text_color_black"
+        android:layout_height="match_parent" />
+
+</ScrollView>
+
+</LinearLayout>

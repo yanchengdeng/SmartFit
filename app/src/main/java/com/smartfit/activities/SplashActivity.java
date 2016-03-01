@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -68,7 +67,6 @@ public class SplashActivity extends FragmentActivity {
                 SharedPreferencesUtils.getInstance().putBoolean(Constants.FRIST_OPEN_APP, false);
 
                 boolean isget = SharedPreferencesUtils.getInstance().getBoolean(Constants.FRIST_OPEN_APP,true);
-                Log.w("dyc",isget+"........");
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }

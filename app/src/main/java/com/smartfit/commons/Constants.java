@@ -8,4 +8,7 @@ public class Constants {
 
 
     public final  static  String FRIST_OPEN_APP = "first_open_app";
+
+    /*****首页传入 位置*/
+    public final static String FRAGMENT_POSITION = "positon";
 }
