@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/image_padding_big"
+    android:paddingBottom="@dimen/image_padding_big"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/black"
+        android:text="六一北路SF健身馆"
+        android:src="@mipmap/icon_home4" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding"
+        android:text="距离 1.8km"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_small_donw" />
+
+
+</LinearLayout>

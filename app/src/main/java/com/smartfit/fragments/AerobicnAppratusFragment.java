@@ -27,7 +27,6 @@ public class AerobicnAppratusFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int position = FragmentPagerItem.getPosition(getArguments());
-        TextView title = (TextView) view.findViewById(R.id.text_item);
-        title.setText(String.valueOf(position));
+
     }
 }
