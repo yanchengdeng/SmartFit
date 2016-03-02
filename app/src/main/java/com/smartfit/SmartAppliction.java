@@ -25,7 +25,7 @@ public class SmartAppliction extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        registerUncaughtExceptionHandler();
+//        registerUncaughtExceptionHandler();
     }
 
     // 注册App异常崩溃处理器
