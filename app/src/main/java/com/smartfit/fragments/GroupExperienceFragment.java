@@ -32,12 +32,19 @@ import butterknife.ButterKnife;
  */
 public class GroupExperienceFragment extends Fragment {
 
+
+    /****
+     * 地址弹出选择框
+     */
+    AddressCustomPop addressCustomPop;
+    /****
+     * 排序选择框
+     **/
+    OrderCustomePop orderCustomePop;
     @Bind(R.id.ck_more_address)
     CheckBox ckMoreAddress;
     @Bind(R.id.tv_address)
     TextView tvAddress;
-    @Bind(R.id.iv_close)
-    ImageView ivClose;
     @Bind(R.id.ck_more_select)
     CheckBox ckMoreSelect;
     @Bind(R.id.rl_condition_head)
@@ -46,56 +53,36 @@ public class GroupExperienceFragment extends Fragment {
     TextView tvWeek1;
     @Bind(R.id.iv_date1)
     ImageView ivDate1;
-    @Bind(R.id.tv_date1)
-    TextView tvDate1;
     @Bind(R.id.tv_week2)
     TextView tvWeek2;
     @Bind(R.id.iv_date2)
     ImageView ivDate2;
-    @Bind(R.id.tv_date2)
-    TextView tvDate2;
     @Bind(R.id.tv_week3)
     TextView tvWeek3;
     @Bind(R.id.iv_date3)
     ImageView ivDate3;
-    @Bind(R.id.tv_date3)
-    TextView tvDate3;
     @Bind(R.id.tv_week4)
     TextView tvWeek4;
     @Bind(R.id.iv_date4)
     ImageView ivDate4;
-    @Bind(R.id.tv_date4)
-    TextView tvDate4;
     @Bind(R.id.tv_week5)
     TextView tvWeek5;
     @Bind(R.id.iv_date5)
     ImageView ivDate5;
-    @Bind(R.id.tv_date5)
-    TextView tvDate5;
     @Bind(R.id.tv_week6)
     TextView tvWeek6;
     @Bind(R.id.iv_date6)
     ImageView ivDate6;
-    @Bind(R.id.tv_date6)
-    TextView tvDate6;
     @Bind(R.id.tv_week7)
     TextView tvWeek7;
     @Bind(R.id.iv_date7)
     ImageView ivDate7;
-    @Bind(R.id.tv_date7)
-    TextView tvDate7;
+    @Bind(R.id.iv_cover_bg)
+    ImageView ivCoverBg;
     @Bind(R.id.listView)
     ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.iv_cover_bg)
-    ImageView ivCoverBg;
-
-
-    /****地址弹出选择框*/
-    AddressCustomPop addressCustomPop;
-    /****排序选择框**/
-    OrderCustomePop orderCustomePop;
 
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
@@ -159,7 +146,7 @@ public class GroupExperienceFragment extends Fragment {
     /******
      * 弹出排序框
      */
-    private void showOrderPop(){
+    private void showOrderPop() {
         ivCoverBg.setVisibility(View.VISIBLE);
         orderCustomePop
                 .anchorView(rlConditionHead)
@@ -198,7 +185,7 @@ public class GroupExperienceFragment extends Fragment {
             ivArrow = (ImageView) inflate.findViewById(R.id.iv_more_address_arrow);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.LEFT;
-            params.leftMargin = DeviceUtil.dp2px(getActivity(),getResources().getDimension(R.dimen.activity_horizontal_margin));
+            params.leftMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
             ivArrow.setLayoutParams(params);
             listView.setAdapter(new ChooseAddressAdapter(getActivity()));
             return inflate;
@@ -235,7 +222,7 @@ public class GroupExperienceFragment extends Fragment {
             ivArrow = (ImageView) inflate.findViewById(R.id.iv_more_address_arrow);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.RIGHT;
-            params.rightMargin = DeviceUtil.dp2px(getActivity(),getResources().getDimension(R.dimen.activity_horizontal_margin));
+            params.rightMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
             ivArrow.setLayoutParams(params);
             return inflate;
         }
@@ -251,7 +238,6 @@ public class GroupExperienceFragment extends Fragment {
             });
         }
     }
-
 
 
 }

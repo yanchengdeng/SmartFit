@@ -15,9 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/image_padding_big"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:button="@null"
-            android:textSize="@dimen/text_normal"
+            android:textSize="@dimen/text_normal_down"
             android:drawablePadding="@dimen/image_padding"
             android:checked="false"
             android:drawableRight="@mipmap/icon_down"
@@ -26,7 +26,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/ck_more_select"
@@ -41,16 +41,8 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="请选择运动场地"
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/text_normal_down" />
 
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/image_padding_big"
-                android:src="@mipmap/icon_clocse" />
         </RelativeLayout>
 
         <CheckBox
@@ -58,9 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/text_normal"
+            android:textSize="@dimen/text_normal_down"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:button="@null"
             android:checked="false"
@@ -107,18 +99,12 @@
 
                 <ImageView
                     android:id="@+id/iv_date1"
+                    android:paddingBottom="@dimen/image_padding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/icon_1_on" />
 
-                <TextView
-                    android:id="@+id/tv_date1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
 
             </LinearLayout>
 
@@ -144,16 +130,10 @@
                     android:id="@+id/iv_date2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_2" />
 
-                <TextView
-                    android:id="@+id/tv_date2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -178,16 +158,10 @@
                     android:id="@+id/iv_date3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_3" />
 
-                <TextView
-                    android:id="@+id/tv_date3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -212,16 +186,10 @@
                     android:id="@+id/iv_date4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_4" />
 
-                <TextView
-                    android:id="@+id/tv_date4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
 
             </LinearLayout>
 
@@ -247,16 +215,10 @@
                     android:id="@+id/iv_date5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_5" />
 
-                <TextView
-                    android:id="@+id/tv_date5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
 
             </LinearLayout>
 
@@ -282,16 +244,10 @@
                     android:id="@+id/iv_date6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_6" />
 
-                <TextView
-                    android:id="@+id/tv_date6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
 
             </LinearLayout>
 
@@ -317,16 +273,10 @@
                     android:id="@+id/iv_date7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_7" />
 
-                <TextView
-                    android:id="@+id/tv_date7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11-2"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="italic|bold" />
+
 
             </LinearLayout>
         </LinearLayout>
