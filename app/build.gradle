@@ -39,7 +39,6 @@ dependencies {
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
-    //Optional: see how to use the utility.
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
-    //Optional: see how to use the utility.
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

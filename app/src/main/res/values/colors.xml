@@ -63,6 +63,7 @@
 	<!-- 透明半透明色值 -->
 	<color name="transparent">#00000000</color>
 	<color name="transparent_half">#66000000</color>
+	<color name="transparent_deep_black">#bf000000</color>
 
 	<!-- 设计规范颜色值 end-->
 

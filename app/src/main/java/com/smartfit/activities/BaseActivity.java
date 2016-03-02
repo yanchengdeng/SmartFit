@@ -17,6 +17,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.commons.AppManager;
 import com.smartfit.utils.IntentUtils;
+import com.umeng.analytics.MobclickAgent;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -119,6 +120,16 @@ public class BaseActivity extends FragmentActivity {
 
         return super.onKeyDown(keyCode, event);
 
+    }
+
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 
