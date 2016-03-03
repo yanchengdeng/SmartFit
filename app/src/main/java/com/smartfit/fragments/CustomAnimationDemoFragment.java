@@ -15,6 +15,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.smartfit.R;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainActivity;
+import com.smartfit.activities.MainUserActivity;
 
 /**
      * A placeholder fragment containing a simple view.
@@ -112,7 +113,7 @@ import com.smartfit.activities.MainActivity;
                 @Override
                 public void onClick(View v) {
                     centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("信息");
+                    ((MainActivity) getActivity()).openActivity(MainUserActivity.class);
                 }
             });
 

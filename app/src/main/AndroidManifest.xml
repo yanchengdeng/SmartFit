@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.smartfit" >
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".SmartAppliction"
         android:allowBackup="true"
@@ -50,10 +52,18 @@
             android:label="@string/title_activity_main_business" >
         </activity>
 
+        <!-- 添加Umeng 统计 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56d69fea67e58e4d270012e4" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
 
-        <!--添加Umeng 统计-->
-        <meta-data android:value="56d69fea67e58e4d270012e4" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <activity android:name=".activities.OrderReserveActivity" >
+        </activity>
+        <activity android:name=".activities.MainUserActivity" >
+        </activity>
     </application>
 
 </manifest>

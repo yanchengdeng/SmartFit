@@ -1,10 +1,12 @@
 package com.smartfit.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +21,11 @@ import android.widget.TextView;
 
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
+import com.smartfit.activities.MainActivity;
+import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
 
 import butterknife.Bind;
@@ -83,6 +88,12 @@ public class GroupExperienceFragment extends Fragment {
     ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.tv_time)
+    TextView tvTime;
+    @Bind(R.id.rl_order_time)
+    RelativeLayout rlOrderTime;
+
+    private int REQUEST_CODE_ORDER_TIME = 0x110;
 
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
@@ -123,6 +134,30 @@ public class GroupExperienceFragment extends Fragment {
             }
         });
 
+
+        rlOrderTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),OrderReserveActivity.class);
+                Bundle bundle = new Bundle();
+                String[] time = tvTime.getText().toString().split(":");
+                bundle.putString("hour",time[0]);
+                bundle.putString("min",time[1]);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, REQUEST_CODE_ORDER_TIME);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_ORDER_TIME  && resultCode == OrderReserveActivity.SELECT_VALUE_OVER){
+            if(!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))){
+                tvTime.setText(data.getStringExtra(Constants.PASS_STING));
+            }
+
+        }
     }
 
     /****

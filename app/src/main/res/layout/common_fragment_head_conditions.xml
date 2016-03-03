@@ -71,7 +71,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="@color/transparent_half" />
 
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/monday"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tuesday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/wednesday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/thursday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/friday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -237,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/saturday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/sunday"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
+                    android:textSize="@dimen/text_normal_down"
                     android:textStyle="italic|bold" />
 
                 <ImageView
@@ -280,6 +280,51 @@
 
             </LinearLayout>
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rl_order_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:layout_margin="@dimen/image_padding_big"
+                android:text="@string/order_experise_time"/>
+
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:textColor="@color/text_color_gray"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:text="11:45"
+                android:drawablePadding="@dimen/image_padding"
+                android:drawableRight="@mipmap/icon_next_w_on"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/transparent_half" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:divider="@color/transparent_half"
+                android:dividerHeight="1px"
+                android:cacheColorHint="@color/transparent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
     <ImageView
         android:id="@+id/iv_cover_bg"

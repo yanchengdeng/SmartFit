@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.OrderReserveActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#dddddd"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <com.smartfit.views.WheelView
+                android:id="@+id/wv_hour"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时"
+                android:textSize="@dimen/text_normal_down"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"/>
+
+            <com.smartfit.views.WheelView
+                android:id="@+id/wv_min"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分"
+                android:textSize="@dimen/text_normal_down"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

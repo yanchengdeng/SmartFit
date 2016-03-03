@@ -17,12 +17,15 @@ import butterknife.ButterKnife;
 
 public class RegisterActivity extends BaseActivity {
 
+
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.tv_tittle)
     TextView tvTittle;
     @Bind(R.id.tv_function)
-    ImageView tvFunction;
+    TextView tvFunction;
+    @Bind(R.id.iv_function)
+    ImageView ivFunction;
     @Bind(R.id.iv_phone)
     ImageView ivPhone;
     @Bind(R.id.et_phone)
@@ -45,8 +48,6 @@ public class RegisterActivity extends BaseActivity {
     CheckBox ckRemeber;
     @Bind(R.id.tv_deal)
     TextView tvDeal;
-
-
     private CountDownTimer countDownTimer;
 
     @Override
@@ -60,12 +61,12 @@ public class RegisterActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.register));
-        tvDeal.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG ); //下划线
+        tvDeal.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
 
-        countDownTimer = new CountDownTimer(60000,1000) {
+        countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnGetcode.setText("倒计时"+String.valueOf((int)(millisUntilFinished/1000))+"秒");
+                btnGetcode.setText("倒计时" + String.valueOf((int) (millisUntilFinished / 1000)) + "秒");
             }
 
             @Override
@@ -104,8 +105,6 @@ public class RegisterActivity extends BaseActivity {
         });
 
     }
-
-
 
 
 }

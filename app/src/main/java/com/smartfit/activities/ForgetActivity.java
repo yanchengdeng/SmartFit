@@ -18,12 +18,15 @@ import butterknife.ButterKnife;
  */
 public class ForgetActivity extends BaseActivity {
 
+
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.tv_tittle)
     TextView tvTittle;
     @Bind(R.id.tv_function)
-    ImageView tvFunction;
+    TextView tvFunction;
+    @Bind(R.id.iv_function)
+    ImageView ivFunction;
     @Bind(R.id.iv_phone)
     ImageView ivPhone;
     @Bind(R.id.et_phone)
@@ -42,9 +45,6 @@ public class ForgetActivity extends BaseActivity {
     ImageView ivNewPassword;
     @Bind(R.id.et_new_password)
     EditText etNewPassword;
-
-
-
     private CountDownTimer countDownTimer;
 
     @Override
@@ -57,16 +57,14 @@ public class ForgetActivity extends BaseActivity {
     }
 
 
-
-
     private void initView() {
 
         tvTittle.setText(getString(R.string.forget_pass));
 
-        countDownTimer = new CountDownTimer(60000,1000) {
+        countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnGetcode.setText("倒计时"+String.valueOf((int)(millisUntilFinished/1000))+"秒");
+                btnGetcode.setText("倒计时" + String.valueOf((int) (millisUntilFinished / 1000)) + "秒");
             }
 
             @Override

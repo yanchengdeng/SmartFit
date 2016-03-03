@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends BaseActivity {
 
+
     @Bind(R.id.iv_close)
     ImageView ivClose;
     @Bind(R.id.iv_name)

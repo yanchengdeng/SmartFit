@@ -11,4 +11,7 @@ public class Constants {
 
     /*****首页传入 位置*/
     public final static String FRAGMENT_POSITION = "positon";
+
+
+    public final static String PASS_STING = "pass_string";
 }
