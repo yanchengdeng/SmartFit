@@ -55,10 +55,26 @@ public class OrderReserveActivity extends BaseActivity {
 
         selectHour = getIntent().getStringExtra("hour");
         selectMinu= getIntent().getStringExtra("min");
+        int hourPos = 0;
+        int minPos = 0;
+        for(int i = 0 ;i<HOURS.length;i++){
+            if(HOURS[i].equals(selectHour)){
+                hourPos = i;
+            }
+        }
+
+
+        for(int i = 0 ;i<MINETS.length;i++){
+            if(MINETS[i].equals(selectMinu)){
+                minPos = i;
+            }
+        }
         wvHour.setOffset(1);
         wvHour.setItems(Arrays.asList(HOURS));
+        wvHour.setSeletion(hourPos);
         wvMin.setOffset(1);
         wvMin.setItems(Arrays.asList(MINETS));
+        wvMin.setSeletion(minPos);
 
         addLisener();
 

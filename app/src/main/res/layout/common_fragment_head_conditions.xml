@@ -81,6 +81,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_week1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -109,6 +110,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -137,6 +139,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -165,6 +168,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -194,6 +198,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -223,6 +228,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
@@ -252,6 +258,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_week7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"

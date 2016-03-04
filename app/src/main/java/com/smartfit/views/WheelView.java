@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.smartfit.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -282,8 +284,10 @@ public class WheelView extends ScrollView {
             }
             if (position == i) {
                 itemView.setTextColor(Color.parseColor("#221815"));
+                itemView.setTextSize(25);
             } else {
                 itemView.setTextColor(Color.parseColor("#898989"));
+                itemView.setTextSize(20);
             }
         }
     }
@@ -320,15 +324,15 @@ public class WheelView extends ScrollView {
 
         if (null == paint) {
             paint = new Paint();
-            paint.setColor(Color.parseColor("#898989"));
+            paint.setColor(Color.parseColor("#dadada"));
             paint.setStrokeWidth(dip2px(1f));
         }
 
         background = new Drawable() {
             @Override
             public void draw(Canvas canvas) {
-                canvas.drawLine(viewWidth * 1 / 6, obtainSelectedAreaBorder()[0], viewWidth * 5 / 6, obtainSelectedAreaBorder()[0], paint);
-                canvas.drawLine(viewWidth * 1 / 6, obtainSelectedAreaBorder()[1], viewWidth * 5 / 6, obtainSelectedAreaBorder()[1], paint);
+                canvas.drawLine(viewWidth * 0, obtainSelectedAreaBorder()[0], viewWidth * 1, obtainSelectedAreaBorder()[0], paint);
+                canvas.drawLine(viewWidth * 0, obtainSelectedAreaBorder()[1], viewWidth * 1, obtainSelectedAreaBorder()[1], paint);
             }
 
             @Override

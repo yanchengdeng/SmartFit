@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
-import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
@@ -92,6 +91,20 @@ public class GroupExperienceFragment extends Fragment {
     TextView tvTime;
     @Bind(R.id.rl_order_time)
     RelativeLayout rlOrderTime;
+    @Bind(R.id.ll_week1)
+    LinearLayout llWeek1;
+    @Bind(R.id.ll_week2)
+    LinearLayout llWeek2;
+    @Bind(R.id.ll_week3)
+    LinearLayout llWeek3;
+    @Bind(R.id.ll_week4)
+    LinearLayout llWeek4;
+    @Bind(R.id.ll_week5)
+    LinearLayout llWeek5;
+    @Bind(R.id.ll_week6)
+    LinearLayout llWeek6;
+    @Bind(R.id.ll_week7)
+    LinearLayout llWeek7;
 
     private int REQUEST_CODE_ORDER_TIME = 0x110;
 
@@ -115,6 +128,86 @@ public class GroupExperienceFragment extends Fragment {
      * 初始化日期选择器
      **/
     private void initDateSelect() {
+        llWeek1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek1.setTextColor(getResources().getColor(R.color.white));
+                ivDate1.setImageResource(R.mipmap.icon_1_on);
+            }
+        });
+
+        llWeek2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek2.setTextColor(getResources().getColor(R.color.white));
+                ivDate2.setImageResource(R.mipmap.icon_2_on);
+            }
+        });
+
+        llWeek3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek3.setTextColor(getResources().getColor(R.color.white));
+                ivDate3.setImageResource(R.mipmap.icon_3_on);
+            }
+        });
+
+        llWeek4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek4.setTextColor(getResources().getColor(R.color.white));
+                ivDate4.setImageResource(R.mipmap.icon_4_on);
+            }
+        });
+
+        llWeek5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek5.setTextColor(getResources().getColor(R.color.white));
+                ivDate5.setImageResource(R.mipmap.icon_5_on);
+            }
+        });
+
+        llWeek6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek6.setTextColor(getResources().getColor(R.color.white));
+                ivDate6.setImageResource(R.mipmap.icon_6_on);
+            }
+        });
+
+        llWeek7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDateOrigan();
+                tvWeek7.setTextColor(getResources().getColor(R.color.white));
+                ivDate7.setImageResource(R.mipmap.icon_7_on);
+            }
+        });
+    }
+
+    private void initDateOrigan() {
+        tvWeek1.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek2.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek3.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek4.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek5.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek6.setTextColor(getResources().getColor(R.color.text_color_gray));
+        tvWeek7.setTextColor(getResources().getColor(R.color.text_color_gray));
+        ivDate1.setImageResource(R.mipmap.icon_1);
+        ivDate2.setImageResource(R.mipmap.icon_2);
+        ivDate3.setImageResource(R.mipmap.icon_3);
+        ivDate4.setImageResource(R.mipmap.icon_4);
+        ivDate5.setImageResource(R.mipmap.icon_5);
+        ivDate6.setImageResource(R.mipmap.icon_6);
+        ivDate7.setImageResource(R.mipmap.icon_7);
+
 
     }
 
@@ -138,11 +231,11 @@ public class GroupExperienceFragment extends Fragment {
         rlOrderTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),OrderReserveActivity.class);
+                Intent intent = new Intent(getActivity(), OrderReserveActivity.class);
                 Bundle bundle = new Bundle();
                 String[] time = tvTime.getText().toString().split(":");
-                bundle.putString("hour",time[0]);
-                bundle.putString("min",time[1]);
+                bundle.putString("hour", time[0]);
+                bundle.putString("min", time[1]);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, REQUEST_CODE_ORDER_TIME);
             }
@@ -152,8 +245,8 @@ public class GroupExperienceFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_ORDER_TIME  && resultCode == OrderReserveActivity.SELECT_VALUE_OVER){
-            if(!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))){
+        if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
+            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))) {
                 tvTime.setText(data.getStringExtra(Constants.PASS_STING));
             }
 
