@@ -3,6 +3,7 @@ package com.smartfit.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -19,13 +21,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
+import com.smartfit.activities.MainActivity;
+import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
+import com.smartfit.adpters.GroupExpericeItemAdapter;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -111,6 +120,13 @@ public class GroupExperienceFragment extends Fragment {
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
+
+    private View footerView;
+    private int page = 1;
+    boolean isLoading = false;
+    private GroupExpericeItemAdapter adapter;
+    private List<String> datas = new ArrayList<String>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -119,8 +135,74 @@ public class GroupExperienceFragment extends Fragment {
         addressCustomPop = new AddressCustomPop(getActivity());
         orderCustomePop = new OrderCustomePop(getActivity());
         initDateSelect();
+        initListView();
         addLisener();
         return view;
+    }
+
+    /**
+     * 初始化数据列表加载
+     */
+    private void initListView() {
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.list_loader_footer, null);
+//        不知道为什么在xml设置的“android:layout_width="match_parent"”无效了，需要在这里重新设置
+        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        footerView.setLayoutParams(lp);
+        listView.addFooterView(footerView);
+        adapter = new GroupExpericeItemAdapter(getActivity(), datas);
+        listView.setAdapter(adapter);
+
+        /***
+         * 下拉刷新
+         */
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        page =1;
+                        swipeRefreshLayout.setRefreshing(false);
+                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
+                    }
+                }, 3000);
+            }
+        });
+
+
+        /**
+         * 加载更多
+         */
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int lastIndexInScreen = visibleItemCount + firstVisibleItem;
+                if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
+                    isLoading = true;
+                    page++;
+                    loadData();
+                }
+            }
+        });
+    }
+
+
+    private void loadData() {
+        for (int i = 0; i < 10; i++) {
+            datas.add("模拟数据" + i + String.valueOf(page));
+        }
+
+        adapter.setData(datas);
+
+
+        listView.removeFooterView(footerView);
+        isLoading = false;
     }
 
 
