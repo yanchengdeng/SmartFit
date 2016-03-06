@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
-import com.smartfit.activities.MainActivity;
+import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
@@ -188,6 +188,13 @@ public class GroupExperienceFragment extends Fragment {
                     page++;
                     loadData();
                 }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((MainBusinessActivity)getActivity()).openActivity(GroupClassDetailActivity.class);
             }
         });
     }
@@ -400,6 +407,11 @@ public class GroupExperienceFragment extends Fragment {
             listView.setAdapter(new ChooseAddressAdapter(getActivity()));
             return inflate;
         }
+        @Override
+        public void onBackPressed() {
+            ivCoverBg.setVisibility(View.GONE);
+            super.onBackPressed();
+        }
 
         @Override
         public void setUiBeforShow() {
@@ -437,6 +449,11 @@ public class GroupExperienceFragment extends Fragment {
             return inflate;
         }
 
+        @Override
+        public void onBackPressed() {
+            ivCoverBg.setVisibility(View.GONE);
+            super.onBackPressed();
+        }
         @Override
         public void setUiBeforShow() {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_more_address_arrow"
+            android:layout_width="22dp"
+            android:layout_height="14dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@mipmap/icon_team_arr"
+            android:visibility="visible" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding_big"
+            android:text="性别"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_boy"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="男"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_girl"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="女"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_sex"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_gray"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="#e0e1e1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:text="价格区间(元/小时)"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal_down" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_less_fifty"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="@string/less_fifty"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_less_two_hundred"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="50-200"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_less_five_hundred"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="200-500"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_more_five_hundred"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="≥500"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_price"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_gray"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+        </LinearLayout>
+
+        <VideoView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="#e0e1e1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:text="有空时间"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal_down" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_time_am"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="早上6点~早上12点"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_time_pm"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="早上12点~下午6点"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_time_night"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_white"
+                android:gravity="center"
+                android:text="下午6点~晚上12点"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_time_all"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_gray"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_normal_height"
+                android:background="@drawable/bg_dialog_selector_black"
+                android:gravity="center"
+                android:text="重置"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <Button
+                android:id="@+id/btn_sure"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_normal_height"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dialog_selector_red"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_down" />
+
+        </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

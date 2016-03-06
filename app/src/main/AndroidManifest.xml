@@ -64,6 +64,18 @@
         </activity>
         <activity android:name=".activities.MainUserActivity" >
         </activity>
+        <activity
+            android:name=".activities.SearchClassActivity"
+            android:label="@string/title_activity_search_class" >
+        </activity>
+        <activity
+            android:name=".activities.GroupClassDetailActivity"
+            android:label="@string/title_activity_group_class_detail" >
+        </activity>
+        <activity
+            android:name=".activities.CoachInfoActivity"
+            android:label="@string/title_activity_coach_info" >
+        </activity>
     </application>
 
 </manifest>

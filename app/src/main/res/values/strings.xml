@@ -46,7 +46,10 @@
     <string name="order_experise_time">预约锻炼时间</string>
     <string name="sure">确认</string>
     <string name="update_already">已更新</string>
-
+    <string name="input_search_contition">请输入您的搜索内容</string>
+    <string name="find_conditon_result">个‘%s’的结果</string>
+    <string name="less_fifty">&lt;50</string>
+    <string name="coach">教练</string>
 
 
 
@@ -59,4 +62,7 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_deal_info">DealInfoActivity</string>
     <string name="title_activity_main_business">MainBusinessActivity</string>
+    <string name="title_activity_search_class">SearchClassActivity</string>
+    <string name="title_activity_group_class_detail">GroupClassDetailActivity</string>
+    <string name="title_activity_coach_info">CoachInfoActivity</string>
 </resources>

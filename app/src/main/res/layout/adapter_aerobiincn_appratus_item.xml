@@ -21,6 +21,7 @@
       <ImageView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:visibility="gone"
           android:src="@mipmap/icon_office"/>
   </RelativeLayout>
 
@@ -51,61 +52,28 @@
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+
                 <TextView
-                    android:id="@+id/tv_couch"
+                    android:id="@+id/tv_info"
                     android:layout_width="wrap_content"
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="教练  王二小"
+                    android:text="200平教室，有多台xxx..."
                     android:layout_marginRight="@dimen/image_padding"
                     android:layout_height="wrap_content" />
 
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/image_padding"
-                    style="@style/roomRatingBar"
-                    android:isIndicator="true"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:focusableInTouchMode="false"
-                    android:numStars="5"
-                    android:rating="4"
-                    />
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding"
-                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_join"
                     android:layout_width="wrap_content"
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="11/13人"
+                    android:text="该时段已有12人预约"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_marginLeft="@dimen/image_padding_big"
-                    android:layout_width="wrap_content"
-                    android:singleLine="true"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:text="11:00-13:00AM"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
 
 
         </LinearLayout>
@@ -129,9 +97,9 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/common_header_bg"
+            android:textColor="@color/find_private_coach"
             android:textSize="@dimen/text_normal_down"
-            android:text="120元"
+            android:text="120元/次"
             android:layout_height="wrap_content" />
 
         <TextView

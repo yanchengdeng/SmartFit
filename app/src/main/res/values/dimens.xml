@@ -17,6 +17,14 @@
     <dimen name="red_action_menu_radius">120dp</dimen>
     <dimen name="blue_sub_action_button_size">60dp</dimen>
 
+    <dimen name="button_normal_height">40dp</dimen>
+
+
+    <dimen name="icon_normal_size">90dp</dimen>
+
+
+    <dimen name="ad_height">150dp</dimen>
+
 
 
     <!-- 字体大小-->

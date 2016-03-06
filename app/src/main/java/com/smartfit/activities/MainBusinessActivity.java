@@ -48,8 +48,8 @@ public class MainBusinessActivity extends BaseActivity {
 
     private void initFragments() {
 
-        currentPosition  = getIntent().getIntExtra(Constants.FRAGMENT_POSITION,0);
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        currentPosition = getIntent().getIntExtra(Constants.FRAGMENT_POSITION, 0);
+        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.group_experien, GroupExperienceFragment.class)
                 .add(R.string.small_class, SmallClassFragment.class)
@@ -57,9 +57,10 @@ public class MainBusinessActivity extends BaseActivity {
                 .add(R.string.aerobic_apparatus, AerobicnAppratusFragment.class)
                 .create());
 
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
-
+        viewPager.setOffscreenPageLimit(4);
         final SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
         viewPager.setCurrentItem(currentPosition);
@@ -91,7 +92,6 @@ public class MainBusinessActivity extends BaseActivity {
     }
 
 
-
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +100,14 @@ public class MainBusinessActivity extends BaseActivity {
             }
         });
 
+
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(SearchClassActivity.class);
+            }
+        });
+
     }
-
-
 
 }

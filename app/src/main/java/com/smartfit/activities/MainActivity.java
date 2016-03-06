@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,0);
+                bundle.putInt(Constants.FRAGMENT_POSITION,1);
                 openActivity(MainBusinessActivity.class,bundle);
             }
         });
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,1);
+                bundle.putInt(Constants.FRAGMENT_POSITION,0);
                 openActivity(MainBusinessActivity.class,bundle);
             }
         });
