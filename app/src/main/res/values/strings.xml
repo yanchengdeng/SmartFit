@@ -68,4 +68,8 @@
     <string name="title_activity_group_class_detail">GroupClassDetailActivity</string>
     <string name="title_activity_coach_info">CoachInfoActivity</string>
     <string name="title_activity_pay">PayActivity</string>
+    <string name="title_activity_aerobic_appratus_detail">AerobicAppratusDetailActivity</string>
+    <string name="title_activity_aerobic_appratus_order_success">
+        AerobicAppratusOrderSuccessActivity
+    </string>
 </resources>

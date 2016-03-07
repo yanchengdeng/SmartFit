@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.smartfit">
-    <uses-sdk
-        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest"></uses-sdk>
+    package="com.smartfit" >
+
+    <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -74,16 +74,16 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
 
-        <!--uMNNG  分享-->
+        <!-- uMNNG  分享 -->
 
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
-            android:theme="@style/Theme.UMDefault"
-            android:excludeFromRecents="true"/>
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
 
-        <!-- 微信 -->
+        <!-- 微信 分享 -->
         <activity
-            android:name="com.smartfit.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -96,18 +96,27 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" >
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
 
+        <!-- end  umeng 分享 -->
 
-        <!--end  umeng 分享-->
+
+        <!-- 微信支付 -->
+        <!-- 微信支付 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity android:name=".activities.OrderReserveActivity" >
         </activity>
         <activity android:name=".activities.MainUserActivity" >
@@ -126,7 +135,25 @@
         </activity>
         <activity
             android:name=".activities.PayActivity"
-            android:label="@string/title_activity_pay" >
+            android:exported="true"
+            android:label="@string/title_activity_pay"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wxcc98b5cd5a985e3f" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.AerobicAppratusDetailActivity"
+            android:label="@string/title_activity_aerobic_appratus_detail" >
+        </activity>
+        <activity
+            android:name=".activities.AerobicAppratusOrderSuccessActivity"
+            android:label="@string/title_activity_aerobic_appratus_order_success" >
         </activity>
     </application>
 
