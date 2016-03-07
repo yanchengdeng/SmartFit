@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
+import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
 
@@ -111,6 +114,8 @@ public class PrivateEducationFragment extends Fragment {
     LinearLayout llWeek6;
     @Bind(R.id.ll_week7)
     LinearLayout llWeek7;
+    @Bind(R.id.btn_selected)
+    Button btnSelected;
 
     private int REQUEST_CODE_ORDER_TIME = 0x112;
 
@@ -122,12 +127,15 @@ public class PrivateEducationFragment extends Fragment {
     private int page = 1;
     boolean isLoading = false;
     private PrivateEducationAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
+        View view = inflater.inflate(R.layout.fragment_private_education, container, false);
         ButterKnife.bind(this, view);
         addressCustomPop = new AddressCustomPop(getActivity());
         conditionSelectPop = new ConditionSelectPop(getActivity());
@@ -187,23 +195,33 @@ public class PrivateEducationFragment extends Fragment {
                 if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
                     isLoading = true;
                     page++;
-//                    loadData();
+                    loadData();
                 }
             }
         });
 
+        btnSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null != datas &&datas.size()>0){
+                    btnSelected.setText(datas.size()+"个");
+
+                }
+
+            }
+        });
 
     }
 
 
     private void loadData() {
         for (int i = 0; i < 10; i++) {
-            datas.add("模拟数据" + i + String.valueOf(page));
+            PrivateEducationClass item = new PrivateEducationClass();
+            item.setName("模拟数据" + i + String.valueOf(page));
+            datas.add(item);
         }
 
         adapter.setData(datas);
-
-
         listView.removeFooterView(footerView);
         isLoading = false;
     }
@@ -576,7 +594,8 @@ public class PrivateEducationFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     resetPrice();
-                    resetTime();resetSex();
+                    resetTime();
+                    resetSex();
                     btnSex.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     btnPrice.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     btnTimeAll.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
@@ -592,13 +611,13 @@ public class PrivateEducationFragment extends Fragment {
             });
         }
 
-        private void resetSex(){
+        private void resetSex() {
             btnBoy.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnGirl.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnSex.setBackgroundResource(R.drawable.bg_dialog_selector_white);
         }
 
-        private void resetPrice(){
+        private void resetPrice() {
             btnLessFifty.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnLessFiveHundred.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnLessTwoHundred.setBackgroundResource(R.drawable.bg_dialog_selector_white);
@@ -606,7 +625,7 @@ public class PrivateEducationFragment extends Fragment {
             btnPrice.setBackgroundResource(R.drawable.bg_dialog_selector_white);
         }
 
-        private void resetTime(){
+        private void resetTime() {
             btnTimeAm.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnTimeAll.setBackgroundResource(R.drawable.bg_dialog_selector_white);
             btnTimePm.setBackgroundResource(R.drawable.bg_dialog_selector_white);

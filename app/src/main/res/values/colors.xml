@@ -10,6 +10,8 @@
 
 	<color name="line_gray">#b1afaf</color>
 
+	<color name="trans_gray_bg">#22b1afaf</color>
+
 	<color name="main_bar_bg">#545756</color>
 	<color name="bar_regiter_bg">#706F6F</color>
 

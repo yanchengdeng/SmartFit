@@ -1,140 +1,379 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.GroupClassDetailActivity">
 
- <include
-     android:id="@+id/heade_ui"
-      layout="@layout/common_header_view"></include>
+    <include
+        android:id="@+id/heade_ui"
+        layout="@layout/common_header_view"></include>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/heade_ui"
         android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-            <com.smartfit.views.RollPagerView
-                android:id="@+id/viewpager"
+            <com.jude.rollviewpager.RollPagerView
+                android:id="@+id/roll_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/ad_height"
-                app:rollviewpager_hint_alpha="80"
-                app:rollviewpager_hint_color="@android:color/transparent"
-                app:rollviewpager_hint_gravity="center"
-                app:rollviewpager_hint_mode="point"
-                app:rollviewpager_hint_paddingBottom="@dimen/activity_vertical_margin"
+                android:layout_height="180dp"
+                app:rollviewpager_hint_gravity="right"
+                app:rollviewpager_hint_paddingRight="16dp"
+                app:rollviewpager_hint_paddingBottom="5dp"
                 app:rollviewpager_play_delay="3000" />
+
 
             <TextView
                 android:id="@+id/tv_tittle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_normal"
+                android:text="来一起奔跑吧，欢迎大家加入新课程"
                 android:textColor="@color/text_color_gray"
-                android:text="来一起奔跑吧，欢迎大家加入新课程"/>
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_normal"
-                android:textColor="@color/text_color_gray"
-                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
-          <View
-              android:layout_width="match_parent"
-              android:layout_height="1px"
-              android:background="@color/gray"/>
+                android:textSize="@dimen/text_normal" />
 
             <TextView
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_normal"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                 android:textColor="@color/text_color_gray"
-                android:text="@string/coach"/>
+                android:textSize="@dimen/text_normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/coach"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:id="@+id/iv_coach_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/bg_pic"
-                    />
-                
-                <TextView
-                    android:id="@+id/tv_coach_name"
-                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:src="@mipmap/bg_pic" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_normal_down"
-                    android:text="王小妞教练"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_toRightOf="@+id/iv_coach_icon"
-                    android:textColor="@color/text_color_black"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_coach_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="王小妞教练"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <TextView
+                        android:id="@+id/tv_coach_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_coach_name"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:layout_toRightOf="@+id/iv_coach_icon"
+                        android:text="体校毕业 带你科学锻炼 营养健身"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:orientation="horizontal">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            style="@style/roomRatingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:rating="4" />
+
+                        <TextView
+                            android:id="@+id/tv_coach_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/image_padding"
+                            android:singleLine="true"
+                            android:text="4.8"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/text_normal_down" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/space"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_space_icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/bg_pic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:layout_toRightOf="@+id/iv_space_icon"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_space_name"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="奥体中心体育馆"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <TextView
+                        android:id="@+id/tv_space_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:text="距离0.6km"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="发起人"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_operate_person"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_avatar" />
 
                 <TextView
-                    android:id="@+id/tv_coach_info"
-                    android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:layout_toRightOf="@+id/iv_operate_person"
+                    android:text="福州市五四路309号奥体"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="已报名成员"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <LinearLayout
+                android:id="@+id/ll_have_ordered_members"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="@dimen/image_padding"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_avatar" />
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="@dimen/image_padding"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_avatar" />
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_marginRight="@dimen/image_padding"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_avatar" />
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_marginRight="@dimen/image_padding"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_avatar" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="课程时间"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_class_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="2016-03-21   9:00~23:00"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="课程费用"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_class_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="￥550"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_larger" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_light"
+                android:paddingTop="@dimen/image_padding"
+                android:paddingBottom="@dimen/image_padding"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:textSize="@dimen/text_normal_down"
+                android:textColor="@color/text_color_black"
+                android:text="以往用户评价"/>
+
+            <com.smartfit.views.MyListView
+                android:id="@+id/lisview_discuss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="@android:color/transparent"
+                android:dividerHeight="1px"
+                android:background="@color/white"
+                android:divider="@color/line_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/gray_light"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_more"
+                    android:gravity="right"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="点击查看更多"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="体校毕业 带你科学锻炼 营养健身"
-                    android:layout_marginTop="@dimen/image_padding"
-                    android:layout_toRightOf="@+id/iv_coach_icon"
-                    android:layout_below="@+id/tv_coach_name"
                     android:textColor="@color/text_color_gray"/>
 
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_coach_icon"
-                    android:layout_below="@+id/tv_coach_info"
-                    android:layout_marginTop="@dimen/image_padding"
-                    style="@style/roomRatingBar"
-                    android:layout_marginLeft="@dimen/image_padding_big"
-                    android:isIndicator="true"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:focusableInTouchMode="false"
-                    android:numStars="5"
-                    android:rating="4"
-                    />
+                <Button
+                    android:id="@+id/btn_order"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_dialog_selector_red"
+                    android:text="立即预约"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/header_bar_height"
+                    android:layout_marginRight="@dimen/header_bar_height"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_normal"
+                    android:layout_height="40dp" />
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_coach_score"
-                    android:layout_width="wrap_content"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/image_padding"
-                    android:layout_marginLeft="@dimen/image_padding"
-                    android:layout_toRightOf="@+id/ratingBar"
-                    android:layout_below="@+id/tv_coach_info"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:text="4.8"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 
 
 </RelativeLayout>

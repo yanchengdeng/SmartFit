@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+ <include layout="@layout/common_fragment_head_conditions"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:layout_marginBottom="@dimen/blue_sub_action_button_size"
+     ></include>
+
+    <Button
+        android:id="@+id/btn_selected"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/header_bar_height"
+        android:layout_marginRight="@dimen/header_bar_height"
+        android:layout_alignParentBottom="true"
+        android:text="已选择2个"
+        android:background="@drawable/bg_dialog_selector_red"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/image_padding_big"
+        android:textSize="@dimen/text_normal_down"
+        android:layout_height="40dp" />
+
+
+</RelativeLayout>

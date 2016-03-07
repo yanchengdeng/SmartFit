@@ -1,6 +1,8 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.smartfit.R;
 import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.beans.PrivateEducationClass;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,38 +32,18 @@ import butterknife.ButterKnife;
  */
 public class PrivateEducationAdapter extends BaseAdapter {
     private Context context;
-    private List<String> datas;
+    private List<PrivateEducationClass> datas;
     LinearLayout.LayoutParams params;
 
-    // 用来控制CheckBox的选中状况
-    private static HashMap<Integer,Boolean> isSelected;
-
     public PrivateEducationAdapter(Context context
-            , List<String> datas) {
+            , List<PrivateEducationClass> datas) {
         this.context = context;
         this.datas = datas;
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
-        isSelected = new HashMap<Integer, Boolean>();
-        // 初始化数据
-        initDate();
 
     }
 
-    // 初始化isSelected的数据
-    private void initDate(){
-        for(int i=0; i<datas.size();i++) {
-            getIsSelected().put(i,false);
-        }
-    }
 
-
-    public static HashMap<Integer,Boolean> getIsSelected() {
-        return isSelected;
-    }
-
-    public static void setIsSelected(HashMap<Integer,Boolean> isSelected) {
-        PrivateEducationAdapter.isSelected = isSelected;
-    }
     @Override
     public int getCount() {
         return datas.size();
@@ -77,7 +60,7 @@ public class PrivateEducationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_private_education_item, null);
@@ -87,35 +70,38 @@ public class PrivateEducationAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+
         viewHolder.ratingBar.setLayoutParams(params);
 
-        if(!getIsSelected().isEmpty()){
-            Log.w("dyc",getIsSelected()+"=======");
-            viewHolder.chSelect.setChecked(getIsSelected().get(position));
-        }
-
-//        viewHolder.chSelect.setChecked(getIsSelected().get(position));
+        final PrivateEducationClass item = datas.get(position);
+        viewHolder.tvCoach.setText(item.getName());
+        viewHolder.chSelect.setChecked(item.isCheck());
         viewHolder.chSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                item.setIsCheck(isChecked);
             }
         });
 
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainBusinessActivity)context).openActivity(CoachInfoActivity.class);
+                ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class);
             }
         });
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<PrivateEducationClass> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
 
+
+
+    public  List<PrivateEducationClass> getDatas(){
+        return this.datas;
+    }
 
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_private_education_item.xml'
@@ -135,7 +121,7 @@ public class PrivateEducationAdapter extends BaseAdapter {
         @Bind(R.id.tv_num)
         TextView tvNum;
         @Bind(R.id.ch_select)
-       public CheckBox chSelect;
+        public CheckBox chSelect;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
