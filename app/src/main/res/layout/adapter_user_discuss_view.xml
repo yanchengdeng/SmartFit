@@ -1,18 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:layout_marginTop="@dimen/image_padding_big"
     android:layout_marginBottom="@dimen/image_padding_big"
     android:layout_marginRight="@dimen/image_padding_big"
     android:orientation="vertical">
 
-    <ImageView
+    <com.smartfit.views.SelectableRoundedImageView
         android:id="@+id/iv_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/icon_avatar" />
+        app:sriv_left_top_corner_radius="4dip"
+        app:sriv_right_top_corner_radius="4dip"
+        app:sriv_left_bottom_corner_radius="4dip"
+        app:sriv_right_bottom_corner_radius="4dip"
+        app:sriv_oval="false"
+        android:src="@mipmap/icon_class_tx" />
 
     <TextView
         android:id="@+id/tv_name"

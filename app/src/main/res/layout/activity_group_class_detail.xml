@@ -77,10 +77,15 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.smartfit.views.SelectableRoundedImageView
                     android:id="@+id/iv_coach_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    app:sriv_left_top_corner_radius="4dip"
+                    app:sriv_right_top_corner_radius="4dip"
+                    app:sriv_left_bottom_corner_radius="4dip"
+                    app:sriv_right_bottom_corner_radius="4dip"
+                    app:sriv_oval="false"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/bg_pic" />
 
@@ -164,10 +169,15 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.smartfit.views.SelectableRoundedImageView
                     android:id="@+id/iv_space_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    app:sriv_left_top_corner_radius="4dip"
+                    app:sriv_right_top_corner_radius="4dip"
+                    app:sriv_left_bottom_corner_radius="4dip"
+                    app:sriv_right_bottom_corner_radius="4dip"
+                    app:sriv_oval="false"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/bg_pic" />
 
@@ -181,7 +191,6 @@
 
                     <TextView
                         android:id="@+id/tv_space_name"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -216,10 +225,15 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.smartfit.views.SelectableRoundedImageView
                     android:id="@+id/iv_operate_person"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    app:sriv_left_top_corner_radius="0dip"
+                    app:sriv_right_top_corner_radius="0dip"
+                    app:sriv_left_bottom_corner_radius="0dip"
+                    app:sriv_right_bottom_corner_radius="0dip"
+                    app:sriv_oval="true"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_avatar" />
 
