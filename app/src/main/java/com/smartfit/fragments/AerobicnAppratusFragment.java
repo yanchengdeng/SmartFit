@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
+import com.smartfit.activities.AerobicAppratusDetailActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
@@ -192,7 +193,7 @@ public class AerobicnAppratusFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class);
+                ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class);
             }
         });
     }

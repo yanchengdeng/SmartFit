@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/trans_gray_bg"
+        android:background="@color/gray_light"
         android:padding="@dimen/image_padding"
         android:text="@string/app_name"
         android:textColor="@color/common_header_bg"

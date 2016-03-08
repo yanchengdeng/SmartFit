@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
+
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/image_padding"
+        android:singleLine="true"
+        android:text="2016-02-12 12:20:53"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
+
+
+    <TextView
+        android:id="@+id/tv_join"
+        android:layout_below="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_marginTop="@dimen/image_padding"
+        android:text="教练做人耐心很好哦"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
+
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        style="@style/roomRatingBar"
+        android:isIndicator="true"
+        android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:numStars="5"
+        android:rating="4"
+        />
+
+
+</RelativeLayout>

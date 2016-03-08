@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/activity_horizontal_margin">
 
     <RelativeLayout
@@ -9,13 +10,18 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true">
 
-        <ImageView
+        <com.smartfit.views.SelectableRoundedImageView
             android:id="@+id/iv_icon"
+            android:scaleType="centerCrop"
             android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
             android:layout_marginTop="2dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/bg_pic" />
+            android:src="@mipmap/bg_pic"
+            app:sriv_left_top_corner_radius="4dip"
+            app:sriv_right_top_corner_radius="4dip"
+            app:sriv_left_bottom_corner_radius="4dip"
+            app:sriv_right_bottom_corner_radius="4dip"
+            app:sriv_oval="false"
+            android:layout_height="@dimen/icon_normal_size" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -100,6 +106,8 @@
         android:drawablePadding="@dimen/image_padding"
         android:drawableRight="@drawable/coach_selected_checked"
         android:gravity="center"
+        android:focusable="false"
+        android:clickable="false"
         android:text="50元/小时"
         android:textColor="@color/common_header_bg"
         android:textSize="@dimen/text_normal_down" />

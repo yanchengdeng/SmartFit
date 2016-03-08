@@ -5,12 +5,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 import com.smartfit.R;
-import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.BaseActivity;
 import com.smartfit.utils.ViewFindUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -93,17 +92,17 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Toast.makeText(mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            ((BaseActivity)mContext).mSVProgressHUD.showSuccessWithStatus("分享成功啦");
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(mContext,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            ((BaseActivity)mContext).mSVProgressHUD.showErrorWithStatus("分享失败啦");
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(mContext, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            ((BaseActivity)mContext).mSVProgressHUD.showInfoWithStatus("分享取消了");
         }
     };
 

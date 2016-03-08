@@ -72,4 +72,6 @@
     <string name="title_activity_aerobic_appratus_order_success">
         AerobicAppratusOrderSuccessActivity
     </string>
+    <string name="title_activity_group_class_order_success">GroupClassOrderSuccessActivity</string>
+    <string name="title_activity_contact_coach">ContactCoachActivity</string>
 </resources>

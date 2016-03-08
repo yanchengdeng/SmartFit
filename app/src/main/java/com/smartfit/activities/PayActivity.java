@@ -100,6 +100,7 @@ public class PayActivity extends BaseActivity {
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             mSVProgressHUD.showErrorWithStatus("支付失败");
+                            openActivity(GroupClassOrderSuccessActivity.class);
                         }
                     }
                     break;

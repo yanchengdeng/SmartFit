@@ -21,12 +21,14 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
+
     <application
         android:name=".SmartAppliction"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:theme" >
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name" >
@@ -81,7 +83,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
 
-        <!-- 微信 分享 -->
+        <!-- 微信 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -108,15 +110,6 @@
         </activity>
 
         <!-- end  umeng 分享 -->
-
-
-        <!-- 微信支付 -->
-        <!-- 微信支付 -->
-        <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <activity android:name=".activities.OrderReserveActivity" >
         </activity>
         <activity android:name=".activities.MainUserActivity" >
@@ -135,25 +128,21 @@
         </activity>
         <activity
             android:name=".activities.PayActivity"
-            android:exported="true"
-            android:label="@string/title_activity_pay"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="wxcc98b5cd5a985e3f" />
-            </intent-filter>
+            android:label="@string/title_activity_pay" >
+        </activity>
+        <activity android:name=".activities.OrderPrivateEducationClassActivity" >
+        </activity>
+        <activity android:name=".activities.CoachAppraiseActivity" >
+        </activity>
+        <activity android:name=".activities.CoachAuthentitionActivity" >
         </activity>
         <activity
-            android:name=".activities.AerobicAppratusDetailActivity"
-            android:label="@string/title_activity_aerobic_appratus_detail" >
+            android:name=".activities.GroupClassOrderSuccessActivity"
+            android:label="@string/title_activity_group_class_order_success" >
         </activity>
         <activity
-            android:name=".activities.AerobicAppratusOrderSuccessActivity"
-            android:label="@string/title_activity_aerobic_appratus_order_success" >
+            android:name=".activities.ContactCoachActivity"
+            android:label="@string/title_activity_contact_coach" >
         </activity>
     </application>
 

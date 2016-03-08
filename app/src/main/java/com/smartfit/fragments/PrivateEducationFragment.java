@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +26,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
@@ -130,8 +129,6 @@ public class PrivateEducationFragment extends Fragment {
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -200,16 +197,50 @@ public class PrivateEducationFragment extends Fragment {
             }
         });
 
-        btnSelected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(null != datas &&datas.size()>0){
-                    btnSelected.setText(datas.size()+"个");
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                checkBox.setChecked(!checkBox.isChecked());
+                datas.get(position).setIsCheck(checkBox.isChecked());
+                List<PrivateEducationClass> selectPricates =    countSelectNum(datas);
+                if(selectPricates.size() ==0){
+                    btnSelected.setText("请选择教练");
+                }else{
+                    btnSelected.setText("已选择"+selectPricates.size()+"个");
                 }
 
             }
         });
+
+        btnSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<PrivateEducationClass> selectPricates =  countSelectNum(datas);
+                if(selectPricates.size() ==0){
+                    ((MainBusinessActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
+                }else{
+                    ((MainBusinessActivity)getActivity()).openActivity(OrderPrivateEducationClassActivity.class);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 计算已经选择教练人数
+     * @param datas
+     */
+    private List<PrivateEducationClass> countSelectNum(List<PrivateEducationClass> datas) {
+        List<PrivateEducationClass> selectPricates = new ArrayList<>();
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).isCheck() == true) {
+                selectPricates.add(datas.get(i));
+            }
+        }
+
+        return  selectPricates;
 
     }
 

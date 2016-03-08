@@ -20,6 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:paddingBottom="@dimen/header_bar_height"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -35,31 +36,64 @@
 
 
             <TextView
-                android:id="@+id/tv_tittle"
+                android:id="@+id/tv_class_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="来一起奔跑吧，欢迎大家加入新课程"
+                android:text="我的课程条码01"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+               android:src="@mipmap/icon_txm" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="您可以使用该条码，扫码进入预定的健身馆，使用为你准备的私人保管箱。"
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/text_normal_down" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray_light" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_save_to_phone"
+                    android:text="保存到手机"
+                    android:gravity="center"
+                    android:padding="@dimen/image_padding_big"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_share_friends"
+                    android:text="发送给朋友"
+                    android:background="@color/common_header_bg"
+                    android:gravity="center"
+                    android:padding="@dimen/image_padding_big"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_normal"/>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/gray" />
+                android:background="@color/gray_light" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -334,59 +368,43 @@
                 android:textColor="@color/common_header_bg"
                 android:textSize="@dimen/text_larger" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/gray_light"
-                android:paddingTop="@dimen/image_padding"
-                android:paddingBottom="@dimen/image_padding"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:textSize="@dimen/text_normal_down"
-                android:textColor="@color/text_color_black"
-                android:text="以往用户评价"/>
 
-            <com.smartfit.views.MyListView
-                android:id="@+id/lisview_discuss"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cacheColorHint="@android:color/transparent"
-                android:dividerHeight="1px"
-                android:background="@color/white"
-                android:divider="@color/line_gray"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:background="@color/gray_light"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_more"
-                    android:gravity="right"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:text="点击查看更多"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textColor="@color/text_color_gray"/>
-
-                <Button
-                    android:id="@+id/btn_order"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_dialog_selector_red"
-                    android:text="立即预约"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/header_bar_height"
-                    android:layout_marginRight="@dimen/header_bar_height"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_normal"
-                    android:layout_height="40dp" />
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_contact_coach"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="联系教练"
+            android:padding="@dimen/image_padding_big"
+            android:gravity="center"
+            android:textColor="@color/text_color_gray"
+            android:background="@color/gray_light"/>
+
+        <TextView
+            android:id="@+id/tv_invite_friends"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="邀请好友"
+            android:padding="@dimen/image_padding_big"
+            android:layout_marginLeft="1dp"
+            android:gravity="center"
+            android:textColor="@color/text_color_gray"
+            android:background="@color/gray_light"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

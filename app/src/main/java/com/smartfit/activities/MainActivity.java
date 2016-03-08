@@ -1,11 +1,15 @@
 package com.smartfit.activities;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
@@ -58,8 +62,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,1);
-                openActivity(MainBusinessActivity.class,bundle);
+                bundle.putInt(Constants.FRAGMENT_POSITION, 1);
+                openActivity(MainBusinessActivity.class, bundle);
             }
         });
 
@@ -67,8 +71,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,2);
-                openActivity(MainBusinessActivity.class,bundle);
+                bundle.putInt(Constants.FRAGMENT_POSITION, 2);
+                openActivity(MainBusinessActivity.class, bundle);
             }
         });
 
@@ -76,8 +80,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,0);
-                openActivity(MainBusinessActivity.class,bundle);
+                bundle.putInt(Constants.FRAGMENT_POSITION, 0);
+                openActivity(MainBusinessActivity.class, bundle);
             }
         });
 
@@ -85,10 +89,48 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION,3);
-                openActivity(MainBusinessActivity.class,bundle);
+                bundle.putInt(Constants.FRAGMENT_POSITION, 3);
+                openActivity(MainBusinessActivity.class, bundle);
             }
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        NormalDialogStyleOne();
+    }
+
+    private void NormalDialogStyleOne() {
+        final NormalDialog dialog = new NormalDialog(MainActivity.this);
+        dialog.isTitleShow(false)//
+                .bgColor(Color.parseColor("#383838"))//
+                .cornerRadius(5)//
+                .content("是否确定退出程序?")//
+                .contentGravity(Gravity.CENTER)//
+                .contentTextColor(Color.parseColor("#ffffff"))//
+                .dividerColor(Color.parseColor("#222222"))//
+                .btnTextSize(15.5f, 15.5f)//
+                .btnTextColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))//
+                .btnPressColor(Color.parseColor("#2B2B2B"))//
+                .widthScale(0.85f)//
+//                .showAnim(mBasIn)//
+//                .dismissAnim(mBasOut)//
+                .show();
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+    }
 }

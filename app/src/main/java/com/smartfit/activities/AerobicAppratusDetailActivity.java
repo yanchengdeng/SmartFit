@@ -48,12 +48,12 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-tvTittle.setText(getString(R.string.aerobic_apparatus));
+        tvTittle.setText(getString(R.string.aerobic_apparatus));
 
     }
 
 
-    private void addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
