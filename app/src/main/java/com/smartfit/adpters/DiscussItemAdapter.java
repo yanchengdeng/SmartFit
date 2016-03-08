@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/3/7.
+ * 课程评价里列表
  */
 public class DiscussItemAdapter extends BaseAdapter {
 
