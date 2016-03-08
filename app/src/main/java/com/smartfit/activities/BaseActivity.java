@@ -19,6 +19,9 @@ import com.smartfit.commons.AppManager;
 import com.smartfit.utils.IntentUtils;
 import com.umeng.analytics.MobclickAgent;
 
+/**
+ * 基类 处理功能 
+ */
 public class BaseActivity extends FragmentActivity {
 
     public SVProgressHUD mSVProgressHUD;
