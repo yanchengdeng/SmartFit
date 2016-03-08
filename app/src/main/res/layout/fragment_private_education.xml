@@ -17,7 +17,7 @@
         android:layout_marginLeft="@dimen/header_bar_height"
         android:layout_marginRight="@dimen/header_bar_height"
         android:layout_alignParentBottom="true"
-        android:text="已选择2个"
+        android:text="请选择教练"
         android:background="@drawable/bg_dialog_selector_red"
         android:textColor="@color/white"
         android:layout_marginBottom="@dimen/image_padding_big"

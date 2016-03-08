@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_attention"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/over_gray_bg"
+            android:gravity="center"
+            android:padding="@dimen/image_padding_big"
+            android:text="关注"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_add_friends"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1px"
+            android:layout_marginRight="1px"
+            android:layout_weight="1"
+            android:background="@color/over_gray_bg"
+            android:gravity="center"
+            android:padding="@dimen/image_padding_big"
+            android:text="加为健身伙伴"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/tv_send_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/common_header_bg"
+            android:gravity="center"
+            android:padding="@dimen/image_padding_big"
+            android:text="发消息"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="教练简历"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_coach_brief"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:lineSpacingExtra="@dimen/image_padding"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_read_more_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_down"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="展开"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="教练评价"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/roomRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="4" />
+
+        <TextView
+            android:id="@+id/tv_core"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:text="4.8"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_teached_classes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:text="已授321节课"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_gray" />
+
+    <com.smartfit.views.MyListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/line_gray"
+        android:dividerHeight="1px"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_gray" />
+
+    <TextView
+        android:id="@+id/tv_read_more_discuss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="right"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="查看详情"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="教练资料"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="身高:178CM"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/tv_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/header_bar_height"
+            android:text="体重：77KG"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_coach_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:lineSpacingExtra="@dimen/image_padding"
+        android:maxLines="2"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="持有证书：国家一级运动员xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_read_more_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="right"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="查看详情"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="他的课程"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_his_classes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_next_w_on"
+            android:gravity="right"
+            android:text="正在进行2个课程"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1px"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_dynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="动态"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_pictures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/image_padding_big"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:layout_toRightOf="@+id/tv_dynamic"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_pic" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_pic" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_pic" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

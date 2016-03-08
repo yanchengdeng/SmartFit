@@ -42,6 +42,7 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.jude:rollviewpager:1.2.5'
+    compile 'com.github.frank-zhu:pullzoomview:1.0.0'
     compile files('libs/SocialSDK_Sina.jar')
     compile files('libs/SocialSDK_WeiXin_1.jar')
     compile files('libs/SocialSDK_WeiXin_2.jar')
