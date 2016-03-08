@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/3/4.
  * 私教  数据列表
  */
-public class PrivateEducationAdapter extends BaseAdapter {
+public class PrivateEducationAdapter extends BaseAdapter  {
     private Context context;
     private List<PrivateEducationClass> datas;
     LinearLayout.LayoutParams params;
@@ -40,7 +41,6 @@ public class PrivateEducationAdapter extends BaseAdapter {
         this.context = context;
         this.datas = datas;
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
-
     }
 
 
@@ -60,7 +60,7 @@ public class PrivateEducationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView( int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_private_education_item, null);
@@ -70,19 +70,11 @@ public class PrivateEducationAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
         viewHolder.ratingBar.setLayoutParams(params);
 
-        final PrivateEducationClass item = datas.get(position);
+         PrivateEducationClass item = datas.get(position);
         viewHolder.tvCoach.setText(item.getName());
         viewHolder.chSelect.setChecked(item.isCheck());
-        viewHolder.chSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                item.setIsCheck(isChecked);
-            }
-        });
-
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,16 +84,13 @@ public class PrivateEducationAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+
     public void setData(List<PrivateEducationClass> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
 
-
-
-    public  List<PrivateEducationClass> getDatas(){
-        return this.datas;
-    }
 
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_private_education_item.xml'
