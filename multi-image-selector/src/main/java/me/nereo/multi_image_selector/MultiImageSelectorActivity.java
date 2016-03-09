@@ -14,10 +14,8 @@ import java.util.ArrayList;
  * 多图选择
  * Created by Nereo on 2015/4/7.
  */
-public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback{
-
-    /** 最大图片选择次数，int类型，默认9 */
-    public static final String EXTRA_SELECT_COUNT = "max_select_count";
+public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback{  /** 最大图片选择次数，int类型，默认9 */
+public static final String EXTRA_SELECT_COUNT = "max_select_count";
     /** 图片选择模式，默认多选 */
     public static final String EXTRA_SELECT_MODE = "select_count_mode";
     /** 是否显示相机，默认显示 */
