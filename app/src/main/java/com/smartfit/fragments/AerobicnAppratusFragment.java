@@ -26,6 +26,7 @@ import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
 import com.smartfit.activities.AerobicAppratusDetailActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.AerobincnAppratusItemAdapter;

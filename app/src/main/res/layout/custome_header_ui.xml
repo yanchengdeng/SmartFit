@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/icon_setting" />
+
+
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/icon_gift" />
+
+
+    <com.smartfit.views.SelectableRoundedImageView
+        android:id="@+id/iv_header"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@+id/iv_setting"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/icon_pay_mr"
+        app:sriv_border_color="@color/white"
+        app:sriv_border_width="2dip"
+        app:sriv_left_bottom_corner_radius="0dip"
+        app:sriv_left_top_corner_radius="0dip"
+        app:sriv_oval="true"
+        app:sriv_right_bottom_corner_radius="0dip"
+        app:sriv_right_top_corner_radius="0dip" />
+
+    <TextView
+        android:id="@+id/tv_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="-20dp"
+        android:background="@mipmap/bg_vip"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_toRightOf="@+id/iv_header"
+        android:text="会员"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_custome_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_alignParentRight="true"
+        >
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/image_padding"
+            android:text="令狐冲"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_larger" />
+
+        <TextView
+            android:id="@+id/tv_motto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:singleLine="true"
+            android:text="爱生活，爱锻炼"
+            android:gravity="center_vertical"
+            android:drawableRight="@mipmap/icon_next_w"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

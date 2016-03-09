@@ -151,7 +151,6 @@ public class PrivateEducationFragment extends Fragment {
         AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         footerView.setLayoutParams(lp);
         listView.addFooterView(footerView);
-
         adapter = new PrivateEducationAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
         loadData();
@@ -248,7 +247,7 @@ public class PrivateEducationFragment extends Fragment {
     private void loadData() {
         for (int i = 0; i < 10; i++) {
             PrivateEducationClass item = new PrivateEducationClass();
-            item.setName("模拟数据" + i + String.valueOf(page));
+            item.setName("王小二教练" + i + String.valueOf(page));
             datas.add(item);
         }
 

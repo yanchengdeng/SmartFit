@@ -53,11 +53,11 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/header_bar_height"
             android:layout_marginRight="@dimen/header_bar_height"
             android:orientation="vertical"
-            android:background="@mipmap/bg_pop_1">
+            android:background="@drawable/bg_pop_1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal"
                 android:gravity="center"
-                android:background="@mipmap/btn_login"/>
+                android:background="@drawable/bg_dialog_selector_red"/>
             
             
             

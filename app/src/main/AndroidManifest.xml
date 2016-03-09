@@ -21,7 +21,6 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
-
     <application
         android:name=".SmartAppliction"
         android:allowBackup="true"
@@ -144,6 +143,21 @@
             android:name=".activities.ContactCoachActivity"
             android:label="@string/title_activity_contact_coach" >
         </activity>
+        <activity android:name=".activities.AerobicAppratusDetailActivity" />
+        <activity android:name=".activities.AerobicAppratusOrderSuccessActivity" />
+        <activity android:name=".activities.CustomeMainActivity" >
+        </activity>
+        <activity android:name=".activities.SettingActivity" >
+        </activity>
+        <activity android:name=".activities.AboutUsActivity" >
+        </activity>
+        <activity android:name=".activities.CustomeDynamicActivity" >
+        </activity>
+        <activity android:name=".activities.PublishCustomeDynamicActivity" >
+        </activity>
+        <activity
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

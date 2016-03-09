@@ -48,6 +48,8 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="教练  王二小"
+            android:drawableRight="@mipmap/icon_woman"
+            android:drawablePadding="@dimen/image_padding"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal_down"
             android:textStyle="bold" />
