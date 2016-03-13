@@ -1,6 +1,5 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -52,7 +51,8 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
         setContentView(R.layout.activity_publish_custome_dynamic);
         ButterKnife.bind(this);
         tvTittle.setText("动态");
-        ivFunction.setBackgroundResource(R.mipmap.icon_right);
+        ivFunction.setVisibility(View.VISIBLE);
+        ivFunction.setImageResource(R.mipmap.icon_right);
         addLisener();
     }
 
@@ -64,7 +64,7 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
             }
         });
 
-        tvFunction.setOnClickListener(new View.OnClickListener() {
+        ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSVProgressHUD.showSuccessWithStatus("发布成功", SVProgressHUD.SVProgressHUDMaskType.Clear);

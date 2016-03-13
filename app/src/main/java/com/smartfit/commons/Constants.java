@@ -14,6 +14,10 @@ public class Constants {
 
 
     public final static String PASS_STING = "pass_string";
+    /***
+     * //定义  1 ：团体课  2.小班课  3.私教课
+     */
+    public static final String PAGE_INDEX = "page_index";
 
 
     /*****

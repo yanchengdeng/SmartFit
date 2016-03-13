@@ -7,6 +7,7 @@
 
     <com.ecloud.pulltozoomview.PullToZoomScrollViewEx
         android:id="@+id/scroll_view"
+        android:background="@color/gray_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

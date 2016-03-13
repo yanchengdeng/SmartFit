@@ -1,6 +1,5 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -64,6 +63,22 @@ public class CustomeMainActivity extends BaseActivity {
             }
         });
 
+        //礼物
+        scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyTicketGiftActivity.class);
+            }
+        });
+
+        //我的课程
+        scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyClassesActivity.class);
+            }
+        });
+
         //动态
         scrollView.getPullRootView().findViewById(R.id.rl_my_dynamic_ui).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +86,16 @@ public class CustomeMainActivity extends BaseActivity {
                 openActivity(CustomeDynamicActivity.class);
             }
         });
+
+        //客服
+        scrollView.getPullRootView().findViewById(R.id.rl_my_serve_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(HelpActivity.class);
+            }
+        });
+
+
     }
 
     private void addLisener(){

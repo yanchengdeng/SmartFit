@@ -74,4 +74,34 @@
     </string>
     <string name="title_activity_group_class_order_success">GroupClassOrderSuccessActivity</string>
     <string name="title_activity_contact_coach">ContactCoachActivity</string>
+    <string name="tip_accept_order">提示：第一位接单的教练，将成为本次私教课的教练。</string>
+    <string name="title_activity_order_private_education_success">
+        OrderPrivateEducationSuccessActivity
+    </string>
+    <string name="title_activity_my_ticket_gift">MyTicketGiftActivity</string>
+    <string name="tick_gift">我的礼券</string>
+    <string name="eaquel_ticket">抵用卷</string>
+    <string name="title_activity_my_classes">MyClassesActivity</string>
+    <string name="my_classes">我的课程</string>
+    <string name="my_add_classes">我加入的</string>
+    <string name="already_over">已结束</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="contact_coach">联系教练</string>
+    <string name="cancle_class">取消课程</string>
+    <string name="going">进行中</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="how_publish_class">如何使用课程发起？</string>
+    <string name="cannot_topup">钱包无法充值？</string>
+    <string name="server_phone">客服电话</string>
+    <string name="server_phone_num">0591-5558888</string>
+    <string name="server_time">(周一至周日 8：00 ~18：00)</string>
+    <string name="help">帮助</string>
+    <string name="suggest_fadeback">意见反馈</string>
+    <string name="title_activity_fade_back">FadeBackActivity</string>
+    <string name="question_desc">问题描述</string>
+    <string name="fadeback_tips">请告诉我们你的疑惑或意见</string>
+    <string name="question_desc_photo">图片(问题截图、选图)</string>
+    <string name="submit">提交</string>
 </resources>

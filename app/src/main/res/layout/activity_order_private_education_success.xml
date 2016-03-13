@@ -1,0 +1,200 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    tools:context="com.smartfit.activities.OrderPrivateEducationSuccessActivity">
+
+  <include layout="@layout/common_header_view"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/coach"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical">
+
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_coach_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:sriv_left_top_corner_radius="4dip"
+                app:sriv_right_top_corner_radius="4dip"
+                app:sriv_left_bottom_corner_radius="4dip"
+                app:sriv_right_bottom_corner_radius="4dip"
+                app:sriv_oval="false"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/bg_pic" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_toRightOf="@+id/iv_coach_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_coach_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="王小妞教练"
+                    android:drawableRight="@mipmap/icon_woman"
+                    android:drawablePadding="@dimen/image_padding"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <TextView
+                    android:id="@+id/tv_coach_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_coach_name"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:layout_toRightOf="@+id/iv_coach_icon"
+                    android:text="体校毕业 带你科学锻炼 营养健身"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/roomRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="4" />
+
+                    <TextView
+                        android:id="@+id/tv_coach_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/image_padding"
+                        android:singleLine="true"
+                        android:text="4.8"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/space"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical">
+
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_space_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:sriv_left_top_corner_radius="4dip"
+                app:sriv_right_top_corner_radius="4dip"
+                app:sriv_left_bottom_corner_radius="4dip"
+                app:sriv_right_bottom_corner_radius="4dip"
+                app:sriv_oval="false"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/bg_pic" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_toRightOf="@+id/iv_space_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_space_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="奥体中心体育馆"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <TextView
+                    android:id="@+id/tv_space_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:text="距离0.6km"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="课程时间"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/tv_class_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="2016-03-21   9:00~23:00"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+
+        <TextView
+            android:id="@+id/tv_order_success_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="已成功预约 王小妞教练，请等待教练和您联系，确定课程内容等详细信息。"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal" />
+    </LinearLayout>
+
+</LinearLayout>

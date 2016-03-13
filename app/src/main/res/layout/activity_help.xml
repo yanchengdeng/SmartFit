@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.HelpActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_normal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:textColor="@color/text_color_black"
+        android:text="FAQ"/>
+
+    <TextView
+        android:id="@+id/tv_faq_publish_class"
+        android:layout_width="match_parent"
+        android:text="@string/how_publish_class"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/text_color_gray"
+        android:drawableRight="@mipmap/icon_next_w_on"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_faq_connot_topup"
+        android:layout_width="match_parent"
+        android:text="@string/cannot_topup"
+        android:textSize="@dimen/text_normal"
+        android:layout_marginTop="1px"
+        android:textColor="@color/text_color_gray"
+        android:drawableRight="@mipmap/icon_next_w_on"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="match_parent"
+        android:text="xxxxxxxxxxxxxx?"
+        android:layout_marginTop="1px"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/text_color_gray"
+        android:drawableRight="@mipmap/icon_next_w_on"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="match_parent"
+        android:text="xxxxxxxxxxxxxx?"
+        android:layout_marginTop="1px"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/text_color_gray"
+        android:drawableRight="@mipmap/icon_next_w_on"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_normal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:textColor="@color/text_color_black"
+        android:text="@string/server_phone"/>
+
+    <TextView
+        android:id="@+id/tv_server_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal"
+        android:gravity="center"
+        android:background="@drawable/bg_dialog_selector_blue"
+        android:drawableLeft="@mipmap/icon_phone_white"
+        android:drawablePadding="@dimen/image_padding_big"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/image_padding_big"
+        android:paddingBottom="@dimen/image_padding_big"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="@string/server_phone_num"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_normal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/text_color_black"
+        android:text="@string/server_time"/>
+
+
+</LinearLayout>

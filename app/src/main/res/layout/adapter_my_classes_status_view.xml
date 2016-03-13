@@ -1,0 +1,180 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_normal_down"
+            android:textColor="@color/text_color_black"
+            android:text="8:00~9:00 2016-02-02"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:textSize="@dimen/text_normal_down"
+            android:textColor="@color/blue_light"
+            android:text="教练接单中"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/gray_light"
+        android:layout_height="1px" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_vertical"
+                app:sriv_left_top_corner_radius="4dip"
+                app:sriv_right_top_corner_radius="4dip"
+                app:sriv_left_bottom_corner_radius="4dip"
+                app:sriv_right_bottom_corner_radius="4dip"
+                app:sriv_oval="false"
+                android:src="@mipmap/icon_class_tx" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/image_padding_big"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="言诚"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:text="发起"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_small" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_class_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="奔跑吧，少年"
+                    android:layout_gravity="left"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:text="跑步课---浩沙健身房--王小二教练"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_small" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/gray_light"
+        android:layout_height="1px" />
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:textSize="@dimen/text_normal"
+        android:text="￥1640"
+        android:layout_gravity="right"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textColor="@color/text_color_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_handle_funciton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_contact_coach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal"
+            android:paddingTop="@dimen/image_padding"
+            android:background="@drawable/bg_dialog_selector_white"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/contact_coach"/>
+
+
+        <TextView
+            android:id="@+id/tv_cancle_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal"
+            android:paddingTop="@dimen/image_padding"
+            android:background="@drawable/bg_dialog_selector_white"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/cancle_class"/>
+    </LinearLayout>
+
+</LinearLayout>

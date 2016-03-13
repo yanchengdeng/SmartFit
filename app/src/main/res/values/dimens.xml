@@ -8,6 +8,8 @@
 
     <dimen name="splash_bottome_height">30dp</dimen>
 
+    <dimen name="login_bg_distance">30dp</dimen>
+
 
     <dimen name="image_padding">5dp</dimen>
     <dimen name="image_padding_big">10dp</dimen>
@@ -33,4 +35,5 @@
     <dimen name="text_normal_down">13sp</dimen>
     <dimen name="text_small">11sp</dimen>
     <dimen name="text_small_donw">7sp</dimen>
+    <dimen name="text_larger_big">25sp</dimen>
 </resources>

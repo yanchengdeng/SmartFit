@@ -19,6 +19,7 @@ import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
+import com.smartfit.commons.Constants;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -147,7 +148,9 @@ public class GroupClassDetailActivity extends BaseActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(PayActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.PAGE_INDEX,1);
+                openActivity(PayActivity.class,bundle);
             }
         });
 

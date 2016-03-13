@@ -26,8 +26,8 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
 import com.smartfit.activities.MainBusinessActivity;
-import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
+import com.smartfit.activities.PayActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.beans.PrivateEducationClass;
@@ -203,11 +203,11 @@ public class PrivateEducationFragment extends Fragment {
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
                 checkBox.setChecked(!checkBox.isChecked());
                 datas.get(position).setIsCheck(checkBox.isChecked());
-                List<PrivateEducationClass> selectPricates =    countSelectNum(datas);
-                if(selectPricates.size() ==0){
+                List<PrivateEducationClass> selectPricates = countSelectNum(datas);
+                if (selectPricates.size() == 0) {
                     btnSelected.setText("请选择教练");
-                }else{
-                    btnSelected.setText("已选择"+selectPricates.size()+"个");
+                } else {
+                    btnSelected.setText("已选择" + selectPricates.size() + "个");
                 }
 
             }
@@ -216,11 +216,13 @@ public class PrivateEducationFragment extends Fragment {
         btnSelected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<PrivateEducationClass> selectPricates =  countSelectNum(datas);
-                if(selectPricates.size() ==0){
-                    ((MainBusinessActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
-                }else{
-                    ((MainBusinessActivity)getActivity()).openActivity(OrderPrivateEducationClassActivity.class);
+                List<PrivateEducationClass> selectPricates = countSelectNum(datas);
+                if (selectPricates.size() == 0) {
+                    ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 3);
+                    ((MainBusinessActivity) getActivity()).openActivity(PayActivity.class, bundle);
                 }
             }
         });
@@ -229,6 +231,7 @@ public class PrivateEducationFragment extends Fragment {
 
     /**
      * 计算已经选择教练人数
+     *
      * @param datas
      */
     private List<PrivateEducationClass> countSelectNum(List<PrivateEducationClass> datas) {
@@ -239,7 +242,7 @@ public class PrivateEducationFragment extends Fragment {
             }
         }
 
-        return  selectPricates;
+        return selectPricates;
 
     }
 

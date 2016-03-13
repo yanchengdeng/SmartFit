@@ -158,6 +158,26 @@
         <activity
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.OrderPrivateEducationSuccessActivity"
+            android:label="@string/title_activity_order_private_education_success" >
+        </activity>
+        <activity
+            android:name=".activities.MyTicketGiftActivity"
+            android:label="@string/title_activity_my_ticket_gift" >
+        </activity>
+        <activity
+            android:name=".activities.MyClassesActivity"
+            android:label="@string/title_activity_my_classes" >
+        </activity>
+        <activity
+            android:name=".activities.HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name=".activities.FadeBackActivity"
+            android:label="@string/title_activity_fade_back" >
+        </activity>
     </application>
 
 </manifest>

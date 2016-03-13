@@ -1,16 +1,11 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -21,7 +16,6 @@ import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.beans.PrivateEducationClass;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,6 +30,7 @@ public class PrivateEducationAdapter extends BaseAdapter  {
     private List<PrivateEducationClass> datas;
     LinearLayout.LayoutParams params;
 
+    private boolean isDissmis = true;
     public PrivateEducationAdapter(Context context
             , List<PrivateEducationClass> datas) {
         this.context = context;
@@ -75,6 +70,11 @@ public class PrivateEducationAdapter extends BaseAdapter  {
          PrivateEducationClass item = datas.get(position);
         viewHolder.tvCoach.setText(item.getName());
         viewHolder.chSelect.setChecked(item.isCheck());
+        if(isDissmis){
+            viewHolder.chSelect.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.chSelect.setVisibility(View.GONE);
+        }
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +89,10 @@ public class PrivateEducationAdapter extends BaseAdapter  {
     public void setData(List<PrivateEducationClass> datas) {
         this.datas = datas;
         notifyDataSetChanged();
+    }
+
+    public void setDismissCheck(boolean dissmis) {
+        this.isDissmis = dissmis;
     }
 
 

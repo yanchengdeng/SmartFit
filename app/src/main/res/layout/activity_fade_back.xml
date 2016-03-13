@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.FadeBackActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/question_desc"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ad_height"
+                android:background="@color/white"
+                android:gravity="top"
+                android:hint="@string/fadeback_tips"
+                android:lineSpacingExtra="3dp"
+                android:padding="@dimen/image_padding_big"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/question_desc_photo"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <com.smartfit.views.MyGridView
+                android:id="@+id/gv_select_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="auto_fit"
+                android:padding="5dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp" />
+
+
+            <ImageView
+                android:id="@+id/iv_select_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/btn_add_pic" />
+
+
+            <Button
+                android:id="@+id/btn_submmit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/header_bar_height"
+                android:layout_marginRight="@dimen/header_bar_height"
+                android:layout_marginTop="@dimen/header_bar_height"
+                android:background="@drawable/bg_dialog_selector_blue"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

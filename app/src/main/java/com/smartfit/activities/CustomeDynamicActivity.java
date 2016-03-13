@@ -7,14 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
-import com.smartfit.adpters.AerobincnAppratusItemAdapter;
+import com.smartfit.adpters.DynamicAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class CustomeDynamicActivity extends BaseActivity {
     private View footerView;
     private int page = 1;
     boolean isLoading = false;
-    private AerobincnAppratusItemAdapter adapter;
+    private DynamicAdapter adapter;
     private List<String> datas = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +52,13 @@ public class CustomeDynamicActivity extends BaseActivity {
         ButterKnife.bind(this);
         tvTittle.setText("动态");
         ivFunction.setVisibility(View.VISIBLE);
-        ivFunction.setBackgroundResource(R.mipmap.icon_state);
+        ivFunction.setImageResource(R.mipmap.icon_wrig_on);
         footerView = LayoutInflater.from(this).inflate(R.layout.list_loader_footer, null);
 //        不知道为什么在xml设置的“android:layout_width="match_parent"”无效了，需要在这里重新设置
         AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         footerView.setLayoutParams(lp);
         listView.addFooterView(footerView);
-        adapter = new AerobincnAppratusItemAdapter(this, datas);
+        adapter = new DynamicAdapter(this, datas);
         listView.setAdapter(adapter);
         addLisener();
     }

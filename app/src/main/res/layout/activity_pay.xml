@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/image_padding"
                     android:layout_toRightOf="@+id/iv_alipay"
-                    android:text="微信钱包支付"
+                    android:text="支付宝支付"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down" />
 

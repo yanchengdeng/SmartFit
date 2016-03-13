@@ -315,7 +315,7 @@
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="2016-03-21   9:00~23:00"
-                android:textColor="@color/text_color_black"
+                android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
             <TextView
@@ -360,6 +360,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/gray_light"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/header_bar_height"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -372,23 +373,25 @@
                     android:textSize="@dimen/text_normal_down"
                     android:textColor="@color/text_color_gray"/>
 
-                <Button
-                    android:id="@+id/btn_order"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_dialog_selector_red"
-                    android:text="立即预约"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/header_bar_height"
-                    android:layout_marginRight="@dimen/header_bar_height"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_normal"
-                    android:layout_height="40dp" />
+
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/btn_order"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_dialog_selector_red"
+        android:text="立即预约"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/header_bar_height"
+        android:layout_marginRight="@dimen/header_bar_height"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal"
+        android:layout_height="40dp" />
 
 </RelativeLayout>

@@ -73,6 +73,13 @@ public class PayActivity extends BaseActivity {
 
     private String orderID;
 
+    /****
+     * 页面跳转 index
+     * <p/>
+     * //定义  1 ：团体课  2.小班课  3.私教课
+     */
+    private int pageIndex = 1;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -100,7 +107,15 @@ public class PayActivity extends BaseActivity {
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             mSVProgressHUD.showErrorWithStatus("支付失败");
-                            openActivity(GroupClassOrderSuccessActivity.class);
+                            if (pageIndex == 1) {
+                                openActivity(GroupClassOrderSuccessActivity.class);
+                            } else if (pageIndex == 2) {
+                                openActivity(GroupClassOrderSuccessActivity.class);
+                            } else {
+                                openActivity(OrderPrivateEducationClassActivity.class);
+                            }
+                            finish();
+
                         }
                     }
                     break;
@@ -111,7 +126,6 @@ public class PayActivity extends BaseActivity {
             return false;
         }
     });
-
 
 
     @Override
@@ -125,6 +139,7 @@ public class PayActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText("付款");
+        pageIndex = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
 
     }
 
@@ -175,7 +190,7 @@ public class PayActivity extends BaseActivity {
     }
 
     private void goPay() {
-      //TODO   orderID   = ;
+        //TODO   orderID   = ;
         if (payStyle == 1) {
             //微信支付
             weixinPay();
@@ -311,7 +326,7 @@ public class PayActivity extends BaseActivity {
     private String genOutTradNo() {
         Random random = new Random();
 //        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
-        return  orderID;
+        return orderID;
     }
 
 

@@ -64,30 +64,7 @@ public class MainBusinessActivity extends BaseActivity {
         final SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
         viewPager.setCurrentItem(currentPosition);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-               /* for(int i =0 ;i<4;i++){
-                    if(i == position){
-                        TextView textView1= (TextView) viewPagerTab.getTabAt(position);
-                        textView1.setTextColor(getResources().getColor(R.color.black));
-                    }else{
-                        TextView textView1= (TextView) viewPagerTab.getTabAt(position);
-                        textView1.setTextColor(getResources().getColor(R.color.white));
-                    }
-                }*/
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
     }
 
