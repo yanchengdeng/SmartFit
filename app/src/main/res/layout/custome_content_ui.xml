@@ -12,6 +12,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_attenion_ui"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,6 +46,7 @@
             android:background="@color/gray" />
 
         <LinearLayout
+            android:id="@+id/ll_fans_ui"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,19 +67,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="粉丝"
                 android:padding="@dimen/image_padding_big"
+                android:text="粉丝"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/gray"
-            android:layout_height="40dp" />
+            android:background="@color/gray" />
 
         <LinearLayout
+            android:id="@+id/ll_friends_ui"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -89,8 +92,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="10"
                 android:paddingTop="@dimen/image_padding_big"
+                android:text="10"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
@@ -98,14 +101,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="健身伙伴"
                 android:padding="@dimen/image_padding_big"
+                android:text="健身伙伴"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_open_coach_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_open"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/open_coach_auth"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+        <RelativeLayout
+            android:id="@+id/rl_open_auto_ui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/iv_close_coach_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/btn_off"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_open_coach_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:src="@mipmap/btn_on" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -118,11 +166,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:text="我的课程"
+            android:drawableLeft="@mipmap/icon_produce"
             android:drawablePadding="@dimen/image_padding"
             android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_produce"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="我的课程"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal" />
 
@@ -141,6 +189,7 @@
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_my_packet_ui"
         android:layout_width="match_parent"
@@ -151,12 +200,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_money"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="钱包"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_money"
             android:textColor="@color/black"
-            android:drawablePadding="@dimen/image_padding"
             android:textSize="@dimen/text_normal" />
 
 
@@ -187,11 +236,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/icon_state"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="动态"
-            android:gravity="center_vertical"
-            android:drawablePadding="@dimen/image_padding"
-            android:drawableLeft="@mipmap/icon_state"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal" />
 
@@ -232,19 +281,19 @@
         android:id="@+id/rl_my_serve_ui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_sever"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="客户服务"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_sever"
             android:textColor="@color/black"
-            android:drawablePadding="@dimen/image_padding"
             android:textSize="@dimen/text_normal" />
 
 

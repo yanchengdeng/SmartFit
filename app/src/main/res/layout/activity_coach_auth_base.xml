@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.CoachAuthBaseActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_name_tips"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/name"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_name_tips"
+            android:text="王小二"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <CheckBox
+            android:id="@+id/cb_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/fill_info_complate_checked"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1px"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_card_tips"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/card_id"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_card_tips"
+            android:text="2453343434234234234"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <CheckBox
+            android:id="@+id/cb_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/fill_info_complate_checked"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1px"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/tv_card_photo_tips"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="@string/card_photo"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+        <ImageView
+            android:id="@+id/iv_card_photo"
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_card_photo_tips"
+            android:src="@mipmap/icon_pic"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <CheckBox
+            android:id="@+id/cb_card_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/fill_info_complate_checked"
+            android:checked="false" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1px"
+    android:background="@color/white"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/tv_work_quality"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:text="@string/word_qulity_photo"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_work_quality"
+        android:orientation="horizontal">
+
+        <ImageView
+
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_pic" />
+
+        <ImageView
+
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:src="@mipmap/icon_pic" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_work_photo"
+        android:layout_width="@dimen/icon_normal_size"
+        android:layout_height="@dimen/icon_normal_size"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/tv_work_quality"
+        android:src="@mipmap/icon_pic"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+
+    <CheckBox
+        android:id="@+id/cb_work_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/fill_info_complate_checked"
+        android:checked="false" />
+</RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/tv_work_quality_1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="@string/auth_photo"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_work_quality_1"
+            android:orientation="horizontal">
+
+            <ImageView
+
+                android:layout_width="@dimen/icon_normal_size"
+                android:layout_height="@dimen/icon_normal_size"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_pic" />
+
+            <ImageView
+
+                android:layout_width="@dimen/icon_normal_size"
+                android:layout_height="@dimen/icon_normal_size"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:src="@mipmap/icon_pic" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_work_photo_1"
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_work_quality_1"
+            android:src="@mipmap/icon_pic"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <CheckBox
+            android:id="@+id/cb_work_photo_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/fill_info_complate_checked"
+            android:checked="false" />
+    </RelativeLayout>
+
+</LinearLayout>

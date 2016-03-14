@@ -178,6 +178,14 @@
             android:name=".activities.FadeBackActivity"
             android:label="@string/title_activity_fade_back" >
         </activity>
+        <activity android:name=".activities.FansActivity" >
+        </activity>
+        <activity android:name=".activities.AttentionListActivity" >
+        </activity>
+        <activity android:name=".activities.HealthFriendsListActivity" >
+        </activity>
+        <activity android:name=".activities.CoachAuthBaseActivity" >
+        </activity>
     </application>
 
 </manifest>

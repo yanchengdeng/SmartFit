@@ -104,4 +104,14 @@
     <string name="fadeback_tips">请告诉我们你的疑惑或意见</string>
     <string name="question_desc_photo">图片(问题截图、选图)</string>
     <string name="submit">提交</string>
+    <string name="fans">粉丝</string>
+    <string name="search">搜索</string>
+    <string name="attention">关注</string>
+    <string name="health_friends">健身伙伴</string>
+    <string name="open_coach_auth">开启教练认证</string>
+    <string name="name">姓名</string>
+    <string name="card_id">身份证号</string>
+    <string name="card_photo">身份证照片</string>
+    <string name="word_qulity_photo">从业者正式照</string>
+    <string name="auth_photo">获得的证书1</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
@@ -16,6 +17,9 @@ import com.smartfit.R;
  */
 public class CustomeMainActivity extends BaseActivity {
     private PullToZoomScrollViewEx scrollView;
+
+
+    private ImageView ivOpenAuth,ivCloseAuto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,50 @@ public class CustomeMainActivity extends BaseActivity {
                 openActivity(MyTicketGiftActivity.class);
             }
         });
+
+
+        //关注
+        scrollView.getPullRootView().findViewById(R.id.ll_attenion_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(AttentionListActivity.class);
+            }
+        });
+
+        //粉丝
+        scrollView.getPullRootView().findViewById(R.id.ll_fans_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(FansActivity.class);
+            }
+        });
+
+
+        //健身伙伴
+        scrollView.getPullRootView().findViewById(R.id.ll_friends_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(HealthFriendsListActivity.class);
+            }
+        });
+
+        ivOpenAuth = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth);
+        ivCloseAuto = (ImageView)scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth);
+        if(ivCloseAuto.getVisibility()==View.GONE){
+            scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setClickable(false);
+        }else{
+            scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setClickable(true);
+        }
+        //开启教练认证
+        scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( ivOpenAuth.getVisibility()==View.VISIBLE){
+                        openActivity(CoachAuthBaseActivity.class);
+                }
+            }
+        });
+
 
         //我的课程
         scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
