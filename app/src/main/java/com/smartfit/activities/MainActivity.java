@@ -7,18 +7,25 @@ import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.SmartAppliction;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AMapLocationListener {
 
     @Bind(R.id.card_small_class)
     CardView cardSmallClass;
@@ -34,6 +41,10 @@ public class MainActivity extends BaseActivity {
     CardView cardSmartFit;
     @Bind(R.id.container)
     FrameLayout container;
+    @Bind(R.id.tv_city_name)
+    TextView tvCityName;
+    @Bind(R.id.iv_search)
+    ImageView ivSearch;
 
 
     @Override
@@ -53,6 +64,8 @@ public class MainActivity extends BaseActivity {
                     .add(R.id.container, new CustomAnimationDemoFragment())
                     .commit();
         }
+
+        initLocation();
 
         addLisener();
     }
@@ -132,5 +145,51 @@ public class MainActivity extends BaseActivity {
                         finish();
                     }
                 });
+    }
+
+    private AMapLocationClient locationClient = null;
+    private AMapLocationClientOption locationOption = null;
+
+
+    private void initLocation() {
+
+        locationClient = new AMapLocationClient(SmartAppliction.getInstance());
+        locationOption = new AMapLocationClientOption();
+        // 设置定位模式为高精度模式
+        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        locationOption.setHttpTimeOut(5000);
+        // 设置定位监听
+        locationClient.setLocationListener(this);
+        locationOption.setOnceLocation(true);
+        //启动定位
+        locationClient.startLocation();
+
+
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (null != aMapLocation) {
+            if (aMapLocation.getErrorCode() == 0) {
+                tvCityName.setText(aMapLocation.getCity());
+            } else {
+//                tvCityName.setText("定位失败");
+            }
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != locationClient) {
+            /**
+             * 如果AMapLocationClient是在当前Activity实例化的，
+             * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
+             */
+            locationClient.onDestroy();
+            locationClient = null;
+            locationOption = null;
+        }
     }
 }

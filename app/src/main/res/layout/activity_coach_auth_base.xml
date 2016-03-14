@@ -46,6 +46,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/fill_info_complate_checked"
+            android:button="@null"
             android:checked="false" />
     </RelativeLayout>
 
@@ -85,6 +86,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/fill_info_complate_checked"
+            android:button="@null"
             android:checked="false" />
     </RelativeLayout>
 
@@ -108,8 +110,8 @@
 
         <ImageView
             android:id="@+id/iv_card_photo"
-            android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
+            android:layout_width="@dimen/header_bar_height"
+            android:layout_height="@dimen/header_bar_height"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_card_photo_tips"
             android:src="@mipmap/icon_pic"
@@ -124,71 +126,83 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/fill_info_complate_checked"
+            android:button="@null"
             android:checked="false" />
     </RelativeLayout>
 
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="1px"
-    android:background="@color/white"
-    android:padding="@dimen/activity_horizontal_margin">
-
-    <TextView
-        android:id="@+id/tv_work_quality"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:text="@string/word_qulity_photo"
-        android:textColor="@color/text_color_gray"
-        android:textSize="@dimen/text_normal" />
+        android:layout_marginTop="1px"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tv_work_quality"
-        android:orientation="horizontal">
-
-        <ImageView
-
-            android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
+        <TextView
+            android:id="@+id/tv_work_quality"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_pic" />
+            android:gravity="center_vertical"
+            android:text="@string/word_qulity_photo"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
 
-        <ImageView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_work_quality"
+            android:orientation="horizontal">
 
-            android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
+            <ImageView
+
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_pic" />
+
+            <ImageView
+
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:src="@mipmap/icon_pic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/image_padding_big"
-            android:src="@mipmap/icon_pic" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_work_photo"
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
 
-    <ImageView
-        android:id="@+id/iv_work_photo"
-        android:layout_width="@dimen/icon_normal_size"
-        android:layout_height="@dimen/icon_normal_size"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/tv_work_quality"
-        android:src="@mipmap/icon_pic"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/text_normal" />
+                android:src="@mipmap/btn_add_pic"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
 
 
-    <CheckBox
-        android:id="@+id/cb_work_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/fill_info_complate_checked"
-        android:checked="false" />
-</RelativeLayout>
+            <CheckBox
+                android:id="@+id/cb_work_photo"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fill_info_complate_checked"
+                android:button="@null"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:checked="false" />
 
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -211,45 +225,54 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_work_quality_1"
+            android:layout_toRightOf="@+id/tv_work_quality_1"
             android:orientation="horizontal">
 
             <ImageView
 
-                android:layout_width="@dimen/icon_normal_size"
-                android:layout_height="@dimen/icon_normal_size"
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/icon_pic" />
 
             <ImageView
 
-                android:layout_width="@dimen/icon_normal_size"
-                android:layout_height="@dimen/icon_normal_size"
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/image_padding_big"
                 android:src="@mipmap/icon_pic" />
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_work_photo_1"
-            android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/tv_work_quality_1"
-            android:src="@mipmap/icon_pic"
-            android:textColor="@color/text_color_black"
-            android:textSize="@dimen/text_normal" />
-
-
-        <CheckBox
-            android:id="@+id/cb_work_photo_1"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/fill_info_complate_checked"
-            android:checked="false" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/header_bar_height"
+                android:layout_height="@dimen/header_bar_height"
+
+                android:src="@mipmap/btn_add_pic"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fill_info_complate_checked"
+                android:button="@null"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:checked="true" />
+
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

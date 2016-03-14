@@ -104,17 +104,15 @@ public class CustomeMainActivity extends BaseActivity {
         ivOpenAuth = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth);
         ivCloseAuto = (ImageView)scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth);
         if(ivCloseAuto.getVisibility()==View.GONE){
-            scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setClickable(false);
-        }else{
             scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setClickable(true);
+        }else{
+            scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setClickable(false);
         }
         //开启教练认证
         scrollView.getPullRootView().findViewById(R.id.rl_open_coach_auth).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( ivOpenAuth.getVisibility()==View.VISIBLE){
                         openActivity(CoachAuthBaseActivity.class);
-                }
             }
         });
 
