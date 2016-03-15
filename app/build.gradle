@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'yancheng'
+            keyPassword 'yancheng'
+            storeFile file('C:/Users/Administrator/AndroidStudioProjects/SmartFit/keystore/yancheng.jks')
+            storePassword 'yancheng'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
@@ -14,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     productFlavors {
@@ -21,7 +33,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':multi-image-selector')
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
@@ -44,6 +56,7 @@ dependencies {
     compile 'com.jude:rollviewpager:1.2.5'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'com.github.frank-zhu:pullzoomview:1.0.0'
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
     compile files('libs/SocialSDK_Sina.jar')
     compile files('libs/SocialSDK_WeiXin_1.jar')
     compile files('libs/SocialSDK_WeiXin_2.jar')
