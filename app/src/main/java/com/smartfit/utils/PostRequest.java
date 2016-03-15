@@ -94,6 +94,7 @@ public class PostRequest extends Request<JsonObject> {
     protected Response<JsonObject> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+
             try {
                 JSONObject jb = new JSONObject(jsonString);
                 if (jb.optString("code").equals("103")) {

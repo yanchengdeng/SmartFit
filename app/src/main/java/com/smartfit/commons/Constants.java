@@ -61,7 +61,7 @@ public class Constants {
 
     public static class Net {
         //普通接口
-        public static final String URL = "http://120.76.65.142:8015/index.php?route=";//接口域名
+        public static final String URL = "http://222.77.181.80:8080/smartFit";//接口域名
 
         //支付回调
         public static final String ALIPAY_CALLBACK = "http://120.76.65.142:8015/api.php";

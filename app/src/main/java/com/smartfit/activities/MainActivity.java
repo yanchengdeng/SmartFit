@@ -16,7 +16,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
@@ -25,7 +24,6 @@ import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
-import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -134,12 +132,14 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     @Override
                     public void onResponse(JsonObject response) {
                         mSVProgressHUD.dismiss();
+                        LogUtil.d("dyc",response.toString());
 
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         mSVProgressHUD.dismiss();
+                        LogUtil.d("dyc", error.getMessage());
 
                     }
                 });
