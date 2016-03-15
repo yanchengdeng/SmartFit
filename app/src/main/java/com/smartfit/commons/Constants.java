@@ -19,6 +19,17 @@ public class Constants {
      */
     public static final String PAGE_INDEX = "page_index";
 
+    public static final String UID = "uid";//用户id
+    public static final String ACCOUNT = "account";//账号
+    public static final String SID = "sid";//会话id
+
+
+    /**
+     * 接口域名方法
+     */
+    public static final String REGISTER_METHOD = "/User/RegUser";
+    public static final String LOGIN_IN_METHOD = "/user/Login";
+
 
     /*****
      * 支付宝支付参数

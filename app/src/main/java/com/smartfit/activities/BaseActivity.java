@@ -25,8 +25,9 @@ import com.umeng.analytics.MobclickAgent;
 public class BaseActivity extends FragmentActivity {
 
     public SVProgressHUD mSVProgressHUD;
-    public RequestQueue mrequest;
-    private Context mContext;
+    public RequestQueue mQueue;
+    public Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class BaseActivity extends FragmentActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.common_header_bg);//通知栏所需颜色
-        mrequest = Volley.newRequestQueue(getApplicationContext());
+        mQueue = Volley.newRequestQueue(getApplicationContext());
         mSVProgressHUD = new SVProgressHUD(this);
     }
 

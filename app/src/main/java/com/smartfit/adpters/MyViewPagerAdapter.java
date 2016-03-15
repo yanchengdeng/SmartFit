@@ -48,32 +48,6 @@ public class MyViewPagerAdapter extends PagerAdapter {
         }
         ((ViewPager) container).addView(mListViews.get(position % mListViews.size()));
         View  view = mListViews.get(position % mListViews.size());
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(((AdList)(mListViews.get(position % mListViews.size())).getTag()).getType().equals("1")){
-//                    //活动
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(Constants._ID, ((AdList)(mListViews.get(position % mListViews.size())).getTag()).getAd_id());
-//                    ((MainActivity)mContext). openActivity(EventDetailActivity.class, bundle);
-//                }else if(((AdList)(mListViews.get(position % mListViews.size())).getTag()).getType().equals("2")){
-//                    //商家
-//                    Bundle bundle = new Bundle();
-//                    Shop shop = new Shop();
-//                    shop.setShop_id(((AdList)(mListViews.get(position % mListViews.size())).getTag()).getAd_id());
-//                    shop.setShop_name(((AdList)(mListViews.get(position % mListViews.size())).getTag()).getTitle());
-//                    bundle.putSerializable(Constants.PASS_ONE_OBJECT, shop);
-//                    ((BaseActivity) mContext).openActivity(ShopDetailActivity.class, bundle);
-//                }else{
-//                    //网页
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(Constants.ACTIVITY_TITTLE,((AdList)(mListViews.get(position % mListViews.size())).getTag()).getTitle());
-//                    bundle.putString(Constants.ACTIVITY_ACTION,((AdList)(mListViews.get(position % mListViews.size())).getTag()).getLink());
-//                    ((MainActivity)mContext).openActivity(ActionActivity.class,bundle);
-//                }
-//            }
-//        });
-
         return view;
     }
 }

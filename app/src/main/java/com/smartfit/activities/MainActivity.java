@@ -14,13 +14,24 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +56,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     TextView tvCityName;
     @Bind(R.id.iv_search)
     ImageView ivSearch;
+
+    private static final Object TAG = new Object();
 
 
     @Override
@@ -104,6 +117,34 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constants.FRAGMENT_POSITION, 3);
                 openActivity(MainBusinessActivity.class, bundle);
+            }
+        });
+
+        //城市跳转
+        tvCityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                openActivity(CityListActivity.class);
+//                mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                Map<String, String> data = new HashMap<>();
+                data.put("mobileNo", "13067389836");
+                data.put("password", "123456");
+                String body = NetUtil.getRequestBody(data,mContext);
+                PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,body, new Response.Listener<JsonObject>() {
+                    @Override
+                    public void onResponse(JsonObject response) {
+                        mSVProgressHUD.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        mSVProgressHUD.dismiss();
+
+                    }
+                });
+                request.setTag(TAG);
+//                mQueue.add(request);
             }
         });
     }
@@ -173,7 +214,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             if (aMapLocation.getErrorCode() == 0) {
                 tvCityName.setText(aMapLocation.getCity());
             } else {
-//                tvCityName.setText("定位失败");
+                tvCityName.setText("定位失败");
             }
         }
     }

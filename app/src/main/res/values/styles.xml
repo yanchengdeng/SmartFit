@@ -24,6 +24,34 @@
          -->
     </style>
 
+    <style name="ActivityTheme" parent="@style/AppTheme">
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
+    </style>
+
+
+    <style name="ActivityTheme.NoActionBar" parent="@style/AppTheme.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="base_activity_animation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:activityCloseEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:activityCloseExitAnimation">@anim/base_slide_right_out</item>
+        <item name="android:taskOpenEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:taskOpenExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskCloseEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskCloseExitAnimation">@anim/base_slide_right_out</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:taskToFrontExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskToBackEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskToBackExitAnimation">@anim/base_slide_right_out</item>
+    </style>
+
 
     <style name="CardViewStyle" parent="android:Widget.TextView">
         <item name="android:foreground">@drawable/selector_bg_card</item>

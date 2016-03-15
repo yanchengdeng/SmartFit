@@ -1,6 +1,10 @@
 package com.smartfit;
 
 import android.app.Application;
+import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -8,12 +12,14 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.smartfit.commons.AppException;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.umeng.socialize.PlatformConfig;
 
 /**
  * Created by dengyancheng on 16/2/23.
  */
-public class SmartAppliction extends Application{
+public class SmartAppliction extends Application {
 
     private static SmartAppliction app;
 
@@ -31,7 +37,7 @@ public class SmartAppliction extends Application{
     {
         PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
         //微信 appid appsecret
-        PlatformConfig.setSinaWeibo("3921700954","04b48b094faeb16683c32669824ebdad");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad");
     }
 
     @Override

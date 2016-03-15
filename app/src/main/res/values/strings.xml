@@ -114,4 +114,8 @@
     <string name="card_photo">身份证照片</string>
     <string name="word_qulity_photo">从业者正式照</string>
     <string name="auth_photo">获得的证书1</string>
+    <string name="city">城市</string>
+    <string name="input_city_name">输入城市名</string>
+    <string name="all_city">全部城市</string>
+    <string name="loading">加载中...</string>
 </resources>
