@@ -16,9 +16,6 @@
 
 package com.smartfit.utils;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -27,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -64,17 +60,17 @@ public class PostRequest extends Request<JsonObject> {
 
     private final Listener<JsonObject> mListener;
 
-    private final String mRequestBody;
+    private final  Map<String, String> mRequestBody;
 
     private Gson mGson;
 
-    public PostRequest(String method, String requestBody, Listener<JsonObject> listener,
+    public PostRequest(String method,  Map<String, String> requestBody, Listener<JsonObject> listener,
                        ErrorListener errorListener) {
         super(Method.POST, Constants.Net.URL + method, errorListener);
         mGson = new Gson();
         mListener = listener;
         mRequestBody = requestBody;
-        LogUtil.d("dyc", mRequestBody);
+        LogUtil.d("dyc", mRequestBody.toString());
     }
 
     @Override
@@ -113,13 +109,17 @@ public class PostRequest extends Request<JsonObject> {
         }
     }
 
-    @Override
+  /*  @Override
     public String getBodyContentType() {
         return "application/x-www-form-urlencoded";
-    }
-
+    }*/
 
     @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return mRequestBody;
+    }
+
+    /* @Override
     public byte[] getBody() {
         try {
             return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
@@ -128,6 +128,6 @@ public class PostRequest extends Request<JsonObject> {
                     mRequestBody, PROTOCOL_CHARSET);
             return null;
         }
-    }
+    }*/
 
 }

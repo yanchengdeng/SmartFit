@@ -15,7 +15,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
@@ -96,7 +95,7 @@ public class RegisterActivity extends BaseActivity {
                 finish();
             }
         });
-
+        etPhone.setText("13067380836");
 
         btnGetcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,13 +124,13 @@ public class RegisterActivity extends BaseActivity {
 
     /**
      * 发送短信验证码
+     *
      * @param phone
      */
-    private void sendCode(String phone) {
-        Map<String, String> data = new HashMap<>();
+    private void sendCode(final String phone) {
+        final Map<String, String> data = new HashMap<>();
         data.put("mobile", phone);
-        String body = NetUtil.getRequestBody(data, mContext);
-        PostRequest request = new PostRequest(Constants.SMS_SMSSEND,body, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 btnGetcode.setClickable(false);

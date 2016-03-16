@@ -128,8 +128,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                 Map<String, String> data = new HashMap<>();
                 data.put("mobileNo", "13067389836");
                 data.put("password", "123456");
-                String body = NetUtil.getRequestBody(data,mContext);
-                PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,body, new Response.Listener<JsonObject>() {
+                PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, NetUtil.getRequestBody(data,mContext), new Response.Listener<JsonObject>() {
                     @Override
                     public void onResponse(JsonObject response) {
                         mSVProgressHUD.dismiss();

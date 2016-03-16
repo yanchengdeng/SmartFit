@@ -3,16 +3,9 @@ package com.smartfit.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.smartfit.commons.Constants;
 
-import org.apache.http.params.HttpParams;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.Policy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +15,7 @@ import java.util.Map;
  */
 public class NetUtil {
 
-    public static   String  getRequestBody(Map<String, String> data, Context context) {
+    public static    Map<String, String>  getRequestBody(Map<String, String> data, Context context) {
 
         Map<String, String> map = new HashMap<>();
         map.put("terminal", "1");
@@ -36,7 +29,7 @@ public class NetUtil {
         for (Map.Entry<String, String> entry : data.entrySet()) {
             map.put(entry.getKey(), entry.getValue());
         }
-        return map.toString();
+        return map;
     }
 
 
