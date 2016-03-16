@@ -27,8 +27,6 @@ public class BaseActivity extends FragmentActivity {
     public SVProgressHUD mSVProgressHUD;
     public RequestQueue mQueue;
     public Context mContext;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

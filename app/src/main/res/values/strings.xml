@@ -118,4 +118,6 @@
     <string name="input_city_name">输入城市名</string>
     <string name="all_city">全部城市</string>
     <string name="loading">加载中...</string>
+    <string name="phone_cannot_empty">请输入手机号</string>
+    <string name="phone_format_error">手机号码输入错误</string>
 </resources>

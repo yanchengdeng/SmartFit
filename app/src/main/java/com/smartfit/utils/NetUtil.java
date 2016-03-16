@@ -8,6 +8,11 @@ import android.util.Log;
 
 import com.smartfit.commons.Constants;
 
+import org.apache.http.params.HttpParams;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.Policy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,10 +22,11 @@ import java.util.Map;
  */
 public class NetUtil {
 
-    public static String getRequestBody(Map<String, String> data, Context context) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("terminal", "android");
-        map.put("versionCode", DeviceUtil.getVersionCode(context));
+    public static   String  getRequestBody(Map<String, String> data, Context context) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("terminal", "1");
+        map.put("versionCode", String.valueOf(DeviceUtil.getVersionCode(context)));
         map.put("versionName", DeviceUtil.getVersionName(context));
         map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, ""));
@@ -30,10 +36,10 @@ public class NetUtil {
         for (Map.Entry<String, String> entry : data.entrySet()) {
             map.put(entry.getKey(), entry.getValue());
         }
-
-        LogUtil.w("dyc",JsonUtils.toJson(map));
-        return JsonUtils.toJson(map);
+        return map.toString();
     }
+
+
 
 
     /**

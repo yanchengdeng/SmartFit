@@ -28,7 +28,8 @@ public class Constants {
      * 接口域名方法
      */
     public static final String REGISTER_METHOD = "/User/RegUser";
-    public static final String LOGIN_IN_METHOD = "/user/Login";
+    public static final String LOGIN_IN_METHOD = "/User/Login";
+    public static final String SMS_SMSSEND = "/SMS/SMSSend";
 
 
     /*****

@@ -10,7 +10,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +59,7 @@ public class RegisterActivity extends BaseActivity {
     @Bind(R.id.tv_deal)
     TextView tvDeal;
     private CountDownTimer countDownTimer;
+    private static final Object TAG = new Object();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +101,15 @@ public class RegisterActivity extends BaseActivity {
         btnGetcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnGetcode.setClickable(false);
-                mSVProgressHUD.showInfoWithStatus(getString(R.string.send_success));
-                countDownTimer.start();
+                if (etPhone.getEditableText().toString().isEmpty()) {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+                } else {
+                    if (etPhone.getEditableText().toString().length() == 11) {
+                        sendCode(etPhone.getEditableText().toString());
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+                    }
+                }
             }
         });
 
@@ -104,6 +121,32 @@ public class RegisterActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 发送短信验证码
+     * @param phone
+     */
+    private void sendCode(String phone) {
+        Map<String, String> data = new HashMap<>();
+        data.put("mobile", phone);
+        String body = NetUtil.getRequestBody(data, mContext);
+        PostRequest request = new PostRequest(Constants.SMS_SMSSEND,body, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                btnGetcode.setClickable(false);
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.send_success));
+                countDownTimer.start();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage());
+            }
+        });
+        request.setTag(TAG);
+        mQueue.add(request);
     }
 
 

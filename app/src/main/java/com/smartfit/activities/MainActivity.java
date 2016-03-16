@@ -16,6 +16,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
@@ -123,7 +124,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
 //                openActivity(CityListActivity.class);
-//                mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 Map<String, String> data = new HashMap<>();
                 data.put("mobileNo", "13067389836");
                 data.put("password", "123456");
@@ -132,19 +133,18 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     @Override
                     public void onResponse(JsonObject response) {
                         mSVProgressHUD.dismiss();
-                        LogUtil.d("dyc",response.toString());
+                        LogUtil.d("dyc", response.toString());
 
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         mSVProgressHUD.dismiss();
-                        LogUtil.d("dyc", error.getMessage());
-
+                        mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage());
                     }
                 });
                 request.setTag(TAG);
-//                mQueue.add(request);
+                mQueue.add(request);
             }
         });
     }

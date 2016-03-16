@@ -60,7 +60,7 @@ public class PostRequest extends Request<JsonObject> {
      * Content type for request.
      */
     private static final String PROTOCOL_CONTENT_TYPE =
-            String.format("application/json; charset=%s", PROTOCOL_CHARSET);
+            String.format("application/x-www-form-urlencoded; charset=%s", PROTOCOL_CHARSET);
 
     private final Listener<JsonObject> mListener;
 
@@ -68,13 +68,13 @@ public class PostRequest extends Request<JsonObject> {
 
     private Gson mGson;
 
-    public PostRequest(String method ,String requestBody, Listener<JsonObject> listener,
+    public PostRequest(String method, String requestBody, Listener<JsonObject> listener,
                        ErrorListener errorListener) {
-        super(Method.POST, Constants.Net.URL+method, errorListener);
+        super(Method.POST, Constants.Net.URL + method, errorListener);
         mGson = new Gson();
         mListener = listener;
         mRequestBody = requestBody;
-        Log.d("requestBody", requestBody);
+        LogUtil.d("dyc", mRequestBody);
     }
 
     @Override
@@ -94,42 +94,18 @@ public class PostRequest extends Request<JsonObject> {
     protected Response<JsonObject> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-
+            LogUtil.w("dyc",jsonString);
             try {
                 JSONObject jb = new JSONObject(jsonString);
-                if (jb.optString("code").equals("103")) {
-                    return Response.error(new VolleyError("103"));
+                if (jb.optString("state").equals("1")) {//返回结果正确
+                    ResponseData responseData = mGson.fromJson(jsonString, ResponseData.class);
+                    return Response.success(responseData.getData(), HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return Response.error(new VolleyError(jb.optString("stateMsg")));
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                return Response.error(new VolleyError("稍后再试"));
             }
-
-            ResponseData responseData = mGson.fromJson(jsonString, ResponseData.class);
-            String result = responseData.getCode();
-            if (TextUtils.isEmpty(result)) {
-                Log.e("resolverData", "返回结果不是合法的json格式");
-                return Response.error(new VolleyError("返回结果不是合法的json格式"));
-            }
-            if ("0".equals(result)) {
-                return Response.success(responseData.getData(),
-                        HttpHeaderParser.parseCacheHeaders(response));
-            }
-            if ("101".equals(result)) {
-                return Response.error(new VolleyError(result));
-            }
-            if ("102".equals(result)) {
-                return Response.error(new VolleyError(result));
-            }
-            if ("105".equals(result)) {
-                return Response.error(new VolleyError(result));
-            }
-            if ("201".equals(result)) {
-                return Response.error(new VolleyError(result));
-            }
-            if ("203".equals(result)) {
-                return Response.error(new VolleyError(result));
-            }
-            return Response.error(new VolleyError(responseData.getMsg()));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException je) {
@@ -139,8 +115,9 @@ public class PostRequest extends Request<JsonObject> {
 
     @Override
     public String getBodyContentType() {
-        return PROTOCOL_CONTENT_TYPE;
+        return "application/x-www-form-urlencoded";
     }
+
 
     @Override
     public byte[] getBody() {
