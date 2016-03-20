@@ -21,20 +21,30 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
+import com.smartfit.beans.ClassInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -114,6 +124,8 @@ public class GroupExperienceFragment extends Fragment {
     LinearLayout llWeek6;
     @Bind(R.id.ll_week7)
     LinearLayout llWeek7;
+    @Bind(R.id.no_data)
+    TextView noData;
 
     private int REQUEST_CODE_ORDER_TIME = 0x110;
 
@@ -125,7 +137,7 @@ public class GroupExperienceFragment extends Fragment {
     private int page = 1;
     boolean isLoading = false;
     private GroupExpericeItemAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -161,7 +173,7 @@ public class GroupExperienceFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        page =1;
+                        page = 1;
                         swipeRefreshLayout.setRefreshing(false);
                         ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
                     }
@@ -194,24 +206,57 @@ public class GroupExperienceFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainBusinessActivity)getActivity()).openActivity(GroupClassDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,datas.get(position).getCoachId());
+                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class,bundle);
             }
         });
     }
 
 
     private void loadData() {
-        for (int i = 0; i < 10; i++) {
-            datas.add("模拟数据" + i + String.valueOf(page));
+        if (page == 1) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading),SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
 
-        adapter.setData(datas);
-
-
-        listView.removeFooterView(footerView);
-        isLoading = false;
+        Map<String, String> data = new HashMap<>();
+        data.put("keyword", "");
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                if (null != requestList && requestList.size() > 0) {
+                    datas.addAll(requestList);
+                    adapter.setData(datas);
+                    listView.removeFooterView(footerView);
+                    isLoading = false;
+                } else {
+                    noMoreData(datas);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                noMoreData(datas);
+            }
+        });
+        request.setTag(new Object());
+        ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
+
+    private void noMoreData(List<ClassInfo> datas) {
+        if (datas.size() > 0) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            listView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
+        } else {
+            listView.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        }
+    }
 
     /****
      * 初始化日期选择器
@@ -335,8 +380,8 @@ public class GroupExperienceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STING));
+            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
+                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
             }
 
         }
@@ -407,6 +452,7 @@ public class GroupExperienceFragment extends Fragment {
             listView.setAdapter(new ChooseAddressAdapter(getActivity()));
             return inflate;
         }
+
         @Override
         public void onBackPressed() {
             ivCoverBg.setVisibility(View.GONE);
@@ -454,6 +500,7 @@ public class GroupExperienceFragment extends Fragment {
             ivCoverBg.setVisibility(View.GONE);
             super.onBackPressed();
         }
+
         @Override
         public void setUiBeforShow() {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

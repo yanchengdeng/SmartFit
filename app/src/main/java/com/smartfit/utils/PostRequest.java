@@ -30,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.smartfit.commons.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,11 +61,11 @@ public class PostRequest extends Request<JsonObject> {
 
     private final Listener<JsonObject> mListener;
 
-    private final  Map<String, String> mRequestBody;
+    private final Map<String, String> mRequestBody;
 
     private Gson mGson;
 
-    public PostRequest(String method,  Map<String, String> requestBody, Listener<JsonObject> listener,
+    public PostRequest(String method, Map<String, String> requestBody, Listener<JsonObject> listener,
                        ErrorListener errorListener) {
         super(Method.POST, Constants.Net.URL + method, errorListener);
         mGson = new Gson();
@@ -90,12 +91,25 @@ public class PostRequest extends Request<JsonObject> {
     protected Response<JsonObject> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            LogUtil.w("dyc",jsonString);
+            LogUtil.w("dyc", jsonString);
             try {
                 JSONObject jb = new JSONObject(jsonString);
                 if (jb.optString("state").equals("1")) {//返回结果正确
-                    ResponseData responseData = mGson.fromJson(jsonString, ResponseData.class);
-                    return Response.success(responseData.getData(), HttpHeaderParser.parseCacheHeaders(response));
+                    JsonObject jsonObject = null;
+                    if (jb.opt("data") instanceof JSONArray) {
+                        jsonObject = new JsonObject();
+                        jsonObject.addProperty("list", jb.optString("data"));
+                    }
+
+                    if (null != jsonObject) {
+                        ResponseDataArray responseData = mGson.fromJson(jsonString, ResponseDataArray.class);
+                        JsonObject object = new JsonObject();
+                        object.add("list",responseData.getData());
+                        return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
+                    }else{
+                        ResponseData responseData = mGson.fromJson(jsonString, ResponseData.class);
+                        return Response.success(responseData.getData(), HttpHeaderParser.parseCacheHeaders(response));
+                    }
                 } else {
                     return Response.error(new VolleyError(jb.optString("stateMsg")));
                 }

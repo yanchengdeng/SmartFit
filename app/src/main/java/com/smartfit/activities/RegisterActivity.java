@@ -128,7 +128,7 @@ public class RegisterActivity extends BaseActivity {
      * @param phone
      */
     private void sendCode(final String phone) {
-        final Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("mobile", phone);
         PostRequest request = new PostRequest(Constants.SMS_SMSSEND, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
             @Override

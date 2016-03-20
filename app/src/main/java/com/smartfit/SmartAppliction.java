@@ -1,10 +1,6 @@
 package com.smartfit;
 
 import android.app.Application;
-import android.content.Context;
-import android.os.Build;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -12,8 +8,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.smartfit.commons.AppException;
-import com.smartfit.commons.Constants;
-import com.smartfit.utils.SharedPreferencesUtils;
 import com.umeng.socialize.PlatformConfig;
 
 /**
@@ -67,7 +61,7 @@ public class SmartAppliction extends Application {
         config.writeDebugLogs(); // Remove for release app
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
-        L.writeLogs(true);
+        L.writeLogs(false);
     }
 
 

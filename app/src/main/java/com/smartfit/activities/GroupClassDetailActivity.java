@@ -13,19 +13,31 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.google.gson.JsonObject;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
+import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,43 +93,137 @@ public class GroupClassDetailActivity extends BaseActivity {
     Button btnOrder;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+    @Bind(R.id.tv_operate_address)
+    TextView tvOperateAddress;
+    @Bind(R.id.tv_class_tittle)
+    TextView tvClassTittle;
 
 
     private DiscussItemAdapter adapter;
-    private List<String> discuss = new ArrayList<>();
+    private List<ClassCommend> discuss = new ArrayList<>();
+
+    private String id;
+
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_class_detail);
         ButterKnife.bind(this);
-
-        initView();
+        id = getIntent().getStringExtra(Constants.PASS_STRING);
+        tvTittle.setText(getString(R.string.class_detail));
+        ivFunction.setImageResource(R.mipmap.ic_more_share);
+        ivFunction.setVisibility(View.VISIBLE);
+        loadData();
         addLisener();
 
     }
 
-    private void initView() {
-        tvTittle.setText(getString(R.string.class_detail));
-        ivFunction.setImageResource(R.mipmap.ic_more_share);
-        ivFunction.setVisibility(View.VISIBLE);
+    private void initView(ClassInfoDetail detail) {
+        tvClassTittle.setText(detail.getCourseName());
+        tvContent.setText(detail.getCourseDetail());
+        tvCoachName.setText(detail.getCoachRealName());
+        //TODO
+        tvContent.setText("暂无");
+        ratingBar.setRating(0);
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
+        tvSpaceName.setText(detail.getVenueName());
+        tvSpaceInfo.setText(detail.getRange());
+
+        ImageLoader.getInstance().displayImage("", ivOperatePerson);
+        tvOperateAddress.setText("暂无");
+       /* if(detail.getPersionList().length==0){
+            TextView  textView = new TextView(GroupClassDetailActivity.this);
+            textView.setText(getString(R.string.no_report_members));
+            textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView.setTextColor(getResources().getColor(R.color.text_color_gray));
+        }else{
+            LinearLayout.LayoutParams params =  new LinearLayout.LayoutParams(DeviceUtil.dp2px(mContext,40),DeviceUtil.dp2px(mContext,40));
+            params.gravity = Gravity.CENTER;
+            params.leftMargin = 15;
+            for(int i = 0 ;i<detail.getPersionList().length;i++){
+                ImageView imageView = new ImageView(GroupClassDetailActivity.this);
+                imageView.setLayoutParams(params);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                ImageLoader.getInstance().displayImage(detail.getPersionList()[i], imageView, Options.getHeaderOptions());
+                llHaveOrderedMembers.addView(imageView);
+            }
+        }*/
+
+
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
-        rollViewPager.setAdapter(new TestNomalAdapter());
+        rollViewPager.setAdapter(new TestNomalAdapter(detail.getBigUrl(), detail.getCourseName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
 
+
+        loadCommend();
+
+
         adapter = new DiscussItemAdapter(discuss, this);
         lisviewDiscuss.setAdapter(adapter);
-        loadData();
+
 
     }
 
+    private void loadCommend() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("CourseId", id);
+        data.put("PageNO", String.valueOf(page));
+        data.put("PageSize", "5");
+        PostRequest request = new PostRequest(Constants.CLASS_COMMEND, NetUtil.getRequestBody(data, this), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<ClassCommend> commends = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassCommend.class);
+                if (null != commends && commends.size() > 0) {
+                    discuss.addAll(commends);
+                    page++;
+                }
+                if(discuss.size()>0){
+                    adapter.setData(discuss);
+                }else{
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.no_commend));
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+            }
+        });
+        request.setTag(new Object());
+        mQueue.add(request);
+    }
+
     private void loadData() {
-        for (int i = 0; i < 4; i++) {
-            discuss.add("fsd" + i);
-        }
-        adapter.setData(discuss);
+        mSVProgressHUD.showInfoWithStatus(getString(R.string.loading));
+        Map<String, String> data = new HashMap<>();
+        data.put("CourseId", id);
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, NetUtil.getRequestBody(data, this), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
+                initView(detail);
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        mQueue.add(request);
+
+
     }
 
     private void addLisener() {
@@ -141,7 +247,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         tvMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadData();
+                loadCommend();
             }
         });
 
@@ -149,31 +255,30 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.PAGE_INDEX,1);
-                openActivity(PayActivity.class,bundle);
+                bundle.putInt(Constants.PAGE_INDEX, 1);
+                openActivity(PayActivity.class, bundle);
             }
         });
 
     }
 
 
-
-
     private class TestNomalAdapter extends StaticPagerAdapter {
-        private int[] imgs = {
-                R.mipmap.bg_pic,
-                R.mipmap.bg_pic,
-                R.mipmap.bg_pic,
-                R.mipmap.bg_pic,
-        };
+
+        private String[] imgs;
 
 
+        private String courceName;
         private String[] infos = {
-                "燃烧吧，脂肪君(课程名称)",
-                "燃烧吧，脂肪君(课程名称)",
-                "燃烧吧，脂肪君(课程名称)",
-                "燃烧吧，脂肪君(课程名称)",
+                "燃烧吧，脂肪君"
+
         };
+
+        public TestNomalAdapter(String bigUrl, String courceName) {
+            imgs = new String[]{bigUrl};
+            this.courceName = courceName;
+
+        }
 
 
         @Override
@@ -181,9 +286,9 @@ public class GroupClassDetailActivity extends BaseActivity {
             View relativeLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.ad_common_view, null);
             ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.iv_cover_bg);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
-            imageView.setImageResource(imgs[position]);
+            ImageLoader.getInstance().displayImage(imgs[0], imageView);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            textView.setText(infos[position]);
+            textView.setText(infos[position] + "(" + courceName + ")");
             return relativeLayout;
         }
 
@@ -193,7 +298,6 @@ public class GroupClassDetailActivity extends BaseActivity {
             return imgs.length;
         }
     }
-
 
 
     @Override

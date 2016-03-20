@@ -12,12 +12,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
+import com.smartfit.beans.ClassInfo;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,12 +50,14 @@ public class SearchClassActivity extends BaseActivity {
     TextView tvCount;
     @Bind(R.id.tv_search_condition)
     TextView tvSearchCondition;
+    @Bind(R.id.no_data)
+    TextView noData;
 
     private View footerView;
     private int page = 1;
     boolean isLoading = false;
     private GroupExpericeItemAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
 
     @Override
@@ -119,18 +131,50 @@ public class SearchClassActivity extends BaseActivity {
         });
     }
 
-    private void loadData(String contions) {
-        for (int i = 0; i < 10; i++) {
-            datas.add("模拟数据" + i + String.valueOf(page));
+    private void loadData(final String contions) {
+        if (page == 1) {
+            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
 
-        adapter.setData(datas);
-        tvCount.setText(String.valueOf(datas.size()));
-        tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
+        Map<String, String> data = new HashMap<>();
+        data.put("keyword", contions);
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                if (null != requestList && requestList.size() > 0) {
+                    datas.addAll(requestList);
+                    adapter.setData(datas);
+                    tvCount.setText(String.valueOf(datas.size()));
+                    tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
+                    listView.removeFooterView(footerView);
+                    isLoading = false;
+                } else {
+                    noMoreData(datas);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                noMoreData(datas);
+            }
+        });
+        request.setTag(TAG);
+        mQueue.add(request);
 
-        listView.removeFooterView(footerView);
-        isLoading = false;
+
     }
 
-
+    private void noMoreData(List<ClassInfo> datas) {
+        if (datas.size() > 0) {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            listView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
+        } else {
+            listView.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        }
+    }
 }

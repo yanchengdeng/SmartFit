@@ -74,15 +74,24 @@
             android:text="@string/find_conditon_result"
             android:textColor="@color/text_color_gray"/>
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/listView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:divider="@color/transparent_half"
-        android:dividerHeight="1px"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
-        android:cacheColorHint="@color/transparent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/listview_no_data"></include>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:divider="@color/transparent_half"
+            android:dividerHeight="1px"
+            android:headerDividersEnabled="true"
+            android:footerDividersEnabled="true"
+            android:cacheColorHint="@color/transparent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+
 
 </LinearLayout>

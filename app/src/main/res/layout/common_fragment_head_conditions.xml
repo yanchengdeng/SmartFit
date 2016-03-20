@@ -17,11 +17,11 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:button="@null"
-            android:textSize="@dimen/text_normal_down"
-            android:drawablePadding="@dimen/image_padding"
             android:checked="false"
+            android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_down"
-            android:text="更多" />
+            android:text="更多"
+            android:textSize="@dimen/text_normal_down" />
 
 
         <RelativeLayout
@@ -50,15 +50,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/text_normal_down"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:button="@null"
             android:checked="false"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_down"
-            android:text="筛选" />
+            android:text="筛选"
+            android:textSize="@dimen/text_normal_down" />
 
     </RelativeLayout>
 
@@ -100,11 +100,10 @@
 
                 <ImageView
                     android:id="@+id/iv_date1"
-                    android:paddingBottom="@dimen/image_padding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_1_on" />
-
 
 
             </LinearLayout>
@@ -194,7 +193,6 @@
                     android:src="@mipmap/icon_4" />
 
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -222,7 +220,6 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/image_padding"
                     android:src="@mipmap/icon_5" />
-
 
 
             </LinearLayout>
@@ -254,7 +251,6 @@
                     android:src="@mipmap/icon_6" />
 
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -284,20 +280,21 @@
                     android:src="@mipmap/icon_7" />
 
 
-
             </LinearLayout>
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_order_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black"
                 android:layout_margin="@dimen/image_padding_big"
-                android:text="@string/order_experise_time"/>
+                android:text="@string/order_experise_time"
+                android:textColor="@color/black" />
 
 
             <TextView
@@ -305,41 +302,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
                 android:layout_centerVertical="true"
-                android:textColor="@color/text_color_gray"
                 android:layout_marginRight="@dimen/image_padding_big"
-                android:text="11:45"
                 android:drawablePadding="@dimen/image_padding"
-                android:drawableRight="@mipmap/icon_next_w_on"/>
+                android:drawableRight="@mipmap/icon_next_w_on"
+                android:gravity="center_vertical"
+                android:text="11:45"
+                android:textColor="@color/text_color_gray" />
         </RelativeLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/transparent_half" />
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <include layout="@layout/listview_no_data"></include>
 
-            <ListView
-                android:id="@+id/listView"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:divider="@color/transparent_half"
-                android:dividerHeight="1px"
-                android:cacheColorHint="@color/transparent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+
+                <ListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="@color/transparent"
+                    android:divider="@color/transparent_half"
+                    android:dividerHeight="1px" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </FrameLayout>
+
     </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_cover_bg"
-        android:layout_below="@+id/rl_condition_head"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="match_parent"
-        android:background="@color/transparent_deep_black"/>
+        android:layout_below="@+id/rl_condition_head"
+        android:background="@color/transparent_deep_black"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

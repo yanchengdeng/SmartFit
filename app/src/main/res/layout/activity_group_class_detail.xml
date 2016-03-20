@@ -35,7 +35,7 @@
 
 
             <TextView
-                android:id="@+id/tv_tittle"
+                android:id="@+id/tv_class_tittle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -240,6 +240,7 @@
                     android:src="@mipmap/icon_avatar" />
 
                 <TextView
+                    android:id="@+id/tv_operate_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -268,33 +269,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="@dimen/image_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_avatar" />
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="@dimen/image_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_avatar" />
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_marginRight="@dimen/image_padding"
-                    android:layout_height="70dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_avatar" />
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_marginRight="@dimen/image_padding"
-                    android:layout_height="70dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_avatar" />
 
             </LinearLayout>
 

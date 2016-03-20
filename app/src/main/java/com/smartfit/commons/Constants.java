@@ -13,7 +13,7 @@ public class Constants {
     public final static String FRAGMENT_POSITION = "positon";
 
 
-    public final static String PASS_STING = "pass_string";
+    public final static String PASS_STRING = "pass_string";
     /***
      * //定义  1 ：团体课  2.小班课  3.私教课
      */
@@ -27,9 +27,16 @@ public class Constants {
     /**
      * 接口域名方法
      */
+
+    //账户相关接口
     public static final String REGISTER_METHOD = "/User/RegUser";
     public static final String LOGIN_IN_METHOD = "/User/Login";
     public static final String SMS_SMSSEND = "/SMS/SMSSend";
+
+    //课程相关接口
+    public static final String SEARCH_CLASS = "/ClassIf/searchInfo";
+    public static final String SEARCH_CLASS_DETAIL = "/ClassIf/getClassifInfo";
+    public static final String CLASS_COMMEND = "/Comment/getCommentList";
 
 
     /*****

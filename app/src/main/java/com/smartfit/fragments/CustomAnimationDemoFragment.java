@@ -17,7 +17,6 @@ import com.smartfit.activities.CustomeDynamicActivity;
 import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainActivity;
-import com.smartfit.activities.MainUserActivity;
 
 /**
      * A placeholder fragment containing a simple view.

@@ -8,7 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.ClassCommend;
+import com.smartfit.utils.Options;
 
 import java.util.List;
 
@@ -21,11 +24,10 @@ import butterknife.ButterKnife;
  */
 public class DiscussItemAdapter extends BaseAdapter {
 
-    private List<String> datas;
+    private List<ClassCommend> datas;
     private Context context;
-    private List<String> data;
 
-    public DiscussItemAdapter(List<String> datas, Context context) {
+    public DiscussItemAdapter(List<ClassCommend> datas, Context context) {
         this.datas = datas;
         this.context = context;
     }
@@ -55,11 +57,15 @@ public class DiscussItemAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.tvContent.setText(datas.get(position).getCommentContent());
+        viewHolder.tvName.setText(datas.get(position).getNickName());
+        ImageLoader.getInstance().displayImage(datas.get(position).getUserPicUrl(),viewHolder.ivIcon, Options.getHeaderOptions());
         return convertView;
     }
 
-    public void setData(List<String> data) {
-        this.data = data;
+    public void setData(List<ClassCommend> data) {
+        this.datas = data;
         notifyDataSetChanged();
     }
 

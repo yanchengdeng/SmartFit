@@ -120,4 +120,10 @@
     <string name="loading">加载中...</string>
     <string name="phone_cannot_empty">请输入手机号</string>
     <string name="phone_format_error">手机号码输入错误</string>
+    <string name="no_more_data">已无更多数据</string>
+    <string name="no_data">暂无数据</string>
+    <string name="no_report_members">赶紧参加，您是第一位</string>
+    <string name="title_activity_class_commend_list">ClassCommendListActivity</string>
+    <string name="class_commend">课程评价</string>
+    <string name="no_commend">暂无评论</string>
 </resources>

@@ -27,6 +27,8 @@ public class BaseActivity extends FragmentActivity {
     public SVProgressHUD mSVProgressHUD;
     public RequestQueue mQueue;
     public Context mContext;
+    public static final Object TAG = new Object();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

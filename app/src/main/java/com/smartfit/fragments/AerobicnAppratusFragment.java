@@ -25,8 +25,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.smartfit.R;
 import com.smartfit.activities.AerobicAppratusDetailActivity;
-import com.smartfit.activities.GroupClassDetailActivity;
-import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.AerobincnAppratusItemAdapter;
@@ -114,6 +112,8 @@ public class AerobicnAppratusFragment extends Fragment {
     LinearLayout llWeek6;
     @Bind(R.id.ll_week7)
     LinearLayout llWeek7;
+    @Bind(R.id.no_data)
+    TextView noData;
 
     private int REQUEST_CODE_ORDER_TIME = 0x112;
 
@@ -335,8 +335,8 @@ public class AerobicnAppratusFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STING));
+            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
+                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
             }
 
         }
@@ -455,6 +455,7 @@ public class AerobicnAppratusFragment extends Fragment {
             ivCoverBg.setVisibility(View.GONE);
             super.onBackPressed();
         }
+
         @Override
         public void setUiBeforShow() {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

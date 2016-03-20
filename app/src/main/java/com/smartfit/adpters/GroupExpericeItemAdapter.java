@@ -10,8 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.utils.DeviceUtil;
+import com.smartfit.beans.ClassInfo;
 
 import java.util.List;
 
@@ -24,11 +25,11 @@ import butterknife.ButterKnife;
  */
 public class GroupExpericeItemAdapter extends BaseAdapter {
     private Context context;
-    private List<String> datas;
+    private List<ClassInfo> datas;
     LinearLayout.LayoutParams params;
 
     public GroupExpericeItemAdapter(Context context
-            , List<String> datas) {
+            , List<ClassInfo> datas) {
         this.context = context;
         this.datas = datas;
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,  24);
@@ -52,7 +53,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder ;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_group_experice_item, null);
             viewHolder = new ViewHolder(convertView);
@@ -61,11 +62,21 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        ClassInfo item = datas.get(position);
+        viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
+        viewHolder.tvCouch.setText("教练  " + item.getCoachRealName());
+        viewHolder.tvTittle.setText(item.getCourseName());
+        viewHolder.tvJoin.setText(item.getPersonCount()+"/"+ item.getClassroomPersonCount()+"人");
+
+        viewHolder.tvTime.setText(item.getBeginTime()+"-"+item.getEndTime());
+        viewHolder.tvPrice.setText(item.getPrice()+"元");
+        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
+
         viewHolder.ratingBar.setLayoutParams(params);
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<ClassInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

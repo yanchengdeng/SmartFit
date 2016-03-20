@@ -2,7 +2,6 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -106,7 +105,7 @@ public class OrderReserveActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STING, selectHour + ":" + selectMinu);
+                bundle.putString(Constants.PASS_STRING, selectHour + ":" + selectMinu);
                 intent.putExtras(bundle);
                 setResult(SELECT_VALUE_OVER, intent);
                 finish();

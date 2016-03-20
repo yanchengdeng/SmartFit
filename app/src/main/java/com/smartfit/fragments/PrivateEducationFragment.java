@@ -382,8 +382,8 @@ public class PrivateEducationFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STING));
+            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
+                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
             }
 
         }

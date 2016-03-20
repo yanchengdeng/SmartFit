@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.smartfit">
+    package="com.smartfit" >
 
     <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
 
@@ -37,25 +37,25 @@
         android:icon="@mipmap/icon_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme">
+        tools:replace="android:icon,android:theme" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="38a833cf2b137bf1bb11d8857de1389d" />
         <!-- 定位需要的服务 -->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,23 +65,23 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.ForgetActivity"
             android:label="@string/title_activity_forget"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.DealInfoActivity"
             android:label="@string/title_activity_deal_info"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MainBusinessActivity"
             android:label="@string/title_activity_main_business"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
 
         <!-- 添加Umeng 统计 -->
         <meta-data
@@ -110,7 +110,7 @@
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
 
@@ -121,44 +121,44 @@
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- end  umeng 分享 -->
-        <activity android:name=".activities.OrderReserveActivity"/>
-        <activity android:name=".activities.MainUserActivity"/>
+        <activity android:name=".activities.OrderReserveActivity" />
+        <activity android:name=".activities.MainUserActivity" />
         <activity
             android:name=".activities.SearchClassActivity"
             android:label="@string/title_activity_search_class"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.GroupClassDetailActivity"
             android:label="@string/title_activity_group_class_detail"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachInfoActivity"
             android:label="@string/title_activity_coach_info"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.PayActivity"
             android:label="@string/title_activity_pay"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.OrderPrivateEducationClassActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAppraiseActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAuthentitionActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.GroupClassOrderSuccessActivity"
             android:label="@string/title_activity_group_class_order_success"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.ContactCoachActivity"
             android:label="@string/title_activity_contact_coach"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AerobicAppratusDetailActivity"
             android:theme="@style/ActivityTheme.NoActionBar" />
@@ -167,19 +167,19 @@
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CustomeMainActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.SettingActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AboutUsActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CustomeDynamicActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.PublishCustomeDynamicActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize"
@@ -187,38 +187,42 @@
         <activity
             android:name=".activities.OrderPrivateEducationSuccessActivity"
             android:label="@string/title_activity_order_private_education_success"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MyTicketGiftActivity"
             android:label="@string/title_activity_my_ticket_gift"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MyClassesActivity"
             android:label="@string/title_activity_my_classes"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.FadeBackActivity"
             android:label="@string/title_activity_fade_back"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.FansActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AttentionListActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.HealthFriendsListActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAuthBaseActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CityListActivity"
-            android:theme="@style/ActivityTheme.NoActionBar"/>
+            android:theme="@style/ActivityTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ClassCommendListActivity"
+            android:label="@string/title_activity_class_commend_list" >
+        </activity>
     </application>
 
 </manifest>
