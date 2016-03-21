@@ -116,10 +116,13 @@ public class GroupClassDetailActivity extends BaseActivity {
         tvTittle.setText(getString(R.string.class_detail));
         ivFunction.setImageResource(R.mipmap.ic_more_share);
         ivFunction.setVisibility(View.VISIBLE);
-        loadData();
+        ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
+//        loadData();
         addLisener();
 
     }
+
+
 
     private void initView(ClassInfoDetail detail) {
         tvClassTittle.setText(detail.getCourseName());

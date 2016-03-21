@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
@@ -175,7 +174,6 @@ public class SmallClassFragment extends Fragment {
                     public void run() {
                         page = 1;
                         swipeRefreshLayout.setRefreshing(false);
-                       ((MainBusinessActivity)getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
                     }
                 }, 3000);
             }
@@ -198,7 +196,7 @@ public class SmallClassFragment extends Fragment {
                 if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
                     isLoading = true;
                     page++;
-                    loadData();
+                    loadData1();
                 }
             }
         });
@@ -214,16 +212,24 @@ public class SmallClassFragment extends Fragment {
     }
 
 
+    private void loadData1(){
+        for(int i = 0;i<10;i++){
+            ClassInfo item = new ClassInfo();
+            datas.add(item);
+        }
+
+        adapter.setData(datas);
+        listView.removeFooterView(footerView);
+        isLoading = false;
+    }
+
     private void loadData() {
-         ((MainBusinessActivity)getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
         Map<String, String> data = new HashMap<>();
         data.put("keyword", "");
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                 ((MainBusinessActivity)getActivity()).mSVProgressHUD.dismiss();
-                response.getAsJsonArray("data");
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
@@ -237,7 +243,6 @@ public class SmallClassFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                 ((MainBusinessActivity)getActivity()).mSVProgressHUD.dismiss();
                 noMoreData(datas);
             }
         });
@@ -247,13 +252,13 @@ public class SmallClassFragment extends Fragment {
 
     private void noMoreData(List<ClassInfo> datas) {
         if (datas.size() > 0) {
-             ((MainBusinessActivity)getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
         } else {
             listView.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);
         }
+        listView.removeFooterView(footerView);
     }
 
 

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.ClassInfo;
 
@@ -62,15 +61,15 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ClassInfo item = datas.get(position);
-        viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
-        viewHolder.tvCouch.setText("教练  " + item.getCoachRealName());
-        viewHolder.tvTittle.setText(item.getCourseName());
-        viewHolder.tvJoin.setText(item.getPersonCount()+"/"+ item.getClassroomPersonCount()+"人");
-
-        viewHolder.tvTime.setText(item.getBeginTime()+"-"+item.getEndTime());
-        viewHolder.tvPrice.setText(item.getPrice()+"元");
-        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
+//        ClassInfo item = datas.get(position);
+//        viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
+//        viewHolder.tvCouch.setText("教练  " + item.getCoachRealName());
+//        viewHolder.tvTittle.setText(item.getCourseName());
+//        viewHolder.tvJoin.setText(item.getPersonCount()+"/"+ item.getClassroomPersonCount()+"人");
+//
+//        viewHolder.tvTime.setText(item.getBeginTime()+"-"+item.getEndTime());
+//        viewHolder.tvPrice.setText(item.getPrice()+"元");
+//        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
 
         viewHolder.ratingBar.setLayoutParams(params);
         return convertView;

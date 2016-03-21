@@ -38,7 +38,7 @@ public class SmartAppliction extends Application {
     public void onCreate() {
         super.onCreate();
         initImageLoader();
-//        registerUncaughtExceptionHandler();
+        registerUncaughtExceptionHandler();
     }
 
     // 注册App异常崩溃处理器
