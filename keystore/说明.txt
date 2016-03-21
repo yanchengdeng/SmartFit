@@ -1,1 +1,13 @@
-yancheng  yancheng
+KEYSOTER: yancheng  yancheng
+
+
+1.城市列表接口
+2.获取跟城市相关的接口要传  city_id
+3.
+
+
+
+
+
+统一进度条加载显示
+mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);

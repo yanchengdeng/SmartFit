@@ -1,0 +1,197 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="8:00~9:00 2016-02-02"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal_down" />
+
+        <TextView
+            android:id="@+id/tv_operate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="我发起的"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal_down" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/gray_light" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_class_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="瑜伽塑形课"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_class_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_toRightOf="@+id/tv_class_name"
+                android:text="@string/group_experien"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_fitness_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_class_name"
+                android:text="浩沙健身房"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+
+            <TextView
+                android:id="@+id/tv_have_regiseter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fitness_center"
+                android:text="6人已报名"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_empty_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fitness_center"
+                android:layout_toRightOf="@+id/tv_have_regiseter"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:text="4"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_empty_register_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_fitness_center"
+                android:layout_toRightOf="@+id/tv_empty_register"
+                android:text="个空余名额"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="￥1640"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/gray_light" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_handle_funciton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_substitue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_dialog_selector_white"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:text="@string/find_substitue"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/tv_cancle_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_dialog_selector_white"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:text="@string/cancle_class"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_member_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_dialog_selector_white"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:text="@string/number_list"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+    </LinearLayout>
+
+</LinearLayout>

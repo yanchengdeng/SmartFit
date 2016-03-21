@@ -115,6 +115,7 @@ public class AerobicnAppratusFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
 
+
     private int REQUEST_CODE_ORDER_TIME = 0x112;
 
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
@@ -132,7 +133,7 @@ public class AerobicnAppratusFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
         ButterKnife.bind(this, view);
-        addressCustomPop = new AddressCustomPop(getActivity());
+        addressCustomPop = new AddressCustomPop(getContext());
         orderCustomePop = new OrderCustomePop(getActivity());
         initDateSelect();
         initListView();
@@ -163,7 +164,7 @@ public class AerobicnAppratusFragment extends Fragment {
                     public void run() {
                         page = 1;
                         swipeRefreshLayout.setRefreshing(false);
-                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
+                         ((MainBusinessActivity)getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
                     }
                 }, 3000);
             }

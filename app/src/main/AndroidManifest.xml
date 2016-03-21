@@ -223,6 +223,14 @@
             android:name=".activities.ClassCommendListActivity"
             android:label="@string/title_activity_class_commend_list" >
         </activity>
+        <activity android:name=".activities.WalletActivity" >
+        </activity>
+        <activity android:name=".activities.ReChargeActivity" >
+        </activity>
+        <activity android:name=".activities.WithDrawActivity" >
+        </activity>
+        <activity android:name=".activities.CoachClassesActivity" >
+        </activity>
     </application>
 
 </manifest>

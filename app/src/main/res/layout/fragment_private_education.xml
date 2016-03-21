@@ -31,7 +31,7 @@
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/ck_more_select"
             android:layout_toRightOf="@+id/ck_more_address"
-            android:background="@mipmap/bg_search_s">
+            android:background="@drawable/bg_search_gray">
 
             <TextView
                 android:id="@+id/tv_address"

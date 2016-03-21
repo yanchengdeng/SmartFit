@@ -21,20 +21,20 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_down"
-            android:text="福州"
+            android:text="定位中"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/image_padding"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/image_padding"
             android:layout_toRightOf="@+id/tv_city_name"
-            android:background="@mipmap/bg_search_s"
+            android:background="@drawable/bg_search_gray"
             android:orientation="horizontal">
 
             <ImageView

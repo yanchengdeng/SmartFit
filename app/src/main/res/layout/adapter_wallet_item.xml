@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:id="@+id/ll_red_point"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/bg_red_point" />
+
+        <TextView
+            android:layout_width="2dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-2dp"
+            android:layout_marginTop="-2dp"
+            android:background="@color/common_header_bg" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ll_red_point"
+        android:text="参加xxxx课程"
+        android:layout_marginLeft="@dimen/image_padding"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="2016-02-01"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_date"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="-2000"
+        android:textColor="@color/common_header_bg"
+        android:textSize="@dimen/text_normal" />
+
+
+</RelativeLayout>

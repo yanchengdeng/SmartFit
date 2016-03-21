@@ -106,7 +106,7 @@ public class PayActivity extends BaseActivity {
 
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            mSVProgressHUD.showErrorWithStatus("支付失败");
+                            mSVProgressHUD.showInfoWithStatus("支付失败");
                             if (pageIndex == 1) {
                                 openActivity(GroupClassOrderSuccessActivity.class);
                             } else if (pageIndex == 2) {
@@ -178,7 +178,7 @@ public class PayActivity extends BaseActivity {
             public void onClick(View v) {
                 if (payStyle == 1) {
                     if (!checkWeiXin()) {
-                        mSVProgressHUD.showErrorWithStatus("您未安装微信客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                        mSVProgressHUD.showInfoWithStatus("您未安装微信客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                         return;
                     }
                 }
@@ -225,7 +225,7 @@ public class PayActivity extends BaseActivity {
 
         @Override
         protected void onPreExecute() {
-            mSVProgressHUD.showWithStatus("正在生成订单");
+            mSVProgressHUD.showWithStatus("正在生成订单",SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
 
         @Override

@@ -123,27 +123,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         tvCityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                openActivity(CityListActivity.class);
-                mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                Map<String, String> data = new HashMap<>();
-                data.put("mobileNo", "13067389836");
-                data.put("password", "123456");
-                PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, NetUtil.getRequestBody(data,mContext), new Response.Listener<JsonObject>() {
-                    @Override
-                    public void onResponse(JsonObject response) {
-                        mSVProgressHUD.dismiss();
-                        LogUtil.d("dyc", response.toString());
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mSVProgressHUD.dismiss();
-                        mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage());
-                    }
-                });
-                request.setTag(TAG);
-                mQueue.add(request);
+                openActivity(CityListActivity.class);
             }
         });
     }

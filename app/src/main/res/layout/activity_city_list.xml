@@ -101,8 +101,6 @@
         android:layout_width="match_parent"
         android:divider="@android:color/transparent"
         android:dividerHeight="@dimen/activity_horizontal_margin"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
         android:cacheColorHint="@android:color/transparent"
         android:layout_height="match_parent" />
 

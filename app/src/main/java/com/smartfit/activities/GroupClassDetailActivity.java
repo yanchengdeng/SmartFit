@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.google.gson.JsonObject;
 import com.jude.rollviewpager.RollPagerView;
@@ -203,7 +204,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     }
 
     private void loadData() {
-        mSVProgressHUD.showInfoWithStatus(getString(R.string.loading));
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
         data.put("CourseId", id);
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, NetUtil.getRequestBody(data, this), new Response.Listener<JsonObject>() {

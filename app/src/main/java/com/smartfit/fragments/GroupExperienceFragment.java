@@ -38,6 +38,7 @@ import com.smartfit.beans.ClassInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
@@ -139,6 +140,7 @@ public class GroupExperienceFragment extends Fragment {
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -207,24 +209,21 @@ public class GroupExperienceFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,datas.get(position).getCoachId());
-                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class,bundle);
+                bundle.putString(Constants.PASS_STRING, datas.get(position).getCoachId());
+                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });
     }
 
 
     private void loadData() {
-        if (page == 1) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading),SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
+        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
         data.put("keyword", "");
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                ((MainBusinessActivity) getActivity()).mSVProgressHUD.dismiss();
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
@@ -238,7 +237,7 @@ public class GroupExperienceFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                ((MainBusinessActivity) getActivity()).mSVProgressHUD.dismiss();
                 noMoreData(datas);
             }
         });
@@ -249,7 +248,7 @@ public class GroupExperienceFragment extends Fragment {
 
     private void noMoreData(List<ClassInfo> datas) {
         if (datas.size() > 0) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
         } else {

@@ -73,7 +73,7 @@ public class CityListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etSearchContent.getEditableText().toString())) {
-                    mSVProgressHUD.showErrorWithStatus("未输入关键字", SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+                    mSVProgressHUD.showInfoWithStatus("未输入关键字", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 } else {
                     goSearch(etSearchContent.getEditableText().toString());
                 }
@@ -88,7 +88,7 @@ public class CityListActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String[] data = new String[]{"北京", "湖北", "北京", "湖北", "北京", "湖北", "北京", "湖北", "北京", "湖北", "北京", "湖北"};
+                String[] data = new String[]{"北京", "湖北"};
                 for (int i = 0; i < 10; i++) {
                     datas.add(data);
                 }

@@ -117,6 +117,15 @@ public class CustomeMainActivity extends BaseActivity {
         });
 
 
+        //钱包
+        scrollView.getPullRootView().findViewById(R.id.rl_my_packet_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(WalletActivity.class);
+            }
+        });
+
+
         //我的课程
         scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
             @Override

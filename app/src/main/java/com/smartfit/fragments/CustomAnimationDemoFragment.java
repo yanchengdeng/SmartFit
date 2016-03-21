@@ -17,6 +17,8 @@ import com.smartfit.activities.CustomeDynamicActivity;
 import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainActivity;
+import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.activities.MainUserActivity;
 
 /**
      * A placeholder fragment containing a simple view.
@@ -96,7 +98,7 @@ import com.smartfit.activities.MainActivity;
                 @Override
                 public void onClick(View v) {
                     centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("课程");
+                    ((MainActivity) getActivity()).openActivity(MainBusinessActivity.class);
                 }
             });
 

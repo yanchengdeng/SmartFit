@@ -46,7 +46,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 			mSVProgressHUD.showSuccessWithStatus("支付成功");
 
 		}else{
-			mSVProgressHUD.showErrorWithStatus("支付失败");
+			mSVProgressHUD.showInfoWithStatus("支付失败");
 			openActivity(GroupClassOrderSuccessActivity.class);
 		}
 	}

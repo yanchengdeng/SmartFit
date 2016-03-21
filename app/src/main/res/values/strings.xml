@@ -126,4 +126,14 @@
     <string name="title_activity_class_commend_list">ClassCommendListActivity</string>
     <string name="class_commend">课程评价</string>
     <string name="no_commend">暂无评论</string>
+    <string name="login_ing">登录中...</string>
+    <string name="login_success">登陆成功</string>
+    <string name="passowr_cannot_empt">密码不能为空</string>
+    <string name="withdraw">提现</string>
+    <string name="recharge">充值</string>
+    <string name="current_money">当前余额</string>
+    <string name="current_pay_record">最近收支明细</string>
+    <string name="coach_ing">进行中</string>
+    <string name="find_substitue">找人代课</string>
+    <string name="number_list">成员名单</string>
 </resources>

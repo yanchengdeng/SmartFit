@@ -101,5 +101,22 @@ public class CoachInfoActivity extends BaseActivity {
                 openActivity(CoachAuthentitionActivity.class);
             }
         });
+
+
+        scrollView.getPullRootView().findViewById(R.id.rl_dynamic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CustomeDynamicActivity.class);
+            }
+        });
+
+        //教练进行的课程
+        scrollView.getPullRootView().findViewById(R.id.tv_his_classes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachClassesActivity.class);
+            }
+        });
+
     }
 }

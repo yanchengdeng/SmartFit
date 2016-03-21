@@ -86,7 +86,7 @@ public class ContactCoachActivity extends BaseActivity {
                                     "13067380836"));
                             startActivity(intent);
                         } catch (Exception E) {
-                            mSVProgressHUD.showErrorWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                            mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);
                         }
                     }
                 });

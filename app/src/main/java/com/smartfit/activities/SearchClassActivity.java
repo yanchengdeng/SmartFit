@@ -122,7 +122,7 @@ public class SearchClassActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etContent.getEditableText().toString())) {
-                    mSVProgressHUD.showErrorWithStatus("请输入搜索条件", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                    mSVProgressHUD.showInfoWithStatus("请输入搜索条件", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                     return;
                 }
                 page = 1;
@@ -132,10 +132,7 @@ public class SearchClassActivity extends BaseActivity {
     }
 
     private void loadData(final String contions) {
-        if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
         Map<String, String> data = new HashMap<>();
         data.put("keyword", contions);
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {

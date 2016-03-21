@@ -138,6 +138,7 @@ public class SmallClassFragment extends Fragment {
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -174,7 +175,7 @@ public class SmallClassFragment extends Fragment {
                     public void run() {
                         page = 1;
                         swipeRefreshLayout.setRefreshing(false);
-                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
+                       ((MainBusinessActivity)getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
                     }
                 }, 3000);
             }
@@ -205,50 +206,48 @@ public class SmallClassFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, datas.get(position).getCoachId());
+                ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });
     }
 
 
     private void loadData() {
-        {
-            if (page == 1) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-            }
+         ((MainBusinessActivity)getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
-            Map<String, String> data = new HashMap<>();
-            data.put("keyword", "");
-            PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
-                @Override
-                public void onResponse(JsonObject response) {
-                    ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                    response.getAsJsonArray("data");
-                    List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
-                    if (null != requestList && requestList.size() > 0) {
-                        datas.addAll(requestList);
-                        adapter.setData(datas);
-                        listView.removeFooterView(footerView);
-                        isLoading = false;
-                    } else {
-                        noMoreData(datas);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+        Map<String, String> data = new HashMap<>();
+        data.put("keyword", "");
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                 ((MainBusinessActivity)getActivity()).mSVProgressHUD.dismiss();
+                response.getAsJsonArray("data");
+                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                if (null != requestList && requestList.size() > 0) {
+                    datas.addAll(requestList);
+                    adapter.setData(datas);
+                    listView.removeFooterView(footerView);
+                    isLoading = false;
+                } else {
                     noMoreData(datas);
                 }
-            });
-            request.setTag(new Object());
-            ((BaseActivity) getActivity()).mQueue.add(request);
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                 ((MainBusinessActivity)getActivity()).mSVProgressHUD.dismiss();
+                noMoreData(datas);
+            }
+        });
+        request.setTag(new Object());
+        ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
     private void noMoreData(List<ClassInfo> datas) {
         if (datas.size() > 0) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
+             ((MainBusinessActivity)getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
         } else {

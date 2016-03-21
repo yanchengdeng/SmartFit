@@ -128,7 +128,6 @@ public class PrivateEducationFragment extends Fragment {
     private PrivateEducationAdapter adapter;
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -168,7 +167,7 @@ public class PrivateEducationFragment extends Fragment {
                         page = 1;
                         loadData();
                         swipeRefreshLayout.setRefreshing(false);
-                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
+                          ((MainBusinessActivity)getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
                     }
                 }, 3000);
             }
@@ -218,7 +217,7 @@ public class PrivateEducationFragment extends Fragment {
             public void onClick(View v) {
                 List<PrivateEducationClass> selectPricates = countSelectNum(datas);
                 if (selectPricates.size() == 0) {
-                    ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
+                      ((MainBusinessActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 3);

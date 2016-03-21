@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    tools:context="com.smartfit.activities.CoachInfoActivity">
+
+    <com.ecloud.pulltozoomview.PullToZoomListViewEx
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light"
+        custom:headerView="@layout/wallet_header_ui"
+        custom:zoomView="@layout/coach_hade_zoom_view"/>
+
+</RelativeLayout>

@@ -21,6 +21,7 @@ public class Constants {
 
     public static final String UID = "uid";//用户id
     public static final String ACCOUNT = "account";//账号
+    public static final String PASSWORD  = "password";
     public static final String SID = "sid";//会话id
 
 

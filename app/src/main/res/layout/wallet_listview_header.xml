@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_light"
+    android:padding="@dimen/image_padding_big">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/image_padding_big"
+        android:text="@string/current_pay_record"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+
+</RelativeLayout>

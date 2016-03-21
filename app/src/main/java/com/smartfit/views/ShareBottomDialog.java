@@ -97,7 +97,7 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            ((BaseActivity)mContext).mSVProgressHUD.showErrorWithStatus("分享失败啦");
+            ((BaseActivity)mContext).mSVProgressHUD.showInfoWithStatus("分享失败啦");
         }
 
         @Override

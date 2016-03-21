@@ -141,7 +141,7 @@ public class GroupClassOrderSuccessActivity extends BaseActivity {
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            mSVProgressHUD.showErrorWithStatus("分享失败啦");
+            mSVProgressHUD.showInfoWithStatus("分享失败啦");
             tvShareFriends.setBackgroundColor(getResources().getColor(R.color.gray));
             tvShareFriends.setText("已发送");
 
