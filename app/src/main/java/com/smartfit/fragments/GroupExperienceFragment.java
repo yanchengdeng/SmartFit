@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
@@ -33,12 +33,17 @@ import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
+import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.ClassInfo;
+import com.smartfit.beans.CustomeDate;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.views.HorizontalListView;
+import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,60 +76,21 @@ public class GroupExperienceFragment extends Fragment {
     CheckBox ckMoreSelect;
     @Bind(R.id.rl_condition_head)
     RelativeLayout rlConditionHead;
-    @Bind(R.id.tv_week1)
-    TextView tvWeek1;
-    @Bind(R.id.iv_date1)
-    ImageView ivDate1;
-    @Bind(R.id.tv_week2)
-    TextView tvWeek2;
-    @Bind(R.id.iv_date2)
-    ImageView ivDate2;
-    @Bind(R.id.tv_week3)
-    TextView tvWeek3;
-    @Bind(R.id.iv_date3)
-    ImageView ivDate3;
-    @Bind(R.id.tv_week4)
-    TextView tvWeek4;
-    @Bind(R.id.iv_date4)
-    ImageView ivDate4;
-    @Bind(R.id.tv_week5)
-    TextView tvWeek5;
-    @Bind(R.id.iv_date5)
-    ImageView ivDate5;
-    @Bind(R.id.tv_week6)
-    TextView tvWeek6;
-    @Bind(R.id.iv_date6)
-    ImageView ivDate6;
-    @Bind(R.id.tv_week7)
-    TextView tvWeek7;
-    @Bind(R.id.iv_date7)
-    ImageView ivDate7;
-    @Bind(R.id.iv_cover_bg)
-    ImageView ivCoverBg;
-    @Bind(R.id.listView)
-    ListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.listview_date)
+    HorizontalListView listviewDate;
     @Bind(R.id.tv_time)
     TextView tvTime;
     @Bind(R.id.rl_order_time)
     RelativeLayout rlOrderTime;
-    @Bind(R.id.ll_week1)
-    LinearLayout llWeek1;
-    @Bind(R.id.ll_week2)
-    LinearLayout llWeek2;
-    @Bind(R.id.ll_week3)
-    LinearLayout llWeek3;
-    @Bind(R.id.ll_week4)
-    LinearLayout llWeek4;
-    @Bind(R.id.ll_week5)
-    LinearLayout llWeek5;
-    @Bind(R.id.ll_week6)
-    LinearLayout llWeek6;
-    @Bind(R.id.ll_week7)
-    LinearLayout llWeek7;
     @Bind(R.id.no_data)
     TextView noData;
+    @Bind(R.id.listView)
+    LoadMoreListView listView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.iv_cover_bg)
+    ImageView ivCoverBg;
+
 
     private int REQUEST_CODE_ORDER_TIME = 0x110;
 
@@ -132,9 +98,7 @@ public class GroupExperienceFragment extends Fragment {
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
 
-    private View footerView;
     private int page = 1;
-    boolean isLoading = false;
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
@@ -156,13 +120,10 @@ public class GroupExperienceFragment extends Fragment {
      * 初始化数据列表加载
      */
     private void initListView() {
-        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.list_loader_footer, null);
-//        不知道为什么在xml设置的“android:layout_width="match_parent"”无效了，需要在这里重新设置
-        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        footerView.setLayoutParams(lp);
-        listView.addFooterView(footerView);
+
         adapter = new GroupExpericeItemAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
+        loadData1();
 
         /***
          * 下拉刷新
@@ -184,23 +145,14 @@ public class GroupExperienceFragment extends Fragment {
         /**
          * 加载更多
          */
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int lastIndexInScreen = visibleItemCount + firstVisibleItem;
-                if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
-                    isLoading = true;
-                    page++;
-                    loadData1();
-                }
+            public void onLoadMore() {
+                page++;
+                loadData1();
             }
         });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -213,15 +165,24 @@ public class GroupExperienceFragment extends Fragment {
     }
 
 
-    private void loadData1(){
-        for(int i = 0;i<10;i++){
-            ClassInfo item = new ClassInfo();
-            datas.add(item);
+    private void loadData1() {
+        if (page == 1 && !((BaseActivity) getActivity()).mSVProgressHUD.isShowing()) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
 
-        adapter.setData(datas);
-        listView.removeFooterView(footerView);
-        isLoading = false;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    datas.add(new ClassInfo());
+                }
+                listView.setVisibility(View.VISIBLE);
+                listView.onLoadMoreComplete();
+                adapter.setData(datas);
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+            }
+        }, 2000);
     }
 
     private void loadData() {
@@ -234,8 +195,6 @@ public class GroupExperienceFragment extends Fragment {
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
                     adapter.setData(datas);
-                    listView.removeFooterView(footerView);
-                    isLoading = false;
                 } else {
                     noMoreData(datas);
                 }
@@ -259,95 +218,27 @@ public class GroupExperienceFragment extends Fragment {
             listView.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);
         }
-        listView.removeFooterView(footerView);
     }
+
+    private List<CustomeDate> customeDates;
+    private SelectDateAdapter selectDateAdapter;
 
     /****
      * 初始化日期选择器
      **/
     private void initDateSelect() {
-        llWeek1.setOnClickListener(new View.OnClickListener() {
+        customeDates = DateUtils.getWeekInfo();
+        selectDateAdapter = new SelectDateAdapter(customeDates, getActivity());
+        selectDateAdapter.setCurrentPositon(0);
+        listviewDate.setAdapter(selectDateAdapter);
+        listviewDate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek1.setTextColor(getResources().getColor(R.color.white));
-                ivDate1.setImageResource(R.mipmap.icon_1_on);
-            }
-        });
-
-        llWeek2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek2.setTextColor(getResources().getColor(R.color.white));
-                ivDate2.setImageResource(R.mipmap.icon_2_on);
-            }
-        });
-
-        llWeek3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek3.setTextColor(getResources().getColor(R.color.white));
-                ivDate3.setImageResource(R.mipmap.icon_3_on);
-            }
-        });
-
-        llWeek4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek4.setTextColor(getResources().getColor(R.color.white));
-                ivDate4.setImageResource(R.mipmap.icon_4_on);
-            }
-        });
-
-        llWeek5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek5.setTextColor(getResources().getColor(R.color.white));
-                ivDate5.setImageResource(R.mipmap.icon_5_on);
-            }
-        });
-
-        llWeek6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek6.setTextColor(getResources().getColor(R.color.white));
-                ivDate6.setImageResource(R.mipmap.icon_6_on);
-            }
-        });
-
-        llWeek7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDateOrigan();
-                tvWeek7.setTextColor(getResources().getColor(R.color.white));
-                ivDate7.setImageResource(R.mipmap.icon_7_on);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectDateAdapter.setCurrentPositon(position);
             }
         });
     }
 
-    private void initDateOrigan() {
-        tvWeek1.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek2.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek3.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek4.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek5.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek6.setTextColor(getResources().getColor(R.color.text_color_gray));
-        tvWeek7.setTextColor(getResources().getColor(R.color.text_color_gray));
-        ivDate1.setImageResource(R.mipmap.icon_1);
-        ivDate2.setImageResource(R.mipmap.icon_2);
-        ivDate3.setImageResource(R.mipmap.icon_3);
-        ivDate4.setImageResource(R.mipmap.icon_4);
-        ivDate5.setImageResource(R.mipmap.icon_5);
-        ivDate6.setImageResource(R.mipmap.icon_6);
-        ivDate7.setImageResource(R.mipmap.icon_7);
-
-
-    }
 
 
     private void addLisener() {

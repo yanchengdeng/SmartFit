@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recycler_view_item_type_footer_view"
+    android:id="@+id/load_more_progressBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:gravity="center"
-    android:visibility="invisible"
     android:orientation="horizontal"
     android:padding="10dp">
 

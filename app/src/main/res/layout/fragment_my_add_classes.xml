@@ -1,18 +1,24 @@
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.smartfit.fragments.MyAddClassesFragment">
+    android:layout_height="match_parent">
 
+    <include layout="@layout/listview_no_data" />
 
-    <ListView
-        android:id="@+id/listView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@color/gray_light"
-        android:dividerHeight="@dimen/activity_horizontal_margin" />
+        android:layout_height="match_parent">
 
-</android.support.v4.widget.SwipeRefreshLayout>
 
+        <com.smartfit.views.LoadMoreListView
+            android:id="@+id/listView"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/transparent"
+            android:divider="@color/gray_light"
+            android:dividerHeight="@dimen/activity_horizontal_margin" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>

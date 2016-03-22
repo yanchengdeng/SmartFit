@@ -3,18 +3,14 @@ package com.smartfit.activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
-import com.smartfit.adpters.AerobincnAppratusItemAdapter;
 import com.smartfit.adpters.FansAdapter;
+import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +32,13 @@ public class FansActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.listView)
-    ListView listView;
+    LoadMoreListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.no_data)
+    TextView noData;
 
-    private View footerView;
     private int page = 1;
-    boolean isLoading = false;
     private FansAdapter adapter;
     private List<String> datas = new ArrayList<String>();
 
@@ -57,13 +53,9 @@ public class FansActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.fans));
-        footerView = LayoutInflater.from(this).inflate(R.layout.list_loader_footer, null);
-//        不知道为什么在xml设置的“android:layout_width="match_parent"”无效了，需要在这里重新设置
-        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        footerView.setLayoutParams(lp);
-        listView.addFooterView(footerView);
         adapter = new FansAdapter(this, datas);
         listView.setAdapter(adapter);
+        loadData();
     }
 
     private void addLisener() {
@@ -85,7 +77,7 @@ public class FansActivity extends BaseActivity {
                     public void run() {
                         page = 1;
                         swipeRefreshLayout.setRefreshing(false);
-                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Black);
+                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
                 }, 3000);
             }
@@ -95,33 +87,34 @@ public class FansActivity extends BaseActivity {
         /**
          * 加载更多
          */
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int lastIndexInScreen = visibleItemCount + firstVisibleItem;
-                if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
-                    isLoading = true;
-                    page++;
-                    loadData();
-                }
+            public void onLoadMore() {
+                page++;
+                loadData();
             }
         });
+
 
     }
 
 
     private void loadData() {
-        for (int i = 0; i < 10; i++) {
-            datas.add("模拟数据" + i + String.valueOf(page));
+
+        if (page == 1) {
+            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
-        adapter.setData(datas);
-        listView.removeFooterView(footerView);
-        isLoading = false;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    datas.add("模拟数据" + i + String.valueOf(page));
+                }
+                listView.setVisibility(View.VISIBLE);
+                listView.onLoadMoreComplete();
+                adapter.setData(datas);
+                mSVProgressHUD.dismiss();
+            }
+        }, 2000);
     }
 }

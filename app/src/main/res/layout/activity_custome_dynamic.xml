@@ -3,28 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@null"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.smartfit.activities.CustomeDynamicActivity">
 
     <include layout="@layout/common_header_view"></include>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include layout="@layout/listview_no_data"></include>
 
-        <ListView
-            android:id="@+id/listView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/gray_light"
-            android:background="@color/gray_light"
-            android:dividerHeight="@dimen/image_padding_big" />
+            android:layout_height="match_parent">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+            <com.smartfit.views.LoadMoreListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_light"
+                android:visibility="invisible"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/gray_light"
+                android:dividerHeight="@dimen/image_padding_big" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
 
 </LinearLayout>

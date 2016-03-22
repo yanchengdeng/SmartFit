@@ -9,14 +9,23 @@
 
     <include layout="@layout/common_header_view"></include>
 
-    <ListView
-        android:id="@+id/listView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="@color/gray_light"
-        android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        android:layout_height="match_parent">
+
+        <include layout="@layout/listview_no_data" />
+
+        <com.smartfit.views.LoadMoreListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_light"
+            android:cacheColorHint="@color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true" />
+    </FrameLayout>
+
+
 </LinearLayout>

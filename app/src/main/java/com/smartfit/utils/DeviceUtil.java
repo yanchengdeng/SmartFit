@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
+import com.smartfit.activities.BaseActivity;
+
 /**
  * Created by tiansj on 14/12/30.
  */
@@ -52,9 +54,9 @@ public class DeviceUtil {
      * @param context
      * @return
      */
-    public static int getWidth(Activity context) {
+    public static int getWidth(Context context) {
         DisplayMetrics dm = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        ((BaseActivity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
     }
 

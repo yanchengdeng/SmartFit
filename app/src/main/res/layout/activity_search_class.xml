@@ -49,6 +49,8 @@
 
     </RelativeLayout>
     <LinearLayout
+        android:id="@+id/ll_search_result"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
@@ -64,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_normal"
-            android:text="2"
+            android:text="0"
             android:textColor="@color/common_header_bg"/>
         <TextView
             android:id="@+id/tv_search_condition"
@@ -81,11 +83,12 @@
         <include
             layout="@layout/listview_no_data"></include>
 
-        <ListView
+        <com.smartfit.views.LoadMoreListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:divider="@color/transparent_half"
             android:dividerHeight="1px"
+            android:visibility="invisible"
             android:headerDividersEnabled="true"
             android:footerDividersEnabled="true"
             android:cacheColorHint="@color/transparent"

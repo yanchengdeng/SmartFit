@@ -2,14 +2,11 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -23,6 +20,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,17 +43,17 @@ public class SearchClassActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.listView)
-    ListView listView;
+    LoadMoreListView listView;
     @Bind(R.id.tv_count)
     TextView tvCount;
     @Bind(R.id.tv_search_condition)
     TextView tvSearchCondition;
     @Bind(R.id.no_data)
     TextView noData;
+    @Bind(R.id.ll_search_result)
+    LinearLayout llSearchResult;
 
-    private View footerView;
     private int page = 1;
-    boolean isLoading = false;
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
@@ -70,13 +68,9 @@ public class SearchClassActivity extends BaseActivity {
     }
 
     private void initView() {
-        footerView = LayoutInflater.from(this).inflate(R.layout.list_loader_footer, null);
-//        不知道为什么在xml设置的“android:layout_width="match_parent"”无效了，需要在这里重新设置
-        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        footerView.setLayoutParams(lp);
-        listView.addFooterView(footerView);
         adapter = new GroupExpericeItemAdapter(this, datas);
         listView.setAdapter(adapter);
+        loadData("");
     }
 
 
@@ -91,23 +85,14 @@ public class SearchClassActivity extends BaseActivity {
         /**
          * 加载更多
          */
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int lastIndexInScreen = visibleItemCount + firstVisibleItem;
-                if (lastIndexInScreen >= totalItemCount - 1 && !isLoading) {
-                    isLoading = true;
-                    page++;
-                    loadData("");
-                }
+            public void onLoadMore() {
+                page++;
+                loadData("");
             }
         });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,7 +117,9 @@ public class SearchClassActivity extends BaseActivity {
     }
 
     private void loadData(final String contions) {
+        if(page==1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
         Map<String, String> data = new HashMap<>();
         data.put("keyword", contions);
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
@@ -143,10 +130,11 @@ public class SearchClassActivity extends BaseActivity {
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
                     adapter.setData(datas);
+                    listView.setVisibility(View.VISIBLE);
+                    listView.onLoadMoreComplete();
                     tvCount.setText(String.valueOf(datas.size()));
                     tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
-                    listView.removeFooterView(footerView);
-                    isLoading = false;
+                    llSearchResult.setVisibility(View.VISIBLE);
                 } else {
                     noMoreData(datas);
                 }
@@ -166,12 +154,17 @@ public class SearchClassActivity extends BaseActivity {
 
     private void noMoreData(List<ClassInfo> datas) {
         if (datas.size() > 0) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.no_more_data), SVProgressHUD.SVProgressHUDMaskType.Clear);
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
+            llSearchResult.setVisibility(View.VISIBLE);
+            listView.onLoadMoreComplete();
+            return;
         } else {
             listView.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);
+            llSearchResult.setVisibility(View.GONE);
+            listView.onLoadMoreComplete();
+            return;
         }
     }
 }

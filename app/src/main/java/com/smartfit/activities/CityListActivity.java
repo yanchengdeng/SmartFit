@@ -84,7 +84,7 @@ public class CityListActivity extends BaseActivity {
 
     private void goSearch(String key) {
 
-        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

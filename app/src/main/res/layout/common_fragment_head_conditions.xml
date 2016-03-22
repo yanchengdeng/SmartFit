@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -74,214 +75,12 @@
             android:layout_height="1px"
             android:background="@color/transparent_half" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/ll_week1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/monday"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_1_on" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tuesday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_2" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wednesday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_3" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/thursday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_4" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/friday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_5" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/saturday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_6" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_week7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:background="#dddddd"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_week7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sunday"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:textStyle="italic|bold" />
-
-                <ImageView
-                    android:id="@+id/iv_date7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/image_padding"
-                    android:src="@mipmap/icon_7" />
-
-
-            </LinearLayout>
-        </LinearLayout>
+        <com.smartfit.views.HorizontalListView
+            android:id="@+id/listview_date"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:divider="@color/white"
+            widget:dividerWidth="1dp" />
 
         <RelativeLayout
             android:id="@+id/rl_order_time"
@@ -328,13 +127,14 @@
                 android:layout_height="match_parent">
 
 
-                <ListView
+                <com.smartfit.views.LoadMoreListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:cacheColorHint="@color/transparent"
                     android:divider="@color/transparent_half"
-                    android:dividerHeight="1px" />
+                    android:dividerHeight="1px"
+                    android:visibility="gone" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
         </FrameLayout>
