@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.FindSubstitueActivity;
+import com.smartfit.activities.MembersListActivity;
 
 import java.util.List;
 
@@ -56,6 +59,30 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        //找人代课
+        viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BaseActivity)context).openActivity(FindSubstitueActivity.class);
+            }
+        });
+        //取消课程
+        viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        //成员
+        viewHolder.tvMemberList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BaseActivity)context).openActivity(MembersListActivity.class);
+            }
+        });
+
+
 
         return convertView;
     }

@@ -136,4 +136,5 @@
     <string name="coach_ing">进行中</string>
     <string name="find_substitue">找人代课</string>
     <string name="number_list">成员名单</string>
+    <string name="dialet_call">拨打电话</string>
 </resources>
