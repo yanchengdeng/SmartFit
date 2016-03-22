@@ -362,6 +362,40 @@ public class DateUtils {
         return icon;
     }
 
+
+    /***
+     * 获取点击的日期图片
+     * @param day
+     * @return
+     */
+    public static int getSelectIconOfWeek(int day){
+        int icon = R.mipmap.icon_1;
+        switch (day){
+            case 1:
+                icon = R.mipmap.icon_7_on;
+                break;
+            case 2:
+                icon = R.mipmap.icon_1_on;
+                break;
+            case 3:
+                icon = R.mipmap.icon_2_on;
+                break;
+            case 4 :
+                icon = R.mipmap.icon_3_on;
+                break;
+            case 5 :
+                icon = R.mipmap.icon_4_on;
+                break;
+            case 6:
+                icon = R.mipmap.icon_5_on;
+                break;
+            case 7:
+                icon = R.mipmap.icon_6_on;
+                break;
+        }
+        return icon;
+    }
+
     /**
      * 获取一周日期信息 ：日期    周几
      *
@@ -371,21 +405,21 @@ public class DateUtils {
         List<CustomeDate> customeDates = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
         Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_WEEK,-1);
         // 今天是一周中的第几天
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+//        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 
-        if (c.getFirstDayOfWeek() == Calendar.SUNDAY) {
-            c.add(Calendar.DAY_OF_MONTH, 1);
-        }
+//        if (c.getFirstDayOfWeek() == Calendar.SUNDAY) {
+//            c.add(Calendar.DAY_OF_MONTH, 1);
+//        }
         // 计算一周开始的日期
-        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+//        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
 
         for (int i = 1; i <= 7; i++) {
             c.add(Calendar.DAY_OF_MONTH, 1);
             CustomeDate item = new CustomeDate();
             item.setDate(sdf.format(c.getTime()));
             item.setWeekday(c.get(Calendar.DAY_OF_WEEK));
-            LogUtil.w("dyc", item.getDate() + ".." + item.getWeekday());
             customeDates.add(item);
         }
         return customeDates;

@@ -73,30 +73,7 @@ public class SelectDateAdapter extends BaseAdapter {
         if (currentPop == position) {
             viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.white));
             viewHolder.tvWeek.setTextColor(context.getResources().getColor(R.color.white));
-            switch (currentPop) {
-                case 0:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_1_on);
-                    break;
-                case 1:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_2_on);
-                    break;
-                case 2:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_3_on);
-                    break;
-                case 3:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_4_on);
-                    break;
-                case 4:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_5_on);
-                    break;
-                case 5:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_6_on);
-                    break;
-                case 6:
-                    viewHolder.ivDate.setImageResource(R.mipmap.icon_7_on);
-                    break;
-
-            }
+            viewHolder.ivDate.setImageResource(DateUtils.getSelectIconOfWeek(item.getWeekday()));
         }
 
         return convertView;
