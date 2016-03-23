@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@null"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.smartfit.activities.FansActivity">
+    tools:context="com.smartfit.activities.DealInfoActivity">
 
     <include layout="@layout/common_header_view" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@drawable/bg_search_gray"
         android:focusable="true"
@@ -23,47 +24,45 @@
             android:id="@+id/iv_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/image_padding_big"
-            android:src="@mipmap/icon_search" />
+            android:layout_marginBottom="@dimen/image_padding"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_marginTop="@dimen/image_padding"
+            android:src="@mipmap/icon_search_b" />
 
         <EditText
             android:id="@+id/et_search_content"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
             android:hint="@string/search"
-            android:textColor="@color/gray_light"
             android:textColorHint="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
+
     </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/listview_no_data" />
+        <include layout="@layout/listview_no_data"></include>
 
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <com.smartfit.views.LoadMoreListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/transparent"
+            android:listSelector="@android:color/transparent"
+            android:divider="@color/transparent_half"
+            android:footerDividersEnabled="false"
+            android:background="@color/white"
+            android:dividerHeight="1px"
+            android:paddingBottom="60dp"
+            android:visibility="invisible" />
 
-
-            <com.smartfit.views.LoadMoreListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:cacheColorHint="@color/transparent"
-                android:listSelector="@android:color/transparent"
-                android:divider="@color/transparent_half"
-                android:dividerHeight="1px"
-                android:visibility="invisible" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>
-
 
 </LinearLayout>

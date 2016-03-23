@@ -41,6 +41,7 @@
 
                 <com.smartfit.views.MyListView
                     android:id="@+id/listView"
+                    android:listSelector="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:cacheColorHint="@android:color/transparent"

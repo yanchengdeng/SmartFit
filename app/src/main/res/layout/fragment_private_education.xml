@@ -132,6 +132,7 @@
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:visibility="invisible"
+                    android:listSelector="@android:color/transparent"
                     android:layout_height="match_parent"
                     android:cacheColorHint="@color/transparent"
                     android:divider="@color/transparent_half"

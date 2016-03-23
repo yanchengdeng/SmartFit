@@ -74,7 +74,7 @@ public class MembersListActivity extends BaseActivity {
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-
+                loadData();
             }
         });
     }

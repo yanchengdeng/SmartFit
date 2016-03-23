@@ -111,13 +111,72 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/rl_open_coach_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:background="@color/white">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_open"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/open_coach_auth"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+        <ImageView
+            android:id="@+id/iv_open_coach_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@mipmap/btn_on" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_my_work_please_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1px"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_address"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="设置工作地点"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_next_w_on"
+            android:gravity="right"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_my_class_ui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/image_padding_big"
+        android:layout_marginTop="1px"
         android:background="@color/white">
 
         <TextView
@@ -127,7 +186,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:gravity="center_vertical"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="我的课程"
+            android:text="发布课程产品"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal" />
 

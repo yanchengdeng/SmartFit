@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gray_light"
+            android:listSelector="@android:color/transparent"
             android:cacheColorHint="@color/transparent"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"

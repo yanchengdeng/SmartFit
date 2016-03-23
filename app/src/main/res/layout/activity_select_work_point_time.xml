@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.OrderReserveActivity">
+
+    <include layout="@layout/common_header_view"></include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/image_padding_big"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/start_time"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/text_color_gray"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/end_time"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/text_color_gray"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#dddddd"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.smartfit.views.WheelView
+                        android:id="@+id/wv_hour_start"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <com.smartfit.views.WheelView
+                        android:id="@+id/wv_min_start"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#dddddd"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.smartfit.views.WheelView
+                        android:id="@+id/wv_hour_end"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <com.smartfit.views.WheelView
+                        android:id="@+id/wv_min_end"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/header_bar_height"
+                android:layout_marginTop="@dimen/image_padding"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="时"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/header_bar_height"
+                android:layout_marginTop="@dimen/image_padding"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="分"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/header_bar_height"
+                android:layout_marginTop="@dimen/image_padding"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:text="时"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/header_bar_height"
+                android:layout_marginTop="@dimen/image_padding"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:text="分"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -327,6 +327,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
                 android:dividerHeight="1px"
                 android:background="@color/white"
                 android:divider="@color/line_gray"/>

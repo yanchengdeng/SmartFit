@@ -13,6 +13,8 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.smartfit.R;
+import com.smartfit.activities.CoachInfoActivity;
+import com.smartfit.activities.CustomeCoachActivity;
 import com.smartfit.activities.CustomeDynamicActivity;
 import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
@@ -116,7 +118,7 @@ import com.smartfit.activities.MainUserActivity;
                 @Override
                 public void onClick(View v) {
                     centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("稍后推出");
+                    ((MainActivity) getActivity()).openActivity(CustomeCoachActivity.class);
                 }
             });
 

@@ -235,6 +235,18 @@
         </activity>
         <activity android:name=".activities.FindSubstitueActivity" >
         </activity>
+        <activity android:name=".activities.CustomeCoachActivity" >
+        </activity>
+        <activity android:name=".activities.CustomDetailInfoActivity" >
+        </activity>
+        <activity android:name=".activities.CoachDetailInfoActivity" >
+        </activity>
+        <activity android:name=".activities.MyWorkPointActivity" >
+        </activity>
+        <activity android:name=".activities.SelectWorkPointActivity" >
+        </activity>
+        <activity android:name=".activities.SelectWorkPointTimeActivity" >
+        </activity>
     </application>
 
 </manifest>

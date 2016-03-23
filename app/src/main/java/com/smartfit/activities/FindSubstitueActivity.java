@@ -38,7 +38,7 @@ public class FindSubstitueActivity extends BaseActivity {
     @Bind(R.id.listView)
     LoadMoreListView listView;
 
-    private int page  = 1;
+    private int page = 1;
     private List<String> datas = new ArrayList<>();
     private FindSubstitutAdapter adapter;
 
@@ -53,14 +53,14 @@ public class FindSubstitueActivity extends BaseActivity {
     }
 
     private void initView() {
-        tvTittle.setText(getString(R.string.number_list));
+        tvTittle.setText(getString(R.string.find_substitue));
         adapter = new FindSubstitutAdapter(this, datas);
         listView.setAdapter(adapter);
         loadData();
 
     }
 
-    private void addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,12 +72,14 @@ public class FindSubstitueActivity extends BaseActivity {
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-
+                page++;
+                loadData();
             }
         });
     }
+
     private void loadData() {
-        if(page==1){
+        if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
 

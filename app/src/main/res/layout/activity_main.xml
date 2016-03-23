@@ -89,7 +89,7 @@
                     app:cardBackgroundColor="@color/little_class">
 
                     <ImageView
-                        android:layout_width="@dimen/main_card_width"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@mipmap/icon_primary"></ImageView>

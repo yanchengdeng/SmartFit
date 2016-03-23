@@ -28,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_light"
                 android:visibility="invisible"
+                android:listSelector="@android:color/transparent"
                 android:cacheColorHint="@android:color/transparent"
                 android:divider="@color/gray_light"
                 android:dividerHeight="@dimen/image_padding_big" />

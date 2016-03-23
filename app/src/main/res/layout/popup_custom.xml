@@ -25,11 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
+            android:listSelector="@android:color/transparent"
             android:cacheColorHint="@color/transparent"
             android:divider="@color/line_gray"
             android:dividerHeight="1px"
             android:paddingBottom="@dimen/header_bar_height"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"></ListView>
+            android:paddingRight="15dp"/>
     </LinearLayout>
 </RelativeLayout>

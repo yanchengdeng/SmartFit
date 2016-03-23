@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,16 +14,17 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 
 /**
- * 个人主页
+ * 我的主页 （教练身份）
  */
-public class CustomeMainActivity extends BaseActivity {
+public class CustomeCoachActivity extends BaseActivity {
+
     private PullToZoomScrollViewEx scrollView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custome_main);
+        setContentView(R.layout.activity_custome_coach);
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -44,16 +46,16 @@ public class CustomeMainActivity extends BaseActivity {
     }
 
 
-
     private void loadViewForCode() {
         PullToZoomScrollViewEx scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
-        View headView = LayoutInflater.from(this).inflate(R.layout.custome_header_ui, null, false);
+        View headView = LayoutInflater.from(this).inflate(R.layout.coach_custome_header_ui, null, false);
         View zoomView = LayoutInflater.from(this).inflate(R.layout.coach_hade_zoom_view, null, false);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.custome_content_ui, null, false);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.coach_custome_content_ui, null, false);
         scrollView.setHeaderView(headView);
         scrollView.setZoomView(zoomView);
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
+
 
     }
 
@@ -66,22 +68,6 @@ public class CustomeMainActivity extends BaseActivity {
             }
         });
 
-        //礼物
-        scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity(MyTicketGiftActivity.class);
-            }
-        });
-
-
-        //个人详情
-        scrollView.getPullRootView().findViewById(R.id.tv_motto).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity(CustomDetailInfoActivity.class);
-            }
-        });
         //关注
         scrollView.getPullRootView().findViewById(R.id.ll_attenion_ui).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +93,23 @@ public class CustomeMainActivity extends BaseActivity {
             }
         });
 
+        //教练资料认证认证
+        scrollView.getPullRootView().findViewById(R.id.tv_coach_auth).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachDetailInfoActivity.class);
+            }
+        });
+
+
+        //工作地点设置
+        scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyWorkPointActivity.class);
+            }
+        });
+
 
         //钱包
         scrollView.getPullRootView().findViewById(R.id.rl_my_packet_ui).setOnClickListener(new View.OnClickListener() {
@@ -117,11 +120,11 @@ public class CustomeMainActivity extends BaseActivity {
         });
 
 
-        //我的课程
+        //我发起课程
         scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(MyClassesActivity.class);
+                openActivity(CoachClassesActivity.class);
             }
         });
 
@@ -144,7 +147,7 @@ public class CustomeMainActivity extends BaseActivity {
 
     }
 
-    private void addLisener(){
+    private void addLisener() {
 
     }
 }
