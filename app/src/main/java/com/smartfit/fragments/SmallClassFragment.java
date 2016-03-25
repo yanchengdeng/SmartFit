@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -37,16 +38,20 @@ import com.smartfit.adpters.GroupExpericeItemAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 import com.smartfit.views.HorizontalListView;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,13 +107,14 @@ public class SmallClassFragment extends Fragment {
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
+    List<WorkPointAddress> addresses = new ArrayList<>();
+    private String selectType = "0";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
         ButterKnife.bind(this, view);
-        addressCustomPop = new AddressCustomPop(getActivity());
         orderCustomePop = new OrderCustomePop(getActivity());
         initDateSelect();
         initListView();
@@ -222,6 +228,9 @@ public class SmallClassFragment extends Fragment {
     private List<CustomeDate> customeDates;
     private SelectDateAdapter selectDateAdapter;
 
+    //选择日期    YYYY-MM-DD
+    private String selectDate;
+
     /****
      * 初始化日期选择器
      **/
@@ -229,11 +238,13 @@ public class SmallClassFragment extends Fragment {
         customeDates = DateUtils.getWeekInfo();
         selectDateAdapter = new SelectDateAdapter(customeDates, getActivity());
         selectDateAdapter.setCurrentPositon(0);
+        selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(0).getDate();
         listviewDate.setAdapter(selectDateAdapter);
         listviewDate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
+                selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
             }
         });
     }
@@ -242,7 +253,14 @@ public class SmallClassFragment extends Fragment {
         ckMoreAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddressPop();
+                String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+                if (TextUtils.isEmpty(citycode)) {
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""))) {
+                        getVenueList();
+                    }
+                }
             }
         });
 
@@ -268,6 +286,34 @@ public class SmallClassFragment extends Fragment {
         });
     }
 
+    private void getVenueList() {
+        Map<String, String> data = new HashMap<>();
+        data.put("SelDate", selectDate);
+        data.put("OrdeyBy", "0");
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<WorkPointAddress> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
+                if (requestList != null && requestList.size() > 0) {
+                    addresses = requestList;
+                    showAddressPop();
+                } else {
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(((BaseActivity) getActivity()).TAG);
+        ((BaseActivity) getActivity()).mQueue.add(request);
+
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -275,7 +321,6 @@ public class SmallClassFragment extends Fragment {
             if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
                 tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
             }
-
         }
     }
 
@@ -283,6 +328,7 @@ public class SmallClassFragment extends Fragment {
      * 显示地址弹出框
      */
     private void showAddressPop() {
+        addressCustomPop = new AddressCustomPop(getActivity());
         ivCoverBg.setVisibility(View.VISIBLE);
         addressCustomPop
                 .anchorView(rlConditionHead)
@@ -332,6 +378,11 @@ public class SmallClassFragment extends Fragment {
             super(context);
         }
 
+
+        public AddressCustomPop(FragmentActivity activity) {
+            super(activity);
+        }
+
         @Override
         public View onCreatePopupView() {
             View inflate = View.inflate(mContext, R.layout.popup_custom, null);
@@ -341,7 +392,7 @@ public class SmallClassFragment extends Fragment {
             params.gravity = Gravity.LEFT;
             params.leftMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
             ivArrow.setLayoutParams(params);
-            listView.setAdapter(new ChooseAddressAdapter(getActivity()));
+            listView.setAdapter(new ChooseAddressAdapter(getActivity(), addresses));
             return inflate;
         }
 
@@ -356,7 +407,7 @@ public class SmallClassFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    tvAddress.setText("六一北路SF健身馆");
+                    tvAddress.setText(addresses.get(position).getVenueName());
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                 }
@@ -399,6 +450,7 @@ public class SmallClassFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     orderCustomePop.dismiss();
+                    selectType = Util.getSortList(getContext()).get(position).getId();
                     ivCoverBg.setVisibility(View.GONE);
                 }
             });

@@ -71,7 +71,7 @@ public class PostRequest extends Request<JsonObject> {
         mGson = new Gson();
         mListener = listener;
         mRequestBody = requestBody;
-        LogUtil.d("dyc", mRequestBody.toString());
+        LogUtil.w("dyc", mRequestBody.toString());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class PostRequest extends Request<JsonObject> {
             LogUtil.w("dyc", jsonString);
             try {
                 JSONObject jb = new JSONObject(jsonString);
-                if (jb.optString("state").equals("1")) {//返回结果正确
+                if (jb.optString("stateCode").equals("1")) {//返回结果正确
                     JsonObject jsonObject = null;
                     if (jb.opt("data") instanceof JSONArray) {
                         jsonObject = new JsonObject();

@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.beans.WorkPointAddress;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,18 +22,21 @@ import butterknife.ButterKnife;
 public class ChooseAddressAdapter extends BaseAdapter {
     private Context context;
 
-    public ChooseAddressAdapter(Context context) {
+    List<WorkPointAddress> addresses;
+
+    public ChooseAddressAdapter(Context context, List<WorkPointAddress> addresses) {
         this.context = context;
+        this.addresses = addresses;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return addresses.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return addresses.get(position);
     }
 
     @Override
@@ -44,9 +51,12 @@ public class ChooseAddressAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_choose_shop_address_view, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.tvAddress.setText(addresses.get(position).getVenueName());
+        viewHolder.tvDistance.setText(addresses.get(position).getRange() + "m");
         return convertView;
     }
 

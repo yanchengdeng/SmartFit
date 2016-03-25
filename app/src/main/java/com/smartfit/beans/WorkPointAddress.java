@@ -5,20 +5,42 @@ package com.smartfit.beans;
  * 选择工作地点
  */
 public class WorkPointAddress {
+    private String venueId; //3,
+    private String range;//11033.88,
+    private String venueName;//fz2,
+    private String venueUrl;// null
 
-    public String getName() {
-        return name;
+    public String getVenueId() {
+        return venueId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVenueId(String venueId) {
+        this.venueId = venueId;
     }
 
-    private String name;
+    public String getRange() {
+        return range;
+    }
 
-    private  String address;
+    public void setRange(String range) {
+        this.range = range;
+    }
 
-    private String time;
+    public String getVenueName() {
+        return venueName;
+    }
+
+    public void setVenueName(String venueName) {
+        this.venueName = venueName;
+    }
+
+    public String getVenueUrl() {
+        return venueUrl;
+    }
+
+    public void setVenueUrl(String venueUrl) {
+        this.venueUrl = venueUrl;
+    }
 
     public boolean isCheck() {
         return isCheck;
@@ -31,19 +53,4 @@ public class WorkPointAddress {
     private boolean isCheck;
 
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 }

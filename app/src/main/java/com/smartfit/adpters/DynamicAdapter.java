@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartfit.R;
@@ -26,6 +29,7 @@ public class DynamicAdapter extends BaseAdapter {
     private Context context;
 
     List<String> photo;
+
 
     public DynamicAdapter(Context context, List<String> datas) {
         this.context = context;
@@ -61,6 +65,7 @@ public class DynamicAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         return convertView;
     }
 
@@ -91,6 +96,8 @@ public class DynamicAdapter extends BaseAdapter {
         TextView tvMessage;
         @Bind(R.id.tv_praise)
         TextView tvPraise;
+        @Bind(R.id.ll_dynamic_ui)
+        LinearLayout llDynamicUi;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

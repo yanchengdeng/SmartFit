@@ -25,7 +25,9 @@ public class NetUtil {
         map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, ""));
         map.put("imei", DeviceUtil.getIMEI(context));
         map.put("sid", SharedPreferencesUtils.getInstance().getString(Constants.SID, ""));
-
+        data.put("Longit", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, ""));
+        data.put("Lat", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, ""));
+        data.put("CityCode", "");
         for (Map.Entry<String, String> entry : data.entrySet()) {
             map.put(entry.getKey(), entry.getValue());
         }

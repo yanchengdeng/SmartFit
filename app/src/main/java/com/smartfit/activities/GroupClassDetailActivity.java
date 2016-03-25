@@ -113,11 +113,12 @@ public class GroupClassDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_group_class_detail);
         ButterKnife.bind(this);
         id = getIntent().getStringExtra(Constants.PASS_STRING);
+        id = "2";
         tvTittle.setText(getString(R.string.class_detail));
         ivFunction.setImageResource(R.mipmap.ic_more_share);
         ivFunction.setVisibility(View.VISIBLE);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
-//        loadData();
+        loadData();
         addLisener();
 
     }
@@ -214,7 +215,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
-                initView(detail);
+//                initView(detail);
                 mSVProgressHUD.dismiss();
 
             }

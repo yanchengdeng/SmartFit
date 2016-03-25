@@ -2,13 +2,26 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.MD5;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +58,8 @@ public class ForgetActivity extends BaseActivity {
     ImageView ivNewPassword;
     @Bind(R.id.et_new_password)
     EditText etNewPassword;
+    @Bind(R.id.btn_reset)
+    Button btnReset;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -88,12 +103,98 @@ public class ForgetActivity extends BaseActivity {
         btnGetcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (etPhone.getEditableText().toString().isEmpty()) {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+                } else {
+                    if (etPhone.getEditableText().toString().length() == 11) {
+                        sendCode(etPhone.getEditableText().toString());
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+                    }
+                }
+
+            }
+        });
+        //重置密码
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+                } else {
+                    if (etPhone.getEditableText().toString().length() == 11) {
+                        if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
+                            mSVProgressHUD.showInfoWithStatus(getString(R.string.code_cannot_empty));
+                        } else {
+                            if (TextUtils.isEmpty(etOldPassword.getEditableText().toString())) {
+                                mSVProgressHUD.showInfoWithStatus(getString(R.string.old_password_cannot_empty));
+                            } else {
+                                if (etOldPassword.getEditableText().toString().equals(SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "")))
+                                {
+                                   resetPassword(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etOldPassword.getEditableText().toString(), etNewPassword.getEditableText().toString());
+                                }else{
+                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.old_password_is_error));
+                                }
+                            }
+                        }
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+                    }
+                }
+            }
+
+        });
+    }
+
+    private void resetPassword(String phone, String code, String oldPass, String newPass) {
+        mSVProgressHUD.showWithStatus(getString(R.string.reset_ing, SVProgressHUD.SVProgressHUDMaskType.Clear));
+        Map<String, String> data = new HashMap<>();
+        data.put("mobileNo", phone);
+        data.put("checkCode", code);
+        data.put("password", oldPass);
+        data.put("newPassword", newPass);
+        PostRequest request = new PostRequest(Constants.RESET_PASSOWRD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.showInfoWithStatus("重置成功");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(TAG);
+        mQueue.add(request);
+
+    }
+
+
+    /**
+     * 发送短信验证码
+     *
+     * @param phone
+     */
+    private void sendCode(final String phone) {
+        Map<String, String> data = new HashMap<>();
+        data.put("mobile", phone);
+        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
                 btnGetcode.setClickable(false);
                 mSVProgressHUD.showInfoWithStatus(getString(R.string.send_success));
                 countDownTimer.start();
 
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+            }
         });
+        request.setTag(TAG);
+        mQueue.add(request);
+
 
     }
 }

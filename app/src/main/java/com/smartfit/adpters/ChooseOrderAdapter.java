@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.beans.SelectedSort;
+import com.smartfit.utils.Util;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,13 +23,15 @@ import butterknife.ButterKnife;
 public class ChooseOrderAdapter extends BaseAdapter {
     private Context context;
 
+    private List<SelectedSort> sortList;
     public ChooseOrderAdapter(Context context) {
         this.context = context;
+        sortList = Util.getSortList(context);
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return sortList.size();
     }
 
     @Override
@@ -49,7 +55,7 @@ public class ChooseOrderAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvAddress.setText("按时间排序");
+        viewHolder.tvAddress.setText(sortList.get(position).getName());
         viewHolder.tvDistance.setVisibility(View.GONE);
         return convertView;
     }

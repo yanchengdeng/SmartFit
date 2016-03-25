@@ -57,9 +57,10 @@
                 android:textSize="@dimen/text_normal" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_withdraw"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:hint="请填写金额"

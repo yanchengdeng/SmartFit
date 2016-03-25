@@ -20,6 +20,16 @@ public class ClassInfo {
     private String price;// 1000,
     private String stars;// 2.5
 
+    public String getCourseDetail() {
+        return courseDetail;
+    }
+
+    public void setCourseDetail(String courseDetail) {
+        this.courseDetail = courseDetail;
+    }
+
+    private String courseDetail;
+
     public String getBeginTime() {
         return beginTime;
     }

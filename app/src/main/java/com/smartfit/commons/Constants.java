@@ -19,6 +19,16 @@ public class Constants {
      */
     public static final String PAGE_INDEX = "page_index";
 
+
+    public static final String CITY_ADDRESS = "city_address";
+    public static final String CITY_CODE = "city_code";
+    public static final String CITY_LONGIT = "city_longit";
+    public static final String CITY_LAT = "city_lat";
+
+
+
+
+
     public static final String UID = "uid";//用户id
     public static final String ACCOUNT = "account";//账号
     public static final String PASSWORD  = "password";
@@ -33,11 +43,18 @@ public class Constants {
     public static final String REGISTER_METHOD = "/User/RegUser";
     public static final String LOGIN_IN_METHOD = "/User/Login";
     public static final String SMS_SMSSEND = "/SMS/SMSSend";
+    public static final String RESET_PASSOWRD = "/User/ResetPassword";
 
     //课程相关接口
     public static final String SEARCH_CLASS = "/ClassIf/searchInfo";
     public static final String SEARCH_CLASS_DETAIL = "/ClassIf/getClassifInfo";
     public static final String CLASS_COMMEND = "/Comment/getCommentList";
+    public static final String GET_VENUElIST = "/ClassIf/getVenueList";
+    public static final String GET_CLASS_LIST = "/ClassIf/getClassifList";
+
+
+    //系统数据
+    public static final String GET_CITY_LIST = "/sys/dict/listCities";
 
 
     /*****
@@ -70,7 +87,10 @@ public class Constants {
 
     public static class Net {
         //普通接口
-        public static final String URL = "http://222.77.181.80:8080/smartFit";//接口域名
+//        public static final String URL = "http://222.77.181.80:8080/smartFit";//接口域名
+        public static final String URL =  "http://123.57.164.115:8098";
+
+
 
         //支付回调
         public static final String ALIPAY_CALLBACK = "http://120.76.65.142:8015/api.php";

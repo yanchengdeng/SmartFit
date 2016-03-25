@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,6 +29,7 @@ import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -192,8 +194,16 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         if (null != aMapLocation) {
             if (aMapLocation.getErrorCode() == 0) {
                 tvCityName.setText(aMapLocation.getCity());
+                SharedPreferencesUtils.getInstance().putString(Constants.CITY_ADDRESS, aMapLocation.getCity());
+                SharedPreferencesUtils.getInstance().putString(Constants.CITY_LAT, String.format("%.4f", aMapLocation.getLatitude()));
+                SharedPreferencesUtils.getInstance().putString(Constants.CITY_LONGIT, String.format("%.4f", aMapLocation.getLongitude()));
+                SharedPreferencesUtils.getInstance().putString(Constants.CITY_CODE, aMapLocation.getCityCode());
             } else {
-                tvCityName.setText("定位失败");
+                if (TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_ADDRESS, ""))) {
+                    tvCityName.setText(SharedPreferencesUtils.getInstance().getString(Constants.CITY_ADDRESS, ""));
+                } else {
+                    tvCityName.setText("定位失败");
+                }
             }
         }
     }

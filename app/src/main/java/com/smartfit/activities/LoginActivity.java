@@ -155,7 +155,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
-                mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
             }
         });

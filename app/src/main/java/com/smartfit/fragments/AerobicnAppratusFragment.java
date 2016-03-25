@@ -1,5 +1,6 @@
 package com.smartfit.fragments;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +21,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.widget.popup.base.BasePopup;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.AerobicAppratusDetailActivity;
 import com.smartfit.activities.BaseActivity;
@@ -32,14 +36,23 @@ import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 import com.smartfit.views.HorizontalListView;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,12 +104,16 @@ public class AerobicnAppratusFragment extends Fragment {
     private AerobincnAppratusItemAdapter adapter;
     private List<String> datas = new ArrayList<String>();
 
+    private List<WorkPointAddress> addresses;
+
+    private String selectType = "0";
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
         ButterKnife.bind(this, view);
-        addressCustomPop = new AddressCustomPop(getContext());
+
         orderCustomePop = new OrderCustomePop(getActivity());
         initDateSelect();
         initListView();
@@ -174,6 +191,8 @@ public class AerobicnAppratusFragment extends Fragment {
 
     private List<CustomeDate> customeDates;
     private SelectDateAdapter selectDateAdapter;
+    //选择日期    YYYY-MM-DD
+    private String selectDate;
 
     /****
      * 初始化日期选择器
@@ -182,11 +201,13 @@ public class AerobicnAppratusFragment extends Fragment {
         customeDates = DateUtils.getWeekInfo();
         selectDateAdapter = new SelectDateAdapter(customeDates, getActivity());
         selectDateAdapter.setCurrentPositon(0);
+        selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(0).getDate();
         listviewDate.setAdapter(selectDateAdapter);
         listviewDate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
+                selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
             }
         });
     }
@@ -196,7 +217,14 @@ public class AerobicnAppratusFragment extends Fragment {
         ckMoreAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddressPop();
+                String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+                if (TextUtils.isEmpty(citycode)) {
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""))) {
+                        getVenueList();
+                    }
+                }
             }
         });
 
@@ -222,6 +250,34 @@ public class AerobicnAppratusFragment extends Fragment {
         });
     }
 
+
+    private void getVenueList() {
+        Map<String, String> data = new HashMap<>();
+        data.put("SelDate", selectDate);
+        data.put("OrdeyBy", "0");
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<WorkPointAddress> reqestAddresses = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
+                if (reqestAddresses != null && reqestAddresses.size() > 0) {
+                    addresses = reqestAddresses;
+                    showAddressPop();
+                } else {
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(((BaseActivity) getActivity()).TAG);
+        ((BaseActivity) getActivity()).mQueue.add(request);
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -237,6 +293,7 @@ public class AerobicnAppratusFragment extends Fragment {
      * 显示地址弹出框
      */
     private void showAddressPop() {
+        addressCustomPop = new AddressCustomPop(getContext());
         ivCoverBg.setVisibility(View.VISIBLE);
         addressCustomPop
                 .anchorView(rlConditionHead)
@@ -295,7 +352,7 @@ public class AerobicnAppratusFragment extends Fragment {
             params.gravity = Gravity.LEFT;
             params.leftMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
             ivArrow.setLayoutParams(params);
-            listView.setAdapter(new ChooseAddressAdapter(getActivity()));
+            listView.setAdapter(new ChooseAddressAdapter(getActivity(), addresses));
             return inflate;
         }
 
@@ -310,7 +367,7 @@ public class AerobicnAppratusFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    tvAddress.setText("六一北路SF健身馆");
+                    tvAddress.setText(addresses.get(position).getVenueName());
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                 }
@@ -353,6 +410,7 @@ public class AerobicnAppratusFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     orderCustomePop.dismiss();
+                    selectType = Util.getSortList(getContext()).get(position).getId();
                     ivCoverBg.setVisibility(View.GONE);
                 }
             });

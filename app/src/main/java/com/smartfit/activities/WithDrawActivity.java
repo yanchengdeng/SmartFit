@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ public class WithDrawActivity extends BaseActivity {
     @Bind(R.id.tv_have_money)
     TextView tvHaveMoney;
     @Bind(R.id.tv_withdraw)
-    TextView tvWithdraw;
+    EditText tvWithdraw;
     @Bind(R.id.btn_withdraw)
     Button btnWithdraw;
 

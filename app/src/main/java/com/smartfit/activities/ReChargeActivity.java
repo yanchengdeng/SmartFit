@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class ReChargeActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.tv_pay_money)
-    TextView tvPayMoney;
+    EditText tvPayMoney;
     @Bind(R.id.iv_wx)
     ImageView ivWx;
     @Bind(R.id.tv_wx)

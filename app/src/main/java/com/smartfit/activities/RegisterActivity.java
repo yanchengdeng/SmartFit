@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
@@ -57,6 +60,8 @@ public class RegisterActivity extends BaseActivity {
     CheckBox ckRemeber;
     @Bind(R.id.tv_deal)
     TextView tvDeal;
+    @Bind(R.id.btn_regist)
+    Button btnRegist;
     private CountDownTimer countDownTimer;
     private static final Object TAG = new Object();
 
@@ -113,6 +118,39 @@ public class RegisterActivity extends BaseActivity {
         });
 
 
+        //注册
+        btnRegist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etPhone.getEditableText().toString().isEmpty()) {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+                } else {
+                    if (etPhone.getEditableText().toString().length() == 11) {
+                        if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
+                            mSVProgressHUD.showInfoWithStatus(getString(R.string.code_cannot_empty));
+                        } else {
+                            if (TextUtils.isEmpty(etUserName.getEditableText().toString())) {
+                                mSVProgressHUD.showInfoWithStatus(getString(R.string.user_name_cannot_empty));
+                            } else {
+                                if (TextUtils.isEmpty(etNewPassword.getEditableText().toString())) {
+                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt));
+                                } else {
+                                    if(ckRemeber.isChecked()){
+                                        doRegister(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etUserName.getEditableText().toString(), etNewPassword.getEditableText().toString());
+                                    }else{
+                                        mSVProgressHUD.showInfoWithStatus(getString(R.string.have_not_agree_deal));
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+                    }
+                }
+            }
+        });
+
+
         tvDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +158,29 @@ public class RegisterActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void doRegister(String phone, String code, String name, String password) {
+        mSVProgressHUD.showWithStatus(getString(R.string.register_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> data = new HashMap<>();
+        data.put("mobileNo", phone);
+        data.put("checkCode", code);
+        data.put("account", name);
+        data.put("password", MD5.getMessageDigest(password.getBytes()));
+        PostRequest request = new PostRequest(Constants.REGISTER_METHOD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.showSuccessWithStatus(getString(R.string.register_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(TAG);
+        mQueue.add(request);
     }
 
     /**
@@ -141,7 +202,7 @@ public class RegisterActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
             }
         });
         request.setTag(TAG);

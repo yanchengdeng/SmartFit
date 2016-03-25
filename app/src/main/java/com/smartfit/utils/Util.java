@@ -2,6 +2,9 @@ package com.smartfit.utils;
 
 import android.content.Context;
 
+import com.smartfit.R;
+import com.smartfit.beans.SelectedSort;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -31,6 +34,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -101,6 +106,16 @@ public class Util {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static List<SelectedSort> getSortList(Context context) {
+        List<SelectedSort> selectedSorts = new ArrayList<>();
+        String[] ids = new String[]{"0","1","2"};
+        int[] names = new int []{R.string.select_by_time,R.string.select_by_coach,R.string.select_by_left};
+        for(int i = 0 ;i<ids.length;i++){
+            selectedSorts.add(new SelectedSort(ids[i],context.getString(names[i])));
+        }
+        return selectedSorts;
     }
 
     private static class SSLSocketFactoryEx extends SSLSocketFactory {
