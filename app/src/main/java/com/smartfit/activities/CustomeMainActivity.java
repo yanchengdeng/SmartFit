@@ -5,12 +5,21 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 个人主页
@@ -35,6 +44,7 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
         initView();
         addLisener();
+        getCustomeInfo();
         DisplayMetrics localDisplayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
         int mScreenHeight = localDisplayMetrics.heightPixels;
@@ -43,6 +53,24 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView.setHeaderLayoutParams(localObject);
     }
 
+    private void getCustomeInfo() {
+        Map<String, String> data = new HashMap<>();
+
+        PostRequest request = new PostRequest(Constants.COACH_INFO, NetUtil.getRequestBody(data,this), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc",response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        mQueue.add(request);
+    }
 
 
     private void loadViewForCode() {
@@ -144,7 +172,7 @@ public class CustomeMainActivity extends BaseActivity {
 
     }
 
-    private void addLisener(){
+    private void addLisener() {
 
     }
 }

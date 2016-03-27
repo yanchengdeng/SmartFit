@@ -17,8 +17,9 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.beans.CustomeInfo;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -87,7 +88,8 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doLogin(etName.getEditableText().toString(), etPass.getEditableText().toString());
+//                doLogin(etName.getEditableText().toString(), etPass.getEditableText().toString());
+                doLogin("13067380836", "123456");
             }
         });
 
@@ -117,23 +119,24 @@ public class LoginActivity extends BaseActivity {
      */
     private void doLogin(final String accont, final String password) {
 
+
         if (TextUtils.isEmpty(accont)) {
             mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
             return;
         }
         if (accont.length() != 11) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt));
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
             return;
         }
 
 
         mSVProgressHUD.showWithStatus(getString(R.string.login_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("mobileNo", accont);
-        data.put("password", MD5.getMessageDigest(password.getBytes()));
-        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,  NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        data.put("mobileNo", "test");
+        data.put("password", MD5.getMessageDigest("123456".getBytes()));
+        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
             @Override
-            public void onResponse(JsonObject response) {
+            public void onResponse(final JsonObject response) {
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.login_success));
                 new Handler().postDelayed(new Runnable() {
@@ -142,9 +145,14 @@ public class LoginActivity extends BaseActivity {
                         if (ckRemeber.isChecked()) {
                             SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, accont);
                             SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, password);
-                            SharedPreferencesUtils.getInstance().putString(Constants.SID,"sid");
-                            SharedPreferencesUtils.getInstance().putString(Constants.UID,"uid");
                         }
+
+                        CustomeInfo customeInfo = JsonUtils.objectFromJson(response, CustomeInfo.class);
+                        if (customeInfo != null) {
+                            SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());
+                            SharedPreferencesUtils.getInstance().putString(Constants.UID, customeInfo.getUid());
+                        }
+
                         finish();
                     }
                 }, 2000);

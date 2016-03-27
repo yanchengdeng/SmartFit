@@ -53,6 +53,11 @@ public class Constants {
     public static final String GET_CLASS_LIST = "/ClassIf/getClassifList";
 
 
+    //用户信息
+    public static  final  String COACH_INFO = "/Coach/getCoachPageInfo";
+    public static final String ADD_COACH_CERTIFICATE  = "/coach/addCertificate";
+
+
     //系统数据
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
 
@@ -93,8 +98,8 @@ public class Constants {
 
 
         //支付回调
-        public static final String ALIPAY_CALLBACK = "http://120.76.65.142:8015/api.php";
-        public static final String WX_PAY_CALLBACK = "http://120.76.65.142:8015/wxapi.php";
+        public static final String ALIPAY_CALLBACK = Net.URL+"/Pay/aliCallback";
+        public static final String WX_PAY_CALLBACK = Net.URL+"/Pay/weixinCallback";
 
     }
 }

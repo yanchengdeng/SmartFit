@@ -1,14 +1,19 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
+import com.smartfit.beans.CityBeanGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -20,11 +25,13 @@ import me.gujun.android.taggroup.TagGroup;
  */
 public class CityAdapter extends BaseAdapter {
 
-    private List<String[]> datas;
+
+    private List<CityBeanGroup> datas = new ArrayList<>();
+
 
     private Context context;
 
-    public CityAdapter(Context context, List<String[]> datas) {
+    public CityAdapter(Context context, List<CityBeanGroup> datas) {
         this.datas = datas;
 
         this.context = context;
@@ -50,18 +57,36 @@ public class CityAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_city_item, null);
-            viewHolder  = new ViewHolder(convertView);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tagGroup.setTags(datas.get(position));
+        CityBeanGroup item = datas.get(position);
+        if(!TextUtils.isEmpty(item.getIndex())){
+            List<String> tags = new ArrayList<>();
+            for (int i = 0; i < item.getTags().size(); i++) {
+                tags.add(item.getTags().get(i).getDictionaryName());
+            }
+
+            viewHolder.tvLetter.setText(item.getIndex().toUpperCase());
+            viewHolder.tagGroup.setTags(tags.toArray(new String[]{}));
+
+            viewHolder.tagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
+                @Override
+                public void onTagClick(String s) {
+                    ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus(s, SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+            });
+        }
+
+
         return convertView;
     }
 
 
-    public void setData(List<String[]> datas) {
+    public void setData(List<CityBeanGroup> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

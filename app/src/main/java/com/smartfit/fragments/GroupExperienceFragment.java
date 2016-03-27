@@ -42,6 +42,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -195,9 +196,7 @@ public class GroupExperienceFragment extends Fragment {
 
     private void loadData() {
         Map<String, String> data = new HashMap<>();
-        data.put("Longit", "");
-        data.put("Lat", "");
-        data.put("SelDate", selectDate);
+        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("OrderBy", selectType);
         data.put("VenueId", "0");
         data.put("CoachSex", "0");
@@ -219,6 +218,7 @@ public class GroupExperienceFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 noMoreData(datas);
+                LogUtil.w("dyc","..... "+error.getMessage());
             }
         });
         request.setTag(new Object());

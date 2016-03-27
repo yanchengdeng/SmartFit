@@ -145,7 +145,7 @@
     <string name="update">修改</string>
     <string name="account_info">账户信息</string>
     <string name="no_coach_auth">尚未认证</string>
-    <string name="coach_authh">教练资料认证</string>
+    <string name="coach_auth">教练资料认证</string>
     <string name="already_auth">已认证</string>
     <string name="coach_brief">教练简历</string>
     <string name="not_edit">未编写</string>
@@ -174,4 +174,7 @@
     <string name="select_by_time">按时间排序</string>
     <string name="select_by_coach">按教练得分排序</string>
     <string name="select_by_left">按剩余名额排序</string>
+    <string name="add_more_auth_books">添加更过证书</string>
+    <string name="your_coach_info_not_submit">您的教练资料尚未提交</string>
+    <string name="uploading">上传中...</string>
 </resources>

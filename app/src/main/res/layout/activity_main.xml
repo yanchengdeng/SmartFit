@@ -51,6 +51,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/image_padding"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="@string/input_address"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />

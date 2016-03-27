@@ -186,7 +186,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/coach_authh"
+            android:text="@string/coach_auth"
             android:padding="@dimen/activity_horizontal_margin"
             android:textColor="@color/text_color_black"
             android:textSize="@dimen/text_normal" />

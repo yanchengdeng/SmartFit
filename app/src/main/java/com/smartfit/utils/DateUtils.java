@@ -1,7 +1,6 @@
 package com.smartfit.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.smartfit.R;
 import com.smartfit.beans.CustomeDate;
@@ -306,7 +305,7 @@ public class DateUtils {
      * @return
      */
     public static String getDayOFWeek(Context context, int day) {
-        String  dayOfWeek =context.getString(R.string.saturday);
+        String dayOfWeek = context.getString(R.string.saturday);
         switch (day) {
             case 7:
                 dayOfWeek = context.getString(R.string.saturday);
@@ -334,9 +333,9 @@ public class DateUtils {
     }
 
 
-    public static int getIconOfWeek(int day){
+    public static int getIconOfWeek(int day) {
         int icon = R.mipmap.icon_1;
-        switch (day){
+        switch (day) {
             case 1:
                 icon = R.mipmap.icon_7;
                 break;
@@ -346,10 +345,10 @@ public class DateUtils {
             case 3:
                 icon = R.mipmap.icon_2;
                 break;
-            case 4 :
+            case 4:
                 icon = R.mipmap.icon_3;
                 break;
-            case 5 :
+            case 5:
                 icon = R.mipmap.icon_4;
                 break;
             case 6:
@@ -365,12 +364,13 @@ public class DateUtils {
 
     /***
      * 获取点击的日期图片
+     *
      * @param day
      * @return
      */
-    public static int getSelectIconOfWeek(int day){
+    public static int getSelectIconOfWeek(int day) {
         int icon = R.mipmap.icon_1;
-        switch (day){
+        switch (day) {
             case 1:
                 icon = R.mipmap.icon_7_on;
                 break;
@@ -380,10 +380,10 @@ public class DateUtils {
             case 3:
                 icon = R.mipmap.icon_2_on;
                 break;
-            case 4 :
+            case 4:
                 icon = R.mipmap.icon_3_on;
                 break;
-            case 5 :
+            case 5:
                 icon = R.mipmap.icon_4_on;
                 break;
             case 6:
@@ -405,7 +405,7 @@ public class DateUtils {
         List<CustomeDate> customeDates = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_WEEK,-1);
+        c.add(Calendar.DAY_OF_WEEK, -1);
         // 今天是一周中的第几天
 //        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 
@@ -423,5 +423,13 @@ public class DateUtils {
             customeDates.add(item);
         }
         return customeDates;
+    }
+
+    public static long getTheDateMillions(String selectData) {
+
+        Date currtent = StringToDate(selectData, DateStyle.YYYY_MM_DD);
+
+
+        return currtent.getTime() / 1000;
     }
 }

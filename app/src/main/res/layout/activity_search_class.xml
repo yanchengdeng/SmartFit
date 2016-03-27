@@ -31,6 +31,7 @@
             android:layout_toRightOf="@+id/iv_back"
             android:layout_toLeftOf="@+id/iv_function"
             android:hint="@string/input_search_contition"
+            android:singleLine="true"
             android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
 import com.smartfit.adpters.GridViewPublishPhotoAdapter;
-import com.smartfit.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -114,7 +113,6 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
         if(requestCode == REQUEST_IMAGE){
             if(resultCode == RESULT_OK){
                 mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                LogUtil.d("dyc", mSelectPath.toString());
                 if(null != mSelectPath  && mSelectPath.size()>0){
                     gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(PublishCustomeDynamicActivity.this,mSelectPath));
                 }

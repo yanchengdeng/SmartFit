@@ -71,7 +71,7 @@ public class PayActivity extends BaseActivity {
 
     private int payStyle = 1;// 1  微信   2 支付宝
 
-    private String orderID;
+    private String orderID="00100";
 
     /****
      * 页面跳转 index
