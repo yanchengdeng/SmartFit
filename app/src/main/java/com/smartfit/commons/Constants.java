@@ -56,6 +56,8 @@ public class Constants {
     //用户信息
     public static  final  String COACH_INFO = "/Coach/getCoachPageInfo";
     public static final String ADD_COACH_CERTIFICATE  = "/coach/addCertificate";
+    public static final String USER_CONCERNLIST ="/User/concernList";
+    public static final String USER_FANSLIST  = "/User/fansList";
 
 
     //系统数据

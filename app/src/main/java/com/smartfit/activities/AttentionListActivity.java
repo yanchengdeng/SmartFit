@@ -8,13 +8,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.FansAdapter;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -107,6 +115,32 @@ public class AttentionListActivity extends BaseActivity {
 
 
     private void loadData() {
+
+        Map<String, String> data = new HashMap<>();
+
+
+        PostRequest request = new PostRequest(Constants.USER_FANSLIST, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+
+            }
+        });
+        request.setTag(TAG);
+        mQueue.add(request);
+
+
+
+
+
+
         if (page > 4) {
             listView.onLoadMoreComplete();
             return;

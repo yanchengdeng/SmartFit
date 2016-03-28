@@ -71,6 +71,8 @@ public class PostRequest extends Request<JsonObject> {
         mGson = new Gson();
         mListener = listener;
         mRequestBody = requestBody;
+        LogUtil.w("dyc", Constants.Net.URL+method);
+
         LogUtil.w("dyc", mRequestBody.toString());
     }
 

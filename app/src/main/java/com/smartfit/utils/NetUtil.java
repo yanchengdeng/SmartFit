@@ -21,7 +21,7 @@ public class NetUtil {
         map.put("terminal", "1");
         map.put("versionCode", String.valueOf(DeviceUtil.getVersionCode(context)));
         map.put("versionName", DeviceUtil.getVersionName(context));
-        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        map.put("Uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, ""));
         map.put("imei", DeviceUtil.getIMEI(context));
         map.put("sid", SharedPreferencesUtils.getInstance().getString(Constants.SID, ""));

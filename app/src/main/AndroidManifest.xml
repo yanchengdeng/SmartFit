@@ -125,7 +125,6 @@
 
         <!-- end  umeng 分享 -->
         <activity android:name=".activities.OrderReserveActivity" />
-        <activity android:name=".activities.MainUserActivity" />
         <activity
             android:name=".activities.SearchClassActivity"
             android:label="@string/title_activity_search_class"

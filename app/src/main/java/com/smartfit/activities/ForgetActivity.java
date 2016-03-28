@@ -151,8 +151,8 @@ public class ForgetActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("mobileNo", phone);
         data.put("checkCode", code);
-        data.put("password", oldPass);
-        data.put("newPassword", newPass);
+        data.put("password", MD5.getMessageDigest(oldPass.getBytes()));
+        data.put("newPassword", MD5.getMessageDigest(newPass.getBytes()));
         PostRequest request = new PostRequest(Constants.RESET_PASSOWRD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

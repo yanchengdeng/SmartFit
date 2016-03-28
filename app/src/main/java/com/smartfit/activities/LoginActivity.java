@@ -88,8 +88,7 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                doLogin(etName.getEditableText().toString(), etPass.getEditableText().toString());
-                doLogin("13067380836", "123456");
+                doLogin(etName.getEditableText().toString(), etPass.getEditableText().toString());
             }
         });
 
@@ -124,16 +123,18 @@ public class LoginActivity extends BaseActivity {
             mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
             return;
         }
-        if (accont.length() != 11) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+
+
+        if (TextUtils.isEmpty(password)) {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt));
             return;
         }
 
 
         mSVProgressHUD.showWithStatus(getString(R.string.login_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("mobileNo", "test");
-        data.put("password", MD5.getMessageDigest("123456".getBytes()));
+        data.put("mobileNo",accont);
+        data.put("password", MD5.getMessageDigest(password.getBytes()));
         PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(final JsonObject response) {
