@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.fragments.CustomAnimationDemoFragment;
 
 /**
  * 我的主页 （教练身份）
@@ -32,7 +33,11 @@ public class CustomeCoachActivity extends BaseActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.bar_regiter_bg);//通知栏所需颜色
-
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new CustomAnimationDemoFragment())
+                    .commit();
+        }
         loadViewForCode();
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
         initView();

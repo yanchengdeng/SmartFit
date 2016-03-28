@@ -15,6 +15,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.AerobicnAppratusFragment;
+import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.fragments.GroupExperienceFragment;
 import com.smartfit.fragments.PrivateEducationFragment;
 import com.smartfit.fragments.SmallClassFragment;
@@ -50,7 +51,11 @@ public class MainBusinessActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_business);
         ButterKnife.bind(this);
-
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new CustomAnimationDemoFragment())
+                    .commit();
+        }
         initFragments();
 
         addLisener();

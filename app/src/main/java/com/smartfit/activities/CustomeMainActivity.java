@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
+import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -39,7 +40,11 @@ public class CustomeMainActivity extends BaseActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.bar_regiter_bg);//通知栏所需颜色
-
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new CustomAnimationDemoFragment())
+                    .commit();
+        }
         loadViewForCode();
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
         initView();

@@ -2,137 +2,80 @@ package com.smartfit.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.smartfit.R;
-import com.smartfit.activities.CoachInfoActivity;
+import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.CustomeCoachActivity;
 import com.smartfit.activities.CustomeDynamicActivity;
 import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
-import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
-import com.smartfit.activities.MainUserActivity;
+import com.smartfit.views.pathmenu.FilterMenu;
+import com.smartfit.views.pathmenu.FilterMenuLayout;
 
 /**
-     * A placeholder fragment containing a simple view.
-     */
-    public  class CustomAnimationDemoFragment extends Fragment {
+ * A placeholder fragment containing a simple view.
+ */
+public class CustomAnimationDemoFragment extends Fragment {
 
-        public CustomAnimationDemoFragment() {
+    public CustomAnimationDemoFragment() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_menu_with_custom_animation, container, false);
+        FilterMenuLayout filterMenuLayout = (FilterMenuLayout) rootView.findViewById(R.id.filter_menu);
+        attachMenu(filterMenuLayout);
+        return rootView;
+    }
+
+    private FilterMenu attachMenu(FilterMenuLayout layout) {
+        return new FilterMenu.Builder(getActivity())
+                .addItem(R.mipmap.icon_home5, getString(R.string.menu_main))
+                .addItem(R.mipmap.icon_home4, getString(R.string.menu_class))
+                .addItem(R.mipmap.icon_home1, getString(R.string.menu_dynamic))
+                .addItem(R.mipmap.icon_home2, getString(R.string.menu_info))
+                .addItem(R.mipmap.icon_home3, getString(R.string.menu_mine))
+                .attach(layout)
+                .withListener(listener)
+                .build();
+    }
+
+    FilterMenu.OnMenuChangeListener listener = new FilterMenu.OnMenuChangeListener() {
+        @Override
+        public void onMenuItemClick(View view, int position) {
+            switch (position) {
+                case 0:
+                    ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
+                    break;
+                case 1:
+                    ((BaseActivity) getActivity()).openActivity(MainBusinessActivity.class);
+                    break;
+                case 2:
+                    ((BaseActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
+                    break;
+                case 3:
+                    ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
+                    break;
+                case 4:
+                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+                    break;
+            }
+
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public void onMenuCollapse() {
 
-            int actionMenuRadius = getResources().getDimensionPixelSize(R.dimen.red_action_menu_radius);
-            int subActionButtonSize = getResources().getDimensionPixelSize(R.dimen.blue_sub_action_button_size);
-            View rootView = inflater.inflate(R.layout.fragment_menu_with_custom_animation, container, false);
-
-
-            ImageView fabContent = new ImageView(getActivity());
-            fabContent.setImageDrawable(getResources().getDrawable(R.mipmap.icon_home));
-
-            FloatingActionButton darkButton = new FloatingActionButton.Builder(getActivity())
-                                                  .setTheme(FloatingActionButton.THEME_DARK)
-                                                  .setContentView(fabContent)
-                                                  .setPosition(FloatingActionButton.POSITION_BOTTOM_RIGHT)
-                                                  .build();
-
-            SubActionButton.Builder rLSubBuilder = new SubActionButton.Builder(getActivity())
-                                                   .setTheme(SubActionButton.THEME_DARK);
-
-          View main_menu = LayoutInflater.from(getActivity()).inflate(R.layout.menu_main_view, null);
-            View class_menu = LayoutInflater.from(getActivity()).inflate(R.layout.menu_class_view, null);
-            View dynamic_meu = LayoutInflater.from(getActivity()).inflate(R.layout.menu_dynamic_view, null);
-            View msg_menu = LayoutInflater.from(getActivity()).inflate(R.layout.menu_info_view, null);
-            View mine_meun = LayoutInflater.from(getActivity()).inflate(R.layout.menu_mine_view, null);
-            FrameLayout.LayoutParams blueParams = new FrameLayout.LayoutParams(subActionButtonSize, subActionButtonSize);
-            blueParams.gravity= Gravity.CENTER;
-            rLSubBuilder.setLayoutParams(blueParams);
-
-
-            // Set 4 SubActionButtons
-            final FloatingActionMenu centerBottomMenu = new FloatingActionMenu.Builder(getActivity())
-                    .setStartAngle(170)
-                    .setEndAngle(280)
-//                    .setAnimationHandler(new SlideInAnimationHandler())
-                    .addSubActionView(rLSubBuilder.setContentView(main_menu).build())
-                    .addSubActionView(rLSubBuilder.setContentView(class_menu).build())
-                    .addSubActionView(rLSubBuilder.setContentView(dynamic_meu).build())
-                    .addSubActionView(rLSubBuilder.setContentView(msg_menu).build())
-                    .addSubActionView(rLSubBuilder.setContentView(mine_meun).build())
-                    .attachTo(darkButton)
-                    .setRadius(actionMenuRadius)
-                    .build();
-
-            centerBottomMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
-                @Override
-                public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
-
-                }
-
-                @Override
-                public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
-
-                }
-            });
-
-            main_menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).openActivity(LoginActivity.class);
-
-                }
-            });
-
-            class_menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).openActivity(MainBusinessActivity.class);
-                }
-            });
-
-
-            dynamic_meu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
-                }
-            });
-
-
-            msg_menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    centerBottomMenu.close(false);
-                    ((MainActivity) getActivity()).openActivity(CustomeCoachActivity.class);
-                }
-            });
-
-            mine_meun.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    centerBottomMenu.close(false);
-                    ((MainActivity)getActivity()).openActivity(CustomeMainActivity.class);
-                }
-            });
-
-
-
-
-            return rootView;
         }
-    }
+
+        @Override
+        public void onMenuExpand() {
+
+        }
+    };
+}
