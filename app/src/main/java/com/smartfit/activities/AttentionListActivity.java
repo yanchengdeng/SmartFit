@@ -119,7 +119,7 @@ public class AttentionListActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
 
 
-        PostRequest request = new PostRequest(Constants.USER_FANSLIST, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_FANSLIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -134,6 +134,7 @@ public class AttentionListActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(AttentionListActivity.this);
         mQueue.add(request);
 
 

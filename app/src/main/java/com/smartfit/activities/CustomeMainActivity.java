@@ -61,7 +61,7 @@ public class CustomeMainActivity extends BaseActivity {
     private void getCustomeInfo() {
         Map<String, String> data = new HashMap<>();
 
-        PostRequest request = new PostRequest(Constants.COACH_INFO, NetUtil.getRequestBody(data,this), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.COACH_INFO, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc",response.toString());

@@ -62,6 +62,7 @@ public class Constants {
 
     //系统数据
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
+    public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
 
 
     /*****

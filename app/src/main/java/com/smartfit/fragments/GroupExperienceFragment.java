@@ -203,7 +203,7 @@ public class GroupExperienceFragment extends Fragment {
         data.put("PriceRang", "0");
         data.put("TimeRang", "0");
         data.put("CourseType", "0");
-        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
@@ -222,6 +222,7 @@ public class GroupExperienceFragment extends Fragment {
             }
         });
         request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
@@ -303,7 +304,7 @@ public class GroupExperienceFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("SelDate", selectDate);
         data.put("OrdeyBy", "0");
-        PostRequest request = new PostRequest(Constants.GET_VENUElIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<WorkPointAddress> reqeustAddresses = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
@@ -322,6 +323,7 @@ public class GroupExperienceFragment extends Fragment {
             }
         });
         request.setTag(((BaseActivity) getActivity()).TAG);
+        request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
 
     }

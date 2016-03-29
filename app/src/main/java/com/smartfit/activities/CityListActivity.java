@@ -100,7 +100,7 @@ public class CityListActivity extends BaseActivity {
 
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        PostRequest request = new PostRequest(Constants.GET_CITY_LIST, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -123,6 +123,7 @@ public class CityListActivity extends BaseActivity {
                 noData.setVisibility(View.VISIBLE);
             }
         });
+        request.headers =NetUtil.getRequestBody(CityListActivity.this);
         request.setTag(TAG);
         mQueue.add(request);
 

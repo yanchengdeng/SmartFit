@@ -153,7 +153,7 @@ public class ForgetActivity extends BaseActivity {
         data.put("checkCode", code);
         data.put("password", MD5.getMessageDigest(oldPass.getBytes()));
         data.put("newPassword", MD5.getMessageDigest(newPass.getBytes()));
-        PostRequest request = new PostRequest(Constants.RESET_PASSOWRD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.RESET_PASSOWRD, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showInfoWithStatus("重置成功");
@@ -165,6 +165,7 @@ public class ForgetActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(ForgetActivity.this);
         mQueue.add(request);
 
     }
@@ -178,7 +179,7 @@ public class ForgetActivity extends BaseActivity {
     private void sendCode(final String phone) {
         Map<String, String> data = new HashMap<>();
         data.put("mobile", phone);
-        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 btnGetcode.setClickable(false);
@@ -193,6 +194,7 @@ public class ForgetActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(ForgetActivity.this);
         mQueue.add(request);
 
 

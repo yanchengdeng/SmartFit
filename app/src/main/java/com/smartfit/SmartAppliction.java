@@ -10,6 +10,8 @@ import com.nostra13.universalimageloader.utils.L;
 import com.smartfit.commons.AppException;
 import com.umeng.socialize.PlatformConfig;
 
+import org.xutils.x;
+
 /**
  * Created by dengyancheng on 16/2/23.
  */
@@ -38,6 +40,7 @@ public class SmartAppliction extends Application {
     public void onCreate() {
         super.onCreate();
         initImageLoader();
+        x.Ext.init(this);
         registerUncaughtExceptionHandler();
     }
 

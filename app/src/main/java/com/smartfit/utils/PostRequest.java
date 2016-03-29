@@ -61,7 +61,7 @@ public class PostRequest extends Request<JsonObject> {
 
     private final Listener<JsonObject> mListener;
 
-    private final Map<String, String> mRequestBody;
+    public  Map<String, String> mRequestBody ;
 
     private Gson mGson;
 
@@ -76,12 +76,20 @@ public class PostRequest extends Request<JsonObject> {
         LogUtil.w("dyc", mRequestBody.toString());
     }
 
+    public PostRequest(String method,  Listener<JsonObject> listener,
+                       ErrorListener errorListener) {
+        super(Method.POST, Constants.Net.URL + method, errorListener);
+        mGson = new Gson();
+        mListener = listener;
+        LogUtil.w("dyc", Constants.Net.URL+method);
+    }
+
     @Override
     protected void deliverResponse(JsonObject response) {
         mListener.onResponse(response);
     }
 
-    private Map<String, String> headers = new HashMap<>();
+    public Map<String, String> headers = new HashMap<>();
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {

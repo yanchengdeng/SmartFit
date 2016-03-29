@@ -23,11 +23,19 @@ import com.smartfit.adpters.GridViewAuthAdapter;
 import com.smartfit.adpters.MoreCertiaicateAdapter;
 import com.smartfit.beans.Certificate;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyGridView;
 import com.smartfit.views.MyListView;
 
+import org.xutils.common.Callback;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +113,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
             if (msg.obj instanceof String) {
                 Certificate item = certificateList.get(msg.what);
                 if (item != null) {
-                    certificateList.get(msg.what).setName((String)msg.obj);
+                    certificateList.get(msg.what).setName((String) msg.obj);
                 }
             } else {
                 UpdateCertificate(msg.what, (ArrayList<String>) msg.obj);
@@ -117,7 +125,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
     private void UpdateCertificate(int position, ArrayList<String> mSelectPath) {
         Certificate certificate = certificateList.get(position);
         positon = position;
-        if (certificate != null ) {
+        if (certificate != null) {
             goPhotoThum(mSelectPath, REQUEST_CERTIFICATE_MORE, 1);
         }
     }
@@ -252,17 +260,17 @@ public class CoachAuthBaseActivity extends BaseActivity {
             public void onClick(View v) {
                 if (TextUtils.isEmpty(tvName.getEditableText().toString())) {
                     mSVProgressHUD.showInfoWithStatus("请输入姓名", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                }else {
+                } else {
                     if (TextUtils.isEmpty(tvCard.getEditableText().toString())) {
                         mSVProgressHUD.showInfoWithStatus("请输入身份证号", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }else {
-                        if (cards.size()==0) {
+                    } else {
+                        if (cards.size() == 0) {
                             mSVProgressHUD.showInfoWithStatus("请添加身份证照片", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        }else{
-                            if (works.size()==0) {
+                        } else {
+                            if (works.size() == 0) {
                                 mSVProgressHUD.showInfoWithStatus("请添加正式照", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                            }else{
-                                doSubmit(tvName.getEditableText().toString(),tvCard.getEditableText().toString(),cards,works);
+                            } else {
+                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), cards, works);
                             }
                         }
                     }
@@ -273,31 +281,49 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
     private void doSubmit(String name, String card, ArrayList<String> cards, ArrayList<String> works) {
         mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        Map<String, String> data = new HashMap<>();
-        data.put("CoachId","");
-        data.put("CoachRealName",name);
-        data.put("IdentityCode",card);
-        data.put("IdentityPicUrl","");
-        data.put("UserPicUrl","");
-        //TODO  接口测试完 ，证书也要加入接口参数中
-
-
-        PostRequest request = new PostRequest(Constants.ADD_COACH_CERTIFICATE, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-                mSVProgressHUD.dismiss();
-
-
+        RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
+//        params.addBodyParameter("CoachId", "8");
+//        params.addBodyParameter("CoachRealName", name);
+//        params.addBodyParameter("IdentityCode", card);
+        // 使用multipart表单上传文件
+        params.setMultipart(true);
+        try {
+            for (String item : cards) {
+                params.addBodyParameter("imageFile", new File(item), "image/jpeg", "身份证");
             }
-        }, new Response.ErrorListener() {
+            for (String item : works) {
+                params.addBodyParameter("imageFile", new File(item), "image/jpeg", "从业者正式照");
+            }
+        } catch (Exception ex) {
+            LogUtil.w("dyc",ex.getMessage());
+        }
+        LogUtil.w("dyc",params.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+            public void onSuccess(String result) {
+                LogUtil.w("dyc",result);
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus(getString(R.string.subimit_success, SVProgressHUD.SVProgressHUDMaskType.Clear));
+            }
 
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(ex.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                mSVProgressHUD.dismiss();
+            }
+
+            @Override
+            public void onFinished() {
+                mSVProgressHUD.dismiss();
             }
         });
-        request.setTag(TAG);
-        mQueue.add(request);
+
+
     }
 
 

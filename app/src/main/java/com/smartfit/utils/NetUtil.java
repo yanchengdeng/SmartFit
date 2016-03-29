@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class NetUtil {
 
-    public static    Map<String, String>  getRequestBody(Map<String, String> data, Context context) {
+    public static    Map<String, String>  getRequestBody( Context context) {
 
         Map<String, String> map = new HashMap<>();
         map.put("terminal", "1");
@@ -25,12 +25,10 @@ public class NetUtil {
         map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, ""));
         map.put("imei", DeviceUtil.getIMEI(context));
         map.put("sid", SharedPreferencesUtils.getInstance().getString(Constants.SID, ""));
-        data.put("Longit", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, ""));
-        data.put("Lat", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, ""));
-        data.put("CityCode", "");
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            map.put(entry.getKey(), entry.getValue());
-        }
+//        map.put("Longit", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, ""));
+//        map.put("Lat", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, ""));
+//        map.put("CityCode", "");
+
         return map;
     }
 

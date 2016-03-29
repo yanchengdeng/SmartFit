@@ -179,7 +179,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         data.put("CourseId", id);
         data.put("PageNO", String.valueOf(page));
         data.put("PageSize", "5");
-        PostRequest request = new PostRequest(Constants.CLASS_COMMEND, NetUtil.getRequestBody(data, this), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<ClassCommend> commends = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassCommend.class);
@@ -204,6 +204,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         });
         request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
         mQueue.add(request);
     }
 
@@ -211,7 +212,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
         data.put("CourseId", id);
-        PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, NetUtil.getRequestBody(data, this), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
@@ -226,6 +227,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         });
         request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
         mQueue.add(request);
 
 

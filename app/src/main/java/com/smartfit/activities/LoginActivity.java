@@ -135,7 +135,7 @@ public class LoginActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("mobileNo",accont);
         data.put("password", MD5.getMessageDigest(password.getBytes()));
-        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(final JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -169,6 +169,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(LoginActivity.this);
         mQueue.add(request);
     }
 

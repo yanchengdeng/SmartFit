@@ -177,4 +177,6 @@
     <string name="add_more_auth_books">添加更过证书</string>
     <string name="your_coach_info_not_submit">您的教练资料尚未提交</string>
     <string name="uploading">上传中...</string>
+    <string name="subimit_success">提交完成</string>
+    <string name="try_later">稍后再试</string>
 </resources>

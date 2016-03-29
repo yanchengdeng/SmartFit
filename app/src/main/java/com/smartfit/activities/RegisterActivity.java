@@ -167,7 +167,7 @@ public class RegisterActivity extends BaseActivity {
         data.put("checkCode", code);
         data.put("account", name);
         data.put("password", MD5.getMessageDigest(password.getBytes()));
-        PostRequest request = new PostRequest(Constants.REGISTER_METHOD, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.REGISTER_METHOD, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.register_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -180,6 +180,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(RegisterActivity.this);
         mQueue.add(request);
     }
 
@@ -191,7 +192,7 @@ public class RegisterActivity extends BaseActivity {
     private void sendCode(final String phone) {
         Map<String, String> data = new HashMap<>();
         data.put("mobile", phone);
-        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.SMS_SMSSEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 btnGetcode.setClickable(false);
@@ -206,6 +207,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(RegisterActivity.this);
         mQueue.add(request);
     }
 

@@ -255,7 +255,7 @@ public class AerobicnAppratusFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("SelDate", selectDate);
         data.put("OrdeyBy", "0");
-        PostRequest request = new PostRequest(Constants.GET_VENUElIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<WorkPointAddress> reqestAddresses = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
@@ -274,6 +274,7 @@ public class AerobicnAppratusFragment extends Fragment {
             }
         });
         request.setTag(((BaseActivity) getActivity()).TAG);
+        request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
 
     }

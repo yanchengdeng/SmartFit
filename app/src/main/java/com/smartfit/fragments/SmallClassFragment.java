@@ -193,7 +193,7 @@ public class SmallClassFragment extends Fragment {
 
         Map<String, String> data = new HashMap<>();
         data.put("keyword", "");
-        PostRequest request = new PostRequest(Constants.SEARCH_CLASS, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
@@ -211,6 +211,7 @@ public class SmallClassFragment extends Fragment {
             }
         });
         request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
@@ -290,7 +291,7 @@ public class SmallClassFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("SelDate", selectDate);
         data.put("OrdeyBy", "0");
-        PostRequest request = new PostRequest(Constants.GET_VENUElIST, NetUtil.getRequestBody(data, getActivity()), new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<WorkPointAddress> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
@@ -309,6 +310,7 @@ public class SmallClassFragment extends Fragment {
             }
         });
         request.setTag(((BaseActivity) getActivity()).TAG);
+        request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
 
     }
