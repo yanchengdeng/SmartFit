@@ -1,5 +1,7 @@
 package com.smartfit.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
@@ -129,11 +133,11 @@ public class ForgetActivity extends BaseActivity {
                             if (TextUtils.isEmpty(etOldPassword.getEditableText().toString())) {
                                 mSVProgressHUD.showInfoWithStatus(getString(R.string.old_password_cannot_empty));
                             } else {
-                                if (etOldPassword.getEditableText().toString().equals(SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "")))
+                                if (!TextUtils.isEmpty(etNewPassword.getEditableText().toString()))
                                 {
                                    resetPassword(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etOldPassword.getEditableText().toString(), etNewPassword.getEditableText().toString());
                                 }else{
-                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.old_password_is_error));
+                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.new_password_cannot_empty));
                                 }
                             }
                         }
@@ -157,17 +161,38 @@ public class ForgetActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showInfoWithStatus("重置成功");
+                showResetSuccessDialog();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                showResetSuccessDialog();
             }
         });
         request.setTag(TAG);
         request.headers = NetUtil.getRequestBody(ForgetActivity.this);
         mQueue.add(request);
 
+    }
+
+    private void showResetSuccessDialog() {
+        final NormalDialog dialog = new NormalDialog(ForgetActivity.this);
+        dialog.content("重置密码成功！！")//
+                .btnNum(1)
+                .btnText("确定")//
+//                .showAnim(mBasIn)//
+//                .dismissAnim(mBasOut)//
+                .show();
+        dialog.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialog.dismiss();
+                SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
+                openActivity(LoginActivity.class);
+                finish();
+            }
+        });
     }
 
 
@@ -183,14 +208,14 @@ public class ForgetActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 btnGetcode.setClickable(false);
-                mSVProgressHUD.showInfoWithStatus(getString(R.string.send_success));
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.send_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 countDownTimer.start();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(TAG);

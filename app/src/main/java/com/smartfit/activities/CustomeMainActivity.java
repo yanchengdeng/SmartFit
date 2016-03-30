@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
@@ -59,12 +60,11 @@ public class CustomeMainActivity extends BaseActivity {
     }
 
     private void getCustomeInfo() {
-        Map<String, String> data = new HashMap<>();
 
-        PostRequest request = new PostRequest(Constants.COACH_INFO, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest("/User/fansList", new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc",response.toString());
+                LogUtil.w("dyc", response.toString());
 
             }
         }, new Response.ErrorListener() {
@@ -72,7 +72,12 @@ public class CustomeMainActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showErrorWithStatus(error.getMessage());
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return NetUtil.getRequestBody(CustomeMainActivity.this);
+            }
+        };
         request.setTag(new Object());
         mQueue.add(request);
     }

@@ -71,8 +71,20 @@ public class LoginActivity extends BaseActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.bar_regiter_bg);//通知栏所需颜色
-
+        initView();
         addLisener();
+    }
+
+    private void initView() {
+        String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT,"");
+        String pwd = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD,"");
+        if (!TextUtils.isEmpty(account)) {
+            etName.setText(account);
+        }
+
+        if (!TextUtils.isEmpty(pwd)) {
+            etPass.setText(pwd);
+        }
     }
 
 
@@ -104,6 +116,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(RegisterActivity.class);
+                finish();
             }
         });
 
@@ -120,13 +133,13 @@ public class LoginActivity extends BaseActivity {
 
 
         if (TextUtils.isEmpty(accont)) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.account_cannot_empty), SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
 
 
         if (TextUtils.isEmpty(password)) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt));
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt), SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
 
@@ -146,8 +159,10 @@ public class LoginActivity extends BaseActivity {
                         if (ckRemeber.isChecked()) {
                             SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, accont);
                             SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, password);
+                        }else{
+                            SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, "");
+                            SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, "");
                         }
-
                         CustomeInfo customeInfo = JsonUtils.objectFromJson(response, CustomeInfo.class);
                         if (customeInfo != null) {
                             SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());

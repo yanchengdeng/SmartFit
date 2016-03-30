@@ -1,6 +1,7 @@
 package com.smartfit.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,11 @@ import com.smartfit.activities.CustomeCoachActivity;
 import com.smartfit.activities.CustomeDynamicActivity;
 import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
+import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.utils.IntentUtils;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
 import com.smartfit.views.pathmenu.FilterMenu;
 import com.smartfit.views.pathmenu.FilterMenuLayout;
 
@@ -50,19 +55,34 @@ public class CustomAnimationDemoFragment extends Fragment {
         public void onMenuItemClick(View view, int position) {
             switch (position) {
                 case 0:
-                    ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
+                    if (!MainActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+//
                     break;
                 case 1:
-                    ((BaseActivity) getActivity()).openActivity(MainBusinessActivity.class);
+                    if (!MainBusinessActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                        ((BaseActivity) getActivity()).openActivity(MainBusinessActivity.class);
+                    }
                     break;
                 case 2:
-                    ((BaseActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
+                    if (!CustomeDynamicActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                        ((BaseActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
+                    }
                     break;
                 case 3:
                     ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
                     break;
                 case 4:
-                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+                    if (NetUtil.isLogin(getActivity())) {
+                        if (!CustomeMainActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                            ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+                        }
+                    } else {
+                        ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
+                    }
                     break;
             }
 

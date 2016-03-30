@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import butterknife.Bind;
@@ -146,6 +148,9 @@ public class SettingActivity extends BaseActivity {
         tvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferencesUtils.getInstance().remove(Constants.UID);
+                SharedPreferencesUtils.getInstance().remove(Constants.SID);
+                openActivity(LoginActivity.class);
                 finish();
             }
         });

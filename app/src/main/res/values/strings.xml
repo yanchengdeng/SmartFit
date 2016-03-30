@@ -179,4 +179,6 @@
     <string name="uploading">上传中...</string>
     <string name="subimit_success">提交完成</string>
     <string name="try_later">稍后再试</string>
+    <string name="account_cannot_empty">账号不能为空</string>
+    <string name="new_password_cannot_empty">新密码不能为空</string>
 </resources>

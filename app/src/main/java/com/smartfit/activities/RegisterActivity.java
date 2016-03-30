@@ -123,28 +123,28 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (etPhone.getEditableText().toString().isEmpty()) {
-                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty));
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_cannot_empty), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
                     if (etPhone.getEditableText().toString().length() == 11) {
                         if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
-                            mSVProgressHUD.showInfoWithStatus(getString(R.string.code_cannot_empty));
+                            mSVProgressHUD.showInfoWithStatus(getString(R.string.code_cannot_empty), SVProgressHUD.SVProgressHUDMaskType.Clear);
                         } else {
                             if (TextUtils.isEmpty(etUserName.getEditableText().toString())) {
-                                mSVProgressHUD.showInfoWithStatus(getString(R.string.user_name_cannot_empty));
+                                mSVProgressHUD.showInfoWithStatus(getString(R.string.user_name_cannot_empty), SVProgressHUD.SVProgressHUDMaskType.Clear);
                             } else {
                                 if (TextUtils.isEmpty(etNewPassword.getEditableText().toString())) {
-                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt));
+                                    mSVProgressHUD.showInfoWithStatus(getString(R.string.passowr_cannot_empt), SVProgressHUD.SVProgressHUDMaskType.Clear);
                                 } else {
                                     if(ckRemeber.isChecked()){
                                         doRegister(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etUserName.getEditableText().toString(), etNewPassword.getEditableText().toString());
                                     }else{
-                                        mSVProgressHUD.showInfoWithStatus(getString(R.string.have_not_agree_deal));
+                                        mSVProgressHUD.showInfoWithStatus(getString(R.string.have_not_agree_deal), SVProgressHUD.SVProgressHUDMaskType.Clear);
                                     }
                                 }
                             }
                         }
                     } else {
-                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error));
+                        mSVProgressHUD.showInfoWithStatus(getString(R.string.phone_format_error), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
                 }
             }

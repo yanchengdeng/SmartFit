@@ -1,5 +1,6 @@
 package com.smartfit.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 
@@ -25,5 +26,16 @@ public class IntentUtils {
         }else{
             ((BaseActivity) context).startActivityForResult(intent, requestCode);
         }
+    }
+
+    /***
+     * 获取当前activiy _name
+     * @param context
+     * @return
+     */
+    public static String getRunningActivityName(Context context){
+        ActivityManager activityManager=(ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
+        return runningActivity;
     }
 }

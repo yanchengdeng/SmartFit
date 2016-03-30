@@ -141,4 +141,17 @@ public class SharedPreferencesUtils {
         }
     }
 
+    public void clear() {
+        try {
+            android.content.SharedPreferences sp = getSp();
+            if (sp != null) {
+                Editor e = sp.edit();
+                e.clear();
+                e.commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
