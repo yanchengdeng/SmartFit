@@ -33,6 +33,7 @@ public class Constants {
     public static final String ACCOUNT = "account";//账号
     public static final String PASSWORD  = "password";
     public static final String SID = "sid";//会话id
+    public static final String IS_ICF = "is_icf";//是否教练认证
 
 
     /**
@@ -54,8 +55,8 @@ public class Constants {
 
 
     //用户信息
-    public static  final  String COACH_INFO = "/Coach/getCoachPageInfo";
-    public static final String ADD_COACH_CERTIFICATE  = "/coach/addCertificate";
+    public static final String MAIN_PAGE_INFO = "/User/mainPage";
+    public static final String USER_USERINFO = "/User/userInfo";
     public static final String USER_CONCERNLIST ="/User/concernList";
     public static final String USER_FANSLIST  = "/User/fansList";
 

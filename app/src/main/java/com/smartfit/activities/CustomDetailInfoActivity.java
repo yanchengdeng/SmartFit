@@ -1,11 +1,24 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.UserInfoDetail;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import butterknife.Bind;
@@ -50,8 +63,71 @@ public class CustomDetailInfoActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.account_info));
+        getUserInfo();
 
 
+    }
+
+    private void getUserInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                if (userInfoDetail != null) {
+                    fillData(userInfoDetail);
+                }
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomDetailInfoActivity.this);
+        mQueue.add(request);
+    }
+
+    /***
+     * 填充用户信息
+     *
+     * @param userInfoDetail
+     */
+    private void fillData(UserInfoDetail userInfoDetail) {
+        ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeaderr, Options.getHeaderOptions());
+        if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+            tvName.setText(userInfoDetail.getNickName());
+        }
+
+
+        if (!TextUtils.isEmpty(userInfoDetail.getSex()) && userInfoDetail.getSex().equals("0")) {
+            tvSex.setText("女");
+        } else {
+            tvSex.setText("男");
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getSignature())) {
+            tvMotto.setText(userInfoDetail.getSignature());
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getMobile())) {
+            tvBindPhone.setText(userInfoDetail.getMobile());
+        }
+        String coachStatus = userInfoDetail.getIsICF();
+        if (!TextUtils.isEmpty(coachStatus)) {
+            if (coachStatus.equals("0")) {
+                tvCoachAuthStatus.setText("尚未认证");
+            } else if (coachStatus.equals("1")) {
+                tvCoachAuthStatus.setText("上线");
+            } else if (coachStatus.equals("2")) {
+                tvCoachAuthStatus.setText("下线");
+            } else {
+                tvCoachAuthStatus.setText("审核中");
+            }
+        }
     }
 
     private void addLisener() {

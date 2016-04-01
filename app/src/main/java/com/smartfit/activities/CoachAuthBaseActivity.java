@@ -29,6 +29,7 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyGridView;
 import com.smartfit.views.MyListView;
 
+import org.apache.http.params.HttpProtocolParams;
 import org.xutils.common.Callback;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
@@ -289,10 +290,10 @@ public class CoachAuthBaseActivity extends BaseActivity {
         params.setMultipart(true);
         try {
             for (String item : cards) {
-                params.addBodyParameter("imageFile", new File(item), "image/jpeg", "身份证");
+                params.addBodyParameter("imageFile", new File(item));
             }
             for (String item : works) {
-                params.addBodyParameter("imageFile", new File(item), "image/jpeg", "从业者正式照");
+                params.addBodyParameter("imageFile", new File(item));
             }
         } catch (Exception ex) {
             LogUtil.w("dyc",ex.getMessage());

@@ -9,24 +9,22 @@ sha1           70:1A:8B:0B:81:E3:BE:66:EC:12:A1:1E:00:1D:4E:90:C0:0A:84:7D
 
 统一进度条加载显示
 mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-
- mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        Map<String, String> data = new HashMap<>();
-
-
-        PostRequest request = new PostRequest(Constants.ADD_COACH_CERTIFICATE, NetUtil.getRequestBody(data, mContext), new Response.Listener<JsonObject>() {
+ PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                if (null != userInfo) {
+                    fillData(userInfo);
+                }
+
                 mSVProgressHUD.dismiss();
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage());
-
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
             }
         });
-        request.setTag(TAG);
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeMainActivity.this);
         mQueue.add(request);

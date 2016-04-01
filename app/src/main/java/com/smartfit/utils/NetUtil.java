@@ -22,16 +22,17 @@ public class NetUtil {
         map.put("terminal", "1");
         map.put("versionCode", String.valueOf(DeviceUtil.getVersionCode(context)));
         map.put("versionName", DeviceUtil.getVersionName(context));
-        map.put("Uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
-        map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, ""));
+        map.put("Uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, "0"));
+        map.put("acc", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "0"));
         map.put("imei", DeviceUtil.getIMEI(context));
-        map.put("sid", SharedPreferencesUtils.getInstance().getString(Constants.SID, ""));
+        map.put("sid", SharedPreferencesUtils.getInstance().getString(Constants.SID, "0"));
 //        map.put("Longit", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, ""));
 //        map.put("Lat", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, ""));
 //        map.put("CityCode", "");
-        LogUtil.w("dyc", map.toString());
+
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("User-agent", map.toString());
+        LogUtil.w("dyc", headers.toString());
         return headers;
     }
 
@@ -58,8 +59,12 @@ public class NetUtil {
      * @return
      */
     public static boolean isLogin(Context context) {
-        String uid = SharedPreferencesUtils.getInstance().getString(Constants.UID, "");
+        String uid = SharedPreferencesUtils.getInstance().getString(Constants.UID, "0");
         if (TextUtils.isEmpty(uid)) {
+            return false;
+        }
+
+        if(uid.equals("0")){
             return false;
         }
         return true;

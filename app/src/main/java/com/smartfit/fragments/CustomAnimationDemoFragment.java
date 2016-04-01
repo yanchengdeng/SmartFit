@@ -15,9 +15,11 @@ import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.IntentUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.pathmenu.FilterMenu;
 import com.smartfit.views.pathmenu.FilterMenuLayout;
 
@@ -78,14 +80,18 @@ public class CustomAnimationDemoFragment extends Fragment {
                 case 4:
                     if (NetUtil.isLogin(getActivity())) {
                         if (!CustomeMainActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
-                            ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+                            String isICF = SharedPreferencesUtils.getInstance().getString(Constants.IS_ICF, "0");
+                            if (isICF.equals("0")) {
+                                ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+                            } else {
+                                ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
+                            }
                         }
                     } else {
                         ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
                     }
                     break;
             }
-
         }
 
         @Override
