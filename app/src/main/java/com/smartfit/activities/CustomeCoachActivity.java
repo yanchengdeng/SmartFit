@@ -1,18 +1,28 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 我的主页 （教练身份）
@@ -65,6 +75,16 @@ public class CustomeCoachActivity extends BaseActivity {
     }
 
     private void initView() {
+        getCoachInfo();
+
+
+        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
+            openAuth();
+        } else {
+            closeAuth();
+        }
+
+
         //设置
         scrollView.getPullRootView().findViewById(R.id.iv_setting).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +117,22 @@ public class CustomeCoachActivity extends BaseActivity {
                 openActivity(HealthFriendsListActivity.class);
             }
         });
+
+
+        //是否开启教练身份认证   默认 开启
+        scrollView.getPullRootView().findViewById(R.id.rl_coach_auth).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).getVisibility() == View.VISIBLE) {
+                    SharedPreferencesUtils.getInstance().putBoolean(Constants.OPEN_COACH_AUTH, true);
+                    openAuth();
+                } else {
+                    SharedPreferencesUtils.getInstance().putBoolean(Constants.OPEN_COACH_AUTH, false);
+                    closeAuth();
+                }
+            }
+        });
+
 
         //教练资料认证认证
         scrollView.getPullRootView().findViewById(R.id.tv_coach_auth).setOnClickListener(new View.OnClickListener() {
@@ -150,6 +186,47 @@ public class CustomeCoachActivity extends BaseActivity {
         });
 
 
+    }
+
+    /**
+     * 获取教练信息
+     */
+    private void getCoachInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String,String> maps = new HashMap<>();
+        maps.put("Uid","11");
+        maps.put("isCoach","1");
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO,maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc",response.toString());
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeCoachActivity.this);
+        mQueue.add(request);
+
+
+    }
+
+    private void openAuth() {
+        scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.VISIBLE);
+        scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.GONE);
+        scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.VISIBLE);
+        scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setVisibility(View.VISIBLE);
+    }
+
+    private void closeAuth() {
+        scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.GONE);
+        scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.VISIBLE);
+        scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.GONE);
+        scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setVisibility(View.GONE);
     }
 
     private void addLisener() {

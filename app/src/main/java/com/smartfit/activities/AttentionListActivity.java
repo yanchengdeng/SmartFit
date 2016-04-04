@@ -135,7 +135,7 @@ public class AttentionListActivity extends BaseActivity {
         });
         request.setTag(TAG);
         request.headers = NetUtil.getRequestBody(AttentionListActivity.this);
-        mQueue.add(request);
+//        mQueue.add(request);
 
 
 

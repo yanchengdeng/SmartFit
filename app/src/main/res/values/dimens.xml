@@ -27,6 +27,8 @@
 
     <dimen name="ad_height">150dp</dimen>
 
+    <dimen name="brief_height">200dp</dimen>
+
 
 
     <!-- 字体大小-->

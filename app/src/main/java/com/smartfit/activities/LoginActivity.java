@@ -109,6 +109,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(ForgetActivity.class);
+                finish();
             }
         });
 
@@ -146,11 +147,11 @@ public class LoginActivity extends BaseActivity {
 
         mSVProgressHUD.showWithStatus(getString(R.string.login_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-//        data.put("mobileNo",accont);
-//        data.put("password", MD5.getMessageDigest(password.getBytes()));
+        data.put("mobileNo",accont);
+        data.put("password", MD5.getMessageDigest(password.getBytes()));
 
-        data.put("mobileNo","18650328280");
-        data.put("password", "9db06bcff9248837f86d1a6bcf41c9e7");
+//        data.put("mobileNo","18650328280");
+//        data.put("password", "9db06bcff9248837f86d1a6bcf41c9e7");
         PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(final JsonObject response) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.CustomeCoachActivity;
@@ -17,7 +18,6 @@ import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.IntentUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.pathmenu.FilterMenu;
@@ -75,7 +75,8 @@ public class CustomAnimationDemoFragment extends Fragment {
                     }
                     break;
                 case 3:
-                    ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
+//                    ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("敬请期待", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     break;
                 case 4:
                     if (NetUtil.isLogin(getActivity())) {

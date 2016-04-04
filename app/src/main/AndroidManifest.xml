@@ -246,6 +246,14 @@
         </activity>
         <activity android:name=".activities.SelectWorkPointTimeActivity" >
         </activity>
+        <activity
+            android:name=".activities.WaitVertifyActivity"
+            android:label="@string/title_activity_wait_vertify" >
+        </activity>
+        <activity
+            android:name=".activities.CoachBriefActivity"
+            android:label="@string/title_activity_coach_brief" >
+        </activity>
     </application>
 
 </manifest>

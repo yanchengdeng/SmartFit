@@ -93,6 +93,7 @@ public class PostRequest extends Request<JsonObject> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
+        LogUtil.w("dyc--agent",headers.toString());
         return headers;
     }
 
@@ -140,6 +141,7 @@ public class PostRequest extends Request<JsonObject> {
 
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
+
         return mRequestBody;
     }
 

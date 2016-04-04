@@ -12,7 +12,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -51,6 +50,9 @@ public class CustomDetailInfoActivity extends BaseActivity {
     TextView tvUpdatePass;
     @Bind(R.id.tv_coach_auth_status)
     TextView tvCoachAuthStatus;
+
+
+    private String vertifyStatus = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +120,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
         }
         String coachStatus = userInfoDetail.getIsICF();
         if (!TextUtils.isEmpty(coachStatus)) {
+            vertifyStatus = coachStatus;
             if (coachStatus.equals("0")) {
                 tvCoachAuthStatus.setText("尚未认证");
             } else if (coachStatus.equals("1")) {
@@ -147,10 +150,21 @@ public class CustomDetailInfoActivity extends BaseActivity {
         });
 
 
+
         tvCoachAuthStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CoachAuthBaseActivity.class);
+
+
+                if (vertifyStatus.equals("0")) {
+                    openActivity(CoachAuthBaseActivity.class);
+                } else if (vertifyStatus.equals("1")) {
+                    openActivity(CoachAuthentitionActivity.class);
+                } else if (vertifyStatus.equals("2")) {
+                    mSVProgressHUD.showInfoWithStatus("下线");
+                } else {
+                    openActivity(WaitVertifyActivity.class);
+                }
             }
         });
 

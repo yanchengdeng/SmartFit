@@ -1,13 +1,28 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.CoachDetailInfo;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.SelectableRoundedImageView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,7 +31,7 @@ import butterknife.ButterKnife;
  * 教练资料详情
  * 个人---认证后的教练
  */
-public class CoachDetailInfoActivity extends Activity {
+public class CoachDetailInfoActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -44,6 +59,8 @@ public class CoachDetailInfoActivity extends Activity {
     TextView tvHeight;
     @Bind(R.id.tv_teached_classes)
     TextView tvTeachedClasses;
+    @Bind(R.id.tv_weight)
+    TextView tvWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +73,67 @@ public class CoachDetailInfoActivity extends Activity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.account_info));
+        getCoachInfo();
+    }
+
+    /**
+     * 获取教练信息
+     */
+    private void getCoachInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String, String> maps = new HashMap<>();
+        maps.put("coachId", "11");
+        PostRequest request = new PostRequest(Constants.COACH_GETCOACHINFO, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                mSVProgressHUD.dismiss();
+                CoachDetailInfo userInfoDetail = JsonUtils.objectFromJson(response, CoachDetailInfo.class);
+                if (userInfoDetail != null) {
+                    fillData(userInfoDetail);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CoachDetailInfoActivity.this);
+        mQueue.add(request);
+
+    }
+
+    private void fillData(CoachDetailInfo userInfoDetail) {
+
+        ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeaderr, Options.getHeaderOptions());
+        if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+            tvName.setText(userInfoDetail.getNickName());
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getSex())) {
+            if (userInfoDetail.getSex().equals("0")) {
+                tvSex.setText("女");
+            } else {
+                tvSex.setText("男");
+            }
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getCoachDesc())) {
+            tvEditBrief.setText(userInfoDetail.getCoachDesc());
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getHight())) {
+            tvHeight.setText(userInfoDetail.getHight());
+        }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getWeight())) {
+            tvWeight.setText(userInfoDetail.getWeight());
+        }
+        if (!TextUtils.isEmpty(userInfoDetail.getAuthenCoachClassDesc())) {
+             tvTeachedClasses.setText(userInfoDetail.getAuthenCoachClassDesc());
+        }
     }
 
     private void addLisener() {

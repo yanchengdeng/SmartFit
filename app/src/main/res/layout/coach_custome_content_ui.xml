@@ -129,14 +129,29 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal" />
 
-        <ImageView
-            android:id="@+id/iv_open_coach_auth"
+        <RelativeLayout
+            android:id="@+id/rl_coach_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@mipmap/btn_on" />
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/iv_open_coach_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/btn_on" />
+
+            <ImageView
+                android:id="@+id/iv_close_coach_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/btn_off"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

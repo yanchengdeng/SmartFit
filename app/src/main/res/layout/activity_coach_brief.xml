@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.FadeBackActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/header_bar_height">
+
+
+        <EditText
+            android:id="@+id/et_breif"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/brief_height"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@color/white"
+            android:gravity="top"
+            android:hint="@string/coach_brief_tips"
+            android:lineSpacingExtra="3dp"
+            android:padding="@dimen/image_padding_big"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+        <Button
+            android:id="@+id/btn_submmit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/header_bar_height"
+            android:layout_marginRight="@dimen/header_bar_height"
+            android:layout_marginTop="@dimen/header_bar_height"
+            android:background="@drawable/bg_dialog_selector_blue"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

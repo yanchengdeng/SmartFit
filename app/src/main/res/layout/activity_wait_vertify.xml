@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.CoachAuthBaseActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_name_tips"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/name"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <EditText
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_name_tips"
+                android:background="@null"
+                android:hint="输入姓名"
+                android:singleLine="true"
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <ImageView
+                android:id="@+id/cb_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/icon_choose" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1px"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_card_tips"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/card_id"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <EditText
+                android:id="@+id/tv_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_card_tips"
+                android:background="@null"
+                android:hint="输入身份证号"
+                android:inputType="number"
+                android:maxLength="18"
+                android:singleLine="true"
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <ImageView
+                android:id="@+id/cb_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/icon_choose" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1px"
+            android:background="@color/white"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_card_photo_tips"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/card_photo"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <com.smartfit.views.SquareLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toRightOf="@+id/tv_card_photo_tips">
+
+                <ImageView
+                    android:id="@+id/image_card"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop" />
+            </com.smartfit.views.SquareLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/cb_card_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:src="@mipmap/icon_choose" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1px"
+            android:background="@color/white"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_work_quality"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/word_qulity_photo"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <com.smartfit.views.SquareLayout
+                android:layout_width="80dp"
+                android:layout_toRightOf="@+id/tv_work_quality"
+                android:layout_height="80dp">
+
+                <ImageView
+                    android:id="@+id/image_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop" />
+            </com.smartfit.views.SquareLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/cb_work_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:src="@mipmap/icon_choose" />
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_bar_height"
+            android:text="@string/your_coach_info_is_vertify"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+    </LinearLayout>
+
+</LinearLayout>

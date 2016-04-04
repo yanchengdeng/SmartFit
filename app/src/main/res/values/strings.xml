@@ -176,9 +176,15 @@
     <string name="select_by_left">按剩余名额排序</string>
     <string name="add_more_auth_books">添加更过证书</string>
     <string name="your_coach_info_not_submit">您的教练资料尚未提交</string>
+    <string name="your_coach_info_is_vertify">您的教练资料正在等待审核..</string>
     <string name="uploading">上传中...</string>
     <string name="subimit_success">提交完成</string>
     <string name="try_later">稍后再试</string>
     <string name="account_cannot_empty">账号不能为空</string>
     <string name="new_password_cannot_empty">新密码不能为空</string>
+    <string name="title_activity_wait_vertify">WaitVertifyActivity</string>
+    <string name="title_activity_coach_brief">CoachBriefActivity</string>
+    <string name="coach_brief_tips">请简单填写您的简历，经审核后，会展示给其他用户看</string>
+    <string name="please_fill_brief">请填写教练资料</string>
+    <string name="submit_ing">正在提交</string>
 </resources>
