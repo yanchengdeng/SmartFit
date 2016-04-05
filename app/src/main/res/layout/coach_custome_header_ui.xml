@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
-            android:text="令狐冲"
+            android:text=""
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_larger" />
 

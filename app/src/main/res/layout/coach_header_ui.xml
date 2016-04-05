@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_woman"
-            android:text="王二小教练"
+            android:text="XXXX教练"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal" />
 

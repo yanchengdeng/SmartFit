@@ -254,6 +254,10 @@
             android:name=".activities.CoachBriefActivity"
             android:label="@string/title_activity_coach_brief" >
         </activity>
+        <activity
+            android:name=".activities.OtherCustomeMainActivity"
+            android:label="@string/title_activity_other_custome_main" >
+        </activity>
     </application>
 
 </manifest>

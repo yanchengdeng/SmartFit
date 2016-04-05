@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
-import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.CoachAppraiseAdapter;
 import com.smartfit.views.MyListView;
 
@@ -88,6 +85,14 @@ public class CoachInfoActivity extends BaseActivity {
 
 
     private void addLisener(){
+
+        scrollView.getPullRootView().findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         tvMoreAppraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

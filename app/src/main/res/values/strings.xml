@@ -187,4 +187,5 @@
     <string name="coach_brief_tips">请简单填写您的简历，经审核后，会展示给其他用户看</string>
     <string name="please_fill_brief">请填写教练资料</string>
     <string name="submit_ing">正在提交</string>
+    <string name="title_activity_other_custome_main">OtherCustomeMainActivity</string>
 </resources>

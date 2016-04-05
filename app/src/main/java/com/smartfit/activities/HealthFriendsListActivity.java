@@ -1,12 +1,8 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,6 +90,14 @@ public class HealthFriendsListActivity extends BaseActivity {
             }
         });
 
+
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchFriends(etSearchContent.getEditableText().toString());
+            }
+        });
+
         /***
          * 下拉刷新
          */
@@ -122,6 +126,47 @@ public class HealthFriendsListActivity extends BaseActivity {
 
     }
 
+    /**
+     * 搜索好友
+     * @param key
+     */
+    private void searchFriends(String key) {
+        datas.clear();
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> data = new HashMap<>();
+        data.put("nickName",key);
+        PostRequest request = new PostRequest(Constants.USER_SEARCHFRIENDLIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                swipeRefreshLayout.setRefreshing(false);
+                mSVProgressHUD.dismiss();
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    datas.addAll(beans);
+                    adapter.setData(datas);
+                    showDataView();
+                } else {
+                    if (datas.size() > 0) {
+                        listView.onLoadMoreComplete();
+                        showDataView();
+                    } else {
+                        showNoData();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+                showNoData();
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(HealthFriendsListActivity.this);
+        mQueue.add(request);
+
+    }
+
 
     private void loadData() {
         if (page == 1) {
@@ -137,6 +182,7 @@ public class HealthFriendsListActivity extends BaseActivity {
                 if (beans != null && beans.size() > 0) {
                     datas.addAll(beans);
                     adapter.setData(datas);
+                    showDataView();
                 } else {
                     if (datas.size() > 0) {
                         listView.onLoadMoreComplete();

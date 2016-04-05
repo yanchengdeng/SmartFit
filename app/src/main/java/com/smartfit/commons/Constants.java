@@ -60,6 +60,7 @@ public class Constants {
     public static final String USER_USERINFO = "/User/userInfo";
     public static final String USER_CONCERNLIST ="/User/concernList";
     public static final String USER_FANSLIST  = "/User/fansList";
+    public static final String USER_SEARCHFRIENDLIST = "/User/searchFriendList";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";

@@ -1,8 +1,8 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.activities.FansActivity;
+import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.OtherCustomeMainActivity;
 import com.smartfit.beans.AttentionBean;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.Options;
 import com.smartfit.views.SelectableRoundedImageView;
 
@@ -63,25 +65,34 @@ public class FansAdapter extends BaseAdapter {
 
         }
 
-        AttentionBean item = data.get(position);
-        if(!TextUtils.isEmpty(item.getNickName())){
+        final AttentionBean item = data.get(position);
+        if (!TextUtils.isEmpty(item.getNickName())) {
             viewHolder.tvCoach.setText(item.getNickName());
         }
-        ImageLoader.getInstance().displayImage(item.getUserPicUrl(),viewHolder.ivIcon, Options.getHeaderOptions());
+        ImageLoader.getInstance().displayImage(item.getUserPicUrl(), viewHolder.ivIcon, Options.getListOptions());
         if (!TextUtils.isEmpty(item.getSex())) {
-            if (item.getSex().equals("0")){
-                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_woman),null);
-            }else{
-                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_man),null);
+            if (item.getSex().equals("0")) {
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_woman), null);
+            } else {
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_man), null);
             }
         }
 
         if (TextUtils.isEmpty(item.getSignature())) {
             viewHolder.tvTime.setVisibility(View.GONE);
-        }else{
+        } else {
             viewHolder.tvTime.setText(item.getSignature());
             viewHolder.tvTime.setVisibility(View.VISIBLE);
         }
+
+        viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getUid());
+                ((BaseActivity) context).openActivity(OtherCustomeMainActivity.class, bundle);
+            }
+        });
         return convertView;
     }
 

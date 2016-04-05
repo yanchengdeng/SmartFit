@@ -7,53 +7,49 @@ package com.smartfit.beans;
  */
 public class AttentionBean {
 
-    private String NickName;
-
-    private String UserPicUrl;
-
-    private String Signature;
-
-    private String Uid;
-
-    private String Sex;
-
-    public String getNickName() {
-        return NickName;
-    }
-
-    public void setNickName(String nickName) {
-        NickName = nickName;
-    }
-
-    public String getUserPicUrl() {
-        return UserPicUrl;
-    }
-
-    public void setUserPicUrl(String userPicUrl) {
-        UserPicUrl = userPicUrl;
-    }
-
-    public String getSignature() {
-        return Signature;
-    }
-
-    public void setSignature(String signature) {
-        Signature = signature;
-    }
+  private String  uid;//23,
+    private String    sex;//1,
+    private String   nickName;//Gordon,
+    private String  signature;//null,
+    private String  userPicUrl;//null
 
     public String getUid() {
-        return Uid;
+        return uid;
     }
 
     public void setUid(String uid) {
-        Uid = uid;
+        this.uid = uid;
     }
 
     public String getSex() {
-        return Sex;
+        return sex;
     }
 
     public void setSex(String sex) {
-        Sex = sex;
+        this.sex = sex;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getUserPicUrl() {
+        return userPicUrl;
+    }
+
+    public void setUserPicUrl(String userPicUrl) {
+        this.userPicUrl = userPicUrl;
     }
 }

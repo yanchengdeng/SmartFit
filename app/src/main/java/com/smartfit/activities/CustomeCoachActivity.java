@@ -2,24 +2,31 @@ package com.smartfit.activities;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -194,13 +201,17 @@ public class CustomeCoachActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String,String> maps = new HashMap<>();
-        maps.put("Uid","11");
+        maps.put("Uid","12");
         maps.put("isCoach","1");
         PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO,maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc",response.toString());
                 mSVProgressHUD.dismiss();
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                if (null != userInfo) {
+                    fillData(userInfo);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -214,6 +225,60 @@ public class CustomeCoachActivity extends BaseActivity {
 
 
     }
+
+
+    /**
+     * 填充页面数据
+     *
+     * @param userInfo
+     */
+    private void fillData(UserInfo userInfo) {
+
+        SelectableRoundedImageView ivHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
+        TextView tvNickname = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
+        if (!TextUtils.isEmpty(userInfo.getNickName())) {
+            tvNickname.setText(userInfo.getNickName());
+        }
+       /* TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
+        if (!TextUtils.isEmpty(userInfo.getIsVip()) && userInfo.getIsVip().equals("1")) {
+            tvVip.setVisibility(View.VISIBLE);
+        } else {
+            tvVip.setVisibility(View.INVISIBLE);
+        }*/
+
+        TextView tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
+        if (!TextUtils.isEmpty(userInfo.getSignature())) {
+            tvMotto.setText(userInfo.getSignature());
+        }
+
+        TextView tvFocus = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attention_num);
+        if (!TextUtils.isEmpty(userInfo.getFocusCount())) {
+            tvFocus.setText(userInfo.getFocusCount());
+        }
+
+        TextView tvFuns = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_fans_num);
+        if (!TextUtils.isEmpty(userInfo.getFansCount())) {
+            tvFuns.setText(userInfo.getFansCount());
+        }
+
+        TextView tvFriends = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_friends_num);
+        if (!TextUtils.isEmpty(userInfo.getFriendCount())) {
+            tvFriends.setText(userInfo.getFriendCount());
+        }
+
+
+        TextView tvPocket = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
+        if (!TextUtils.isEmpty(userInfo.getBalance())) {
+            tvPocket.setText("余额" + userInfo.getBalance() + "元");
+        }
+
+        TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);
+        if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
+            tvGoingClasses.setText("正在进行" + userInfo.getCurClassCount() + "课程");
+        }
+    }
+
 
     private void openAuth() {
         scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.VISIBLE);
