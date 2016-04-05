@@ -143,5 +143,21 @@ public class CoachDetailInfoActivity extends BaseActivity {
                 finish();
             }
         });
+
+
+        tvUpdatePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ForgetActivity.class);
+            }
+        });
+
+
+        tvEditBrief.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachBriefActivity.class);
+            }
+        });
     }
 }

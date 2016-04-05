@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.FansActivity;
+import com.smartfit.beans.AttentionBean;
+import com.smartfit.utils.Options;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -22,11 +26,11 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/3/14.
  */
 public class FansAdapter extends BaseAdapter {
-    private List<String> data;
+    private List<AttentionBean> data;
 
     private Context context;
 
-    public FansAdapter(Context context, List<String> datas) {
+    public FansAdapter(Context context, List<AttentionBean> datas) {
         this.data = datas;
         this.context = context;
     }
@@ -58,10 +62,30 @@ public class FansAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
 
         }
+
+        AttentionBean item = data.get(position);
+        if(!TextUtils.isEmpty(item.getNickName())){
+            viewHolder.tvCoach.setText(item.getNickName());
+        }
+        ImageLoader.getInstance().displayImage(item.getUserPicUrl(),viewHolder.ivIcon, Options.getHeaderOptions());
+        if (!TextUtils.isEmpty(item.getSex())) {
+            if (item.getSex().equals("0")){
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_woman),null);
+            }else{
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_man),null);
+            }
+        }
+
+        if (TextUtils.isEmpty(item.getSignature())) {
+            viewHolder.tvTime.setVisibility(View.GONE);
+        }else{
+            viewHolder.tvTime.setText(item.getSignature());
+            viewHolder.tvTime.setVisibility(View.VISIBLE);
+        }
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<AttentionBean> datas) {
         this.data = datas;
         notifyDataSetChanged();
     }

@@ -16,6 +16,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.commons.AppManager;
+import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.IntentUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -42,7 +43,7 @@ public class BaseActivity extends FragmentActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.common_header_bg);//通知栏所需颜色
-        mQueue = Volley.newRequestQueue(getApplicationContext());
+        mQueue = GetSingleRequestUtils.getInstance(this).getRequestQueue();
         mSVProgressHUD = new SVProgressHUD(this);
     }
 

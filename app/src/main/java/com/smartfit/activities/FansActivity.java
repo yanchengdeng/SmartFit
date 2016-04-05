@@ -7,13 +7,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.FansAdapter;
+import com.smartfit.beans.AttentionBean;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,7 +50,7 @@ public class FansActivity extends BaseActivity {
 
     private int page = 1;
     private FansAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<AttentionBean> datas = new ArrayList<AttentionBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +82,8 @@ public class FansActivity extends BaseActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
                         page = 1;
-                        swipeRefreshLayout.setRefreshing(false);
-                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
+                      loadData();
             }
         });
 
@@ -100,21 +104,52 @@ public class FansActivity extends BaseActivity {
 
 
     private void loadData() {
-
         if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
-        new Handler().postDelayed(new Runnable() {
+
+        final Map<String, String> data = new HashMap<>();
+        PostRequest request = new PostRequest(Constants.USER_FANSLIST,data, new Response.Listener<JsonObject>() {
             @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
-                adapter.setData(datas);
+            public void onResponse(JsonObject response) {
+                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    datas.addAll(beans);
+                    adapter.setData(datas);
+                } else {
+                    if (datas.size() > 0) {
+                        listView.onLoadMoreComplete();
+                        showDataView();
+                    } else {
+                        showNoData();
+                    }
+                }
+
+
             }
-        }, 2000);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(FansActivity.this);
+        mQueue.add(request);
+    }
+
+    private void showNoData() {
+        listView.setVisibility(View.GONE);
+        noData.setVisibility(View.VISIBLE);
+        listView.onLoadMoreComplete();
+        return;
+    }
+
+    private void showDataView() {
+        listView.setVisibility(View.VISIBLE);
+        noData.setVisibility(View.GONE);
     }
 }

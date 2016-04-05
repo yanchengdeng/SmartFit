@@ -302,8 +302,7 @@ public class GroupExperienceFragment extends Fragment {
 
     private void getVenueList() {
         Map<String, String> data = new HashMap<>();
-        data.put("SelDate", selectDate);
-        data.put("OrdeyBy", "0");
+        data.put("CityCode", "21");
         PostRequest request = new PostRequest(Constants.GET_VENUElIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

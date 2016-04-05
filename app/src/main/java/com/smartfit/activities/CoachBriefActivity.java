@@ -20,6 +20,8 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -86,7 +88,7 @@ public class CoachBriefActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etBreif.getEditableText().toString())) {
-                    mSVProgressHUD.showInfoWithStatus(getString(R.string.please_fill_brief));
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.please_fill_brief), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
                     doSubmit(etBreif.getEditableText().toString());
                 }
@@ -97,12 +99,13 @@ public class CoachBriefActivity extends BaseActivity {
 
     private void doSubmit(String brief) {
         mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        PostRequest request = new PostRequest(Constants.COACH_GETRESUME, new Response.Listener<JsonObject>() {
+        HashMap map = new HashMap();
+        map.put("Id","");
+        map.put("resumeContent",brief);
+        PostRequest request = new PostRequest(Constants.COACH_UPDATERESUME, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
-                if (null != userInfo) {
-                }
+               LogUtil.w("dyc",response.toString());
 
                 mSVProgressHUD.dismiss();
             }

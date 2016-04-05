@@ -65,7 +65,8 @@ public class Constants {
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
     public static final String COACH_LISTCERTIFICATE = "/coach/listCertificate";
     public static final String COACH_GETCOACHINFO = "/coach/getCoachInfo";
-    public static final String  COACH_GETRESUME = " /coach/getResume";
+    public static final String  COACH_GETRESUME = "/coach/getResume";
+    public static final String COACH_UPDATERESUME = "/coach/updateResume";
 
 
     //系统数据

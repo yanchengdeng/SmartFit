@@ -14,7 +14,9 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.FansAdapter;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
@@ -53,7 +55,7 @@ public class AttentionListActivity extends BaseActivity {
 
     private int page = 1;
     private FansAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<AttentionBean> datas = new ArrayList<AttentionBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +89,7 @@ public class AttentionListActivity extends BaseActivity {
             public void onRefresh() {
                 datas.clear();
                 page = 1;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
+                loadData();
             }
         });
 
@@ -115,53 +111,49 @@ public class AttentionListActivity extends BaseActivity {
 
 
     private void loadData() {
-
+        if (page == 1) {
+            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
         Map<String, String> data = new HashMap<>();
-
-
-        PostRequest request = new PostRequest(Constants.USER_FANSLIST,data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_CONCERNLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
-
-
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    datas.addAll(beans);
+                    adapter.setData(datas);
+                } else {
+                    if (datas.size() > 0) {
+                        listView.onLoadMoreComplete();
+                        showDataView();
+                    } else {
+                        showNoData();
+                    }
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage());
-
+                showNoData();
             }
         });
         request.setTag(TAG);
         request.headers = NetUtil.getRequestBody(AttentionListActivity.this);
-//        mQueue.add(request);
+        mQueue.add(request);
+    }
 
+    private void showNoData() {
+        listView.setVisibility(View.GONE);
+        noData.setVisibility(View.VISIBLE);
+        listView.onLoadMoreComplete();
+        return;
+    }
 
-
-
-
-
-        if (page > 4) {
-            listView.onLoadMoreComplete();
-            return;
-        }
-        if(page ==1){
-            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                adapter.setData(datas);
-                listView.setVisibility(View.VISIBLE);
-                mSVProgressHUD.dismiss();
-                listView.onLoadMoreComplete();
-            }
-        }, 2000);
-
+    private void showDataView() {
+        listView.setVisibility(View.VISIBLE);
+        noData.setVisibility(View.GONE);
     }
 }
