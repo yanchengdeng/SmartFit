@@ -287,12 +287,11 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
     private void doSubmit(String name, String card) {
         Map<String, String> map = new HashMap<>();
-        map.put("Id", card);
-        map.put("CoachRealName", name);
-        map.put("CertificateName", coachCertificate.getCoachCertificateCard().getCertificateName());
-
-        map.put("CertificateImg", coachCertificate.getCoachCertificateCard().getCertificateImg());
-        map.put("Type", coachCertificate.getCoachCertificateCard().getType());
+        map.put("id", card);
+        map.put("coachrealName", name);
+        map.put("certificateName", coachCertificate.getCoachCertificateCard().getCertificateName());
+        map.put("certificateImg", coachCertificate.getCoachCertificateCard().getCertificateImg());
+        map.put("type", coachCertificate.getCoachCertificateCard().getType());
         mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         PostRequest request = new PostRequest(Constants.COACH_LISTCERTIFICATE, new Response.Listener<JsonObject>() {
             @Override

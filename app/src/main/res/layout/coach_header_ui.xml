@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/image_padding_big"
-                android:text="关注  12"
+                android:text="关注  0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
 
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/image_padding_big"
-                android:text="粉丝  22"
+                android:text="粉丝  0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
 

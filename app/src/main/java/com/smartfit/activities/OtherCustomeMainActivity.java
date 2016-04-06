@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -27,6 +28,7 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,7 @@ import java.util.Map;
 public class OtherCustomeMainActivity extends BaseActivity {
 
     private PullToZoomScrollViewEx scrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,20 +61,21 @@ public class OtherCustomeMainActivity extends BaseActivity {
         LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) (9.0F * (mScreenWidth / 16.0F)));
         scrollView.setHeaderLayoutParams(localObject);
     }
+
     String uid;
+
     private void initView() {
         scrollView.getPullRootView().findViewById(R.id.tv_teach_capacity).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.tv_coach_capacity).setVisibility(View.GONE);
 
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-         uid =   getIntent().getExtras().getString(Constants.PASS_STRING);
-        Map<String,String> maps = new HashMap<>();
-        maps.put("Uid",uid);
-        maps.put("isCoach","0");
-        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO,maps, new Response.Listener<JsonObject>() {
+        uid = getIntent().getExtras().getString(Constants.PASS_STRING);
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", uid);
+        maps.put("isCoach", "0");
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.dismiss();
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
                 if (null != userInfo) {
@@ -90,7 +94,11 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
     }
 
+    UserInfo userInfo;
+    TextView tvDoAttention, tvAddFriends;//操作关注用户 /添加健身伙伴
+
     private void fillData(UserInfo userInfo) {
+        this.userInfo = userInfo;
         SelectableRoundedImageView ivHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
         TextView tvNickname = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
@@ -108,6 +116,16 @@ public class OtherCustomeMainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo.getSignature())) {
             tvMotto.setText(userInfo.getSignature());
         }
+
+        if (!TextUtils.isEmpty(userInfo.getFocusCount())) {
+            TextView tvFoucs = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attentioon);
+            tvFoucs.setText("关注  " + userInfo.getFocusCount());
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getFansCount())) {
+            TextView tvfans = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_fans);
+            tvfans.setText("粉丝  " + userInfo.getFansCount());
+        }
     }
 
     private void addLisener() {
@@ -119,10 +137,90 @@ public class OtherCustomeMainActivity extends BaseActivity {
             }
         });
 
+        tvDoAttention = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attention);
+        tvAddFriends = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_add_friends);
+        tvDoAttention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userInfo != null) {
+                    doAttention(uid);
+                } else {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+            }
+        });
 
 
+        tvAddFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userInfo != null) {
+                    doAddFriends(uid);
+                } else {
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+            }
+        });
 
 
+    }
+
+    /***
+     * 添加好友
+     *
+     * @param uid
+     */
+    private void doAddFriends(String uid) {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> data = new HashMap<>();
+        data.put("focusId", uid);
+        PostRequest request = new PostRequest(Constants.USER_ADDFRIEND, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                mSVProgressHUD.showSuccessWithStatus(getString(R.string.add_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                tvAddFriends.setText("已添加");
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later));
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(OtherCustomeMainActivity.this);
+        mQueue.add(request);
+    }
+
+    /******
+     * 关注 用户操作
+     *
+     * @param uid
+     */
+    private void doAttention(String uid) {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> data = new HashMap<>();
+        data.put("focusId", uid);
+        PostRequest request = new PostRequest(Constants.USER_ADDFOCUS, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                mSVProgressHUD.showSuccessWithStatus(getString(R.string.focus_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                tvAddFriends.setText("已关注");
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later));
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(OtherCustomeMainActivity.this);
+        mQueue.add(request);
 
     }
 

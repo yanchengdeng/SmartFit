@@ -197,12 +197,12 @@ public class GroupExperienceFragment extends Fragment {
     private void loadData() {
         Map<String, String> data = new HashMap<>();
         data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
-        data.put("OrderBy", selectType);
-        data.put("VenueId", "0");
-        data.put("CoachSex", "0");
-        data.put("PriceRang", "0");
-        data.put("TimeRang", "0");
-        data.put("CourseType", "0");
+        data.put("orderBy", selectType);
+        data.put("venueId", "0");
+        data.put("coachSex", "0");
+        data.put("priceRang", "0");
+        data.put("timeRang", "0");
+        data.put("courseType", "0");
         PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -302,7 +302,7 @@ public class GroupExperienceFragment extends Fragment {
 
     private void getVenueList() {
         Map<String, String> data = new HashMap<>();
-        data.put("CityCode", "21");
+        data.put("cityCode", "21");
         PostRequest request = new PostRequest(Constants.GET_VENUElIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

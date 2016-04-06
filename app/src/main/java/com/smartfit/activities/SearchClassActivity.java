@@ -111,6 +111,7 @@ public class SearchClassActivity extends BaseActivity {
                     return;
                 }
                 page = 1;
+                datas.clear();
                 loadData(etContent.getEditableText().toString());
             }
         });
@@ -133,8 +134,12 @@ public class SearchClassActivity extends BaseActivity {
                     listView.setVisibility(View.VISIBLE);
                     listView.onLoadMoreComplete();
                     tvCount.setText(String.valueOf(datas.size()));
-                    tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
-                    llSearchResult.setVisibility(View.VISIBLE);
+                    if (!TextUtils.isEmpty(contions)) {
+                        tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
+                        llSearchResult.setVisibility(View.VISIBLE);
+                    }else{
+                        llSearchResult.setVisibility(View.GONE);
+                    }
                 } else {
                     noMoreData(datas);
                 }

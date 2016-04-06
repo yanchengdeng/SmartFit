@@ -15,24 +15,14 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
-import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
-import com.smartfit.utils.LogUtil;
-import com.smartfit.utils.NetUtil;
-import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -201,9 +201,8 @@ public class CustomeCoachActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String,String> maps = new HashMap<>();
-        maps.put("Uid","12");
-        maps.put("isCoach","1");
-        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO,maps, new Response.Listener<JsonObject>() {
+        maps.put("coachId","12");
+        PostRequest request = new PostRequest(Constants.GET_COACHPAGEINFO,maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc",response.toString());

@@ -16,6 +16,8 @@
 
 package com.smartfit.utils;
 
+import android.text.TextUtils;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -29,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.smartfit.commons.Constants;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +64,7 @@ public class PostRequest extends Request<JsonObject> {
 
     private final Listener<JsonObject> mListener;
 
-    public  Map<String, String> mRequestBody ;
+    public Map<String, String> mRequestBody;
 
     private Gson mGson;
 
@@ -71,17 +74,17 @@ public class PostRequest extends Request<JsonObject> {
         mGson = new Gson();
         mListener = listener;
         mRequestBody = requestBody;
-        LogUtil.w("dyc", Constants.Net.URL+method);
+        LogUtil.w("dyc", Constants.Net.URL + method);
 
         LogUtil.w("dyc", mRequestBody.toString());
     }
 
-    public PostRequest(String method,  Listener<JsonObject> listener,
+    public PostRequest(String method, Listener<JsonObject> listener,
                        ErrorListener errorListener) {
         super(Method.POST, Constants.Net.URL + method, errorListener);
         mGson = new Gson();
         mListener = listener;
-        LogUtil.w("dyc", Constants.Net.URL+method);
+        LogUtil.w("dyc", Constants.Net.URL + method);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class PostRequest extends Request<JsonObject> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        LogUtil.w("dyc--agent",headers.toString());
+        LogUtil.w("dyc--agent", headers.toString());
         return headers;
     }
 
@@ -106,6 +109,10 @@ public class PostRequest extends Request<JsonObject> {
             try {
                 JSONObject jb = new JSONObject(jsonString);
                 if (jb.optString("stateCode").equals("1")) {//返回结果正确
+                    if ( jb.optString("data").equals("true") || jb.optString("data").equals("null")) {
+                        return Response.success(new JsonObject(), HttpHeaderParser.parseCacheHeaders(response));
+                    }
+
                     JsonObject jsonObject = null;
                     if (jb.opt("data") instanceof JSONArray) {
                         jsonObject = new JsonObject();
@@ -115,9 +122,9 @@ public class PostRequest extends Request<JsonObject> {
                     if (null != jsonObject) {
                         ResponseDataArray responseData = mGson.fromJson(jsonString, ResponseDataArray.class);
                         JsonObject object = new JsonObject();
-                        object.add("list",responseData.getData());
+                        object.add("list", responseData.getData());
                         return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
-                    }else{
+                    } else {
                         ResponseData responseData = mGson.fromJson(jsonString, ResponseData.class);
                         return Response.success(responseData.getData(), HttpHeaderParser.parseCacheHeaders(response));
                     }

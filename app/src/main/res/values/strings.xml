@@ -188,4 +188,6 @@
     <string name="please_fill_brief">请填写教练资料</string>
     <string name="submit_ing">正在提交</string>
     <string name="title_activity_other_custome_main">OtherCustomeMainActivity</string>
+    <string name="add_success">已添加</string>
+    <string name="focus_success">已关注</string>
 </resources>

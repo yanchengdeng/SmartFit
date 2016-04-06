@@ -176,7 +176,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     private void loadCommend() {
 
         Map<String, String> data = new HashMap<>();
-        data.put("CourseId", id);
+        data.put("courseId", id);
         data.put("PageNO", String.valueOf(page));
         data.put("PageSize", "5");
         PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {

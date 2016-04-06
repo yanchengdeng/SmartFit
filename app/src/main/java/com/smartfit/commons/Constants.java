@@ -61,6 +61,8 @@ public class Constants {
     public static final String USER_CONCERNLIST ="/User/concernList";
     public static final String USER_FANSLIST  = "/User/fansList";
     public static final String USER_SEARCHFRIENDLIST = "/User/searchFriendList";
+    public static final String USER_ADDFOCUS ="/User/addFocus";
+    public static final String USER_ADDFRIEND = "/User/addFriend";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
@@ -68,6 +70,7 @@ public class Constants {
     public static final String COACH_GETCOACHINFO = "/coach/getCoachInfo";
     public static final String  COACH_GETRESUME = "/coach/getResume";
     public static final String COACH_UPDATERESUME = "/coach/updateResume";
+    public static final String GET_COACHPAGEINFO  = "/coach/getCoachPageInfo";
 
 
     //系统数据

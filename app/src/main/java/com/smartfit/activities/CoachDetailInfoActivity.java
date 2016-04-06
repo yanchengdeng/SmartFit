@@ -82,7 +82,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("coachId", "11");
+        maps.put("coachId", "12");
         PostRequest request = new PostRequest(Constants.COACH_GETCOACHINFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

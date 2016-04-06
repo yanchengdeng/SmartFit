@@ -2,13 +2,9 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.gson.JsonObject;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -19,12 +15,6 @@ import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.fragments.GroupExperienceFragment;
 import com.smartfit.fragments.PrivateEducationFragment;
 import com.smartfit.fragments.SmallClassFragment;
-import com.smartfit.utils.NetUtil;
-import com.smartfit.utils.PostRequest;
-import com.smartfit.utils.SharedPreferencesUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

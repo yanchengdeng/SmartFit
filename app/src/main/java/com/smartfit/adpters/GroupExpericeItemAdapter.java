@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             , List<ClassInfo> datas) {
         this.context = context;
         this.datas = datas;
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,  24);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
 
     }
 
@@ -53,7 +54,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder ;
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_group_experice_item, null);
             viewHolder = new ViewHolder(convertView);
@@ -62,15 +63,33 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        ClassInfo item = datas.get(position);
-//        viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
-//        viewHolder.tvCouch.setText("教练  " + item.getCoachRealName());
-//        viewHolder.tvTittle.setText(item.getCourseName());
-//        viewHolder.tvJoin.setText(item.getPersonCount()+"/"+ item.getClassroomPersonCount()+"人");
-//
-//        viewHolder.tvTime.setText(item.getBeginTime()+"-"+item.getEndTime());
-//        viewHolder.tvPrice.setText(item.getPrice()+"元");
-//        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
+        ClassInfo item = datas.get(position);
+        if (!TextUtils.isEmpty(item.getStars())) {
+            viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
+        }
+
+        if (!TextUtils.isEmpty(item.getCoachRealName())) {
+            viewHolder.tvCouch.setText("教练  " + item.getCoachRealName());
+        }
+
+        if (!TextUtils.isEmpty(item.getCourseName())) {
+            viewHolder.tvTittle.setText(item.getCourseName());
+        }
+
+        if (!TextUtils.isEmpty(item.getPersonCount()) && !TextUtils.isEmpty(item.getClassroomPersonCount())) {
+            viewHolder.tvJoin.setText(item.getPersonCount() + "/" + item.getClassroomPersonCount() + "人");
+        }
+
+        if (!TextUtils.isEmpty(item.getBeginTime()) && !TextUtils.isEmpty(item.getEndTime())) {
+            viewHolder.tvTime.setText(item.getBeginTime() + "-" + item.getEndTime());
+        }
+
+
+        if (!TextUtils.isEmpty(item.getPrice())) {
+            viewHolder.tvPrice.setText(item.getPrice() + "元");
+        }
+
+        ImageLoader.getInstance().displayImage(item.getClassUrl(), viewHolder.ivIcon);
 
         viewHolder.ratingBar.setLayoutParams(params);
         return convertView;

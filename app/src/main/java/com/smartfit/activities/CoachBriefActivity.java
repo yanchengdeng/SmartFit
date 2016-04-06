@@ -100,7 +100,7 @@ public class CoachBriefActivity extends BaseActivity {
     private void doSubmit(String brief) {
         mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         HashMap map = new HashMap();
-        map.put("Id","");
+        map.put("id","");
         map.put("resumeContent",brief);
         PostRequest request = new PostRequest(Constants.COACH_UPDATERESUME, new Response.Listener<JsonObject>() {
             @Override

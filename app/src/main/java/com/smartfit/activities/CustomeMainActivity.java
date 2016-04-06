@@ -70,7 +70,10 @@ public class CustomeMainActivity extends BaseActivity {
 
     private void getCustomeInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, new Response.Listener<JsonObject>() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        maps.put("isCoach", "0");
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
@@ -132,8 +135,6 @@ public class CustomeMainActivity extends BaseActivity {
         }
 
 
-
-
         TextView tvPocket = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
         if (!TextUtils.isEmpty(userInfo.getBalance())) {
             tvPocket.setText("余额" + userInfo.getBalance() + "元");
@@ -141,7 +142,7 @@ public class CustomeMainActivity extends BaseActivity {
 
         TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);
         if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
-            tvGoingClasses.setText("正在进行"+userInfo.getCurClassCount()+"课程");
+            tvGoingClasses.setText("正在进行" + userInfo.getCurClassCount() + "课程");
         }
 
 
