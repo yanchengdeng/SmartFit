@@ -167,7 +167,6 @@ public class ForgetActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                showResetSuccessDialog();
             }
         });
         request.setTag(TAG);

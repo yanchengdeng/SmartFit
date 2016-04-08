@@ -35,12 +35,14 @@ import com.smartfit.adpters.AerobincnAppratusItemAdapter;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
+import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -168,6 +170,41 @@ public class AerobicnAppratusFragment extends Fragment {
 
 
     private void loadData() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
+        data.put("orderBy", selectType);
+        data.put("venueId", "1");
+        data.put("coachSex", "0");
+        data.put("priceRang", "0");
+        data.put("timeRang", "0");
+        data.put("courseType", "3");
+        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                LogUtil.w("dyc",response.toString());
+//                if (null != requestList && requestList.size() > 0) {
+//                    datas.addAll(requestList);
+//                    adapter.setData(datas);
+//                } else {
+//                    noMoreData(datas);
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                noMoreData(datas);
+                LogUtil.w("dyc", "..... " + error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
+        ((BaseActivity) getActivity()).mQueue.add(request);
+
+
+
+
         if (page == 1 && !((BaseActivity) getActivity()).mSVProgressHUD.isShowing()) {
 
             ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);

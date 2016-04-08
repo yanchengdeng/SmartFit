@@ -177,8 +177,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
         Map<String, String> data = new HashMap<>();
         data.put("courseId", id);
-        data.put("PageNO", String.valueOf(page));
-        data.put("PageSize", "5");
+        data.put("pageNO", String.valueOf(page));
+        data.put("pageSize", "5");
         PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -211,7 +211,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     private void loadData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
-        data.put("CourseId", id);
+        data.put("courseId", id);
+        data.put("courseType", "0");
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

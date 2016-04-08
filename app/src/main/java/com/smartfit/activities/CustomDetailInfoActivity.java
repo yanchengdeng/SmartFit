@@ -127,7 +127,9 @@ public class CustomDetailInfoActivity extends BaseActivity {
                 tvCoachAuthStatus.setText("上线");
             } else if (coachStatus.equals("2")) {
                 tvCoachAuthStatus.setText("下线");
-            } else {
+            } else if (coachStatus.equals("5")) {
+                tvCoachAuthStatus.setText("审核未通过");
+            } else if (coachStatus.equals("4")) {
                 tvCoachAuthStatus.setText("审核中");
             }
         }
@@ -150,7 +152,6 @@ public class CustomDetailInfoActivity extends BaseActivity {
         });
 
 
-
         tvCoachAuthStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,6 +163,8 @@ public class CustomDetailInfoActivity extends BaseActivity {
                     openActivity(CoachAuthentitionActivity.class);
                 } else if (vertifyStatus.equals("2")) {
                     mSVProgressHUD.showInfoWithStatus("下线");
+                } else if (vertifyStatus.equals("5")) {
+                    openActivity(CoachAuthBaseActivity.class);
                 } else {
                     openActivity(WaitVertifyActivity.class);
                 }

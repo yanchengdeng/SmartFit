@@ -222,7 +222,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         ivAddCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goPhotoThum(cards, REQUSET_ID_CARDS, 2);
+                goPhotoThum(cards, REQUSET_ID_CARDS, 1);
             }
         });
 
@@ -293,7 +293,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         map.put("certificateImg", coachCertificate.getCoachCertificateCard().getCertificateImg());
         map.put("type", coachCertificate.getCoachCertificateCard().getType());
         mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        PostRequest request = new PostRequest(Constants.COACH_LISTCERTIFICATE, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.COACH_ADD_CERTIFICATE,map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc",response.toString());
@@ -303,7 +303,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -392,7 +392,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                LogUtil.w("dyc",""+result+"..."+url);
+                LogUtil.w("dyc","工作证"+result+"..."+url);
                 if (!TextUtils.isEmpty(url)) {
                     coachCertificate.setCoachCertificateWord(new CoachCertificateItem("正式照片", url, "2"));
                 }
@@ -430,6 +430,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
+
                 String url = null;
                 try {
                     url = result.getString("data");
@@ -437,6 +438,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 if (!TextUtils.isEmpty(url)) {
+                    LogUtil.w("dyc","身份证"+result+"..."+url);
                     coachCertificate.setCoachCertificateCard(new CoachCertificateItem("身份证", url, "1"));
                 }
             }
