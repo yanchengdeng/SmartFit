@@ -1,9 +1,13 @@
 package com.smartfit.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.smartfit.R;
+import com.smartfit.beans.CityBean;
 import com.smartfit.beans.SelectedSort;
+import com.smartfit.beans.WorkPointAddress;
+import com.smartfit.commons.Constants;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -176,5 +180,38 @@ public class Util {
         } catch (Exception e) {
             return new DefaultHttpClient();
         }
+    }
+
+    /**
+     * 设置当前城市信息
+     * @param cityname
+     */
+    public static void setCityInfo(String cityname){
+        String cityinfos = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LIST_INOF, "");
+        if (!TextUtils.isEmpty(cityinfos)) {
+            List<CityBean> cityBeans = JsonUtils.listFromJson(cityinfos, CityBean.class);
+            for (CityBean item : cityBeans) {
+                if (item.getDictionaryName().equals(cityname)) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_CODE, item.getDictionaryCode());
+                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_NAME,cityname+"市");
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * 初始化场馆列表
+     */
+    public static  List<WorkPointAddress> getVenueList() {
+        String venuList =SharedPreferencesUtils.getInstance().getString(Constants.VENUE_LIST_INFO,"");
+        if (!TextUtils.isEmpty(venuList)) {
+            List<WorkPointAddress>  workPointAddresses = JsonUtils.listFromJson(venuList,WorkPointAddress.class);
+            if (workPointAddresses!= null && workPointAddresses.size()>0){
+                return workPointAddresses;
+            }
+        }
+
+        return null;
     }
 }

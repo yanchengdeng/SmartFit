@@ -23,6 +23,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,7 +90,7 @@ public class CityListActivity extends BaseActivity {
                 if (TextUtils.isEmpty(etSearchContent.getEditableText().toString())) {
                     mSVProgressHUD.showInfoWithStatus("未输入关键字", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 } else {
-
+                    getCityInfos(etSearchContent.getEditableText().toString());
                 }
             }
         });
@@ -98,8 +99,27 @@ public class CityListActivity extends BaseActivity {
 
     private void goSearch() {
 
+        String cityinfos = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LIST_INOF, "");
+        if (!TextUtils.isEmpty(cityinfos)) {
+            List<CityBean> cityBeans = JsonUtils.listFromJson(cityinfos, CityBean.class);
+            if (cityBeans != null && cityBeans.size() > 0) {
+                listView.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+                parsePY(cityBeans);
+            } else {
+                listView.setVisibility(View.GONE);
+                noData.setVisibility(View.VISIBLE);
+            }
+        } else {
+            getCityInfos("");
+        }
+    }
+
+
+    private void getCityInfos(String key) {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
+        data.put("cityName", key);
         PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -123,12 +143,11 @@ public class CityListActivity extends BaseActivity {
                 noData.setVisibility(View.VISIBLE);
             }
         });
-        request.headers =NetUtil.getRequestBody(CityListActivity.this);
+        request.headers = NetUtil.getRequestBody(CityListActivity.this);
         request.setTag(TAG);
         mQueue.add(request);
-
-
     }
+
 
     private void parsePY(List<CityBean> cityBeans) {
         Map<String, List<CityBean>> maps = new HashMap<>();
@@ -149,8 +168,8 @@ public class CityListActivity extends BaseActivity {
         }
 
         datas.clear();
-        for(String value:maps.keySet()){
-            CityBeanGroup  item = new CityBeanGroup();
+        for (String value : maps.keySet()) {
+            CityBeanGroup item = new CityBeanGroup();
             item.setIndex(value);
             item.setTags(maps.get(value));
             datas.add(item);

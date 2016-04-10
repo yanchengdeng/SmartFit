@@ -14,16 +14,32 @@ public class Constants {
 
 
     public final static String PASS_STRING = "pass_string";
+
+    public final static String PASS_OBJECT = "pass_object";
     /***
      * //定义  1 ：团体课  2.小班课  3.私教课
      */
     public static final String PAGE_INDEX = "page_index";
 
 
-    public static final String CITY_ADDRESS = "city_address";
     public static final String CITY_CODE = "city_code";
     public static final String CITY_LONGIT = "city_longit";
     public static final String CITY_LAT = "city_lat";
+
+
+    public static final String CITY_LIST_INOF = "city_list";
+    public static final String CITY_NAME =  "city_name";
+
+    public static final String VENUE_LIST_INFO = "venue_list_info";//场馆列表信息
+
+    public static final String VENU_ID = "venu_id";
+
+    public static final String COURSE_TYPE = "course_type";
+    public static final String COURSE_ID = "course_id";
+    public static final String COURSE_MONEY = "course_pay";
+
+    public static final String ORDER_TIME = "order_time";
+
 
 
 
@@ -76,6 +92,14 @@ public class Constants {
     //系统数据
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
+
+
+    //订单
+    public static final String ORDER_ORDERCOURSE = "/order/orderCourse";
+    public static final String PAY_BALANCEPAY = "/pay/balancePay";
+    public static final String PAY_PAYMOCK = "/pay/payMock";
+
+
 
 
     /*****

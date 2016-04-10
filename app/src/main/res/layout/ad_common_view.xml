@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@mipmap/bg_pic" />
+         />
 
     <TextView
         android:id="@+id/tv_tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray_light"
+        android:background="@color/transe_gray_light"
         android:padding="@dimen/image_padding"
         android:text="@string/app_name"
         android:textColor="@color/common_header_bg"

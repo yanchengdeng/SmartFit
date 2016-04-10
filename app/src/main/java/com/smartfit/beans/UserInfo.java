@@ -22,6 +22,34 @@ public class UserInfo {
     private String curClassCount;//null,
     private String[] coachDynamicPics;//
 
+    private String isFoused;//:0,//0 未   1  已关注
+    private String beFoused;//:0,
+    private String isFriend;//0,
+
+    public String getIsFoused() {
+        return isFoused;
+    }
+
+    public void setIsFoused(String isFoused) {
+        this.isFoused = isFoused;
+    }
+
+    public String getBeFoused() {
+        return beFoused;
+    }
+
+    public void setBeFoused(String beFoused) {
+        this.beFoused = beFoused;
+    }
+
+    public String getIsFriend() {
+        return isFriend;
+    }
+
+    public void setIsFriend(String isFriend) {
+        this.isFriend = isFriend;
+    }
+
     public String getUid() {
         return uid;
     }

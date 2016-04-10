@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -19,13 +21,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_img"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/bg_pic"
-                android:layout_marginTop="@dimen/image_padding"
+            <com.jude.rollviewpager.RollPagerView
+                android:id="@+id/roll_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/ad_height" />
+                android:layout_height="wrap_content"
+                app:rollviewpager_hint_gravity="right"
+                app:rollviewpager_hint_paddingRight="16dp"
+                app:rollviewpager_hint_paddingBottom="5dp"
+                app:rollviewpager_play_delay="3000" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -45,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_normal"
                         android:textColor="@color/text_color_black"
-                        android:text="六一北路浩沙健身馆"
+                        android:text=""
                         />
 
                     <TextView
@@ -55,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_normal"
                         android:textColor="@color/text_color_black"
-                        android:text="有氧器械训练室"
+                        android:text=""
                         />
 
                     <TextView
@@ -65,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_normal"
                         android:textColor="@color/text_color_gray"
-                        android:text="距离0.6km"
+                        android:text="距离0km"
                         />
 
                     <TextView
@@ -78,6 +81,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_normal"

@@ -51,6 +51,7 @@
         android:textSize="@dimen/text_small"
         android:textColor="@color/white"
         android:gravity="center"
+        android:visibility="invisible"
         android:layout_toRightOf="@+id/iv_header"
         android:text="会员"/>
 

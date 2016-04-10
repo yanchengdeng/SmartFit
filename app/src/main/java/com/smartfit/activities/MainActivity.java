@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,14 +16,27 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
+import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,8 +82,14 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     .add(R.id.container, new CustomAnimationDemoFragment())
                     .commit();
         }
+        String nativeCity = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
+        if (TextUtils.isEmpty(nativeCity)) {
+            initLocation();
+        } else {
+            tvCityName.setText(nativeCity);
+            getVenuList();
+        }
 
-        initLocation();
 
         addLisener();
     }
@@ -115,7 +135,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         tvCityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CityListActivity.class);
+                openActivity(CityListActivity.class, 10);
             }
         });
     }
@@ -183,21 +203,67 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (null != aMapLocation) {
             if (aMapLocation.getErrorCode() == 0) {
+                locationClient.stopLocation();
+                LogUtil.w("dyc", "定位：" + aMapLocation.getCity());
                 tvCityName.setText(aMapLocation.getCity());
-                SharedPreferencesUtils.getInstance().putString(Constants.CITY_ADDRESS, aMapLocation.getCity());
                 SharedPreferencesUtils.getInstance().putString(Constants.CITY_LAT, String.format("%.4f", aMapLocation.getLatitude()));
                 SharedPreferencesUtils.getInstance().putString(Constants.CITY_LONGIT, String.format("%.4f", aMapLocation.getLongitude()));
-                SharedPreferencesUtils.getInstance().putString(Constants.CITY_CODE, aMapLocation.getCityCode());
             } else {
-                if (TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_ADDRESS, ""))) {
-                    tvCityName.setText(SharedPreferencesUtils.getInstance().getString(Constants.CITY_ADDRESS, ""));
+                if (TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, ""))) {
+                    tvCityName.setText(SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, ""));
                 } else {
                     tvCityName.setText("定位失败");
                 }
             }
         }
+        if (!tvCityName.getText().toString().equals("定位失败")) {
+            String cityName = tvCityName.getText().toString();
+            if (cityName.contains("市")) {
+                cityName = cityName.substring(0, cityName.length() - 1);
+            }
+            Util.setCityInfo(cityName);
+            getVenuList();
+        }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10 && resultCode == 11) {
+            String city = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
+            String code = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+            tvCityName.setText(city);
+            LogUtil.w("dyc", "执行--" + city + ".." + code);
+            getVenuList();
+        }
+    }
+
+    /**
+     * 获取场馆信息
+     *
+     * @param
+     */
+    private void getVenuList() {
+        Map<String, String> data = new HashMap<>();
+        data.put("cityCode", SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""));
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<WorkPointAddress> reqeustAddresses = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
+                if (reqeustAddresses != null && reqeustAddresses.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.VENUE_LIST_INFO, JsonUtils.toJson(reqeustAddresses));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(MainActivity.TAG);
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
+    }
 
     @Override
     protected void onDestroy() {

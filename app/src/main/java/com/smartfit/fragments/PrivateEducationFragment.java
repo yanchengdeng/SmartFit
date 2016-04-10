@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,6 +34,7 @@ import com.smartfit.activities.PayActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
+import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.beans.WorkPointAddress;
@@ -42,11 +42,11 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.HorizontalListView;
-import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,7 +87,7 @@ public class PrivateEducationFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
     @Bind(R.id.listView)
-    LoadMoreListView listView;
+    ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.btn_selected)
@@ -101,11 +101,10 @@ public class PrivateEducationFragment extends Fragment {
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
-
-    private int page = 1;
     private PrivateEducationAdapter adapter;
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
     private List<WorkPointAddress> addresses;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -136,24 +135,11 @@ public class PrivateEducationFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        page = 1;
                         loadData();
                         swipeRefreshLayout.setRefreshing(false);
                         ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
                 }, 3000);
-            }
-        });
-
-
-        /**
-         * 加载更多
-         */
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                loadData();
             }
         });
 
@@ -209,24 +195,53 @@ public class PrivateEducationFragment extends Fragment {
 
 
     private void loadData() {
-        if (page == 1 && !((BaseActivity) getActivity()).mSVProgressHUD.isShowing()) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
+
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
                     PrivateEducationClass item = new PrivateEducationClass();
-                    item.setName("王小二教练" + i + String.valueOf(page));
+                    item.setName("王小二教练" + i + String.valueOf(i));
                     datas.add(item);
                     adapter.setData(datas);
                 }
                 listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
                 adapter.setData(datas);
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
             }
         }, 2000);
+
+
+
+
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
+        Map<String, String> data = new HashMap<>();
+        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
+        data.put("orderBy", "0");
+        data.put("venueId", "12");
+        data.put("coachSex", "0");
+        data.put("priceRang", "0");
+        data.put("timeRang", "0");
+        data.put("courseType", "2");
+        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc私教课",response.toString());
+                        ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                LogUtil.w("dyc", "..... " + error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
+        ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
     private List<CustomeDate> customeDates;
@@ -241,18 +256,16 @@ public class PrivateEducationFragment extends Fragment {
         customeDates = DateUtils.getWeekInfo();
         selectDateAdapter = new SelectDateAdapter(customeDates, getActivity());
         selectDateAdapter.setCurrentPositon(0);
-        selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-"+ customeDates.get(0).getDate();
+        selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(0).getDate();
         listviewDate.setAdapter(selectDateAdapter);
         listviewDate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
-                selectDate = Calendar.getInstance().get(Calendar.YEAR)+ "-" + customeDates.get(position).getDate();
+                selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
             }
         });
     }
-
-
 
 
     private void addLisener() {
@@ -297,22 +310,22 @@ public class PrivateEducationFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("selDate", selectDate);
         data.put("ordeyBy", "0");
-        PostRequest request = new PostRequest(Constants.GET_VENUElIST,data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.GET_VENUElIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 List<WorkPointAddress> reqeustList = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPointAddress.class);
                 if (reqeustList != null && reqeustList.size() > 0) {
                     addresses = reqeustList;
                     showAddressPop();
-                }else {
-                    ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(((BaseActivity) getActivity()).TAG);

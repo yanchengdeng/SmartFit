@@ -1,10 +1,8 @@
 package com.smartfit.fragments;
 
-import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -48,7 +46,6 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.HorizontalListView;
-import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +86,7 @@ public class AerobicnAppratusFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
     @Bind(R.id.listView)
-    LoadMoreListView listView;
+    ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.iv_cover_bg)
@@ -102,12 +99,12 @@ public class AerobicnAppratusFragment extends Fragment {
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
 
-    private int page = 1;
     private AerobincnAppratusItemAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
     private List<WorkPointAddress> addresses;
 
+    private String venueId = "0";
     private String selectType = "0";
 
     @Override
@@ -129,7 +126,21 @@ public class AerobicnAppratusFragment extends Fragment {
     private void initListView() {
         adapter = new AerobincnAppratusItemAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
-        loadData();
+        String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+        if (TextUtils.isEmpty(citycode)) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        } else {
+            List<WorkPointAddress> workPointAddresses = Util.getVenueList();
+            if (workPointAddresses != null && workPointAddresses.size() > 0) {
+                addresses = workPointAddresses;
+                tvAddress.setText(addresses.get(0).getVenueName());
+                venueId = addresses.get(0).getVenueId();
+                loadData();
+            } else {
+                getVenueList();
+            }
+        }
+
 
         /***
          * 下拉刷新
@@ -137,94 +148,68 @@ public class AerobicnAppratusFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        page = 1;
-                        swipeRefreshLayout.setRefreshing(false);
-                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
-            }
-        });
-
-
-        /**
-         * 加载更多
-         */
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
                 loadData();
             }
         });
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.COURSE_ID,datas.get(position).getCourseId());
+                ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class,bundle);
             }
         });
     }
 
 
     private void loadData() {
-
+        datas.clear();
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
         Map<String, String> data = new HashMap<>();
         data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("orderBy", selectType);
-        data.put("venueId", "1");
-        data.put("coachSex", "0");
-        data.put("priceRang", "0");
-        data.put("timeRang", "0");
+        data.put("venueId", venueId);
+//        data.put("coachSex", "0");
+//        data.put("priceRang", "0");
+//        data.put("timeRang", "0");
         data.put("courseType", "3");
         PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
-                LogUtil.w("dyc",response.toString());
-//                if (null != requestList && requestList.size() > 0) {
-//                    datas.addAll(requestList);
-//                    adapter.setData(datas);
-//                } else {
-//                    noMoreData(datas);
-//                }
+                if (null != requestList && requestList.size() > 0) {
+                    datas.addAll(requestList);
+                    adapter.setData(datas);
+                }
+                noMoreData(datas);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                noMoreData(datas);
+                noMoreData(datas);
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 LogUtil.w("dyc", "..... " + error.getMessage());
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
-
-
-
-
-        if (page == 1 && !((BaseActivity) getActivity()).mSVProgressHUD.isShowing()) {
-
-            ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
-                adapter.setData(datas);
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-            }
-        }, 2000);
     }
 
+
+    private void noMoreData(List<ClassInfo> datas) {
+        swipeRefreshLayout.setRefreshing(false);
+        if (datas.size() > 0) {
+            listView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
+        } else {
+            listView.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        }
+    }
 
     private List<CustomeDate> customeDates;
     private SelectDateAdapter selectDateAdapter;
@@ -245,6 +230,7 @@ public class AerobicnAppratusFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
                 selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
+                loadData();
             }
         });
     }
@@ -408,6 +394,8 @@ public class AerobicnAppratusFragment extends Fragment {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
+                    venueId = addresses.get(position).getVenueId();
+                    loadData();
                 }
             });
         }
@@ -450,6 +438,7 @@ public class AerobicnAppratusFragment extends Fragment {
                     orderCustomePop.dismiss();
                     selectType = Util.getSortList(getContext()).get(position).getId();
                     ivCoverBg.setVisibility(View.GONE);
+                    loadData();
                 }
             });
         }

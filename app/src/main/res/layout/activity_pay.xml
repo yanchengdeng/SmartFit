@@ -58,6 +58,81 @@
             android:background="@color/white"
             android:orientation="vertical">
 
+
+
+            <RelativeLayout
+                android:id="@+id/rl_ye"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/iv_ye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_pay_ye" />
+
+                <TextView
+                    android:id="@+id/tv_ye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/image_padding"
+                    android:layout_toRightOf="@+id/iv_ye"
+                    android:text="余额"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_ye"
+                    android:layout_margin="@dimen/image_padding"
+                    android:layout_toRightOf="@+id/iv_ye"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="剩余"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+                    <TextView
+                        android:id="@+id/tv_ye_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/common_header_bg"
+                        android:textSize="@dimen/text_normal_down" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="元"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/iv_ye_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_margin="@dimen/image_padding_big"
+                    android:src="@mipmap/icon_pay_choose" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/line_gray" />
+
             <RelativeLayout
                 android:id="@+id/rl_wx"
                 android:layout_width="match_parent"
@@ -98,6 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:visibility="gone"
                     android:layout_margin="@dimen/image_padding_big"
                     android:src="@mipmap/icon_pay_choose" />
 

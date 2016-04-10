@@ -415,7 +415,7 @@ public class DateUtils {
         // 计算一周开始的日期
 //        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
 
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 0; i < 7; i++) {
             c.add(Calendar.DAY_OF_MONTH, 1);
             CustomeDate item = new CustomeDate();
             item.setDate(sdf.format(c.getTime()));
@@ -423,6 +423,16 @@ public class DateUtils {
             customeDates.add(item);
         }
         return customeDates;
+    }
+
+
+    public static String getData(String longSeconds) {
+
+        Date date = new Date(Long.parseLong(longSeconds) * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
+
     }
 
     public static long getTheDateMillions(String selectData) {

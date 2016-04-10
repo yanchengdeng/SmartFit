@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.ClassInfo;
 
 import java.util.List;
 
@@ -21,10 +24,10 @@ import butterknife.ButterKnife;
  */
 public class AerobincnAppratusItemAdapter extends BaseAdapter {
     private Context context;
-    private List<String> datas;
+    private List<ClassInfo> datas;
 
     public AerobincnAppratusItemAdapter(Context context
-            , List<String> datas) {
+            , List<ClassInfo> datas) {
         this.context = context;
         this.datas = datas;
 
@@ -47,7 +50,7 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_aerobiincn_appratus_item, null);
             viewHolder = new ViewHolder(convertView);
@@ -56,10 +59,28 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        ClassInfo item = datas.get(position);
+        if (!TextUtils.isEmpty(item.getCourseName())) {
+            viewHolder.tvTittle.setText(item.getCourseName());
+        }
+
+        if (!TextUtils.isEmpty(item.getCourseDetail())) {
+            viewHolder.tvInfo.setText(item.getCourseDetail());
+        }
+
+        if (!TextUtils.isEmpty(item.getPersonCount())) {
+            viewHolder.tvJoin.setText("该时段已有"+item.getPersonCount()+"人预约");
+        }
+
+        if (!TextUtils.isEmpty(item.getPrice())) {
+            viewHolder.tvPrice.setText(item.getPrice()+"元/次");
+        }
+
+        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<ClassInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

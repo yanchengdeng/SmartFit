@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
-import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.CityListActivity;
 import com.smartfit.beans.CityBeanGroup;
+import com.smartfit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +76,9 @@ public class CityAdapter extends BaseAdapter {
             viewHolder.tagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
                 @Override
                 public void onTagClick(String s) {
-                    ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus(s, SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    Util.setCityInfo(s);
+                    ((CityListActivity)context).setResult(11);
+                    ((CityListActivity)context).finish();
                 }
             });
         }

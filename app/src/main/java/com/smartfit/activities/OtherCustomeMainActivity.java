@@ -17,7 +17,6 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
-import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -28,7 +27,6 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -105,12 +103,12 @@ public class OtherCustomeMainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
             tvNickname.setText(userInfo.getNickName());
         }
-       /* TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
+        TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
         if (!TextUtils.isEmpty(userInfo.getIsVip()) && userInfo.getIsVip().equals("1")) {
             tvVip.setVisibility(View.VISIBLE);
         } else {
             tvVip.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
         TextView tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
         if (!TextUtils.isEmpty(userInfo.getSignature())) {
@@ -125,6 +123,30 @@ public class OtherCustomeMainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo.getFansCount())) {
             TextView tvfans = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_fans);
             tvfans.setText("粉丝  " + userInfo.getFansCount());
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getIsFoused())) {
+            if (userInfo.getIsFoused().equals("0")) {
+                tvAddFriends.setText("关注");
+            } else {
+                tvAddFriends.setText("已关注");
+            }
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getIsFriend())) {
+            if (userInfo.getIsFriend().equals("0")) {
+                tvAddFriends.setText("加为健身好友");
+            } else {
+                tvAddFriends.setText("已添加好友");
+            }
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getSex())) {
+            if (userInfo.getSex().equals("0")) {
+                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_woman),null);
+            }else{
+                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_man),null);
+            }
         }
     }
 
@@ -179,7 +201,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.add_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                tvAddFriends.setText("已添加");
+                tvAddFriends.setText("已添加好友");
                 mSVProgressHUD.dismiss();
 
             }

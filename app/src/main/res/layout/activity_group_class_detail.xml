@@ -27,7 +27,7 @@
             <com.jude.rollviewpager.RollPagerView
                 android:id="@+id/roll_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
                 app:rollviewpager_hint_gravity="right"
                 app:rollviewpager_hint_paddingRight="16dp"
                 app:rollviewpager_hint_paddingBottom="5dp"
@@ -41,7 +41,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="来一起奔跑吧，欢迎大家加入新课程"
+                android:text=""
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
@@ -52,7 +52,7 @@
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:text=""
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
@@ -101,7 +101,7 @@
                         android:id="@+id/tv_coach_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="王小妞教练"
+                        android:text="教练"
                         android:drawableRight="@mipmap/icon_woman"
                         android:drawablePadding="@dimen/image_padding"
                         android:textColor="@color/text_color_black"
@@ -114,7 +114,7 @@
                         android:layout_below="@+id/tv_coach_name"
                         android:layout_marginTop="@dimen/image_padding"
                         android:layout_toRightOf="@+id/iv_coach_icon"
-                        android:text="体校毕业 带你科学锻炼 营养健身"
+                        android:text="暂无"
                         android:textColor="@color/text_color_gray"
                         android:textSize="@dimen/text_normal_down" />
 
@@ -135,7 +135,7 @@
                             android:focusableInTouchMode="false"
                             android:isIndicator="true"
                             android:numStars="5"
-                            android:rating="4" />
+                            android:rating="0" />
 
                         <TextView
                             android:id="@+id/tv_coach_score"
@@ -143,7 +143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/image_padding"
                             android:singleLine="true"
-                            android:text="4.8"
+                            android:text="0"
                             android:textColor="@color/text_color_gray"
                             android:textSize="@dimen/text_normal_down" />
 
@@ -246,7 +246,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_toRightOf="@+id/iv_operate_person"
-                    android:text="福州市五四路309号奥体"
+                    android:text="暂无"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down" />
 
@@ -307,7 +307,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:text="￥550"
+                android:text="￥0"
                 android:textColor="@color/common_header_bg"
                 android:textSize="@dimen/text_larger" />
 

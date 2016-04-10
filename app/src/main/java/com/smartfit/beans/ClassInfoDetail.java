@@ -5,66 +5,74 @@ package com.smartfit.beans;
  */
 public class ClassInfoDetail {
 
-    private String account;//123,
-    private String bigUrl;//www,
-    private String coachId;//2222,
-    private String coachRealName;//444,
-    private String courseDetail;//111,
-    private String courseId;//123,
-    private String courseName;//000,
-    private String endTime;//4564,
-    private String linkPhone;//123,
-    private String nickName;//333,
-    private String persionList;//1234,
-    private String price;//465465,
-    private String range;//250,
-    private String startDate;//159,
-    private String startTime;//256,
-    private String startUserId;//123,
-    private String userNickName;//587,
-    private String userSex;//1,
-    private String venueId;//124,
-    private String venueName;//000,
-    private String venueUrl;//wwww
+    private String  longit;//null,
+    private String         lat;//null,
+    private String        isParted;//0,
+    private String []      commentList;
+    private String       topicId;//20160409081801885545837,
+    private String       courseId;//37,
+    private String        courseName;//团操－台江－上午,
+    private String        coachRealName;//徐晃11,
+    private String        account;//admin,
+    private String       venueUrl;//http;////localhost;//8089/upload/picture/2016/4/2/1459595667710/1459595667.jpg,
+    private String       venueId;//12,
+    private String       venueName;//福州台江健身馆,
+    private String       linkPhone;//null,
+    private String       serviceDetails;//null,
+    private String       coachId;//9,
+    private String       stars;//0,
+    private String       nickName;//\U4ee5uu,
+    private String       price;//22.22,
+    private String       userPicUrl;//http;////123.57.164.115;//8098/uploadimgs/picture/2016/4/2/1459580390538/1459580390.png,
+    private String       startUserId;//1,
+    private String      endTime;//1460218620,
+    private String     classroomName;//台江－团操,
+    private String     courseDetail;//123123123,
+    private String     startDate;//1460217600,
+    private String[]      persionList;//[
+    private String       userHeadImg;//,
+    private String      userSex;//0,
+    private String     userNickName;//,
+    private String[]     coursePics;
 
-    public String getAccount() {
-        return account;
+    public String getLongit() {
+        return longit;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setLongit(String longit) {
+        this.longit = longit;
     }
 
-    public String getBigUrl() {
-        return bigUrl;
+    public String getLat() {
+        return lat;
     }
 
-    public void setBigUrl(String bigUrl) {
-        this.bigUrl = bigUrl;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public String getCoachId() {
-        return coachId;
+    public String getIsParted() {
+        return isParted;
     }
 
-    public void setCoachId(String coachId) {
-        this.coachId = coachId;
+    public void setIsParted(String isParted) {
+        this.isParted = isParted;
     }
 
-    public String getCoachRealName() {
-        return coachRealName;
+    public String[] getCommentList() {
+        return commentList;
     }
 
-    public void setCoachRealName(String coachRealName) {
-        this.coachRealName = coachRealName;
+    public void setCommentList(String[] commentList) {
+        this.commentList = commentList;
     }
 
-    public String getCourseDetail() {
-        return courseDetail;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setCourseDetail(String courseDetail) {
-        this.courseDetail = courseDetail;
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     public String getCourseId() {
@@ -83,92 +91,28 @@ public class ClassInfoDetail {
         this.courseName = courseName;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getCoachRealName() {
+        return coachRealName;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setCoachRealName(String coachRealName) {
+        this.coachRealName = coachRealName;
     }
 
-    public String getLinkPhone() {
-        return linkPhone;
+    public String getAccount() {
+        return account;
     }
 
-    public void setLinkPhone(String linkPhone) {
-        this.linkPhone = linkPhone;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getVenueUrl() {
+        return venueUrl;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getPersionList() {
-        return persionList;
-    }
-
-    public void setPersionList(String persionList) {
-        this.persionList = persionList;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getRange() {
-        return range;
-    }
-
-    public void setRange(String range) {
-        this.range = range;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getStartUserId() {
-        return startUserId;
-    }
-
-    public void setStartUserId(String startUserId) {
-        this.startUserId = startUserId;
-    }
-
-    public String getUserNickName() {
-        return userNickName;
-    }
-
-    public void setUserNickName(String userNickName) {
-        this.userNickName = userNickName;
-    }
-
-    public String getUserSex() {
-        return userSex;
-    }
-
-    public void setUserSex(String userSex) {
-        this.userSex = userSex;
+    public void setVenueUrl(String venueUrl) {
+        this.venueUrl = venueUrl;
     }
 
     public String getVenueId() {
@@ -187,11 +131,139 @@ public class ClassInfoDetail {
         this.venueName = venueName;
     }
 
-    public String getVenueUrl() {
-        return venueUrl;
+    public String getLinkPhone() {
+        return linkPhone;
     }
 
-    public void setVenueUrl(String venueUrl) {
-        this.venueUrl = venueUrl;
+    public void setLinkPhone(String linkPhone) {
+        this.linkPhone = linkPhone;
+    }
+
+    public String getServiceDetails() {
+        return serviceDetails;
+    }
+
+    public void setServiceDetails(String serviceDetails) {
+        this.serviceDetails = serviceDetails;
+    }
+
+    public String getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(String coachId) {
+        this.coachId = coachId;
+    }
+
+    public String getStars() {
+        return stars;
+    }
+
+    public void setStars(String stars) {
+        this.stars = stars;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getUserPicUrl() {
+        return userPicUrl;
+    }
+
+    public void setUserPicUrl(String userPicUrl) {
+        this.userPicUrl = userPicUrl;
+    }
+
+    public String getStartUserId() {
+        return startUserId;
+    }
+
+    public void setStartUserId(String startUserId) {
+        this.startUserId = startUserId;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
+
+    public String getCourseDetail() {
+        return courseDetail;
+    }
+
+    public void setCourseDetail(String courseDetail) {
+        this.courseDetail = courseDetail;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String[] getPersionList() {
+        return persionList;
+    }
+
+    public void setPersionList(String[] persionList) {
+        this.persionList = persionList;
+    }
+
+    public String getUserHeadImg() {
+        return userHeadImg;
+    }
+
+    public void setUserHeadImg(String userHeadImg) {
+        this.userHeadImg = userHeadImg;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
+    }
+
+    public String getUserNickName() {
+        return userNickName;
+    }
+
+    public void setUserNickName(String userNickName) {
+        this.userNickName = userNickName;
+    }
+
+    public String[] getCoursePics() {
+        return coursePics;
+    }
+
+    public void setCoursePics(String[] coursePics) {
+        this.coursePics = coursePics;
     }
 }

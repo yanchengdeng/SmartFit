@@ -13,11 +13,23 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.beans.CityBean;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.GetSingleRequestUtils;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.viewpagerindicator.CirclePageIndicator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SplashActivity extends FragmentActivity {
 
@@ -52,10 +64,9 @@ public class SplashActivity extends FragmentActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
+                requestCityList();
             }
-        }, 2000);
+        }, 1500);
     }
 
     private void initGuideGallery() {
@@ -66,9 +77,7 @@ public class SplashActivity extends FragmentActivity {
             public void onClick(View view) {
                 SharedPreferencesUtils.getInstance().putBoolean(Constants.FRIST_OPEN_APP, false);
 
-                boolean isget = SharedPreferencesUtils.getInstance().getBoolean(Constants.FRIST_OPEN_APP,true);
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
+                requestCityList();
             }
         });
 
@@ -100,6 +109,30 @@ public class SplashActivity extends FragmentActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+
+    private void requestCityList(){
+        Map<String, String> data = new HashMap<>();
+        PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<CityBean> cityBeans = JsonUtils.listFromJson(response.getAsJsonArray("list"), CityBean.class);
+                if (cityBeans != null && cityBeans.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_LIST_INOF, JsonUtils.toJson(cityBeans));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+        request.headers = NetUtil.getRequestBody(SplashActivity.this);
+        GetSingleRequestUtils.getInstance(SplashActivity.this).getRequestQueue().add(request);
     }
 
     public class GalleryPagerAdapter extends PagerAdapter {

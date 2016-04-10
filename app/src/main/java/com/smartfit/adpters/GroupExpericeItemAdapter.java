@@ -77,7 +77,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getPersonCount()) && !TextUtils.isEmpty(item.getClassroomPersonCount())) {
-            viewHolder.tvJoin.setText(item.getPersonCount() + "/" + item.getClassroomPersonCount() + "人");
+            viewHolder.tvJoin.setText(item.getClassroomPersonCount() + "/" + item.getPersonCount() + "人");
         }
 
         if (!TextUtils.isEmpty(item.getBeginTime()) && !TextUtils.isEmpty(item.getEndTime())) {

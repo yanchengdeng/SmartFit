@@ -76,7 +76,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="该时段已有12人预约"
+                    android:text="该时段已有0人预约"
                     android:layout_height="wrap_content" />
 
 
@@ -104,7 +104,7 @@
             android:singleLine="true"
             android:textColor="@color/find_private_coach"
             android:textSize="@dimen/text_normal_down"
-            android:text="120元/次"
+            android:text="0元/次"
             android:layout_height="wrap_content" />
 
         <TextView
