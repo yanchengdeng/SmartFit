@@ -121,12 +121,28 @@ public class WaitVertifyActivity extends BaseActivity {
                 tvCard.setText(item.getCertificateName());
                 tvName.setText(item.getCoachRealName());
                 ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageCard, Options.getListOptions());
-
+                //1待审；2通过；3不通过
+                if (item.getStatus().equals("1")) {
+                    cbCardPhoto.setImageResource(R.mipmap.icon_close);
+                } else if (item.getStatus().equals("2")) {
+                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
+                } else {
+                    cbCardPhoto.setImageResource(R.mipmap.icon_close);
+                }
             }
 
             if (item.getType().equals("2")) {
                 //正式照片
                 ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageWork, Options.getListOptions());
+                //1待审；2通过；3不通过
+                if (item.getStatus().equals("1")) {
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_close);
+                } else if (item.getStatus().equals("2")) {
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
+                } else {
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_close);
+
+                }
             }
         }
     }

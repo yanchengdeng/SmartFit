@@ -19,6 +19,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
 
@@ -43,6 +44,7 @@ public class CoachBriefActivity extends BaseActivity {
     EditText etBreif;
     @Bind(R.id.btn_submmit)
     Button btnSubmmit;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
