@@ -10,11 +10,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.SubmitAuthInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,6 +80,7 @@ public class WaitVertifyActivity extends BaseActivity {
 
     }
 
+
     /**
      * 获取教练审核信息
      */
@@ -83,6 +90,9 @@ public class WaitVertifyActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
+                List<SubmitAuthInfo> submitAuthInfoList = JsonUtils.listFromJson(response.getAsJsonArray("list"), SubmitAuthInfo.class);
+                if (submitAuthInfoList != null && submitAuthInfoList.size() > 0)
+                    fillData(submitAuthInfoList);
 
                 mSVProgressHUD.dismiss();
             }
@@ -97,8 +107,32 @@ public class WaitVertifyActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+    /**
+     * 填充资料信息
+     *
+     * @param submitAuthInfoList
+     */
+    private void fillData(List<SubmitAuthInfo> submitAuthInfoList) {
 
-    private void addLisener(){
+
+        for (SubmitAuthInfo item : submitAuthInfoList) {
+            if (item.getType().equals("1")) {
+                //身份证
+                tvCard.setText(item.getCertificateName());
+                tvName.setText(item.getCoachRealName());
+                ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageCard, Options.getListOptions());
+
+            }
+
+            if (item.getType().equals("2")) {
+                //正式照片
+                ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageWork, Options.getListOptions());
+            }
+        }
+    }
+
+
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,12 +9,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.WorkPointAdapter;
+import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.WorkPoint;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyListView;
 
 import java.util.ArrayList;
@@ -88,7 +95,27 @@ public class MyWorkPointActivity extends BaseActivity {
         setContentView(R.layout.activity_my_work_point);
         ButterKnife.bind(this);
         initView();
+        getCoachWorkPlaces();
         addLisener();
+    }
+
+    private void getCoachWorkPlaces() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        PostRequest request = new PostRequest(Constants.WORKSPACE_LIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MyWorkPointActivity.this);
+        mQueue.add(request);
     }
 
     private void initView() {

@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.activities.MyWorkPointActivity;
 import com.smartfit.activities.SelectWorkPointActivity;
 import com.smartfit.activities.SelectWorkPointTimeActivity;
-import com.smartfit.activities.SettingActivity;
 import com.smartfit.beans.WorkPoint;
 
 import java.util.List;
@@ -73,6 +73,7 @@ public class WorkPointAdapter extends BaseAdapter {
         viewHolder.tvWorkPoint.setText(item.getAddress());
         viewHolder.tvWorkTime.setText(item.getTime());
 
+
         viewHolder.ivDelet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +101,13 @@ public class WorkPointAdapter extends BaseAdapter {
                 }
             }
         });
+
+        viewHolder.llContextUi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return convertView;
     }
 
@@ -118,10 +126,16 @@ public class WorkPointAdapter extends BaseAdapter {
     static class ViewHolder {
         @Bind(R.id.tv_work_name)
         TextView tvWorkName;
+        @Bind(R.id.tv_work_time_tittle)
+        TextView tvWorkTimeTittle;
         @Bind(R.id.tv_work_time)
         TextView tvWorkTime;
+        @Bind(R.id.tv_work_point_tittle)
+        TextView tvWorkPointTittle;
         @Bind(R.id.tv_work_point)
         TextView tvWorkPoint;
+        @Bind(R.id.ll_context_ui)
+        RelativeLayout llContextUi;
         @Bind(R.id.iv_delet)
         ImageView ivDelet;
 

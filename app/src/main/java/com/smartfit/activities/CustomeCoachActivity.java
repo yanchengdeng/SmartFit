@@ -239,12 +239,12 @@ public class CustomeCoachActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
             tvNickname.setText(userInfo.getNickName());
         }
-       /* TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
+        TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
         if (!TextUtils.isEmpty(userInfo.getIsVip()) && userInfo.getIsVip().equals("1")) {
             tvVip.setVisibility(View.VISIBLE);
         } else {
             tvVip.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
         TextView tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
         if (!TextUtils.isEmpty(userInfo.getSignature())) {

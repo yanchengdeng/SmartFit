@@ -62,6 +62,7 @@ public class Constants {
     public static final String LOGIN_IN_METHOD = "/User/Login";
     public static final String SMS_SMSSEND = "/SMS/SMSSend";
     public static final String RESET_PASSOWRD = "/User/ResetPassword";
+    public static final String USER_CONTACTCOURSELIST= "/User/myContactCourseList";
 
     //课程相关接口
     public static final String SEARCH_CLASS = "/ClassIf/searchInfo";
@@ -87,6 +88,9 @@ public class Constants {
     public static final String  COACH_GETRESUME = "/coach/getResume";
     public static final String COACH_UPDATERESUME = "/coach/updateResume";
     public static final String GET_COACHPAGEINFO  = "/coach/getCoachPageInfo";
+    public static final String WORKSPACE_LIST ="/workspace/List";
+    public static final String WORKSPACE_DELETE = "/workspace/Delete";
+    public static final String  WORKSPACE_ADD = " /workspace/Add";
 
 
     //系统数据

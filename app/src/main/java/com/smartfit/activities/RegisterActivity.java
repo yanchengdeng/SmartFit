@@ -171,6 +171,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.register_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                finish();
 
             }
         }, new Response.ErrorListener() {

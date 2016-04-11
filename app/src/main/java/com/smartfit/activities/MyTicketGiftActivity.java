@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.smartfit.R;
 import com.smartfit.adpters.TicketGiftAdapter;
+import com.smartfit.fragments.MyAddClassesFragment;
+import com.smartfit.fragments.MyClassesOverFragment;
+import com.smartfit.fragments.MyTickeFragment;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -36,67 +43,56 @@ public class MyTicketGiftActivity extends BaseActivity {
     TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
-    @Bind(R.id.listView)
-    LoadMoreListView listView;
+    @Bind(R.id.viewpagertab)
+    SmartTabLayout viewpagertab;
+    @Bind(R.id.viewpager)
+    ViewPager viewpager;
 
-
-    private int page = 1;
-    private TicketGiftAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_ticket_gift);
+        setContentView(R.layout.activity_my_classes);
         ButterKnife.bind(this);
-        intView();
+        initView();
+        initFragments();
         addLisener();
     }
 
-    private void intView() {
+    private void initView() {
         tvTittle.setText(getString(R.string.tick_gift));
-        adapter = new TicketGiftAdapter(this, datas);
-        listView.setAdapter(adapter);
-        loadData();
+
     }
 
 
-    private void addLisener() {
+    private void initFragments() {
+        Bundle useable = new Bundle();
+        useable.putString("type", "0");
+        Bundle userover = new Bundle();
+        userover.putString("type", "1");
+        MyTickeFragment  mf = new  MyTickeFragment();
+        mf.setArguments(useable);
+        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+                getSupportFragmentManager(), FragmentPagerItems.with(this)
+                .add("可用", MyTickeFragment.class,useable)
+                .add("已使用", MyTickeFragment.class,userover)
+                .create());
 
+        viewpager.setAdapter(adapter);
+        viewpager.setOffscreenPageLimit(2);
+        viewpagertab.setViewPager(viewpager);
+        viewpager.setCurrentItem(0);
+
+
+    }
+
+
+    private void addLisener(){
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        /**
-         * 加载更多
-         */
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                loadData();
-            }
-        });
     }
 
-    private void loadData() {
-        if(page==1){
-            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
-                adapter.setData(datas);
-                mSVProgressHUD.dismiss();
-            }
-        }, 2000);
-    }
 }

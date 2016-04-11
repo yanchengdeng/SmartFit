@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.ClassInfo;
+import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.Options;
 
 import java.util.List;
 
@@ -81,7 +83,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getBeginTime()) && !TextUtils.isEmpty(item.getEndTime())) {
-            viewHolder.tvTime.setText(item.getBeginTime() + "-" + item.getEndTime());
+            viewHolder.tvTime.setText(DateUtils.getDataTime(item.getBeginTime())+ "-" + DateUtils.getDataTime(item.getEndTime()));
         }
 
 
@@ -89,7 +91,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder.tvPrice.setText(item.getPrice() + "元");
         }
 
-        ImageLoader.getInstance().displayImage(item.getClassUrl(), viewHolder.ivIcon);
+        ImageLoader.getInstance().displayImage(item.getClassUrl(), viewHolder.ivIcon, Options.getListOptions());
 
         viewHolder.ratingBar.setLayoutParams(params);
         return convertView;

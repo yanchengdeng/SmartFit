@@ -276,7 +276,8 @@ public class CoachAuthBaseActivity extends BaseActivity {
                             if (works.size() == 0) {
                                 mSVProgressHUD.showInfoWithStatus("请添加正式照", SVProgressHUD.SVProgressHUDMaskType.Clear);
                             } else {
-                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString());
+                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateCard());
+                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateWord());
                             }
                         }
                     }
@@ -285,19 +286,19 @@ public class CoachAuthBaseActivity extends BaseActivity {
         });
     }
 
-    private void doSubmit(String name, String card) {
+    private void doSubmit(String name, String card, CoachCertificateItem coachCertificateCard) {
         Map<String, String> map = new HashMap<>();
-        map.put("id", card);
-        map.put("coachrealName", name);
-        map.put("certificateName", coachCertificate.getCoachCertificateCard().getCertificateName());
-        map.put("certificateImg", coachCertificate.getCoachCertificateCard().getCertificateImg());
-        map.put("type", coachCertificate.getCoachCertificateCard().getType());
+        map.put("coachRealName", name);
+        map.put("certificateName", card);
+        map.put("certificateImg", coachCertificateCard.getCertificateImg());
+        map.put("type", coachCertificateCard.getType());
         mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        PostRequest request = new PostRequest(Constants.COACH_ADD_CERTIFICATE,map, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.COACH_ADD_CERTIFICATE, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc",response.toString());
+                LogUtil.w("dyc", response.toString());
 
+                mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -392,15 +393,15 @@ public class CoachAuthBaseActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                LogUtil.w("dyc","工作证"+result+"..."+url);
+                LogUtil.w("dyc", "工作证" + result + "..." + url);
                 if (!TextUtils.isEmpty(url)) {
-                    coachCertificate.setCoachCertificateWord(new CoachCertificateItem("正式照片", url, "2"));
+                    coachCertificate.setCoachCertificateWord(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "2"));
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                LogUtil.w("dyc",""+ex.getMessage()+"..."+ex.getLocalizedMessage());
+                LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
             }
 
             @Override
@@ -438,14 +439,14 @@ public class CoachAuthBaseActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 if (!TextUtils.isEmpty(url)) {
-                    LogUtil.w("dyc","身份证"+result+"..."+url);
-                    coachCertificate.setCoachCertificateCard(new CoachCertificateItem("身份证", url, "1"));
+                    LogUtil.w("dyc", "身份证" + result + "..." + url);
+                    coachCertificate.setCoachCertificateCard(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "1"));
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                LogUtil.w("dyc",""+ex.getMessage()+"..."+ex.getLocalizedMessage());
+                LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
             }
 
             @Override

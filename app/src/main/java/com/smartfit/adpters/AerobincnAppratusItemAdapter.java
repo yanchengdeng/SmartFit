@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.ClassInfo;
+import com.smartfit.utils.Options;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
             viewHolder.tvPrice.setText(item.getPrice()+"元/次");
         }
 
-        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon);
+        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }
 

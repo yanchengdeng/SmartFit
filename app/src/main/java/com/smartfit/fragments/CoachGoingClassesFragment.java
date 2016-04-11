@@ -32,7 +32,7 @@ public class CoachGoingClassesFragment extends Fragment {
 
 
     @Bind(R.id.listView)
-    LoadMoreListView listView;
+    ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.no_data)
@@ -40,7 +40,6 @@ public class CoachGoingClassesFragment extends Fragment {
 
     private CoachClassGoingStatusAdapter adapter;
     private List<String> datas = new ArrayList<>();
-    private int page = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,6 @@ public class CoachGoingClassesFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        page = 1;
                         swipeRefreshLayout.setRefreshing(false);
                         ((MyClassesActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
@@ -79,36 +77,21 @@ public class CoachGoingClassesFragment extends Fragment {
         });
 
 
-        /**
-         * 加载更多
-         */
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                loadData();
-            }
-        });
-
-
     }
 
     private void loadData() {
-        if(page==1){
-            ((BaseActivity)getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
+                    datas.add("模拟数据" + i + String.valueOf(1));
                 }
                 listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
                 adapter.setData(datas);
-                ((BaseActivity)getActivity()).mSVProgressHUD.dismiss();
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
             }
         }, 2000);
     }

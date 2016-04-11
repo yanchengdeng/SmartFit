@@ -176,8 +176,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         tvSpaceInfo.setText("暂无");
-        ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon);
-        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivOperatePerson);
+        ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon,Options.getHeaderOptions());
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivOperatePerson,Options.getHeaderOptions());
         tvOperateAddress.setText("暂无");
         if (detail.getPersionList().length == 0) {
             TextView textView = new TextView(GroupClassDetailActivity.this);
@@ -344,7 +344,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             View relativeLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.ad_common_view, null);
             ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.iv_cover_bg);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
-            ImageLoader.getInstance().displayImage(imgs[position], imageView);
+            ImageLoader.getInstance().displayImage(imgs[position], imageView, Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             textView.setText(infos[0] + "(" + courceName + ")");
             return relativeLayout;

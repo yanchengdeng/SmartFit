@@ -1,5 +1,7 @@
 package com.smartfit.beans;
 
+import java.util.ArrayList;
+
 /**
  * Created by yanchengdneng on 2016/4/1.
  * <p/>
@@ -17,7 +19,7 @@ public class UserInfo {
     private String fansCount;//0,
     private String friendCount;//0,
     private String balance;//0,
-    private String commonList;//null,
+    private ArrayList<CommentInfo> commonList;//null,
     private String coachInfo;//null,
     private String curClassCount;//null,
     private String[] coachDynamicPics;//
@@ -130,11 +132,11 @@ public class UserInfo {
         this.balance = balance;
     }
 
-    public String getCommonList() {
+    public  ArrayList<CommentInfo> getCommonList() {
         return commonList;
     }
 
-    public void setCommonList(String commonList) {
+    public void setCommonList( ArrayList<CommentInfo> commonList) {
         this.commonList = commonList;
     }
 

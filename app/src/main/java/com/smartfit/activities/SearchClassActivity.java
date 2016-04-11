@@ -97,7 +97,10 @@ public class SearchClassActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openActivity(GroupClassDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
+                bundle.putString(Constants.COURSE_TYPE, TextUtils.isEmpty(datas.get(position).getCourseType())? "0":datas.get(position).getCourseType());
+                openActivity(GroupClassDetailActivity.class, bundle);
             }
         });
 
@@ -118,7 +121,7 @@ public class SearchClassActivity extends BaseActivity {
     }
 
     private void loadData(final String contions) {
-        if(page==1) {
+        if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
         Map<String, String> data = new HashMap<>();
@@ -137,7 +140,7 @@ public class SearchClassActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(contions)) {
                         tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
                         llSearchResult.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         llSearchResult.setVisibility(View.GONE);
                     }
                 } else {

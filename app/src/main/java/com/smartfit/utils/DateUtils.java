@@ -430,7 +430,18 @@ public class DateUtils {
 
         Date date = new Date(Long.parseLong(longSeconds) * 1000);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return simpleDateFormat.format(date);
+
+    }
+
+
+
+    public static String getDataTime(String longSeconds) {
+
+        Date date = new Date(Long.parseLong(longSeconds) * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(" HH:mm ");
         return simpleDateFormat.format(date);
 
     }

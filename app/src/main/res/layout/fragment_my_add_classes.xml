@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
 
-        <com.smartfit.views.LoadMoreListView
+        <ListView
             android:id="@+id/listView"
             android:visibility="gone"
             android:layout_width="match_parent"

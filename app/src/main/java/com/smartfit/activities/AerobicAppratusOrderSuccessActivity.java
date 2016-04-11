@@ -25,6 +25,7 @@ import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 
 import java.util.HashMap;
@@ -177,7 +178,7 @@ public class AerobicAppratusOrderSuccessActivity extends BaseActivity {
             View relativeLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.ad_common_view, null);
             ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.iv_cover_bg);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
-            ImageLoader.getInstance().displayImage(imgs[position], imageView);
+            ImageLoader.getInstance().displayImage(imgs[position], imageView, Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             textView.setText(infos[0] + "(" + courceName + ")");
             return relativeLayout;
