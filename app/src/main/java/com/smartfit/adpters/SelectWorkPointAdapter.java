@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.WorkPointAddress;
+import com.smartfit.utils.Options;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -62,11 +65,20 @@ public class SelectWorkPointAdapter extends BaseAdapter {
 
         WorkPointAddress item = datas.get(position);
         viewHolder.chSelect.setChecked(item.isCheck());
+        if (!TextUtils.isEmpty(item.getVenueName())) {
+            viewHolder.tvAddress.setText(item.getVenueName());
+        }
+
+        if (!TextUtils.isEmpty(item.getRange())) {
+            viewHolder.tvDistance.setText(item.getRange());
+        }
+        ImageLoader.getInstance().displayImage(item.getVenueUrl(), viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }
 
     public void setData(List<WorkPointAddress> datas) {
         this.datas = datas;
+        notifyDataSetChanged();
     }
 
     /**

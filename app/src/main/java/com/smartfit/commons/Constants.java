@@ -80,6 +80,7 @@ public class Constants {
     public static final String USER_SEARCHFRIENDLIST = "/User/searchFriendList";
     public static final String USER_ADDFOCUS ="/User/addFocus";
     public static final String USER_ADDFRIEND = "/User/addFriend";
+    public static final String USER_SAVEUSERINFO = "/User/saveUserInfo";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
@@ -90,7 +91,7 @@ public class Constants {
     public static final String GET_COACHPAGEINFO  = "/coach/getCoachPageInfo";
     public static final String WORKSPACE_LIST ="/workspace/List";
     public static final String WORKSPACE_DELETE = "/workspace/Delete";
-    public static final String  WORKSPACE_ADD = " /workspace/Add";
+    public static final String  WORKSPACE_ADD = "/workspace/Add";
 
 
     //系统数据

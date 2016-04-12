@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="江滨大道体育馆"
+            android:text=""
             android:drawablePadding="@dimen/image_padding"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal_down"
@@ -60,7 +60,7 @@
             android:layout_marginBottom="@dimen/image_padding"
             android:layout_marginTop="@dimen/image_padding"
             android:singleLine="true"
-            android:text="距离0.6km"
+            android:text="距离0.0km"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal_down" />
 

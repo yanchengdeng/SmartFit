@@ -16,6 +16,7 @@ import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
@@ -28,6 +29,9 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +42,11 @@ public class CustomeCoachActivity extends BaseActivity {
 
     private PullToZoomScrollViewEx scrollView;
 
+    private EventBus eventBus;
+
+    private SelectableRoundedImageView imageViewHeader;
+
+    private TextView tvName, tvSigneture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,8 @@ public class CustomeCoachActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
         }
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.bar_regiter_bg);//通知栏所需颜色
@@ -78,8 +89,28 @@ public class CustomeCoachActivity extends BaseActivity {
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
 
-
+        imageViewHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
+        tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
     }
+
+
+    @Subscribe
+    public void onEvent(UpdateCoachInfo event) {/* Do something */
+        if (!TextUtils.isEmpty(event.getUserPicUrl())) {
+            ImageLoader.getInstance().displayImage(event.getUserPicUrl(), imageViewHeader, Options.getHeaderOptions());
+        }
+
+        if (!TextUtils.isEmpty(event.getNickName())) {
+            tvName.setText(event.getNickName());
+        }
+
+        if (!TextUtils.isEmpty(event.getSignature())) {
+            tvSigneture.setText(event.getSignature());
+        }
+    }
+
+    ;
 
     private void initView() {
         getCoachInfo();
@@ -200,12 +231,12 @@ public class CustomeCoachActivity extends BaseActivity {
      */
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-        Map<String,String> maps = new HashMap<>();
-        maps.put("coachId","12");
-        PostRequest request = new PostRequest(Constants.GET_COACHPAGEINFO,maps, new Response.Listener<JsonObject>() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("coachId", "17");
+        PostRequest request = new PostRequest(Constants.GET_COACHPAGEINFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc",response.toString());
+                LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.dismiss();
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
                 if (null != userInfo) {

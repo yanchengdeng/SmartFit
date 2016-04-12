@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.beans.BriefInfo;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -20,6 +21,8 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -46,10 +49,13 @@ public class CoachBriefActivity extends BaseActivity {
     Button btnSubmmit;
     private String id;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_brief);
+        eventBus = EventBus.getDefault();
         ButterKnife.bind(this);
         initView();
         getBriefInfo();
@@ -60,11 +66,18 @@ public class CoachBriefActivity extends BaseActivity {
      * 获取简历信息
      */
     private void getBriefInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         PostRequest request = new PostRequest(Constants.COACH_GETRESUME, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc",response.toString());
-
+                LogUtil.w("dyc", response.toString());
+                BriefInfo briefInfo = JsonUtils.objectFromJson(response, BriefInfo.class);
+                if (briefInfo != null) {
+                    id = briefInfo.getId();
+                    if (!TextUtils.isEmpty(briefInfo.getResumeContent())) {
+                        etBreif.setText(briefInfo.getResumeContent());
+                    }
+                }
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -96,19 +109,34 @@ public class CoachBriefActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
-    private void doSubmit(String brief) {
+    private void doSubmit(final String brief) {
         mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         HashMap map = new HashMap();
-        map.put("id","");
-        map.put("resumeContent",brief);
-        PostRequest request = new PostRequest(Constants.COACH_UPDATERESUME, new Response.Listener<JsonObject>() {
+        if (!TextUtils.isEmpty(id)) {
+            map.put("id", id);
+        }
+        map.put("resumeContent", brief);
+        PostRequest request = new PostRequest(Constants.COACH_UPDATERESUME, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-               LogUtil.w("dyc",response.toString());
-
+                LogUtil.w("dyc", response.toString());
+                if (!TextUtils.isEmpty(id)) {
+                    mSVProgressHUD.showSuccessWithStatus("已提交审核", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+                BriefInfo briefInfo = JsonUtils.objectFromJson(response, BriefInfo.class);
+                if (briefInfo != null) {
+                    if (!TextUtils.isEmpty(briefInfo.getStatus())) {
+                        if (briefInfo.getStatus().equals("1")) {
+                            eventBus.post("您的简历正在等待审核..");
+                        } else if (briefInfo.getStatus().equals("2")) {
+                            eventBus.post("您的简历已通过认证");
+                        } else {
+                            eventBus.post("您的简历未通过审核，请重新认证");
+                        }
+                    }
+                }
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -124,10 +152,5 @@ public class CoachBriefActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.coach_brief));
-
-
-
     }
-
-
 }

@@ -15,6 +15,7 @@ import com.smartfit.R;
 import com.smartfit.activities.MyWorkPointActivity;
 import com.smartfit.activities.SelectWorkPointActivity;
 import com.smartfit.activities.SelectWorkPointTimeActivity;
+import com.smartfit.activities.WorkPlaceEditActivity;
 import com.smartfit.beans.WorkPoint;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class WorkPointAdapter extends BaseAdapter {
         });
 
 
-        viewHolder.tvWorkPoint.setOnClickListener(new View.OnClickListener() {
+     /*   viewHolder.tvWorkPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (((TextView) v).getText().toString().equals(context.getString(R.string.click_setting))) {
@@ -101,11 +102,11 @@ public class WorkPointAdapter extends BaseAdapter {
                 }
             }
         });
-
+*/
         viewHolder.llContextUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((MyWorkPointActivity) context).openActivity(WorkPlaceEditActivity.class);
             }
         });
         return convertView;

@@ -260,6 +260,8 @@
         </activity>
         <activity android:name=".activities.WorkPlaceEditActivity" >
         </activity>
+        <activity android:name=".activities.SelectWorkWeekDayActivity" >
+        </activity>
     </application>
 
 </manifest>
