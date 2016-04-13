@@ -100,8 +100,6 @@ public class RegisterActivity extends BaseActivity {
                 finish();
             }
         });
-        etPhone.setText("13067380836");
-
         btnGetcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -104,10 +104,9 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
 
         if (!TextUtils.isEmpty(item.getName())) {
             viewHolder.tvName.setText(item.getName());
-            viewHolder.cbName.setVisibility(View.VISIBLE);
         }else{
-            viewHolder.tvName.setText("请填写证书名称");
-            viewHolder.cbName.setVisibility(View.INVISIBLE);
+            viewHolder.tvName.setHint("请填写证书名称");
+            viewHolder.tvName.setText("");
         }
 
 

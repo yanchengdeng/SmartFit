@@ -276,8 +276,23 @@ public class CoachAuthBaseActivity extends BaseActivity {
                             if (works.size() == 0) {
                                 mSVProgressHUD.showInfoWithStatus("请添加正式照", SVProgressHUD.SVProgressHUDMaskType.Clear);
                             } else {
+                                mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
                                 doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateCard());
                                 doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateWord());
+                                   List<Certificate> subcertificateList = new ArrayList<Certificate>();
+                                    for(Certificate item:certificateList){
+                                        if (!TextUtils.isEmpty(item.getPhoto()) && !TextUtils.isEmpty(item.getName())) {
+                                            subcertificateList.add(item);
+                                        }
+                                    }
+
+                                if(subcertificateList.size()>0){
+                                    for(Certificate item:subcertificateList){
+                                        CoachCertificateItem coachCertificateItem = new CoachCertificateItem(item.getName(),item.getPhoto(),"3");
+                                        doSubmit(tvName.getEditableText().toString(),coachCertificateItem.getCertificateName(),coachCertificateItem);
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -292,12 +307,13 @@ public class CoachAuthBaseActivity extends BaseActivity {
         map.put("certificateName", card);
         map.put("certificateImg", coachCertificateCard.getCertificateImg());
         map.put("type", coachCertificateCard.getType());
-        mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
         PostRequest request = new PostRequest(Constants.COACH_ADD_CERTIFICATE, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc", response.toString());
-
+                int i = 0 ;
+                i++;
+                if(i==2)
                 mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
             }
@@ -366,8 +382,50 @@ public class CoachAuthBaseActivity extends BaseActivity {
             if (null != photos && photos.size() > 0) {
                 certificateList.get(positon).setPhoto(photos.get(0));
                 ((MoreCertiaicateAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
+                getAuthUrl(certificateList);
             }
         }
+    }
+
+    /**
+     * 获取该证书的图片url
+     * @param certificateList
+     */
+    private void getAuthUrl(final List<Certificate> certificateList) {
+        RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
+        params.setMultipart(true);
+        try {
+            for (String item : works) {
+                params.addBodyParameter("imageFile", new File(item));
+            }
+        } catch (Exception ex) {
+        }
+        x.http().post(params, new Callback.CommonCallback<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                String url = null;
+                try {
+                    url = result.getString("data");
+                    certificateList.get(positon).setPhoto(url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
     }
 
     /**

@@ -12,6 +12,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.adpters.MoreCertiaicateVertifyAdapter;
 import com.smartfit.beans.SubmitAuthInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -19,7 +20,9 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.views.MyListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -63,6 +66,8 @@ public class WaitVertifyActivity extends BaseActivity {
     ImageView imageWork;
     @Bind(R.id.cb_work_photo)
     ImageView cbWorkPhoto;
+    @Bind(R.id.list_auth_photos)
+    MyListView listAuthPhotos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +119,7 @@ public class WaitVertifyActivity extends BaseActivity {
      */
     private void fillData(List<SubmitAuthInfo> submitAuthInfoList) {
 
-
+        List<SubmitAuthInfo>  workAuths = new ArrayList<>();
         for (SubmitAuthInfo item : submitAuthInfoList) {
             if (item.getType().equals("1")) {
                 //身份证
@@ -144,6 +149,14 @@ public class WaitVertifyActivity extends BaseActivity {
 
                 }
             }
+
+            if (item.getType().equals("3")){
+                workAuths.add(item);
+            }
+        }
+
+        if (workAuths.size()>0){
+            listAuthPhotos.setAdapter(new MoreCertiaicateVertifyAdapter(WaitVertifyActivity.this,workAuths));
         }
     }
 

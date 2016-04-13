@@ -9,7 +9,10 @@
     tools:context="com.smartfit.activities.CoachAuthBaseActivity">
 
     <include layout="@layout/common_header_view"></include>
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -211,16 +214,30 @@
 
         </RelativeLayout>
 
+
+        <com.smartfit.views.MyListView
+            android:id="@+id/list_auth_photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/line_gray"
+            android:dividerHeight="1px"
+            android:listSelector="@android:color/transparent" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/header_bar_height"
+            android:layout_marginBottom="@dimen/header_bar_height"
             android:text="@string/your_coach_info_is_vertify"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
     </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

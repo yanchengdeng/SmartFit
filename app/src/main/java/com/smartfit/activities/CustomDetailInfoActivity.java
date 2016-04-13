@@ -333,10 +333,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
                 if (vertifyStatus.equals("0")) {
                     openActivity(CoachAuthBaseActivity.class);
                 } else if (vertifyStatus.equals("1")) {
-//                    openActivity(WaitVertifyActivity.class);
-                    openActivity(CoachAuthBaseActivity.class);
-                    //TODO
-//                    openActivity(CoachAuthentitionActivity.class);
+                    openActivity(CoachAuthentitionActivity.class);
                 } else if (vertifyStatus.equals("2")) {
                     mSVProgressHUD.showInfoWithStatus("下线");
                 } else if (vertifyStatus.equals("5")) {
