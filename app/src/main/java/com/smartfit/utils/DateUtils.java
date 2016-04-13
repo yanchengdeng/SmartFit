@@ -5,6 +5,7 @@ import android.content.Context;
 import com.smartfit.R;
 import com.smartfit.beans.CustomeDate;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -436,7 +437,6 @@ public class DateUtils {
     }
 
 
-
     public static String getDataTime(String longSeconds) {
 
         Date date = new Date(Long.parseLong(longSeconds) * 1000);
@@ -452,5 +452,37 @@ public class DateUtils {
 
 
         return currtent.getTime() / 1000;
+    }
+
+    public static long getTheDateTimeMillions(String selectData) {
+
+        Date currtent = StringToDate(selectData, DateStyle.YYYY_MM_DD_HH_MM);
+
+
+        return currtent.getTime() / 1000;
+    }
+
+
+    public static boolean isThanOneHour(String startTime, String endTime) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date now = null;
+        try {
+            now = df.parse("2004-03-26 " + endTime);
+            java.util.Date date = df.parse("2004-03-26 " + startTime);
+            long l = now.getTime() - date.getTime();
+            long day = l / (24 * 60 * 60 * 1000);
+            long hour = (l / (60 * 60 * 1000) - day * 24);
+            long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+            long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+            System.out.println("" + day + "天" + hour + "小时" + min + "分" + s + "秒");
+
+            if (hour >= 1 && min >= 0) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

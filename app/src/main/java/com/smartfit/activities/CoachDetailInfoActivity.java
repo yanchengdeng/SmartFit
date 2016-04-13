@@ -319,7 +319,6 @@ public class CoachDetailInfoActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     @Override

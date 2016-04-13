@@ -66,9 +66,9 @@ public class MyTicketGiftActivity extends BaseActivity {
 
     private void initFragments() {
         Bundle useable = new Bundle();
-        useable.putString("type", "0");
+        useable.putString("type", "1");
         Bundle userover = new Bundle();
-        userover.putString("type", "1");
+        userover.putString("type", "2");
         MyTickeFragment  mf = new  MyTickeFragment();
         mf.setArguments(useable);
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(

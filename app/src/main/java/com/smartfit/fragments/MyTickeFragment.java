@@ -15,13 +15,20 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.adpters.TicketGiftAdapter;
+import com.smartfit.beans.TicketInfo;
+import com.smartfit.beans.TicketListInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.views.LoadMoreListView;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,11 +41,12 @@ public class MyTickeFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
     @Bind(R.id.listView)
-    ListView listView;
+    LoadMoreListView listView;
+    private int page = 1;
 
 
     private TicketGiftAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<TicketInfo> datas = new ArrayList<TicketInfo>();
 
     private String type;
 
@@ -71,22 +79,50 @@ public class MyTickeFragment extends Fragment {
     private void loadData() {
 
 //        ((BaseActivity)getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        PostRequest request = new PostRequest("", new Response.Listener<JsonObject>() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("pageNo", String.valueOf(page));
+        maps.put("pageSize", "20");
+        maps.put("type", type);
+        PostRequest request = new PostRequest(Constants.EVENT_LISTUSEREVENT, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                TicketListInfo ticketInfos = JsonUtils.objectFromJson(response, TicketListInfo.class);
+                if (ticketInfos.getListData() != null && ticketInfos.getListData().size() > 0) {
+                    datas.addAll(ticketInfos.getListData());
+                    adapter.setData(datas);
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+                } else {
+                    if (datas.size() > 0) {
+                        listView.setVisibility(View.VISIBLE);
+                        noData.setVisibility(View.GONE);
+                    } else {
+                        listView.setVisibility(View.GONE);
+                        noData.setVisibility(View.VISIBLE);
+                    }
+                }
+                listView.onLoadMoreComplete();
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                if (datas.size() > 0) {
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+                } else {
+                    listView.setVisibility(View.GONE);
+                    noData.setVisibility(View.VISIBLE);
+                }
+                listView.onLoadMoreComplete();
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
     }
+
 
     @Override
     public void onDestroyView() {

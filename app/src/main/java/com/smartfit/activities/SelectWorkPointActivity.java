@@ -24,6 +24,8 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.LoadMoreListView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,10 +57,13 @@ public class SelectWorkPointActivity extends BaseActivity {
 
     private SelectWorkPointAdapter adapter;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_work_point);
+        eventBus = EventBus.getDefault();
         ButterKnife.bind(this);
         initView();
         addLisener();
@@ -107,7 +112,6 @@ public class SelectWorkPointActivity extends BaseActivity {
                 } else {
                     mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -135,7 +139,24 @@ public class SelectWorkPointActivity extends BaseActivity {
         ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSVProgressHUD.showSuccessWithStatus(getString(R.string.setting_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                if (addresses.size() == 0) {
+                    mSVProgressHUD.showInfoWithStatus("没有场馆信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    WorkPointAddress selectWork = null;
+                    for (WorkPointAddress item : addresses) {
+                        if (item.isCheck()) {
+                            selectWork = item;
+                        }
+                    }
+
+                    if (selectWork == null) {
+                        mSVProgressHUD.showInfoWithStatus("请选择场馆", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    } else {
+                        eventBus.post(selectWork);
+                        finish();
+                    }
+                }
             }
         });
 

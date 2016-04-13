@@ -109,8 +109,14 @@ public class PostRequest extends Request<JsonObject> {
             try {
                 JSONObject jb = new JSONObject(jsonString);
                 if (jb.optString("stateCode").equals("1")) {//返回结果正确
-                    if ( jb.optString("data").equals("true") || jb.optString("data").equals("null")) {
+                    if ( jb.optString("data").equals("true") || jb.optString("data").equals("null") ) {
                         return Response.success(new JsonObject(), HttpHeaderParser.parseCacheHeaders(response));
+                    }
+
+                    if(jb.opt("data") instanceof String){
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("data",(String)jb.opt("data"));
+                        return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
                     }
 
                     JsonObject jsonObject = null;

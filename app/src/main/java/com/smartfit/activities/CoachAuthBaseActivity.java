@@ -364,7 +364,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         } else if (requestCode == REQUEST_CERTIFICATE_MORE) {
             ArrayList<String> photos = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
             if (null != photos && photos.size() > 0) {
-                certificateList.get(positon).setPhotos(photos);
+                certificateList.get(positon).setPhoto(photos.get(0));
                 ((MoreCertiaicateAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
             }
         }

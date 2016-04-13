@@ -1,10 +1,9 @@
 package com.smartfit.activities;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,17 +14,25 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateWeekList;
 import com.smartfit.R;
 import com.smartfit.adpters.WorkPointAdapter;
-import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.WorkPoint;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyListView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,6 +54,8 @@ public class MyWorkPointActivity extends BaseActivity {
     MyListView listView;
     @Bind(R.id.tv_add_address)
     TextView tvAddAddress;
+
+    private EventBus eventBus;
 
 
     private WorkPointAdapter adapter;
@@ -80,31 +89,29 @@ public class MyWorkPointActivity extends BaseActivity {
                 new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {
-                        dialog.dismiss();
-                        datas.remove(posiotn);
-                        adapter.setData(datas);
-
+                        if (TextUtils.isEmpty(datas.get(posiotn).getWorkspaceCode())) {
+                            dialog.dismiss();
+                            datas.remove(posiotn);
+                            adapter.setData(datas);
+                        } else {
+                            doRemoveItem(posiotn);
+                            dialog.dismiss();
+                        }
                     }
                 });
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_work_point);
-        ButterKnife.bind(this);
-        initView();
-        getCoachWorkPlaces();
-        addLisener();
-    }
-
-    private void getCoachWorkPlaces() {
-        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-        PostRequest request = new PostRequest(Constants.WORKSPACE_LIST, new Response.Listener<JsonObject>() {
+    private void doRemoveItem(final int posiotn) {
+        Map<String,String> maps = new HashMap<>();
+        maps.put("workspaceCode",datas.get(posiotn).getWorkspaceCode());
+        mSVProgressHUD.showWithStatus("正在删除", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        final PostRequest request = new PostRequest(Constants.WORKSPACE_DELETE,maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                datas.remove(posiotn);
+                updateTittles(datas);
+                adapter.setData(datas);
+                mSVProgressHUD.showSuccessWithStatus("已删除", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -116,6 +123,80 @@ public class MyWorkPointActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(MyWorkPointActivity.this);
         mQueue.add(request);
+    }
+
+    private void updateTittles(List<WorkPoint> datas) {
+        for (int  i = 0;i<datas.size();i++){
+            datas.get(i).setTittle("我的工作" + (i + 1));
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_work_point);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+        ButterKnife.bind(this);
+        initView();
+        getCoachWorkPlaces();
+        addLisener();
+    }
+
+
+    @Subscribe
+    public void onEvent(Object event) {
+
+        if (event instanceof UpdateWeekList) {
+            datas.clear();
+            getCoachWorkPlaces();
+        }
+    }
+
+    private void getCoachWorkPlaces() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        final PostRequest request = new PostRequest(Constants.WORKSPACE_LIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<WorkPoint> workPoints = JsonUtils.listFromJson(response.getAsJsonArray("list"), WorkPoint.class);
+                if (workPoints != null && workPoints.size() > 0) {
+                    updateListView(workPoints);
+                }
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MyWorkPointActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 更新 工作地点列表
+     *
+     * @param workPoints
+     */
+    private void updateListView(List<WorkPoint> workPoints) {
+        List<WorkPoint> lastWorkPoinst = new ArrayList<>();
+        if (workPoints.size() > 0) {
+            lastWorkPoinst.addAll(workPoints);
+        }
+        WorkPoint workPoint = new WorkPoint();
+        workPoint.setTittle("我的工作" + (workPoints.size() + 1));
+        workPoint.setStartTime(getString(R.string.click_setting));
+        workPoint.setVenueName(getString(R.string.click_setting));
+        lastWorkPoinst.add(workPoint);
+
+        for (int i = 0; i < lastWorkPoinst.size(); i++) {
+            lastWorkPoinst.get(i).setTittle("我的工作" + (i + 1));
+        }
+
+        datas = lastWorkPoinst;
+        adapter.setData(lastWorkPoinst);
     }
 
     private void initView() {
@@ -132,14 +213,19 @@ public class MyWorkPointActivity extends BaseActivity {
             }
         });
 
+
         //添加新工作地点
         tvAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (datas.size()>5){
+                    mSVProgressHUD.showInfoWithStatus("最多添加5个", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                    return;
+                }
                 WorkPoint workPoint = new WorkPoint();
-                workPoint.setName("我的工作"+(datas.size()+1));
-                workPoint.setAddress(getString(R.string.click_setting));
-                workPoint.setTime(getString(R.string.click_setting));
+                workPoint.setTittle("我的工作" + (datas.size() + 1));
+                workPoint.setStartTime(getString(R.string.click_setting));
+                workPoint.setVenueName(getString(R.string.click_setting));
                 datas.add(workPoint);
                 adapter.setData(datas);
             }

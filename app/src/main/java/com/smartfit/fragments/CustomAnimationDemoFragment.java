@@ -75,7 +75,7 @@ public class CustomAnimationDemoFragment extends Fragment {
                     }
                     break;
                 case 3:
-                    ((BaseActivity) getActivity()).openActivity(CustomeCoachActivity.class);
+                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
 //                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("敬请期待", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     break;
                 case 4:

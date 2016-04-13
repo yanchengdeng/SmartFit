@@ -1,8 +1,10 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,10 @@ import android.widget.TextView;
 import com.smartfit.R;
 import com.smartfit.activities.MyWorkPointActivity;
 import com.smartfit.activities.SelectWorkPointActivity;
-import com.smartfit.activities.SelectWorkPointTimeActivity;
 import com.smartfit.activities.WorkPlaceEditActivity;
 import com.smartfit.beans.WorkPoint;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 
 import java.util.List;
 
@@ -68,12 +71,16 @@ public class WorkPointAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        WorkPoint item = datas.get(position);
-
-        viewHolder.tvWorkName.setText(item.getName());
-        viewHolder.tvWorkPoint.setText(item.getAddress());
-        viewHolder.tvWorkTime.setText(item.getTime());
-
+        final WorkPoint item = datas.get(position);
+        if (TextUtils.isEmpty(item.getId())) {
+            viewHolder.tvWorkName.setText(item.getTittle());
+            viewHolder.tvWorkPoint.setText(item.getVenueName());
+            viewHolder.tvWorkTime.setText(item.getStartTime());
+        } else {
+            viewHolder.tvWorkName.setText(item.getTittle());
+            viewHolder.tvWorkPoint.setText(item.getVenueName());
+            viewHolder.tvWorkTime.setText(DateUtils.getDataTime(item.getStartTime()) + " - " + DateUtils.getDataTime(item.getEndTime()));
+        }
 
         viewHolder.ivDelet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,30 +92,17 @@ public class WorkPointAdapter extends BaseAdapter {
         });
 
 
-     /*   viewHolder.tvWorkPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((TextView) v).getText().toString().equals(context.getString(R.string.click_setting))) {
-                    ((MyWorkPointActivity) context).openActivity(SelectWorkPointActivity.class);
-                }
-            }
-        });
 
-        viewHolder.tvWorkTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((TextView) v).getText().toString().equals(context.getString(R.string.click_setting))) {
-                    ((MyWorkPointActivity) context).openActivity(SelectWorkPointTimeActivity.class);
-                }
-            }
-        });
-*/
+
         viewHolder.llContextUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyWorkPointActivity) context).openActivity(WorkPlaceEditActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constants.PASS_OBJECT,item);
+                        ((MyWorkPointActivity) context).openActivity(WorkPlaceEditActivity.class,bundle);
             }
         });
+
         return convertView;
     }
 

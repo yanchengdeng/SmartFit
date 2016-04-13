@@ -216,7 +216,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_next_w_on"
             android:gravity="right"
-            android:text="正在进行2个课程"
+            android:text="正在进行0个课程"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>
@@ -250,7 +250,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_next_w_on"
             android:gravity="right"
-            android:text="余额132元"
+            android:text="余额0.0元"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>

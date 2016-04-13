@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.beans.TicketInfo;
 
 import java.util.List;
 
@@ -20,10 +21,10 @@ import butterknife.ButterKnife;
 public class TicketGiftAdapter extends BaseAdapter {
 
 
-    private List<String> datas;
+    private List<TicketInfo> datas;
     private Context context;
 
-    public TicketGiftAdapter(Context context, List<String> datas) {
+    public TicketGiftAdapter(Context context, List<TicketInfo> datas) {
         this.context = context;
         this.datas = datas;
     }
@@ -56,7 +57,7 @@ public class TicketGiftAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<TicketInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

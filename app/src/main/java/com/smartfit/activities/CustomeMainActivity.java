@@ -17,6 +17,7 @@ import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
@@ -29,6 +30,9 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,11 +42,19 @@ import java.util.Map;
 public class CustomeMainActivity extends BaseActivity {
     private PullToZoomScrollViewEx scrollView;
 
+    private EventBus eventBus;
+
+    private SelectableRoundedImageView imageViewHeader;
+
+    private TextView tvName, tvSigneture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custome_main);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -93,6 +105,25 @@ public class CustomeMainActivity extends BaseActivity {
         request.headers = NetUtil.getRequestBody(CustomeMainActivity.this);
         mQueue.add(request);
     }
+
+    @Subscribe
+    public void onEvent(UpdateCoachInfo event) {/* Do something */
+        if (event instanceof UpdateCoachInfo) {
+            if (!TextUtils.isEmpty(event.getUserPicUrl())) {
+                ImageLoader.getInstance().displayImage(event.getUserPicUrl(), imageViewHeader, Options.getHeaderOptions());
+            }
+
+            if (!TextUtils.isEmpty(event.getNickName())) {
+                tvName.setText(event.getNickName());
+            }
+
+            if (!TextUtils.isEmpty(event.getSignature())) {
+                tvSigneture.setText(event.getSignature());
+            }
+        }
+    }
+
+    ;
 
     /**
      * 填充页面数据
@@ -158,6 +189,9 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView.setZoomView(zoomView);
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
+        imageViewHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
+        tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
 
     }
 

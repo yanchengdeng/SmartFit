@@ -9,10 +9,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.smartfit.MessageEvent.UpdateWeekDay;
 import com.smartfit.R;
 import com.smartfit.adpters.SelectWorkDateAdapter;
 import com.smartfit.beans.WorkDay;
 import com.smartfit.utils.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +39,15 @@ public class SelectWorkWeekDayActivity extends BaseActivity {
     @Bind(R.id.listView)
     ListView listView;
 
+    private EventBus eventBus;
+
     private List<WorkDay> workDayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_work_week_day);
+        eventBus = EventBus.getDefault();
         ButterKnife.bind(this);
         initView();
         addLisener();
@@ -84,13 +90,18 @@ public class SelectWorkWeekDayActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 StringBuilder sb = new StringBuilder();
+                StringBuilder names = new StringBuilder();
                 for (WorkDay item : workDayList) {
                     if (item.isChecked()) {
                         sb.append(item.getId()).append("|");
+                        names.append(item.getName()).append("、");
                     }
                 }
-
-                LogUtil.w("dyc", sb.toString());
+                UpdateWeekDay updateWeekDay = new UpdateWeekDay();
+                updateWeekDay.setIds(sb.toString());
+                updateWeekDay.setNames(names.toString());
+                eventBus.post(updateWeekDay);
+                finish();
             }
         });
 

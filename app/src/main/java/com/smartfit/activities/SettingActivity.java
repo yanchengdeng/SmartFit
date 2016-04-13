@@ -150,6 +150,8 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View v) {
                 SharedPreferencesUtils.getInstance().remove(Constants.UID);
                 SharedPreferencesUtils.getInstance().remove(Constants.SID);
+                SharedPreferencesUtils.getInstance().remove(Constants.ACCOUNT);
+                SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
                 openActivity(LoginActivity.class);
                 finish();
             }

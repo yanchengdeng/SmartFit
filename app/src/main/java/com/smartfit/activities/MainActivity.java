@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
@@ -90,8 +91,36 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             getVenuList();
         }
 
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.UID, ""))) {
+            getUserInfo();
+        }
+
 
         addLisener();
+    }
+
+    private void getUserInfo() {
+        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                if (userInfoDetail != null) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
+                }
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
     }
 
     private void addLisener() {

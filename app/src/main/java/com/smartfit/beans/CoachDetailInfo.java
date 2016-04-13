@@ -18,6 +18,16 @@ public class CoachDetailInfo {
     private String coachClassDesc;//null,
     private String authenCoachClassDesc;//null
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    private String age;
+
     public String getNickName() {
         return nickName;
     }

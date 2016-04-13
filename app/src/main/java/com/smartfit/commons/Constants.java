@@ -105,6 +105,10 @@ public class Constants {
     public static final String PAY_PAYMOCK = "/pay/payMock";
 
 
+    //活动
+    public static final String EVENT_LISTUSEREVENT = "/event/listUserEvents";
+
+
 
 
     /*****

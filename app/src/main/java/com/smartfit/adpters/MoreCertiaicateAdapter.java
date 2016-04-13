@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.Certificate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -93,10 +94,6 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
             }
         });
 
-        if (!TextUtils.isEmpty(item.getName())) {
-            viewHolder.tvName.setText(item.getName());
-        }
-
         if (!TextUtils.isEmpty(item.getText_tips())) {
             viewHolder.tvNameTips.setText(item.getText_tips());
         }
@@ -105,10 +102,19 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
             viewHolder.tvCertificate.setText(item.getImage_tips());
         }
 
+        if (!TextUtils.isEmpty(item.getName())) {
+            viewHolder.tvName.setText(item.getName());
+            viewHolder.cbName.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.tvName.setText("请填写证书名称");
+            viewHolder.cbName.setVisibility(View.INVISIBLE);
+        }
 
-        if (item.getPhotos() != null && item.getPhotos().size() > 0) {
+
+
+        if (!TextUtils.isEmpty(item.getPhoto())) {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-            ImageLoader.getInstance().displayImage("file:///" + item.getPhotos().get(0), viewHolder.ivCertificate);
+            ImageLoader.getInstance().displayImage("file:///" + item.getPhoto(), viewHolder.ivCertificate);
             viewHolder.ivCertificate.setVisibility(View.VISIBLE);
         } else {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
@@ -119,9 +125,10 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         viewHolder.ivAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<String> photos = new ArrayList<String>();
                 Message msg = new Message();
                 msg.what = position;
-                msg.obj = item.getPhotos();
+                msg.obj = photos;
                 handler.sendMessage(msg);
             }
         });

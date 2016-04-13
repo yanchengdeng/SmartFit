@@ -237,9 +237,10 @@
 
             <TextView
                 android:id="@+id/tv_add_more_books"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:text="@string/add_more_auth_books"
                 android:textColor="@color/text_color_gray"
