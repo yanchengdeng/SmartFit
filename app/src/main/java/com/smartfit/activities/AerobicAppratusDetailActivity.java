@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -61,6 +63,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     TextView tvTime;
     @Bind(R.id.roll_view_pager)
     RollPagerView rollViewPager;
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
 
 
     private String courseId;
@@ -138,6 +142,14 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         rollViewPager.setAnimationDurtion(500);
         rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getCourseName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }, 500);
     }
 
 
@@ -156,7 +168,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 3);
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                    bundle.putString(Constants.COURSE_MONEY,classInfoDetail.getPrice());
+                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);

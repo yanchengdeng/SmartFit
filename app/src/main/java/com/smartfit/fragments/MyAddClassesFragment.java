@@ -1,15 +1,13 @@
 package com.smartfit.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,15 +15,14 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.MyClassesActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
-import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.MyAddClass;
+import com.smartfit.beans.MyAddClassList;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +40,11 @@ public class MyAddClassesFragment extends Fragment {
 
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.no_data)
+    TextView noData;
 
     private MyClassOrderStatusAdapter adapter;
-    private List<String> datas = new ArrayList<>();
+    private List<MyAddClass> datas = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,22 +65,6 @@ public class MyAddClassesFragment extends Fragment {
         listView.setAdapter(adapter);
         loadData();
 
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        ((MyClassesActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
-            }
-        });
-
 
     }
 
@@ -97,6 +78,16 @@ public class MyAddClassesFragment extends Fragment {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
+                if (subClasses != null && subClasses.getListData().size() > 0) {
+                    adapter.setData(subClasses.getListData());
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+                } else {
+                    listView.setVisibility(View.GONE);
+                    noData.setVisibility(View.VISIBLE);
+
+                }
             }
         }, new Response.ErrorListener() {
             @Override

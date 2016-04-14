@@ -47,6 +47,25 @@ public class Options {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new SimpleBitmapDisplayer())//防止闪烁
+//                .displayer(new RoundedBitmapDisplayer(90))
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+        return options;
+    }
+
+    public static DisplayImageOptions getHeaderOptionsCircle() {
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                // // 设置图片在下载期间显示的图片
+                .showImageOnLoading(R.mipmap.icon_avatar)
+                        // // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageForEmptyUri(R.mipmap.icon_avatar)
+                        // // 设置图片加载/解码过程中错误时候显示的图片
+                .showImageOnFail(R.mipmap.icon_avatar)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .displayer(new SimpleBitmapDisplayer())//防止闪烁
                 .displayer(new RoundedBitmapDisplayer(90))
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)

@@ -11,7 +11,6 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.smartfit.R;
 import com.smartfit.fragments.MyAddClassesFragment;
-import com.smartfit.fragments.MyClassesOverFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,7 +57,7 @@ public class MyClassesActivity extends BaseActivity {
          FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.my_add_classes, MyAddClassesFragment.class)
-                .add(R.string.already_over, MyClassesOverFragment.class)
+                .add(R.string.already_over, MyAddClassesFragment.class)
                 .create());
 
         viewpager.setAdapter(adapter);

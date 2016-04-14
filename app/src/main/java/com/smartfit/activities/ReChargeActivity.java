@@ -1,8 +1,8 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,9 +10,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,7 +116,32 @@ public class ReChargeActivity extends BaseActivity {
                         return;
                     }
                 }
-                mSVProgressHUD.showInfoWithStatus("稍后推出");
+                Map<String,String> maps= new HashMap<String, String>();
+                maps.put("orderCode","20160414224842999928833");
+                maps.put("type","1");
+                PostRequest request = new PostRequest(Constants.PAY_PAYMOCK, maps,new Response.Listener<JsonObject>() {
+                    @Override
+                    public void onResponse(JsonObject response) {
+                    mSVProgressHUD.showSuccessWithStatus(getString(R.string.recharge_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                        mSVProgressHUD.dismiss();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        },1500);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                    }
+                });
+                request.setTag(new Object());
+                request.headers = NetUtil.getRequestBody(ReChargeActivity.this);
+                mQueue.add(request);
+
             }
         });
 

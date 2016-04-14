@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MyClassesActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
-import com.smartfit.views.LoadMoreListView;
+import com.smartfit.beans.MyAddClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class CoachOverClassesFragment extends Fragment {
     TextView noData;
 
     private MyClassOrderStatusAdapter adapter;
-    private List<String> datas = new ArrayList<>();
+    private List<MyAddClass> datas = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ public class CoachOverClassesFragment extends Fragment {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(1));
+                    datas.add(new MyAddClass());
                 }
                 listView.setVisibility(View.VISIBLE);
                 adapter.setData(datas);

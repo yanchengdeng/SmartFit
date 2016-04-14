@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,9 +27,9 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
-import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -38,9 +39,7 @@ import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -175,8 +174,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
         tvSpaceInfo.setText("暂无");
         ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
-        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivOperatePerson, Options.getHeaderOptions());
-        tvOperateAddress.setText("暂无");
+        ImageLoader.getInstance().displayImage(detail.getUserHeadImg(), ivOperatePerson, Options.getHeaderOptions());
+        tvOperateAddress.setText(TextUtils.isEmpty(detail.getUserNickName())?"暂无":detail.getUserNickName());
         if (detail.getPersionList().size() == 0) {
             TextView textView = new TextView(GroupClassDetailActivity.this);
             textView.setText(getString(R.string.no_report_members));
@@ -190,7 +189,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 ImageView imageView = new ImageView(GroupClassDetailActivity.this);
                 imageView.setLayoutParams(params);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                ImageLoader.getInstance().displayImage(detail.getPersionList().get(i).getUserPicUrl(), imageView, Options.getHeaderOptions());
+                ImageLoader.getInstance().displayImage(detail.getPersionList().get(i).getUserPicUrl(), imageView, Options.getHeaderOptionsCircle());
                 llHaveOrderedMembers.addView(imageView);
             }
         }
@@ -208,9 +207,21 @@ public class GroupClassDetailActivity extends BaseActivity {
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
 
         if (detail.getCommentList().size() > 0) {
-            adapter = new DiscussItemAdapter(detail.getCommentList().subList(0, 1), this);
+            adapter = new DiscussItemAdapter(detail.getCommentList(), this);
             lisviewDiscuss.setAdapter(adapter);
+
         }
+
+
+        tvClassTime.setText(DateUtils.getData(detail.getStartDate())+"~"+DateUtils.getDataTime(detail.getEndTime()));
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        },500);
     }
 
 

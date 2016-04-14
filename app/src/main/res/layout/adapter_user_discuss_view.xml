@@ -2,22 +2,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/image_padding_big"
-    android:layout_marginBottom="@dimen/image_padding_big"
-    android:layout_marginRight="@dimen/image_padding_big"
+    android:padding="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
     <com.smartfit.views.SelectableRoundedImageView
         android:id="@+id/iv_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:scaleType="centerCrop"
         app:sriv_left_top_corner_radius="4dip"
         app:sriv_right_top_corner_radius="4dip"
         app:sriv_left_bottom_corner_radius="4dip"
         app:sriv_right_bottom_corner_radius="4dip"
         app:sriv_oval="false"
+        android:scaleType="fitXY"
         android:src="@mipmap/icon_class_tx" />
 
     <TextView
@@ -25,11 +22,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="用户路人甲"
+        android:text=""
         android:layout_toRightOf="@+id/iv_icon"
         android:layout_marginLeft="@dimen/image_padding"
         android:textColor="@color/text_color_black"
-        android:textSize="@dimen/text_small_donw" />
+        android:textSize="@dimen/text_normal_down" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -38,9 +35,10 @@
         android:layout_margin="@dimen/image_padding"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/image_padding"
-        android:text="教练很满意，课程很辛苦xxxxxx"
+        android:text=""
+        android:lineSpacingExtra="5dp"
         android:textColor="@color/text_color_gray"
-        android:textSize="@dimen/text_small_donw" />
+        android:textSize="@dimen/text_small" />
 
 
 </RelativeLayout>

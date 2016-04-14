@@ -103,6 +103,7 @@ public class Constants {
     public static final String ORDER_ORDERCOURSE = "/order/orderCourse";
     public static final String PAY_BALANCEPAY = "/pay/balancePay";
     public static final String PAY_PAYMOCK = "/pay/payMock";
+    public static final String ORDER_ORDERCHARGE = "/order/orderCharge";
 
 
     //活动
