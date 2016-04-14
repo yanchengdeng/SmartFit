@@ -22,10 +22,12 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:fitsSystemWindows">true</item>
          -->
+
     </style>
 
     <style name="ActivityTheme" parent="@style/AppTheme">
         <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
+
     </style>
 
 

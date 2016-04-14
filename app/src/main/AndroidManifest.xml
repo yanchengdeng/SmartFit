@@ -262,6 +262,8 @@
         </activity>
         <activity android:name=".activities.SelectWorkWeekDayActivity" >
         </activity>
+        <activity android:name=".activities.ClassMoreCommentsActivity" >
+        </activity>
     </application>
 
 </manifest>

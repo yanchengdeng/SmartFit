@@ -104,7 +104,6 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
     private DiscussItemAdapter adapter;
-    private List<ClassCommend> discuss = new ArrayList<>();
 
     ClassInfoDetail classInfoDetail;
 
@@ -112,7 +111,6 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private String type = "0";
 
-    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +123,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivFunction.setImageResource(R.mipmap.ic_more_share);
         ivFunction.setVisibility(View.VISIBLE);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
-        rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,(int)(DeviceUtil.getWidth(this)*0.75)));
+        rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
 
@@ -142,14 +140,14 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(detail.getCoachRealName())) {
-            tvCoachName.setText(detail.getCoachRealName()+"教练");
+            tvCoachName.setText(detail.getCoachRealName() + "教练");
         }
 
         if (!TextUtils.isEmpty(detail.getUserSex())) {
             if (detail.getUserSex().equals("0")) {
-                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_woman),null);
-            }else{
-                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_man),null);
+                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
+            } else {
+                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
             }
         }
         if (!TextUtils.isEmpty(detail.getCourseDetail())) {
@@ -172,14 +170,14 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(detail.getPrice())) {
-            tvClassPrice.setText("￥"+detail.getPrice());
+            tvClassPrice.setText("￥" + detail.getPrice());
         }
 
         tvSpaceInfo.setText("暂无");
-        ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon,Options.getHeaderOptions());
-        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivOperatePerson,Options.getHeaderOptions());
+        ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivOperatePerson, Options.getHeaderOptions());
         tvOperateAddress.setText("暂无");
-        if (detail.getPersionList().length == 0) {
+        if (detail.getPersionList().size() == 0) {
             TextView textView = new TextView(GroupClassDetailActivity.this);
             textView.setText(getString(R.string.no_report_members));
             textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -188,19 +186,19 @@ public class GroupClassDetailActivity extends BaseActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DeviceUtil.dp2px(mContext, 40), DeviceUtil.dp2px(mContext, 40));
             params.gravity = Gravity.CENTER;
             params.leftMargin = 15;
-            for (int i = 0; i < detail.getPersionList().length; i++) {
+            for (int i = 0; i < detail.getPersionList().size(); i++) {
                 ImageView imageView = new ImageView(GroupClassDetailActivity.this);
                 imageView.setLayoutParams(params);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                ImageLoader.getInstance().displayImage(detail.getPersionList()[i], imageView, Options.getHeaderOptions());
+                ImageLoader.getInstance().displayImage(detail.getPersionList().get(i).getUserPicUrl(), imageView, Options.getHeaderOptions());
                 llHaveOrderedMembers.addView(imageView);
             }
         }
 
 
-        if (null != detail.getCoursePics() && detail.getCoursePics().length>0) {
+        if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             rollViewPager.setVisibility(View.GONE);
         }
         rollViewPager.setPlayDelay(3000);
@@ -209,49 +207,12 @@ public class GroupClassDetailActivity extends BaseActivity {
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
 
-
-//        loadCommend();
-
-
-        adapter = new DiscussItemAdapter(discuss, this);
-        lisviewDiscuss.setAdapter(adapter);
-
-
+        if (detail.getCommentList().size() > 0) {
+            adapter = new DiscussItemAdapter(detail.getCommentList().subList(0, 1), this);
+            lisviewDiscuss.setAdapter(adapter);
+        }
     }
 
-    private void loadCommend() {
-
-        Map<String, String> data = new HashMap<>();
-        data.put("courseId", id);
-        data.put("pageNO", String.valueOf(page));
-        data.put("pageSize", "5");
-        PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-                List<ClassCommend> commends = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassCommend.class);
-                if (null != commends && commends.size() > 0) {
-                    discuss.addAll(commends);
-                    page++;
-                }
-                if (discuss.size() > 0) {
-                    adapter.setData(discuss);
-                } else {
-                    mSVProgressHUD.showInfoWithStatus(getString(R.string.no_commend));
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-
-            }
-        });
-        request.setTag(new Object());
-        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
-        mQueue.add(request);
-    }
 
     private void loadData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
@@ -300,7 +261,9 @@ public class GroupClassDetailActivity extends BaseActivity {
         tvMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadCommend();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, id);
+                openActivity(ClassMoreCommentsActivity.class, bundle);
             }
         });
 
@@ -311,9 +274,9 @@ public class GroupClassDetailActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 1);
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                    bundle.putString(Constants.COURSE_MONEY,classInfoDetail.getPrice());
+                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
                     openActivity(PayActivity.class, bundle);
-                }else{
+                } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 }
             }

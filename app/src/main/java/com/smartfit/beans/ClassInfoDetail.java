@@ -1,39 +1,41 @@
 package com.smartfit.beans;
 
+import java.util.List;
+
 /**
  * Created by dengyancheng on 16/3/19.
  */
 public class ClassInfoDetail {
 
-    private String  longit;//null,
-    private String         lat;//null,
-    private String        isParted;//0,
-    private String []      commentList;
-    private String       topicId;//20160409081801885545837,
-    private String       courseId;//37,
-    private String        courseName;//团操－台江－上午,
-    private String        coachRealName;//徐晃11,
-    private String        account;//admin,
-    private String       venueUrl;//http;////localhost;//8089/upload/picture/2016/4/2/1459595667710/1459595667.jpg,
-    private String       venueId;//12,
-    private String       venueName;//福州台江健身馆,
-    private String       linkPhone;//null,
-    private String       serviceDetails;//null,
-    private String       coachId;//9,
-    private String       stars;//0,
-    private String       nickName;//\U4ee5uu,
-    private String       price;//22.22,
-    private String       userPicUrl;//http;////123.57.164.115;//8098/uploadimgs/picture/2016/4/2/1459580390538/1459580390.png,
-    private String       startUserId;//1,
-    private String      endTime;//1460218620,
-    private String     classroomName;//台江－团操,
-    private String     courseDetail;//123123123,
-    private String     startDate;//1460217600,
-    private String[]      persionList;//[
-    private String       userHeadImg;//,
-    private String      userSex;//0,
-    private String     userNickName;//,
-    private String[]     coursePics;
+    private String longit;//null,
+    private String lat;//null,
+    private String isParted;//0,
+    private List<ClassCommend> commentList;
+    private String topicId;//20160409081801885545837,
+    private String courseId;//37,
+    private String courseName;//团操－台江－上午,
+    private String coachRealName;//徐晃11,
+    private String account;//admin,
+    private String venueUrl;//http;////localhost;//8089/upload/picture/2016/4/2/1459595667710/1459595667.jpg,
+    private String venueId;//12,
+    private String venueName;//福州台江健身馆,
+    private String linkPhone;//null,
+    private String serviceDetails;//null,
+    private String coachId;//9,
+    private String stars;//0,
+    private String nickName;//\U4ee5uu,
+    private String price;//22.22,
+    private String userPicUrl;//http;////123.57.164.115;//8098/uploadimgs/picture/2016/4/2/1459580390538/1459580390.png,
+    private String startUserId;//1,
+    private String endTime;//1460218620,
+    private String classroomName;//台江－团操,
+    private String courseDetail;//123123123,
+    private String startDate;//1460217600,
+    private List<CommondPersion> persionList;//[
+    private String userHeadImg;//,
+    private String userSex;//0,
+    private String userNickName;//,
+    private String[] coursePics;
 
     public String getLongit() {
         return longit;
@@ -59,11 +61,11 @@ public class ClassInfoDetail {
         this.isParted = isParted;
     }
 
-    public String[] getCommentList() {
+    public List<ClassCommend> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(String[] commentList) {
+    public void setCommentList(List<ClassCommend> commentList) {
         this.commentList = commentList;
     }
 
@@ -227,11 +229,11 @@ public class ClassInfoDetail {
         this.startDate = startDate;
     }
 
-    public String[] getPersionList() {
+    public List<CommondPersion> getPersionList() {
         return persionList;
     }
 
-    public void setPersionList(String[] persionList) {
+    public void setPersionList(List<CommondPersion> persionList) {
         this.persionList = persionList;
     }
 

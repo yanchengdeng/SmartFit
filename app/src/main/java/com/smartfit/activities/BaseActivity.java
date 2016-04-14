@@ -67,6 +67,7 @@ public class BaseActivity extends FragmentActivity {
         // 结束Activity从堆栈中移除
         AppManager.getAppManager().finishActivity(this);
     }
+
     /***
      * 打开一个新界面
      *
@@ -82,7 +83,7 @@ public class BaseActivity extends FragmentActivity {
      *
      * @param pClass
      */
-    public void openActivity(Class<?> pClass,Bundle pBundle) {
+    public void openActivity(Class<?> pClass, Bundle pBundle) {
         openActivity(pClass, pBundle, 0);
     }
 
@@ -113,18 +114,14 @@ public class BaseActivity extends FragmentActivity {
 
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
-            if(mSVProgressHUD.isShowing()){
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (mSVProgressHUD.isShowing()) {
                 mSVProgressHUD.dismiss();
                 return false;
             }
         }
-
         return super.onKeyDown(keyCode, event);
-
     }
 
 
@@ -132,6 +129,7 @@ public class BaseActivity extends FragmentActivity {
         super.onResume();
         MobclickAgent.onResume(this);
     }
+
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);

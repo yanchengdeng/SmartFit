@@ -3,6 +3,7 @@ package com.smartfit.utils;
 import android.graphics.Bitmap;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.smartfit.R;
 
@@ -46,6 +47,7 @@ public class Options {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new SimpleBitmapDisplayer())//防止闪烁
+                .displayer(new RoundedBitmapDisplayer(90))
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
