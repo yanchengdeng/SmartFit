@@ -24,11 +24,13 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.dialog.widget.NormalDialog;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.activities.PayActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
@@ -46,6 +48,7 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 import com.smartfit.views.HorizontalListView;
 
 import java.util.ArrayList;
@@ -104,6 +107,8 @@ public class PrivateEducationFragment extends Fragment {
     private PrivateEducationAdapter adapter;
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
     private List<WorkPointAddress> addresses;
+    private String venueId = "0";
+    private String sex, startTime, endTime, startPrice, endPrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -121,6 +126,22 @@ public class PrivateEducationFragment extends Fragment {
      * 初始化数据列表加载
      */
     private void initListView() {
+        String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+        if (TextUtils.isEmpty(citycode)) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        } else {
+            List<WorkPointAddress> workPointAddresses = Util.getVenueList();
+            if (workPointAddresses != null && workPointAddresses.size() > 0) {
+                addresses = workPointAddresses;
+                tvAddress.setText(addresses.get(0).getVenueName());
+                venueId = addresses.get(0).getVenueId();
+                loadData();
+            } else {
+                getVenueList();
+            }
+        }
+
+
         adapter = new PrivateEducationAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
         loadData();
@@ -163,13 +184,13 @@ public class PrivateEducationFragment extends Fragment {
         btnSelected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<PrivateEducationClass> selectPricates = countSelectNum(datas);
+                ArrayList<PrivateEducationClass> selectPricates = countSelectNum(datas);
                 if (selectPricates.size() == 0) {
                     ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 3);
-                    ((MainBusinessActivity) getActivity()).openActivity(PayActivity.class, bundle);
+                    bundle.putParcelableArrayList(Constants.PASS_OBJECT, selectPricates);
+                    ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
                 }
             }
         });
@@ -181,8 +202,8 @@ public class PrivateEducationFragment extends Fragment {
      *
      * @param datas
      */
-    private List<PrivateEducationClass> countSelectNum(List<PrivateEducationClass> datas) {
-        List<PrivateEducationClass> selectPricates = new ArrayList<>();
+    private ArrayList<PrivateEducationClass> countSelectNum(List<PrivateEducationClass> datas) {
+        ArrayList<PrivateEducationClass> selectPricates = new ArrayList<>();
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).isCheck() == true) {
                 selectPricates.add(datas.get(i));
@@ -196,47 +217,51 @@ public class PrivateEducationFragment extends Fragment {
 
     private void loadData() {
 
-        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    PrivateEducationClass item = new PrivateEducationClass();
-                    item.setName("王小二教练" + i + String.valueOf(i));
-                    datas.add(item);
-                    adapter.setData(datas);
-                }
-                listView.setVisibility(View.VISIBLE);
-                adapter.setData(datas);
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-            }
-        }, 2000);
-
-
-
 
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
         Map<String, String> data = new HashMap<>();
-        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
-        data.put("orderBy", "0");
-        data.put("venueId", "12");
-        data.put("coachSex", "0");
-        data.put("priceRang", "0");
-        data.put("timeRang", "0");
+        if (!TextUtils.isEmpty(startTime)) {
+            data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+            data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        } else {
+            startTime = selectDate + " 00:00";
+            endTime = selectDate + " 23:59";
+            data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+            data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        }
+        if (!TextUtils.isEmpty(startPrice)) {
+            data.put("startPrice", startPrice);
+            data.put("endPrice", endPrice);
+        }
+        if (!TextUtils.isEmpty(sex)) {
+            data.put("sex", sex);
+        }
+        data.put("venueId", venueId);
         data.put("courseType", "2");
-        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc私教课",response.toString());
-                        ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                LogUtil.w("dyc私教课", response.toString());
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+
+                List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
+                if (privateEducationClasses != null && privateEducationClasses.size() > 0) {
+                    datas = privateEducationClasses;
+                    adapter.setData(privateEducationClasses);
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.INVISIBLE);
+                } else {
+                    listView.setVisibility(View.INVISIBLE);
+                    noData.setVisibility(View.VISIBLE);
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                LogUtil.w("dyc", "..... " + error.getMessage());
+                listView.setVisibility(View.INVISIBLE);
+                noData.setVisibility(View.VISIBLE);
             }
         });
         request.setTag(new Object());
@@ -427,6 +452,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     addressCustomPop.dismiss();
+                    venueId = addresses.get(position).getVenueId();
                     ivCoverBg.setVisibility(View.GONE);
                 }
             });
@@ -493,6 +519,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetSex();
                     btnBoy.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    sex = "1";
                 }
             });
 
@@ -501,6 +528,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetSex();
                     btnGirl.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    sex = "0";
                 }
             });
 
@@ -509,6 +537,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetSex();
                     btnSex.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    sex = "";
                 }
             });
 
@@ -517,6 +546,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetPrice();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startPrice = "0";
+                    endPrice = "50";
                 }
             });
             btnLessTwoHundred.setOnClickListener(new View.OnClickListener() {
@@ -524,6 +555,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetPrice();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startPrice = "50";
+                    endPrice = "200";
                 }
             });
 
@@ -532,6 +565,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetPrice();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startPrice = "200";
+                    endPrice = "500";
                 }
             });
 
@@ -540,6 +575,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetPrice();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startPrice = "500";
+                    endPrice = String.valueOf(Integer.MAX_VALUE);
                 }
             });
 
@@ -548,6 +585,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetPrice();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startPrice = "";
+                    endPrice = "";
                 }
             });
 
@@ -556,6 +595,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetTime();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startTime = selectDate + " 6:00";
+                    endTime = selectDate + " 12:00";
                 }
             });
             btnTimePm.setOnClickListener(new View.OnClickListener() {
@@ -563,6 +604,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetTime();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startTime = selectDate + " 12:00";
+                    endTime = selectDate + " 18:00";
                 }
             });
 
@@ -571,6 +614,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetTime();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startTime = selectDate + " 18:00";
+                    endTime = selectDate + " 24:00";
                 }
             });
 
@@ -579,6 +624,8 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetTime();
                     v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    startTime = "";
+                    endTime = "";
                 }
             });
 
@@ -591,6 +638,11 @@ public class PrivateEducationFragment extends Fragment {
                     btnSex.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     btnPrice.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     btnTimeAll.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
+                    sex = "";
+                    startPrice = "";
+                    endPrice = "";
+                    startTime = "";
+                    endTime = "";
                 }
             });
 
@@ -599,6 +651,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     ivCoverBg.setVisibility(View.GONE);
                     conditionSelectPop.dismiss();
+                    loadData();
                 }
             });
         }

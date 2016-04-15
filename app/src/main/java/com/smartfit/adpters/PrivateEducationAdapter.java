@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.utils.Options;
 
 import java.util.List;
 
@@ -68,19 +71,41 @@ public class PrivateEducationAdapter extends BaseAdapter  {
         viewHolder.ratingBar.setLayoutParams(params);
 
          PrivateEducationClass item = datas.get(position);
-        viewHolder.tvCoach.setText(item.getName());
+        if (!TextUtils.isEmpty(item.getNickName())) {
+            viewHolder.tvCoach.setText("教练 "+item.getNickName());
+        }
+
+        if (!TextUtils.isEmpty(item.getSex())) {
+            if (item.getSex().equals("0")){
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_woman),null);
+            }else{
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_man),null);
+            }
+        }
         viewHolder.chSelect.setChecked(item.isCheck());
         if(isDissmis){
             viewHolder.chSelect.setVisibility(View.VISIBLE);
         }else {
             viewHolder.chSelect.setVisibility(View.GONE);
         }
+
+        if (!TextUtils.isEmpty(item.getPrice())) {
+            viewHolder.chSelect.setText(item.getPrice()+"元/小时");
+        }
+
+       viewHolder.tvTime.setText("暂无时间 /有空");
+
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class);
             }
         });
+        if (!TextUtils.isEmpty(item.getStars())) {
+            viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
+            viewHolder.tvNum.setText(item.getStars());
+        }
+        ImageLoader.getInstance().displayImage(item.getUserPicUrl(),viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }
 

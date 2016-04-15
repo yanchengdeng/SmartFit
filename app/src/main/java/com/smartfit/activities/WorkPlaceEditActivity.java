@@ -297,15 +297,13 @@ public class WorkPlaceEditActivity extends BaseActivity {
 
     private void addWorkPlace() {
 
-        Date dateTime = new Date(System.currentTimeMillis());
-        String today = DateUtils.DateToString(dateTime, "yyyy-MM-dd ");
         Map<String, String> datas = new HashMap<>();
         if (!TextUtils.isEmpty(workPoint.getWorkspaceCode())) {
             datas.put("workspaceCode", workPoint.getWorkspaceCode());
         }
         datas.put("venueId", updateWeekDayTime.getWorkPoint());
-        datas.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(today + updateWeekDayTime.getStartTime())));
-        datas.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(today + updateWeekDayTime.getEndTime())));
+        datas.put("startTime",String.valueOf(Integer.parseInt(selectStartHour)*3600+Integer.parseInt(selectStartMin)*60));
+        datas.put("endTime", String.valueOf(Integer.parseInt(selectEndHour)*3600+Integer.parseInt(selectEndMin)*60));
         datas.put("daysOfWeekString", updateWeekDayTime.getIds());
 
         PostRequest request = new PostRequest(Constants.WORKSPACE_ADD, datas, new Response.Listener<JsonObject>() {

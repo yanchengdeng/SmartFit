@@ -17,7 +17,8 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
-import com.smartfit.beans.CustomeInfo;
+import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.MD5;
@@ -163,11 +164,12 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, "");
                             SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, "");
                         }
-                        CustomeInfo customeInfo = JsonUtils.objectFromJson(response, CustomeInfo.class);
+                        UserInfoDetail customeInfo = JsonUtils.objectFromJson(response, UserInfoDetail.class);
                         if (customeInfo != null) {
                             SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());
                             SharedPreferencesUtils.getInstance().putString(Constants.UID, customeInfo.getUid());
                             SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF,customeInfo.getIsICF());
+                            SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(customeInfo));
                         }
 
                         finish();

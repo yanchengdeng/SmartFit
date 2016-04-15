@@ -31,4 +31,29 @@ mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgr
 
 
 
+//////////////刷新用户信息接口
+  private void getUserInfo() {
+        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                if (userInfoDetail != null) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
+                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
+                }
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
+    }
 

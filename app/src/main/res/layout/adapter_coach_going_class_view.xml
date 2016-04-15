@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_fitness_center"
-                android:text="6人已报名"
+                android:text="0人已报名"
                 android:layout_marginTop="@dimen/image_padding_big"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
@@ -101,7 +101,7 @@
                 android:layout_below="@+id/tv_fitness_center"
                 android:layout_toRightOf="@+id/tv_have_regiseter"
                 android:layout_marginLeft="@dimen/image_padding_big"
-                android:text="4"
+                android:text="0"
                 android:layout_marginTop="@dimen/image_padding_big"
                 android:textColor="@color/common_header_bg"
                 android:textSize="@dimen/text_normal" />

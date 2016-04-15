@@ -6,14 +6,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.FindSubstitutAdapter;
 import com.smartfit.adpters.MemberListAdapter;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,9 +89,35 @@ public class FindSubstitueActivity extends BaseActivity {
     }
 
     private void loadData() {
-        if (page == 1) {
-            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
+        String venderId = getIntent().getStringExtra(Constants.PASS_STRING);
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+        Map<String, String> data = new HashMap<>();
+//        data.put("startTime", "");
+        data.put("venueId", venderId);
+//        data.put("endTime", );
+//        data.put("courseType", );
+//        data.put("sex", );
+//        data.put("startPrice", );
+//        data.put("endPrice",);
+        PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc私教课", response.toString());
+                mSVProgressHUD.dismiss();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                LogUtil.w("dyc", "..... " + error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(FindSubstitueActivity.this);
+        mQueue.add(request);
 
 
         new Handler().postDelayed(new Runnable() {

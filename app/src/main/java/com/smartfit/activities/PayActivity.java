@@ -133,8 +133,6 @@ public class PayActivity extends BaseActivity {
                                 openActivity(GroupClassOrderSuccessActivity.class);
                             } else if (pageIndex == 2) {
                                 openActivity(GroupClassOrderSuccessActivity.class);
-                            } else {
-                                openActivity(OrderPrivateEducationClassActivity.class);
                             }
                             finish();
 

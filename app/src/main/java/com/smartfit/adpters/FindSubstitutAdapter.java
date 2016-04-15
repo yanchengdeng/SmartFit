@@ -11,6 +11,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -61,6 +63,13 @@ public class FindSubstitutAdapter extends BaseAdapter {
         }
 
         viewHolder.ratingBar.setLayoutParams(params);
+
+        viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BaseActivity)context).openActivity(CoachInfoActivity.class);
+            }
+        });
         return convertView;
     }
 

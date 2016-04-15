@@ -3,23 +3,41 @@ package com.smartfit.activities;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomListViewEx;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.adpters.WalletAdapter;
+import com.smartfit.beans.AccountRecordList;
+import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.UserInfoDetail;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 钱包
@@ -51,19 +69,66 @@ public class WalletActivity extends BaseActivity {
         listView.setParallax(true);
         ListView lv =listView.getPullRootView();
         listView.setBackgroundColor(getResources().getColor(R.color.gray_light));
-        lv.addHeaderView(LayoutInflater.from(this).inflate(R.layout.wallet_listview_header,null));
+        lv.addHeaderView(LayoutInflater.from(this).inflate(R.layout.wallet_listview_header, null));
         lv.setHeaderDividersEnabled(false);
         lv.setFooterDividersEnabled(false);
         lv.setDividerHeight(0);
+
+
+        getRecordList();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userinfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO,"");
+        if (!TextUtils.isEmpty(userinfo)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userinfo,UserInfoDetail.class);
+            if(userInfoDetail!= null){
+                ImageView ivheader = (ImageView) listView.getPullRootView().findViewById(R.id.iv_header);
+                ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(),ivheader, Options.getHeaderOptions());
+                TextView tvName = (TextView) listView.getPullRootView().findViewById(R.id.tv_name);
+                if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+                    tvName.setText(userInfoDetail.getNickName());
+                }
+
+                TextView tvBallence = (TextView) listView.getPullRootView().findViewById(R.id.tv_money);
+                if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
+                    tvBallence.setText(userInfoDetail.getBalance());
+                }
+            }
+        }
+    }
+
+    private void getRecordList() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        PostRequest request = new PostRequest(Constants.RECORD_GETRECORDLIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                AccountRecordList accountRecordList = JsonUtils.objectFromJson(response,AccountRecordList.class);
+                if(accountRecordList!= null &&accountRecordList.getListData().size()>0){
+                    walletAdapter = new WalletAdapter(accountRecordList.getListData(),WalletActivity.this);
+                    listView.setAdapter(walletAdapter);
+                }
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(WalletActivity.this);
+        mQueue.add(request);
     }
 
     private void initView() {
-        List<String> datas = new ArrayList<>();
-        for(int i = 0 ;i<2;i++){
-            datas.add("");
-        }
-        walletAdapter = new WalletAdapter(datas,this);
-        listView.setAdapter(walletAdapter);
+
+
         listView.getPullRootView().findViewById(R.id.btn_recharge).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,9 +15,12 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,21 +119,21 @@ public class ReChargeActivity extends BaseActivity {
                         return;
                     }
                 }
-                Map<String,String> maps= new HashMap<String, String>();
-                maps.put("orderCode","20160414224842999928833");
-                maps.put("type","1");
-                PostRequest request = new PostRequest(Constants.PAY_PAYMOCK, maps,new Response.Listener<JsonObject>() {
+                Map<String, String> maps = new HashMap<String, String>();
+                maps.put("orderCode", "20160414224842999928833");
+                maps.put("type", "1");
+                PostRequest request = new PostRequest(Constants.PAY_PAYMOCK, maps, new Response.Listener<JsonObject>() {
                     @Override
                     public void onResponse(JsonObject response) {
-                    mSVProgressHUD.showSuccessWithStatus(getString(R.string.recharge_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
-
+                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.recharge_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        getUserInfo();
                         mSVProgressHUD.dismiss();
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 finish();
                             }
-                        },1500);
+                        }, 2000);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -144,9 +147,33 @@ public class ReChargeActivity extends BaseActivity {
 
             }
         });
-
     }
 
+
+    private void getUserInfo() {
+        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                if (userInfoDetail != null) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
+                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
+                }
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ReChargeActivity.this);
+        mQueue.add(request);
+    }
     private boolean checkWeiXin() {
         try {
             getPackageManager().getApplicationInfo("com.tencent.mm", PackageManager.GET_UNINSTALLED_PACKAGES);

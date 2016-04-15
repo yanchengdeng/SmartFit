@@ -1,6 +1,8 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,9 @@ import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.FindSubstitueActivity;
 import com.smartfit.activities.MembersListActivity;
+import com.smartfit.beans.MyAddClass;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 
 import java.util.List;
 
@@ -24,10 +29,10 @@ import butterknife.ButterKnife;
  */
 public class CoachClassGoingStatusAdapter extends BaseAdapter {
     private Context context;
-    private List<String> datas;
+    private List<MyAddClass> datas;
     private boolean isHandleShow = true;
 
-    public CoachClassGoingStatusAdapter(Context context, List<String> datas, boolean isHandleShow) {
+    public CoachClassGoingStatusAdapter(Context context, List<MyAddClass> datas, boolean isHandleShow) {
         this.context = context;
         this.datas = datas;
         this.isHandleShow = isHandleShow;
@@ -59,11 +64,41 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+
+        MyAddClass item = datas.get(position);
+        viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime()) + "~" + DateUtils.getDataTime(item.getEndTime()));
+        if (!TextUtils.isEmpty(item.getCourseName())) {
+            viewHolder.tvClassName.setText(item.getCourseName());
+        }
+
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            if (item.getCourseType().equals("0")) {
+                viewHolder.tvClassType.setText("团操课");
+            } else if (item.getCourseType().equals("1")) {
+                viewHolder.tvClassType.setText("小班课");
+            } else if (item.getCourseType().equals("2")) {
+                viewHolder.tvClassType.setText("私教课");
+            } else {
+                viewHolder.tvClassType.setText("有氧器械");
+            }
+        }
+
+        viewHolder.tvFitnessCenter.setText("暂无");
+        if (!TextUtils.isEmpty(item.getSignCount())) {
+            viewHolder.tvHaveRegiseter.setText(item.getSignCount()+"人已报名");
+        }
+
+        if (!TextUtils.isEmpty(item.getMaxPersonCount()) && !TextUtils.isEmpty(item.getSignCount())) {
+            viewHolder.tvEmptyRegister.setText((Integer.parseInt(item.getMaxPersonCount())-Integer.parseInt(item.getSignCount()))+"");
+        }
         //找人代课
         viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseActivity)context).openActivity(FindSubstitueActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,"12");
+                ((BaseActivity) context).openActivity(FindSubstitueActivity.class,bundle);
             }
         });
         //取消课程
@@ -78,16 +113,15 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         viewHolder.tvMemberList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseActivity)context).openActivity(MembersListActivity.class);
+                ((BaseActivity) context).openActivity(MembersListActivity.class);
             }
         });
-
 
 
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<MyAddClass> datas) {
         this.datas = datas;
     }
 

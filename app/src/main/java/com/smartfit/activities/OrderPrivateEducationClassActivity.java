@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.commons.Constants;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.SelectableRoundedImageView;
 
@@ -45,11 +46,12 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
 
     private PrivateEducationAdapter adapter;
-    private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
 
     private CountDownTimer countDownTimer;
 
     private long coundTime = 5 * 1000;
+
+    private ArrayList<PrivateEducationClass> privateEducationClasses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +75,14 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
-        adapter = new PrivateEducationAdapter(this, datas);
+        privateEducationClasses = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
+        adapter = new PrivateEducationAdapter(this, privateEducationClasses);
         adapter.setDismissCheck(false);
         listView.setAdapter(adapter);
-        loadData();
     }
 
 
 
-    private void loadData() {
-        for (int i = 0; i < 3; i++) {
-            PrivateEducationClass item = new PrivateEducationClass();
-            item.setName("王小二教练" + i + String.valueOf(i));
-            datas.add(item);
-        }
-        adapter.setData(datas);
-    }
 
 
 }

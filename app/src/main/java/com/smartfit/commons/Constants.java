@@ -51,6 +51,7 @@ public class Constants {
     public static final String SID = "sid";//会话id
     public static final String IS_ICF = "is_icf";//是否教练认证
     public static final String OPEN_COACH_AUTH = "open_coach_auth";
+    public static final String USER_INFO = "user_info";
 
 
     /**
@@ -63,6 +64,7 @@ public class Constants {
     public static final String SMS_SMSSEND = "/SMS/SMSSend";
     public static final String RESET_PASSOWRD = "/User/ResetPassword";
     public static final String USER_CONTACTCOURSELIST= "/User/myContactCourseList";
+    public static final String RECORD_GETRECORDLIST = "/Record/getRecordList";
 
     //课程相关接口
     public static final String SEARCH_CLASS = "/ClassIf/searchInfo";
@@ -70,6 +72,7 @@ public class Constants {
     public static final String CLASS_COMMEND = "/Comment/getCommentList";
     public static final String GET_VENUElIST = "/ClassIf/getVenueList";
     public static final String GET_CLASS_LIST = "/ClassIf/getClassifList";
+    public static final String COACH_LISTIDLECOACHESBYVENUEID = "/coach/listIdleCoachesByVenueId";
 
 
     //用户信息

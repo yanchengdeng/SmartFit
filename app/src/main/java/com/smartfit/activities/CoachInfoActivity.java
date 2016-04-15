@@ -45,8 +45,16 @@ public class CoachInfoActivity extends BaseActivity {
         int mScreenWidth = localDisplayMetrics.widthPixels;
         LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) (9.0F * (mScreenWidth / 16.0F)));
         scrollView.setHeaderLayoutParams(localObject);
+
+        //TODO
+        String id = "17";
+        getCoachInfo();
     }
 
+    private void getCoachInfo() {
+
+
+    }
 
 
     private void loadViewForCode() {

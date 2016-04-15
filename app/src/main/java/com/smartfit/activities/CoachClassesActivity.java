@@ -48,6 +48,9 @@ public class CoachClassesActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.my_classes));
+        tvFunction.setVisibility(View.VISIBLE);
+        tvFunction.setText(getString(R.string.publish_class));
+
 
     }
 
@@ -56,7 +59,8 @@ public class CoachClassesActivity extends BaseActivity {
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add(R.string.coach_ing, CoachGoingClassesFragment.class)
+                .add(R.string.coach_ing, CoachGoingClassesFragment
+                        .class)
                 .add(R.string.already_over, CoachOverClassesFragment.class)
                 .create());
 
@@ -69,7 +73,7 @@ public class CoachClassesActivity extends BaseActivity {
     }
 
 
-    private void addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

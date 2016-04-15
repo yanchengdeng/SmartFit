@@ -28,10 +28,10 @@
 
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/ll_red_point"
-        android:text="参加xxxx课程"
         android:layout_marginLeft="@dimen/image_padding"
         android:textColor="@color/black"
         android:textSize="@dimen/text_normal" />
@@ -42,7 +42,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="2016-02-01"
         android:textColor="@color/text_color_gray"
         android:textSize="@dimen/text_normal" />
 
@@ -53,7 +52,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tv_date"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="-2000"
         android:textColor="@color/common_header_bg"
         android:textSize="@dimen/text_normal" />
 

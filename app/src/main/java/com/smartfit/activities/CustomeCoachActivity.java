@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.JsonUtils;
@@ -78,6 +80,27 @@ public class CustomeCoachActivity extends BaseActivity {
         scrollView.setHeaderLayoutParams(localObject);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userinfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(userinfo)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userinfo, UserInfoDetail.class);
+            if (userInfoDetail != null) {
+                ImageView ivheader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+                ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivheader, Options.getHeaderOptions());
+                TextView tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
+                if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+                    tvName.setText(userInfoDetail.getNickName());
+                }
+
+                TextView tvBallence = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
+                if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
+                    tvBallence.setText("余额" + userInfoDetail.getBalance() + "元");
+                }
+            }
+        }
+    }
 
     private void loadViewForCode() {
         PullToZoomScrollViewEx scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
@@ -232,11 +255,16 @@ public class CustomeCoachActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("coachId", "17");
-        PostRequest request = new PostRequest(Constants.GET_COACHPAGEINFO, maps, new Response.Listener<JsonObject>() {
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+
+        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
+            maps.put("isCoach", "1");
+        } else {
+            maps.put("isCoach", "0");
+        }
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.dismiss();
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
                 if (null != userInfo) {
