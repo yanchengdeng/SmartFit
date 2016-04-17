@@ -9,9 +9,13 @@ import android.widget.TextView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
 import com.smartfit.fragments.MyAddClassesFragment;
 import com.smartfit.fragments.MyClassesOverFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,12 +40,15 @@ public class MyClassesActivity extends BaseActivity {
     SmartTabLayout viewpagertab;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_classes);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         initFragments();
         addLisener();
@@ -52,10 +59,14 @@ public class MyClassesActivity extends BaseActivity {
 
     }
 
+    @Subscribe
+    public void onEvent(CancleClass event) {/* Do something */
+        initFragments();
+    }
 
     private void initFragments() {
 
-         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.my_add_classes, MyAddClassesFragment.class)
                 .add(R.string.already_over, MyClassesOverFragment.class)
@@ -70,7 +81,7 @@ public class MyClassesActivity extends BaseActivity {
     }
 
 
-    private void addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

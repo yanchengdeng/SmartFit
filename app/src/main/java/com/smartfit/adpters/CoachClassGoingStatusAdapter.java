@@ -10,6 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.CancleCoachClass;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.FindSubstitueActivity;
@@ -17,8 +22,14 @@ import com.smartfit.activities.MembersListActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,10 +42,12 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
     private Context context;
     private List<MyAddClass> datas;
     private boolean isHandleShow = true;
+    private EventBus eventBus;
 
     public CoachClassGoingStatusAdapter(Context context, List<MyAddClass> datas, boolean isHandleShow) {
         this.context = context;
         this.datas = datas;
+        eventBus = EventBus.getDefault();
         this.isHandleShow = isHandleShow;
 
     }
@@ -66,7 +79,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         }
 
 
-        MyAddClass item = datas.get(position);
+        final MyAddClass item = datas.get(position);
         viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime()) + "~" + DateUtils.getDataTime(item.getEndTime()));
         if (!TextUtils.isEmpty(item.getCourseName())) {
             viewHolder.tvClassName.setText(item.getCourseName());
@@ -105,7 +118,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    cancle(item.getCoachId());
             }
         });
 
@@ -113,7 +126,9 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         viewHolder.tvMemberList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseActivity) context).openActivity(MembersListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                        ((BaseActivity) context).openActivity(MembersListActivity.class,bundle);
             }
         });
 
@@ -121,6 +136,26 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+    private void cancle(String id) {
+        Map<String ,String > maps = new HashMap<>();
+        maps.put("courseId", id);
+        PostRequest request = new PostRequest(Constants.USER_CANCELCOURSELIST,maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                ((BaseActivity)context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                eventBus.post(new CancleCoachClass());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(context);
+        ((BaseActivity)context).mQueue.add(request);
+    }
     public void setData(List<MyAddClass> datas) {
         this.datas = datas;
     }

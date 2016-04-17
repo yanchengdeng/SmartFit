@@ -111,12 +111,10 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
                     SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
                 }
-                mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
             }
         });
         request.setTag(new Object());

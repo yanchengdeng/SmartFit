@@ -203,6 +203,7 @@
                     android:textSize="@dimen/text_normal" />
 
                 <TextView
+                    android:id="@+id/tv_already_auth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

@@ -73,6 +73,9 @@ public class Constants {
     public static final String GET_VENUElIST = "/ClassIf/getVenueList";
     public static final String GET_CLASS_LIST = "/ClassIf/getClassifList";
     public static final String COACH_LISTIDLECOACHESBYVENUEID = "/coach/listIdleCoachesByVenueId";
+    public static final String USER_CANCELCOURSELIST = "/User/cancelCourseList";
+    public static final String COMMENT_SAVE = "/comment/save";
+    public static final String COURSE_COACHJOINCOURSE = "/course/coachJoinCourse";
 
 
     //用户信息
@@ -95,6 +98,7 @@ public class Constants {
     public static final String WORKSPACE_LIST ="/workspace/List";
     public static final String WORKSPACE_DELETE = "/workspace/Delete";
     public static final String  WORKSPACE_ADD = "/workspace/Add";
+    public static final  String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
 
 
     //系统数据
@@ -111,6 +115,7 @@ public class Constants {
 
     //活动
     public static final String EVENT_LISTUSEREVENT = "/event/listUserEvents";
+    public static final String DYNAMIC_GETDYNAMICLIST = "/dynamic/getDynamicList";
 
 
 

@@ -12,7 +12,7 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"

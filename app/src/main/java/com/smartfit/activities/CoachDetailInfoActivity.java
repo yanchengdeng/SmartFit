@@ -77,6 +77,8 @@ public class CoachDetailInfoActivity extends BaseActivity {
     TextView tvTeachedClasses;
     @Bind(R.id.tv_weight)
     TextView tvWeight;
+    @Bind(R.id.tv_already_auth)
+    TextView tvAlreadyAuth;
 
     private EventBus eventBus;
     //上传身份证
@@ -196,6 +198,13 @@ public class CoachDetailInfoActivity extends BaseActivity {
                     intent.putExtra(MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, photoes);
                 }
                 startActivityForResult(intent, REUQUST_HEAD_PHOTO);
+            }
+        });
+
+        tvAlreadyAuth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachAuthentitionActivity.class);
             }
         });
 

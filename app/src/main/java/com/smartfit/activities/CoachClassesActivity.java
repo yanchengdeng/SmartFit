@@ -9,11 +9,12 @@ import android.widget.TextView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.smartfit.MessageEvent.CancleCoachClass;
 import com.smartfit.R;
 import com.smartfit.fragments.CoachGoingClassesFragment;
 import com.smartfit.fragments.CoachOverClassesFragment;
-import com.smartfit.fragments.MyAddClassesFragment;
-import com.smartfit.fragments.MyClassesOverFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,11 +37,15 @@ public class CoachClassesActivity extends BaseActivity {
     @Bind(R.id.viewpager)
     ViewPager viewpager;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_classes);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         initFragments();
         addLisener();
@@ -50,10 +55,13 @@ public class CoachClassesActivity extends BaseActivity {
         tvTittle.setText(getString(R.string.my_classes));
         tvFunction.setVisibility(View.VISIBLE);
         tvFunction.setText(getString(R.string.publish_class));
-
-
     }
 
+    public void onEvent(CancleCoachClass event) {/* Do something */
+        initFragments();
+    }
+
+    ;
 
     private void initFragments() {
 

@@ -24,9 +24,66 @@ public class UserInfo {
     private String curClassCount;//null,
     private String[] coachDynamicPics;//
 
-    private String isFoused;//:0,//0 未   1  已关注
-    private String beFoused;//:0,
+   private String  certificates;//陌路,陌路,
+    private String        coachClassDesc;//null,
+    private String       authenCoachClassDesc;//null,
+
+    public String getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(String certificates) {
+        this.certificates = certificates;
+    }
+
+    public String getCoachClassDesc() {
+        return coachClassDesc;
+    }
+
+    public void setCoachClassDesc(String coachClassDesc) {
+        this.coachClassDesc = coachClassDesc;
+    }
+
+    public String getAuthenCoachClassDesc() {
+        return authenCoachClassDesc;
+    }
+
+    public void setAuthenCoachClassDesc(String authenCoachClassDesc) {
+        this.authenCoachClassDesc = authenCoachClassDesc;
+    }
+
+    private String   hight;//175,
+           private String  weight;//75,
+
+    public String getHight() {
+        return hight;
+    }
+
+    public void setHight(String hight) {
+        this.hight = hight;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    private String isFoused;//;//0,//0 未   1  已关注
+    private String beFoused;//;//0,
     private String isFriend;//0,
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    private String age;
 
     public String getIsFoused() {
         return isFoused;

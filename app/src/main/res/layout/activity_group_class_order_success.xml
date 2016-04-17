@@ -34,7 +34,11 @@
                 app:rollviewpager_hint_paddingBottom="5dp"
                 app:rollviewpager_play_delay="3000" />
 
-
+            <LinearLayout
+                android:id="@+id/ll_scan_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <TextView
                 android:id="@+id/tv_class_name"
                 android:layout_width="match_parent"
@@ -59,6 +63,7 @@
                 android:text="您可以使用该条码，扫码进入预定的健身馆，使用为你准备的私人保管箱。"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down" />
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -407,6 +412,19 @@
             android:textColor="@color/text_color_gray"
             android:background="@color/gray_light"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_waiting_deal"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="等待教练接单中..."
+        android:padding="@dimen/image_padding_big"
+        android:layout_marginLeft="1dp"
+        android:gravity="center"
+        android:textColor="@color/text_color_gray"
+        android:background="@color/gray_light"/>
 
 
 </RelativeLayout>

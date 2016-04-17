@@ -17,7 +17,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
-import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -153,7 +152,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(final JsonObject response) {
                 mSVProgressHUD.dismiss();
-                mSVProgressHUD.showSuccessWithStatus(getString(R.string.login_success));
+                mSVProgressHUD.showSuccessWithStatus(getString(R.string.login_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

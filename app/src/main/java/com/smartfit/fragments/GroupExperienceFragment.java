@@ -28,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
@@ -163,6 +164,10 @@ public class GroupExperienceFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!NetUtil.isLogin(getActivity())) {
+                    ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
+                    return;
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
                 bundle.putString(Constants.COURSE_TYPE,"0");

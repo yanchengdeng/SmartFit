@@ -1,16 +1,13 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,14 +15,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomListViewEx;
-import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.adpters.WalletAdapter;
+import com.smartfit.beans.AccountRecord;
 import com.smartfit.beans.AccountRecordList;
-import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -35,9 +31,7 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 钱包
@@ -47,6 +41,8 @@ public class WalletActivity extends BaseActivity {
 
 
     private WalletAdapter walletAdapter;
+
+    private List<AccountRecord> accountRecords = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +106,9 @@ public class WalletActivity extends BaseActivity {
                 if(accountRecordList!= null &&accountRecordList.getListData().size()>0){
                     walletAdapter = new WalletAdapter(accountRecordList.getListData(),WalletActivity.this);
                     listView.setAdapter(walletAdapter);
+                }else{
+                    walletAdapter = new WalletAdapter(accountRecords,WalletActivity.this);
+                    listView.setAdapter(walletAdapter);
                 }
                 mSVProgressHUD.dismiss();
 
@@ -118,6 +117,8 @@ public class WalletActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
+                walletAdapter = new WalletAdapter(accountRecords,WalletActivity.this);
+                listView.setAdapter(walletAdapter);
 
             }
         });

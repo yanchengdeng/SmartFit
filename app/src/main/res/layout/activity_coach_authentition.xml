@@ -43,7 +43,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="王小二教练"
+                android:text=""
                 android:textSize="@dimen/text_normal"
                 android:textColor="@color/black"
                 android:drawableRight="@mipmap/icon_woman"
@@ -52,11 +52,12 @@
                 android:layout_gravity="center_vertical"/>
 
             <TextView
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal"
-                android:text="29岁"
+                android:text="0岁"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
         </LinearLayout>
@@ -84,7 +85,7 @@
             android:layout_marginLeft="@dimen/header_bar_height"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal_down"
-            android:text="身高：170CM   体重：70KG"/>
+            android:text=""/>
     </LinearLayout>
 
 
@@ -113,7 +114,7 @@
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down"
                 android:lineSpacingExtra="3dp"
-                android:text="国家一级运动员、国家xxxx证书、一级运动员、xxxxxxxxxx"/>
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -140,7 +141,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down"
-                android:text="游泳课、瑜伽课"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -166,7 +167,7 @@
                 android:layout_marginLeft="@dimen/header_bar_height"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down"
-                android:text="游泳课；瑜伽课；xxx；xxxx；"/>
+                android:text=""/>
         </LinearLayout>
 
 

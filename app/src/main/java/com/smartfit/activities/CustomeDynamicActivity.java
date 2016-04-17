@@ -3,16 +3,19 @@ package com.smartfit.activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.DynamicAdapter;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -107,6 +110,26 @@ public class CustomeDynamicActivity extends BaseActivity {
     }
 
     private void loadData() {
+        PostRequest request = new PostRequest(Constants.DYNAMIC_GETDYNAMICLIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeDynamicActivity.this);
+        mQueue.add(request);
+
+
+
+
+
+
         if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }

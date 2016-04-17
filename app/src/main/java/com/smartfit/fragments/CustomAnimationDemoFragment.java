@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.CustomeCoachActivity;

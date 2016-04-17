@@ -37,6 +37,36 @@ public class ClassInfoDetail {
     private String userNickName;//,
     private String[] coursePics;
 
+    public String getShared() {
+        return shared;
+    }
+
+    public void setShared(String shared) {
+        this.shared = shared;
+    }
+
+    private String shared ;
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    /**
+     * 订单状态（
+     * 1我报名但未付款，
+     * 2已经付款教练未接单，
+     * 3已经付款教练接单（即正常），
+     * 4课程已经结束
+     * 5我退出该课程，
+     * 6该课程被取消了，
+     * 7课程已结束未评论8已评论）
+     */
+    private String orderStatus;
+
     public String getLongit() {
         return longit;
     }

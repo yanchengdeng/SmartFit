@@ -1,7 +1,6 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +18,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -115,6 +115,8 @@ public class AttentionListActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
         Map<String, String> data = new HashMap<>();
+        data.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID,""));
+        data.put("nickname",etSearchContent.getEditableText().toString());
         PostRequest request = new PostRequest(Constants.USER_CONCERNLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

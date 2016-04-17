@@ -24,7 +24,6 @@ import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -185,9 +184,11 @@ public class CustomeCoachActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).getVisibility() == View.VISIBLE) {
+                    changeStateLine(true);
                     SharedPreferencesUtils.getInstance().putBoolean(Constants.OPEN_COACH_AUTH, true);
                     openAuth();
                 } else {
+                    changeStateLine(false);
                     SharedPreferencesUtils.getInstance().putBoolean(Constants.OPEN_COACH_AUTH, false);
                     closeAuth();
                 }
@@ -249,6 +250,30 @@ public class CustomeCoachActivity extends BaseActivity {
 
     }
 
+
+    private  void changeStateLine(boolean isLine){
+        Map<String, String> maps = new HashMap<>();
+        if (isLine) {
+            maps.put("toState", "1");
+        } else {
+            maps.put("toState", "0");
+        }
+        PostRequest request = new PostRequest(Constants.COACH_CHGCOACHONLINESTATE, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeCoachActivity.this);
+        mQueue.add(request);
+    }
+
     /**
      * 获取教练信息
      */
@@ -280,8 +305,6 @@ public class CustomeCoachActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(CustomeCoachActivity.this);
         mQueue.add(request);
-
-
     }
 
 

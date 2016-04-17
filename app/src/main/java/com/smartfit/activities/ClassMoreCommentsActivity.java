@@ -82,8 +82,8 @@ public class ClassMoreCommentsActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         final Map<String, String> data = new HashMap<>();
         data.put("courseId", id);
-//        data.put("pageNO", String.valueOf(page));
-//        data.put("pageSize", "20");
+        data.put("pageNO", String.valueOf(page));
+        data.put("pageSize", "20");
         PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

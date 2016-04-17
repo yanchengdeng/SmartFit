@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -27,6 +28,7 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
+import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
@@ -100,6 +102,40 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView tvOperateAddress;
     @Bind(R.id.tv_class_tittle)
     TextView tvClassTittle;
+    @Bind(R.id.ratingBar_for_coach)
+    RatingBar ratingBarForCoach;
+    @Bind(R.id.btn_commit_comments)
+    Button btnCommitComments;
+    @Bind(R.id.ll_mack_score)
+    LinearLayout llMackScore;
+    @Bind(R.id.tv_class_name)
+    TextView tvClassName;
+    @Bind(R.id.iv_scan_bar)
+    ImageView ivScanBar;
+    @Bind(R.id.ll_scan_bar)
+    LinearLayout llScanBar;
+    @Bind(R.id.tv_save_to_phone)
+    TextView tvSaveToPhone;
+    @Bind(R.id.tv_share_friends)
+    TextView tvShareFriends;
+    @Bind(R.id.tv_contact_coach)
+    TextView tvContactCoach;
+    @Bind(R.id.tv_invite_friends)
+    TextView tvInviteFriends;
+    @Bind(R.id.ll_order_success)
+    LinearLayout llOrderSuccess;
+    @Bind(R.id.ratingBar_my_class)
+    RatingBar ratingBarMyClass;
+    @Bind(R.id.tv_my_class_score)
+    TextView tvMyClassScore;
+    @Bind(R.id.ll_myclass_score)
+    LinearLayout llMyclassScore;
+    @Bind(R.id.tv_waiting_accept)
+    TextView tvWaitingAccept;
+    @Bind(R.id.et_coach_apprise)
+    EditText etCoachApprise;
+    @Bind(R.id.tv_apprise_list_tips)
+    TextView tvAppriseListTips;
 
 
     private DiscussItemAdapter adapter;
@@ -122,6 +158,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivFunction.setImageResource(R.mipmap.ic_more_share);
         ivFunction.setVisibility(View.VISIBLE);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
+        ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
+        ratingBarForCoach.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
@@ -169,13 +207,13 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(detail.getPrice())) {
-            tvClassPrice.setText("￥" + detail.getPrice());
+            tvClassPrice.setText( detail.getPrice());
         }
 
         tvSpaceInfo.setText("暂无");
         ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
         ImageLoader.getInstance().displayImage(detail.getUserHeadImg(), ivOperatePerson, Options.getHeaderOptions());
-        tvOperateAddress.setText(TextUtils.isEmpty(detail.getUserNickName())?"暂无":detail.getUserNickName());
+        tvOperateAddress.setText(TextUtils.isEmpty(detail.getUserNickName()) ? "暂无" : detail.getUserNickName());
         if (detail.getPersionList().size() == 0) {
             TextView textView = new TextView(GroupClassDetailActivity.this);
             textView.setText(getString(R.string.no_report_members));
@@ -213,7 +251,134 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
 
-        tvClassTime.setText(DateUtils.getData(detail.getStartDate())+"~"+DateUtils.getDataTime(detail.getEndTime()));
+        tvClassTime.setText(DateUtils.getData(detail.getStartDate()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
+
+
+        if (detail.getCommentList().size()>0) {
+            ClassCommend commentInfo = detail.getCommentList().get(0);
+            if (!TextUtils.isEmpty(commentInfo.getCommentStar())) {
+                ratingBarMyClass.setRating(Float.parseFloat(commentInfo.getCommentStar()));
+            }
+
+            if (!TextUtils.isEmpty(commentInfo.getCommentContent())) {
+                tvMyClassScore.setText(commentInfo.getCommentContent());
+            }
+
+        }
+
+        if (!TextUtils.isEmpty(detail.getShared())) {
+            if (detail.getShared().equals("0")) {
+                tvShareFriends.setText("发送给朋友");
+                tvShareFriends.setBackgroundColor(getResources().getColor(R.color.common_header_bg));
+                tvShareFriends.setClickable(true);
+            }else{
+                tvShareFriends.setText("已发送");
+                tvShareFriends.setBackgroundColor(getResources().getColor(R.color.line_gray));
+            }
+        }
+
+        /**
+         * 订单状态（
+         * 1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了，
+         * 7课程已结束未评论
+         * 8已评论）
+         */
+
+
+        if (TextUtils.isEmpty(detail.getOrderStatus())) {
+            //去订购
+            btnOrder.setVisibility(View.VISIBLE);
+            tvWaitingAccept.setVisibility(View.GONE);
+            tvClassTittle.setVisibility(View.VISIBLE);
+            tvContent.setVisibility(View.VISIBLE);
+            llMyclassScore.setVisibility(View.GONE);//我的课程得分
+            llMackScore.setVisibility(View.GONE);//评分
+            llScanBar.setVisibility(View.GONE);//发送朋友
+            llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+            tvAppriseListTips.setVisibility(View.VISIBLE);
+            lisviewDiscuss.setVisibility(View.VISIBLE);
+            tvMore.setVisibility(View.VISIBLE);
+
+
+        } else {
+            if (detail.getOrderStatus().equals("2")) {
+                //教练接单状态
+                btnOrder.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.VISIBLE);
+                tvClassTittle.setVisibility(View.VISIBLE);
+                tvContent.setVisibility(View.VISIBLE);
+                llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                llMackScore.setVisibility(View.GONE);//评分
+                llScanBar.setVisibility(View.GONE);//发送朋友
+                llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
+                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
+                tvMore.setVisibility(View.VISIBLE);
+
+
+            } else if (detail.getOrderStatus().equals("3")) {
+                //订单详情页   预约成功
+                btnOrder.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvClassTittle.setVisibility(View.GONE);
+                tvContent.setVisibility(View.GONE);
+                llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                llMackScore.setVisibility(View.GONE);//评分
+                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                llOrderSuccess.setVisibility(View.VISIBLE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
+                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
+                tvMore.setVisibility(View.VISIBLE);
+
+            }else if (detail.getOrderStatus().equals("7")) {
+                //订单详情页  已结束 未评论
+                btnOrder.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvClassTittle.setVisibility(View.GONE);
+                tvContent.setVisibility(View.GONE);
+                llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                llMackScore.setVisibility(View.VISIBLE);//评分
+                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
+                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
+                tvMore.setVisibility(View.VISIBLE);
+
+            }else if (detail.getOrderStatus().equals("8")) {
+                //订单详情页  已结束 未评论
+                btnOrder.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvClassTittle.setVisibility(View.GONE);
+                tvContent.setVisibility(View.GONE);
+                llMyclassScore.setVisibility(View.VISIBLE);//我的课程得分
+                llMackScore.setVisibility(View.GONE);//评分
+                llScanBar.setVisibility(View.GONE);//发送朋友
+                llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.GONE);//评论列表
+                lisviewDiscuss.setVisibility(View.GONE);//评论列表
+                tvMore.setVisibility(View.GONE);
+
+            }else{
+                //去订购
+                btnOrder.setVisibility(View.VISIBLE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvClassTittle.setVisibility(View.VISIBLE);
+                tvContent.setVisibility(View.VISIBLE);
+                llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                llMackScore.setVisibility(View.GONE);//评分
+                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.VISIBLE);
+                lisviewDiscuss.setVisibility(View.VISIBLE);
+                tvMore.setVisibility(View.VISIBLE);
+            }
+        }
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -221,7 +386,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 scrollView.fullScroll(ScrollView.FOCUS_UP);
                 scrollView.setVisibility(View.VISIBLE);
             }
-        },500);
+        }, 1000);
     }
 
 
@@ -278,6 +443,13 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         });
 
+        btnCommitComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submintScore(ratingBarForCoach.getRating(), etCoachApprise.getEditableText().toString());
+            }
+        });
+
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,6 +464,37 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void submintScore(float rating, String comments) {
+        if (classInfoDetail == null)
+            return;
+        mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String, String> data = new HashMap<>();
+        if (classInfoDetail.getCommentList()!=null && classInfoDetail.getCommentList().size()>0) {
+                    data.put("commentId", classInfoDetail.getCommentList().get(0).getCommentId());
+        }
+
+        data.put("topicId", classInfoDetail.getTopicId());
+        data.put("stars", String.valueOf(rating));
+        data.put("commentContent", comments);
+        PostRequest request = new PostRequest(Constants.COMMENT_SAVE, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.showSuccessWithStatus("已评分", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
     }
 
 
