@@ -15,6 +15,7 @@ import com.smartfit.activities.CustomeMainActivity;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainActivity;
 import com.smartfit.activities.MainBusinessActivity;
+import com.smartfit.activities.MessageActivity;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.IntentUtils;
 import com.smartfit.utils.NetUtil;
@@ -74,8 +75,9 @@ public class CustomAnimationDemoFragment extends Fragment {
                     }
                     break;
                 case 3:
-                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
+//                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
 //                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("敬请期待", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    ((BaseActivity) getActivity()).openActivity(MessageActivity.class);
                     break;
                 case 4:
                     if (NetUtil.isLogin(getActivity())) {

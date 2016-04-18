@@ -87,8 +87,6 @@ public class AerobicnAppratusFragment extends Fragment {
     TextView noData;
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.iv_cover_bg)
     ImageView ivCoverBg;
 
@@ -114,6 +112,7 @@ public class AerobicnAppratusFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         orderCustomePop = new OrderCustomePop(getActivity());
+        rlOrderTime.setVisibility(View.VISIBLE);
         initDateSelect();
         initListView();
         addLisener();
@@ -142,23 +141,12 @@ public class AerobicnAppratusFragment extends Fragment {
         }
 
 
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadData();
-            }
-        });
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.COURSE_ID,datas.get(position).getCourseId());
-                ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class,bundle);
+                bundle.putString(Constants.COURSE_ID, datas.get(position).getCourseId());
+                ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
             }
         });
     }
@@ -166,7 +154,7 @@ public class AerobicnAppratusFragment extends Fragment {
 
     private void loadData() {
         datas.clear();
-        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.ClearCancel));
         Map<String, String> data = new HashMap<>();
         data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("orderBy", selectType);
@@ -201,7 +189,6 @@ public class AerobicnAppratusFragment extends Fragment {
 
 
     private void noMoreData(List<ClassInfo> datas) {
-        swipeRefreshLayout.setRefreshing(false);
         if (datas.size() > 0) {
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
@@ -263,11 +250,7 @@ public class AerobicnAppratusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), OrderReserveActivity.class);
-                Bundle bundle = new Bundle();
-                String[] time = tvTime.getText().toString().split(":");
-                bundle.putString("hour", time[0]);
-                bundle.putString("min", time[1]);
-                intent.putExtras(bundle);
+
                 startActivityForResult(intent, REQUEST_CODE_ORDER_TIME);
             }
         });

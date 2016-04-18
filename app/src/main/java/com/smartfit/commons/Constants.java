@@ -99,11 +99,13 @@ public class Constants {
     public static final String WORKSPACE_DELETE = "/workspace/Delete";
     public static final String  WORKSPACE_ADD = "/workspace/Add";
     public static final  String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
+    public static final String  CLASSIF_LISTTHEVENUEIDLECLASSROOMS= "/ClassIf/listTheVenueIdleClassrooms";
 
 
     //系统数据
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
+    public static final String MESSAGE_LIST = "/message/list";
 
 
     //订单

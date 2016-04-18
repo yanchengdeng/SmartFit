@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.flyco.dialog.widget.NormalDialog;
 import com.flyco.dialog.widget.popup.base.BasePopup;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
@@ -32,11 +32,9 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
-import com.smartfit.activities.PayActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
-import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.beans.WorkPointAddress;
@@ -91,12 +89,12 @@ public class PrivateEducationFragment extends Fragment {
     TextView noData;
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.btn_selected)
     Button btnSelected;
     @Bind(R.id.iv_cover_bg)
     ImageView ivCoverBg;
+    @Bind(R.id.ll_list_view_cover)
+    LinearLayout llListViewCover;
 
 
     private int REQUEST_CODE_ORDER_TIME = 0x112;
@@ -135,7 +133,7 @@ public class PrivateEducationFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-                loadData();
+//                loadData();
             } else {
                 getVenueList();
             }
@@ -144,25 +142,6 @@ public class PrivateEducationFragment extends Fragment {
 
         adapter = new PrivateEducationAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
-        loadData();
-
-
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData();
-                        swipeRefreshLayout.setRefreshing(false);
-                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
-            }
-        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -209,26 +188,42 @@ public class PrivateEducationFragment extends Fragment {
                 selectPricates.add(datas.get(i));
             }
         }
-
         return selectPricates;
+    }
 
+    /**
+     * 获取空闲教室
+     */
+    private void getIdleCoachList() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        data.put("venueId", venueId);
+        data.put("classroomType", "2");
+        PostRequest request = new PostRequest(Constants.CLASSIF_LISTTHEVENUEIDLECLASSROOMS, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.w("dyc", error.getLocalizedMessage() + error.getMessage());
+
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
+        ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
 
     private void loadData() {
-
-
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
         Map<String, String> data = new HashMap<>();
-        if (!TextUtils.isEmpty(startTime)) {
-            data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-            data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
-        } else {
-            startTime = selectDate + " 00:00";
-            endTime = selectDate + " 23:59";
-            data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-            data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
-        }
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
         if (!TextUtils.isEmpty(startPrice)) {
             data.put("startPrice", startPrice);
             data.put("endPrice", endPrice);
@@ -241,19 +236,21 @@ public class PrivateEducationFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc私教课", response.toString());
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
                 if (privateEducationClasses != null && privateEducationClasses.size() > 0) {
                     datas = privateEducationClasses;
                     adapter.setData(privateEducationClasses);
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.INVISIBLE);
+                    llListViewCover.setVisibility(View.GONE);
+
                 } else {
                     listView.setVisibility(View.INVISIBLE);
                     noData.setVisibility(View.VISIBLE);
+                    llListViewCover.setVisibility(View.GONE);
                 }
+                getIdleCoachList();
 
             }
         }, new Response.ErrorListener() {
@@ -262,11 +259,13 @@ public class PrivateEducationFragment extends Fragment {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 listView.setVisibility(View.INVISIBLE);
                 noData.setVisibility(View.VISIBLE);
+                llListViewCover.setVisibility(View.GONE);
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
+
     }
 
     private List<CustomeDate> customeDates;
@@ -288,6 +287,7 @@ public class PrivateEducationFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
                 selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
+                loadData();
             }
         });
     }
@@ -321,11 +321,6 @@ public class PrivateEducationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), OrderReserveActivity.class);
-                Bundle bundle = new Bundle();
-                String[] time = tvTime.getText().toString().split(":");
-                bundle.putString("hour", time[0]);
-                bundle.putString("min", time[1]);
-                intent.putExtras(bundle);
                 startActivityForResult(intent, REQUEST_CODE_ORDER_TIME);
             }
         });
@@ -363,8 +358,11 @@ public class PrivateEducationFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
+            if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
+                tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
+                startTime = selectDate + " " + data.getExtras().getString("time_before");
+                endTime = selectDate + " " + data.getExtras().getString("time_after");
+                loadData();
             }
 
         }
@@ -469,10 +467,6 @@ public class PrivateEducationFragment extends Fragment {
         Button btnLessFiveHundred;
         Button btnMoreFiveHundred;
         Button btnPrice;
-        Button btnTimeAm;
-        Button btnTimePm;
-        Button btnTimeNight;
-        Button btnTimeAll;
         Button btnReset;
         Button btnSure;
         ImageView ivArrow;
@@ -493,10 +487,6 @@ public class PrivateEducationFragment extends Fragment {
             btnLessFiveHundred = (Button) inflate.findViewById(R.id.btn_less_five_hundred);
             btnMoreFiveHundred = (Button) inflate.findViewById(R.id.btn_more_five_hundred);
             btnPrice = (Button) inflate.findViewById(R.id.btn_price);
-            btnTimeAm = (Button) inflate.findViewById(R.id.btn_time_am);
-            btnTimePm = (Button) inflate.findViewById(R.id.btn_time_pm);
-            btnTimeNight = (Button) inflate.findViewById(R.id.btn_time_night);
-            btnTimeAll = (Button) inflate.findViewById(R.id.btn_time_all);
             btnReset = (Button) inflate.findViewById(R.id.btn_reset);
             btnSure = (Button) inflate.findViewById(R.id.btn_sure);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -590,59 +580,17 @@ public class PrivateEducationFragment extends Fragment {
                 }
             });
 
-            btnTimeAm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resetTime();
-                    v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    startTime = selectDate + " 6:00";
-                    endTime = selectDate + " 12:00";
-                }
-            });
-            btnTimePm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resetTime();
-                    v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    startTime = selectDate + " 12:00";
-                    endTime = selectDate + " 18:00";
-                }
-            });
-
-            btnTimeNight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resetTime();
-                    v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    startTime = selectDate + " 18:00";
-                    endTime = selectDate + " 24:00";
-                }
-            });
-
-            btnTimeAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resetTime();
-                    v.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    startTime = "";
-                    endTime = "";
-                }
-            });
 
             btnReset.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     resetPrice();
-                    resetTime();
                     resetSex();
                     btnSex.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     btnPrice.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    btnTimeAll.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
                     sex = "";
                     startPrice = "";
                     endPrice = "";
-                    startTime = "";
-                    endTime = "";
                 }
             });
 
@@ -670,12 +618,6 @@ public class PrivateEducationFragment extends Fragment {
             btnPrice.setBackgroundResource(R.drawable.bg_dialog_selector_white);
         }
 
-        private void resetTime() {
-            btnTimeAm.setBackgroundResource(R.drawable.bg_dialog_selector_white);
-            btnTimeAll.setBackgroundResource(R.drawable.bg_dialog_selector_white);
-            btnTimePm.setBackgroundResource(R.drawable.bg_dialog_selector_white);
-            btnTimeNight.setBackgroundResource(R.drawable.bg_dialog_selector_white);
-        }
     }
 
 

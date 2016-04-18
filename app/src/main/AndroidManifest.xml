@@ -264,6 +264,8 @@
         </activity>
         <activity android:name=".activities.ClassMoreCommentsActivity" >
         </activity>
+        <activity android:name=".activities.MessageActivity" >
+        </activity>
     </application>
 
 </manifest>

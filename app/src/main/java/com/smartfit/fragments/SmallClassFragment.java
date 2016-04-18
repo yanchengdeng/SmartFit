@@ -89,13 +89,10 @@ public class SmallClassFragment extends Fragment {
     TextView noData;
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.iv_cover_bg)
     ImageView ivCoverBg;
 
 
-    private int REQUEST_CODE_ORDER_TIME = 0x111;
 
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
@@ -144,19 +141,6 @@ public class SmallClassFragment extends Fragment {
                 getVenueList();
             }
         }
-
-
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadData();
-            }
-        });
-
-
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -267,18 +251,6 @@ public class SmallClassFragment extends Fragment {
         });
 
 
-        rlOrderTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), OrderReserveActivity.class);
-                Bundle bundle = new Bundle();
-                String[] time = tvTime.getText().toString().split(":");
-                bundle.putString("hour", time[0]);
-                bundle.putString("min", time[1]);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, REQUEST_CODE_ORDER_TIME);
-            }
-        });
     }
 
     private void getVenueList() {
@@ -313,12 +285,6 @@ public class SmallClassFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
-            }
-
-        }
     }
 
     /****

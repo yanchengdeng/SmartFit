@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -79,9 +79,9 @@
         <com.smartfit.views.HorizontalListView
             android:id="@+id/listview_date"
             android:layout_width="fill_parent"
+            android:layout_height="80dp"
             android:divider="@color/white"
-            widget:dividerWidth="1dp"
-            android:layout_height="80dp"/>
+            widget:dividerWidth="1dp" />
 
         <RelativeLayout
             android:id="@+id/rl_order_time"
@@ -122,24 +122,38 @@
 
             <include layout="@layout/listview_no_data"></include>
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
+
+            <ListView
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/transparent_half"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent"
+                android:paddingBottom="60dp"
+                android:visibility="invisible" />
 
 
-                <ListView
-                    android:id="@+id/listView"
-                    android:layout_width="match_parent"
-                    android:visibility="invisible"
-                    android:listSelector="@android:color/transparent"
-                    android:layout_height="match_parent"
-                    android:cacheColorHint="@color/transparent"
-                    android:divider="@color/transparent_half"
-                    android:dividerHeight="1px"
-                    android:paddingBottom="60dp" />
+            <LinearLayout
+                android:id="@+id/ll_list_view_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/private_class_color_bg"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            </android.support.v4.widget.SwipeRefreshLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="请先选择您的预约时间"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_larger" />
+
+            </LinearLayout>
+
         </FrameLayout>
     </LinearLayout>
 
@@ -148,14 +162,14 @@
         android:id="@+id/btn_selected"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="@dimen/header_bar_height"
-        android:paddingRight="@dimen/header_bar_height"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/image_padding_big"
         android:layout_marginLeft="@dimen/header_bar_height"
         android:layout_marginRight="@dimen/header_bar_height"
         android:background="@drawable/bg_dialog_selector_red"
+        android:paddingLeft="@dimen/header_bar_height"
+        android:paddingRight="@dimen/header_bar_height"
         android:text="请选择教练"
         android:textColor="@color/white"
         android:textSize="@dimen/text_normal_down" />

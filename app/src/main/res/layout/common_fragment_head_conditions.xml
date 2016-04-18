@@ -84,6 +84,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_order_time"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -121,10 +122,6 @@
 
             <include layout="@layout/listview_no_data"></include>
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
 
                 <ListView
@@ -137,7 +134,6 @@
                     android:dividerHeight="1px"
                     android:visibility="gone" />
 
-            </android.support.v4.widget.SwipeRefreshLayout>
         </FrameLayout>
 
     </LinearLayout>
