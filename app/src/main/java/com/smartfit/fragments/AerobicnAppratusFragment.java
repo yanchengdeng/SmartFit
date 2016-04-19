@@ -196,6 +196,7 @@ public class AerobicnAppratusFragment extends Fragment {
             listView.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);
         }
+
     }
 
     private List<CustomeDate> customeDates;

@@ -446,6 +446,12 @@ public class DateUtils {
 
     }
 
+    public static String getDataType(String dateString) {
+       Date date =  StringToDate(dateString, DateStyle.YYYY_MM_DD_HH_MM);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return simpleDateFormat.format(date).toString();
+    }
+
     public static long getTheDateMillions(String selectData) {
 
         Date currtent = StringToDate(selectData, DateStyle.YYYY_MM_DD);
@@ -484,5 +490,33 @@ public class DateUtils {
         }
 
         return false;
+    }
+
+    public static String getHour(String startTime, String endTime) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date now = null;
+        try {
+            now = df.parse(endTime);
+            java.util.Date date = df.parse(startTime);
+            long l = now.getTime() - date.getTime();
+            long day = l / (24 * 60 * 60 * 1000);
+            long hour = (l / (60 * 60 * 1000) - day * 24);
+            long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+            long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+            System.out.println("" + day + "天" + hour + "小时" + min + "分" + s + "秒");
+
+            if (hour >= 1 && min >= 0) {
+
+                if (min / 30 == 0) {
+                    return hour + "";
+                } else {
+                    return hour + ".5";
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "0.5";
     }
 }

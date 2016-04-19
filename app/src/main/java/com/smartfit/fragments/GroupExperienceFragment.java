@@ -95,7 +95,6 @@ public class GroupExperienceFragment extends Fragment {
     ImageView ivCoverBg;
 
 
-
     private int[] nomarlData = {R.mipmap.icon_1, R.mipmap.icon_2, R.mipmap.icon_3, R.mipmap.icon_4, R.mipmap.icon_5, R.mipmap.icon_6, R.mipmap.icon_7};
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
@@ -154,7 +153,7 @@ public class GroupExperienceFragment extends Fragment {
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
-                bundle.putString(Constants.COURSE_TYPE,"0");
+                bundle.putString(Constants.COURSE_TYPE, "0");
                 ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });

@@ -353,7 +353,7 @@ public class FilterMenuLayout extends ViewGroup {
         super.onConfigurationChanged(newConfig);
     }
 
-    void collapse(boolean animate) {
+    public void collapse(boolean animate) {
         state = STATE_COLLAPSE;
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).setVisibility(View.GONE);

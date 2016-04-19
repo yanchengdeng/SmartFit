@@ -36,6 +36,7 @@ import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.IdleClassListInfo;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
@@ -167,9 +168,16 @@ public class PrivateEducationFragment extends Fragment {
                 if (selectPricates.size() == 0) {
                     ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
                 } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(Constants.PASS_OBJECT, selectPricates);
-                    ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
+                    if (idleClass!=null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList(Constants.PASS_OBJECT, selectPricates);
+                        bundle.putSerializable(Constants.PASS_IDLE_CLASS_INFO, idleClass);
+                        bundle.putString("start", startTime);
+                        bundle.putString("end",endTime);
+                        ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
+                    }else{
+                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("暂无空闲场馆");
+                    }
                 }
             }
         });
@@ -191,6 +199,7 @@ public class PrivateEducationFragment extends Fragment {
         return selectPricates;
     }
 
+    IdleClassListInfo  idleClass;
     /**
      * 获取空闲教室
      */
@@ -204,7 +213,10 @@ public class PrivateEducationFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.CLASSIF_LISTTHEVENUEIDLECLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response,IdleClassListInfo.class);
+                if (idleClassListInfo != null && idleClassListInfo.getClassroomList().size()>0){
+                    idleClass = idleClassListInfo;
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -220,6 +232,14 @@ public class PrivateEducationFragment extends Fragment {
 
 
     private void loadData() {
+
+
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
+            ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
+
+
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
         Map<String, String> data = new HashMap<>();
         data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
@@ -244,13 +264,14 @@ public class PrivateEducationFragment extends Fragment {
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.INVISIBLE);
                     llListViewCover.setVisibility(View.GONE);
+                    getIdleCoachList();
 
                 } else {
                     listView.setVisibility(View.INVISIBLE);
                     noData.setVisibility(View.VISIBLE);
                     llListViewCover.setVisibility(View.GONE);
                 }
-                getIdleCoachList();
+
 
             }
         }, new Response.ErrorListener() {

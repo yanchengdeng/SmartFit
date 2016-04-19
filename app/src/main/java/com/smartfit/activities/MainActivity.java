@@ -159,6 +159,17 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             }
         });
 
+        //自订课程
+        cardSmartFit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtil.isLogin(getApplicationContext())) {
+
+                }else{
+                    openActivity(LoginActivity.class);
+                }
+            }
+        });
         //城市跳转
         tvCityName.setOnClickListener(new View.OnClickListener() {
             @Override

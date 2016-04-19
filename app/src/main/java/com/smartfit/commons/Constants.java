@@ -16,6 +16,8 @@ public class Constants {
     public final static String PASS_STRING = "pass_string";
 
     public final static String PASS_OBJECT = "pass_object";
+
+    public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
      * //定义  1 ：团体课  2.小班课  3.私教课
      */
@@ -76,6 +78,7 @@ public class Constants {
     public static final String USER_CANCELCOURSELIST = "/User/cancelCourseList";
     public static final String COMMENT_SAVE = "/comment/save";
     public static final String COURSE_COACHJOINCOURSE = "/course/coachJoinCourse";
+    public static final String COACH_BESPOKECOACH = "/coach/bespokeCoach";
 
 
     //用户信息

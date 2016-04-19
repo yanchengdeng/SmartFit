@@ -15,6 +15,7 @@ import com.smartfit.fragments.CoachGoingClassesFragment;
 import com.smartfit.fragments.CoachOverClassesFragment;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,11 +58,11 @@ public class CoachClassesActivity extends BaseActivity {
         tvFunction.setText(getString(R.string.publish_class));
     }
 
+    @Subscribe
     public void onEvent(CancleCoachClass event) {/* Do something */
         initFragments();
     }
 
-    ;
 
     private void initFragments() {
 

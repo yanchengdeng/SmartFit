@@ -37,6 +37,7 @@ public class CustomAnimationDemoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_menu_with_custom_animation, container, false);
         FilterMenuLayout filterMenuLayout = (FilterMenuLayout) rootView.findViewById(R.id.filter_menu);
         attachMenu(filterMenuLayout);
+        filterMenuLayout.collapse(true);
         return rootView;
     }
 

@@ -341,6 +341,8 @@ public class PayActivity extends BaseActivity {
                     bundle.putString(Constants.PASS_STRING,courseId);
                     openActivity(AerobicAppratusOrderSuccessActivity.class,bundle);
                     finish();
+                }else if(pageIndex==2){
+                    finish();
                 }
             }
         }, new Response.ErrorListener() {
