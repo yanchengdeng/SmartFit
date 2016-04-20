@@ -16,23 +16,18 @@
 
         <include layout="@layout/listview_no_data"/>
 
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:visibility="invisible"
-                android:listSelector="@android:color/transparent"
-                android:cacheColorHint="@color/transparent"
-                android:divider="@color/transparent_half"
-                android:dividerHeight="1px" />
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/container"
+        <com.smartfit.views.LoadMoreListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:ignore="MergeRootFrame" />
+            android:background="@color/white"
+            android:visibility="invisible"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@color/transparent"
+            android:divider="@color/transparent_half"
+            android:dividerHeight="1px" />
+
+
 
     </FrameLayout>
 

@@ -118,7 +118,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    cancle(item.getCoachId());
+                    cancle(item.getId());
             }
         });
 

@@ -195,4 +195,6 @@
     <string name="more_comments">更多评论</string>
     <string name="recharge_success">充值完成</string>
     <string name="publish_class">发布课程</string>
+    <string name="title_activity_course_message">CourseMessageActivity</string>
+    <string name="course_messages">课程消息</string>
 </resources>

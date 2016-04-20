@@ -270,6 +270,10 @@
         </activity>
         <activity android:name=".activities.SelectVenueRoomsActivity" >
         </activity>
+        <activity
+            android:name=".activities.CourseMessageActivity"
+            android:label="@string/title_activity_course_message" >
+        </activity>
     </application>
 
 </manifest>

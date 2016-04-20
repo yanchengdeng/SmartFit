@@ -109,6 +109,7 @@ public class Constants {
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
     public static final String MESSAGE_LIST = "/message/list";
+    public static final String MESSAGE_GETMESSAGEMAIN = "/message/getMessageMain";
 
 
     //订单
