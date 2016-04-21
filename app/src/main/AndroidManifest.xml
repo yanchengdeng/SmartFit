@@ -274,6 +274,8 @@
             android:name=".activities.CourseMessageActivity"
             android:label="@string/title_activity_course_message" >
         </activity>
+        <activity android:name=".activities.FriendsMessageActivity" >
+        </activity>
     </application>
 
 </manifest>

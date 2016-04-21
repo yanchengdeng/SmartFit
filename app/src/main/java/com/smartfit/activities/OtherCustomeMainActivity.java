@@ -195,13 +195,12 @@ public class OtherCustomeMainActivity extends BaseActivity {
     private void doAddFriends(String uid) {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("focusId", uid);
+        data.put("friendId", uid);
         PostRequest request = new PostRequest(Constants.USER_ADDFRIEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
-                mSVProgressHUD.showSuccessWithStatus(getString(R.string.add_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                tvAddFriends.setText("已添加好友");
+                mSVProgressHUD.showSuccessWithStatus("已向对方发送申请", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 mSVProgressHUD.dismiss();
 
             }

@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -24,6 +25,8 @@ import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,11 +62,14 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.btn_login_phone)
     Button btnLoginPhone;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -171,6 +177,13 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(customeInfo));
                         }
 
+                        eventBus.post(new LoginSuccess());
+                        String isICF = SharedPreferencesUtils.getInstance().getString(Constants.IS_ICF, "0");
+                        if (isICF.equals("1")) {
+                           openActivity(CustomeCoachActivity.class);
+                        } else {
+                           openActivity(CustomeMainActivity.class);
+                        }
                         finish();
                     }
                 }, 2000);

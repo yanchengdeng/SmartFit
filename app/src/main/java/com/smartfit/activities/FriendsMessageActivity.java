@@ -10,7 +10,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
-import com.smartfit.adpters.CourseMessagItemAdapter;
+import com.smartfit.adpters.FriendsMesageAdatper;
 import com.smartfit.beans.MesageInfo;
 import com.smartfit.beans.MessageList;
 import com.smartfit.commons.Constants;
@@ -26,11 +26,15 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * 课程消息
+ * 好友消息
+ *
+ * @author yanchengdeng
+ *         create at 10:38
  */
-public class CourseMessageActivity extends BaseActivity {
+public class FriendsMessageActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -46,40 +50,48 @@ public class CourseMessageActivity extends BaseActivity {
     LoadMoreListView listView;
 
     private int page = 1;
-
     private List<MesageInfo> messageLists = new ArrayList<>();
 
+    private FriendsMesageAdatper friendsMesageAdatper;
 
-    private CourseMessagItemAdapter courseMessagItemAdapter;
-
-    private boolean isLoadEnd = false;//已加载到底
+    private boolean isLoadEnd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_message);
+        setContentView(R.layout.activity_friends_message);
         ButterKnife.bind(this);
-        intView();
-        addLisener();
-        getMessageData();
+        initView();
+        addLienser();
+        initData();
+
+    }
+
+    private void initView() {
+        tvTittle.setText(getString(R.string.friends_message));
+        friendsMesageAdatper = new FriendsMesageAdatper(this,messageLists);
+        listView.setAdapter(friendsMesageAdatper);
 
 
     }
 
-    private void intView() {
-        tvTittle.setText(getString(R.string.course_messages));
-        courseMessagItemAdapter = new CourseMessagItemAdapter(this, messageLists);
-        listView.setAdapter(courseMessagItemAdapter);
+    private void addLienser() {
+        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!isLoadEnd)
+                initData();
+            }
+        });
 
     }
 
-
-    private void getMessageData() {
+    private void initData() {
+        isLoadEnd = false;
         if (page == 1)
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        isLoadEnd = false;
         Map<String, String> data = new HashMap<>();
-        data.put("queryType", "3");
+        data.put("queryType", "2");
         data.put("pageNo", String.valueOf(page));
         PostRequest request = new PostRequest(Constants.MESSAGE_LIST, data, new Response.Listener<JsonObject>() {
             @Override
@@ -88,7 +100,7 @@ public class CourseMessageActivity extends BaseActivity {
                 MessageList submessages = JsonUtils.objectFromJson(response, MessageList.class);
                 if (submessages != null && submessages.getListData() != null && submessages.getListData().size() > 0) {
                     messageLists.addAll(submessages.getListData());
-                    courseMessagItemAdapter.setData(messageLists);
+                    friendsMesageAdatper.setData(messageLists);
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);
                     page++;
@@ -97,8 +109,8 @@ public class CourseMessageActivity extends BaseActivity {
                         listView.setVisibility(View.VISIBLE);
                         noData.setVisibility(View.GONE);
                         mSVProgressHUD.showInfoWithStatus("已加载到底", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        listView.onLoadMoreComplete();
                         isLoadEnd = true;
+                        listView.onLoadMoreComplete();
                     } else {
                         listView.setVisibility(View.GONE);
                         noData.setVisibility(View.VISIBLE);
@@ -125,23 +137,8 @@ public class CourseMessageActivity extends BaseActivity {
         mQueue.add(request);
     }
 
-
-    private void addLisener() {
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if (!isLoadEnd)
-                    getMessageData();
-            }
-        });
-
+    @OnClick(R.id.iv_back)
+    public void onClick() {
+        finish();
     }
-
-
 }

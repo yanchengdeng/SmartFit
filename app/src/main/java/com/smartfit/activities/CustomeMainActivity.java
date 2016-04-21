@@ -18,6 +18,7 @@ import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
@@ -131,19 +132,21 @@ public class CustomeMainActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEvent(UpdateCoachInfo event) {/* Do something */
+    public void onEvent(Object event) {/* Do something */
         if (event instanceof UpdateCoachInfo) {
-            if (!TextUtils.isEmpty(event.getUserPicUrl())) {
-                ImageLoader.getInstance().displayImage(event.getUserPicUrl(), imageViewHeader, Options.getHeaderOptions());
+            if (!TextUtils.isEmpty(((UpdateCoachInfo) event).getUserPicUrl())) {
+                ImageLoader.getInstance().displayImage(((UpdateCoachInfo) event).getUserPicUrl(), imageViewHeader, Options.getHeaderOptions());
             }
 
-            if (!TextUtils.isEmpty(event.getNickName())) {
-                tvName.setText(event.getNickName());
+            if (!TextUtils.isEmpty(((UpdateCoachInfo) event).getNickName())) {
+                tvName.setText(((UpdateCoachInfo) event).getNickName());
             }
 
-            if (!TextUtils.isEmpty(event.getSignature())) {
-                tvSigneture.setText(event.getSignature());
+            if (!TextUtils.isEmpty(((UpdateCoachInfo) event).getSignature())) {
+                tvSigneture.setText(((UpdateCoachInfo) event).getSignature());
             }
+        } else if (event instanceof LoginSuccess) {
+            finish();
         }
     }
 

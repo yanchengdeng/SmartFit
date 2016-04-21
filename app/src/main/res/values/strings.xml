@@ -197,4 +197,7 @@
     <string name="publish_class">发布课程</string>
     <string name="title_activity_course_message">CourseMessageActivity</string>
     <string name="course_messages">课程消息</string>
+    <string name="friends_message">好友消息</string>
+    <string name="ignore">忽略</string>
+    <string name="accepty">接受</string>
 </resources>

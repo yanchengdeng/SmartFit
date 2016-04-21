@@ -110,8 +110,6 @@ public class CourseMessagItemAdapter extends BaseAdapter {
         TextView tvTittle;
         @Bind(R.id.tv_type)
         TextView tvType;
-        @Bind(R.id.tv_class_name)
-        TextView tvClassName;
         @Bind(R.id.tv_class_info)
         TextView tvClassInfo;
         @Bind(R.id.tv_class_time)

@@ -68,7 +68,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
         mProgressBarLoadMore =  mFooterView
                 .findViewById(R.id.load_more_progressBar);
 
-        addFooterView(mFooterView);
+//        addFooterView(mFooterView);
 
         super.setOnScrollListener(this);
     }
@@ -123,9 +123,8 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
             if (!mIsLoadingMore && loadMore
                     && mCurrentScrollState != SCROLL_STATE_IDLE) {
-                mProgressBarLoadMore.setVisibility(View.VISIBLE);
+//                mProgressBarLoadMore.setVisibility(View.VISIBLE);
                 // mLabLoadMore.setVisibility(View.VISIBLE);
-                addFooterView(mFooterView);
                 mIsLoadingMore = true;
                 onLoadMore();
             }
@@ -153,6 +152,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
     public void onLoadMore() {
         Log.d(TAG, "onLoadMore");
         if (mOnLoadMoreListener != null) {
+            addFooterView(mFooterView);
             mOnLoadMoreListener.onLoadMore();
         }
     }
@@ -162,7 +162,9 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
      */
     public void onLoadMoreComplete() {
         mIsLoadingMore = false;
-        mProgressBarLoadMore.setVisibility(View.GONE);
+//        mProgressBarLoadMore.setVisibility(View.GONE);
+//        mFooterView.setVisibility(GONE);
+
         removeFooterView(mFooterView);
     }
 

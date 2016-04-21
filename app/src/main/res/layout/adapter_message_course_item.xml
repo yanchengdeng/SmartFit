@@ -68,17 +68,7 @@
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:text="私教课"/>
 
-    <TextView
-        android:id="@+id/tv_class_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal_down"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_gray"
-        android:layout_toRightOf="@+id/iv_icon"
-        android:layout_below="@+id/tv_tittle"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="私教课"/>
+
 
     <TextView
         android:id="@+id/tv_class_info"
@@ -88,9 +78,9 @@
         android:layout_marginTop="@dimen/image_padding"
         android:textColor="@color/text_color_gray"
         android:layout_toRightOf="@+id/iv_icon"
-        android:layout_below="@+id/tv_class_name"
+        android:layout_below="@+id/tv_type"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text=""/>
+        android:text="课程介绍"/>
 
 
     <TextView
@@ -116,7 +106,7 @@
         android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_class_time"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="$100"/>
+        android:text="免费"/>
 
 
     <TextView

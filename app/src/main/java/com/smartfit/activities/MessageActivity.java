@@ -45,7 +45,6 @@ public class MessageActivity extends BaseActivity {
     ListView listView;
 
 
-
     private List<ListMessageAllInfoItem> listMessageAllInfoItems = new ArrayList<>();
 
     @Override
@@ -133,7 +132,6 @@ public class MessageActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
                 ListMessageAllInfoItem item = listMessageAllInfoItems.get(position);
                 if (!TextUtils.isEmpty(item.getSysMessage().getType())) {
                     if (item.getSysMessage().getType().equals("1")) {
@@ -143,20 +141,16 @@ public class MessageActivity extends BaseActivity {
                     } else if (item.getSysMessage().getType().equals("3")) {
 
                     } else if (item.getSysMessage().getType().equals("4")) {
-                        bundle.putString(Constants.PASS_STRING, TextUtils.isEmpty(item.getSysMessage().getTime()) ? "" : item.getSysMessage().getTime());
-                        openActivity(CourseMessageActivity.class, bundle);
+                        openActivity(CourseMessageActivity.class);
 
                     } else if (item.getSysMessage().getType().equals("5")) {
-
+                        openActivity(FriendsMessageActivity.class);
                     } else if (item.getSysMessage().getType().equals("6")) {
 //                        bundle.putString(Constants.PASS_STRING, TextUtils.isEmpty(item.getSysMessage().getTime()) ? "" : item.getSysMessage().getTime());
 //                        openActivity(CourseMessageActivity.class, bundle);
                     }
                 }
-
-
             }
         });
-
     }
 }

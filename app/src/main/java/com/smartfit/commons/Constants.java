@@ -124,6 +124,9 @@ public class Constants {
     public static final String DYNAMIC_GETDYNAMICLIST = "/dynamic/getDynamicList";
 
 
+    //消息
+    public static  final String MESSAGE_DEL = "/message/del";
+
 
 
     /*****

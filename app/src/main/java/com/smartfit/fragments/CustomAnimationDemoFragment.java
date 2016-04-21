@@ -76,9 +76,13 @@ public class CustomAnimationDemoFragment extends Fragment {
                     }
                     break;
                 case 3:
-//                    ((BaseActivity) getActivity()).openActivity(CustomeMainActivity.class);
-//                    ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("敬请期待", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    ((BaseActivity) getActivity()).openActivity(MessageActivity.class);
+                    if (NetUtil.isLogin(getActivity())) {
+                        if (!MessageActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity())))
+                            ((BaseActivity) getActivity()).openActivity(MessageActivity.class);
+                    }else{
+                        ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
+                    }
+
                     break;
                 case 4:
                     if (NetUtil.isLogin(getActivity())) {

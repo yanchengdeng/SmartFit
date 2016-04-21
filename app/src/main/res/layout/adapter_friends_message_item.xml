@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:padding="@dimen/image_padding_big">
+
+
+    <com.smartfit.views.SelectableRoundedImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg_pic"
+        app:sriv_left_bottom_corner_radius="4dip"
+        app:sriv_left_top_corner_radius="4dip"
+        app:sriv_oval="false"
+        app:sriv_right_bottom_corner_radius="4dip"
+        app:sriv_right_top_corner_radius="4dip" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:text="昵称"
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="@dimen/image_padding"
+        android:text="请求您加为健身伙伴"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
+
+
+
+    <Button
+        android:id="@+id/btn_ignore"
+        android:layout_width="50dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_toLeftOf="@+id/btn_accept"
+        android:text="@string/ignore"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/white"
+        android:layout_marginRight="@dimen/image_padding_big"
+        android:background="@drawable/bg_dialog_selector_gray"
+        android:layout_height="35dp" />
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_width="50dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:text="@string/accepty"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_dialog_selector_red"
+        android:layout_height="35dp" />
+
+
+</RelativeLayout>
