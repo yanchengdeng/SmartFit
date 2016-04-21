@@ -28,6 +28,16 @@ public class UserInfo {
     private String        coachClassDesc;//null,
     private String       authenCoachClassDesc;//null,
 
+    public String getResumeContent() {
+        return resumeContent;
+    }
+
+    public void setResumeContent(String resumeContent) {
+        this.resumeContent = resumeContent;
+    }
+
+    private String resumeContent;
+
     public String getCertificates() {
         return certificates;
     }

@@ -438,7 +438,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, id);
+                bundle.putString(Constants.PASS_STRING, classInfoDetail.getTopicId());
                 openActivity(ClassMoreCommentsActivity.class, bundle);
             }
         });

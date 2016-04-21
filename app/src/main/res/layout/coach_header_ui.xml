@@ -34,15 +34,15 @@
         android:id="@+id/tv_vip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="-20dp"
-        android:background="@mipmap/bg_vip"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:visibility="invisible"
+        android:layout_marginTop="60dp"
         android:layout_toRightOf="@+id/iv_header"
-        android:text="会员"/>
+        android:background="@mipmap/bg_vip"
+        android:gravity="center"
+        android:text="会员"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -57,6 +57,8 @@
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_woman"
+            android:maxLength="10"
+            android:singleLine="true"
             android:text="XXXX教练"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal" />
@@ -67,8 +69,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_marginTop="@dimen/image_padding_big"
+            android:maxLength="10"
             android:singleLine="true"
-            android:text="爱生活，爱锻炼，爱自己爱你"
+            android:text="这个人太懒，还未签名"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
 

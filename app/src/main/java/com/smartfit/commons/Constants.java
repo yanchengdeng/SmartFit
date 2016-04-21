@@ -71,7 +71,7 @@ public class Constants {
     //课程相关接口
     public static final String SEARCH_CLASS = "/ClassIf/searchInfo";
     public static final String SEARCH_CLASS_DETAIL = "/ClassIf/getClassifInfo";
-    public static final String CLASS_COMMEND = "/Comment/getCommentList";
+    public static final String CLASS_COMMEND = "/comment/getCommentsByTopicId";
     public static final String GET_VENUElIST = "/ClassIf/getVenueList";
     public static final String GET_CLASS_LIST = "/ClassIf/getClassifList";
     public static final String COACH_LISTIDLECOACHESBYVENUEID = "/coach/listIdleCoachesByVenueId";
@@ -90,6 +90,7 @@ public class Constants {
     public static final String USER_ADDFOCUS ="/User/addFocus";
     public static final String USER_ADDFRIEND = "/User/addFriend";
     public static final String USER_SAVEUSERINFO = "/User/saveUserInfo";
+    public static final String USER_FRIENDLIST = "/User/friendList";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
@@ -122,6 +123,7 @@ public class Constants {
     //活动
     public static final String EVENT_LISTUSEREVENT = "/event/listUserEvents";
     public static final String DYNAMIC_GETDYNAMICLIST = "/dynamic/getDynamicList";
+    public static final String DYNAMIC_ADDDYNAMIC = "/dynamic/addDynamic";
 
 
     //消息

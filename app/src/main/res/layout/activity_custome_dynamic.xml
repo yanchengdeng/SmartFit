@@ -16,10 +16,7 @@
 
         <include layout="@layout/listview_no_data"></include>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
 
             <com.smartfit.views.LoadMoreListView
@@ -33,7 +30,6 @@
                 android:divider="@color/gray_light"
                 android:dividerHeight="@dimen/image_padding_big" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>
 
 

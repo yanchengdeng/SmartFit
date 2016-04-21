@@ -17,13 +17,14 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
-import com.smartfit.beans.CoachDetailInfo;
+import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -121,13 +122,13 @@ public class CoachDetailInfoActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("coachId", "17");
-        PostRequest request = new PostRequest(Constants.COACH_GETCOACHINFO, maps, new Response.Listener<JsonObject>() {
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.dismiss();
-                CoachDetailInfo userInfoDetail = JsonUtils.objectFromJson(response, CoachDetailInfo.class);
+                UserInfo userInfoDetail = JsonUtils.objectFromJson(response, UserInfo.class);
                 if (userInfoDetail != null) {
                     fillData(userInfoDetail);
                 }
@@ -144,7 +145,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
 
     }
 
-    private void fillData(CoachDetailInfo userInfoDetail) {
+    private void fillData(UserInfo userInfoDetail) {
 
         ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeaderr, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
@@ -159,13 +160,19 @@ public class CoachDetailInfoActivity extends BaseActivity {
             }
         }
 
-        if (!TextUtils.isEmpty(userInfoDetail.getCoachDesc())) {
-            tvEditBrief.setText(userInfoDetail.getCoachDesc());
+        if (!TextUtils.isEmpty(userInfoDetail.getSignature())) {
+            tvMotto.setText(userInfoDetail.getSignature());
         }
 
         if (!TextUtils.isEmpty(userInfoDetail.getHight())) {
             tvHeight.setText(userInfoDetail.getHight());
         }
+
+        if (!TextUtils.isEmpty(userInfoDetail.getResumeContent())) {
+            tvEditBrief.setText("修改");
+        }
+
+        tvBindPhone.setText(SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT,"未绑定"));
 
         if (!TextUtils.isEmpty(userInfoDetail.getWeight())) {
             tvWeight.setText(userInfoDetail.getWeight());

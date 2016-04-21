@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.ClassCommendList;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -81,21 +82,22 @@ public class ClassMoreCommentsActivity extends BaseActivity {
         if (page == 1)
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         final Map<String, String> data = new HashMap<>();
-        data.put("courseId", id);
+        data.put("topicId", id);
         data.put("pageNO", String.valueOf(page));
-        data.put("pageSize", "20");
+        data.put("pageSize", "100");
         PostRequest request = new PostRequest(Constants.CLASS_COMMEND, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
                 listView.onLoadMoreComplete();
-                List<ClassCommend> commends = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassCommend.class);
-                if (null != commends && commends.size() > 0) {
-                    datas.addAll(commends);
+                ClassCommendList classCommendList = JsonUtils.objectFromJson(response, ClassCommendList.class);
+                if (null != classCommendList && classCommendList.getListData().size() > 0) {
+                    datas.addAll(classCommendList.getListData());
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);
                     adapter.setData(datas);
                 } else {
+
                     if (datas.size() > 0) {
                         listView.setVisibility(View.VISIBLE);
                         noData.setVisibility(View.GONE);

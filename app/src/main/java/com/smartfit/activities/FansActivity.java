@@ -1,7 +1,6 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +17,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -109,6 +109,7 @@ public class FansActivity extends BaseActivity {
         }
 
         final Map<String, String> data = new HashMap<>();
+        data.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID,""));
         PostRequest request = new PostRequest(Constants.USER_FANSLIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

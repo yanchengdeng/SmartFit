@@ -287,11 +287,6 @@ public class CustomeCoachActivity extends BaseActivity {
         Map<String, String> maps = new HashMap<>();
         maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
 
-        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
-            maps.put("isCoach", "1");
-        } else {
-            maps.put("isCoach", "0");
-        }
         PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

@@ -2,7 +2,6 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,8 +39,6 @@ public class CustomeDynamicActivity extends BaseActivity {
     ImageView ivFunction;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.no_data)
     TextView noData;
 
@@ -79,23 +77,6 @@ public class CustomeDynamicActivity extends BaseActivity {
             }
         });
 
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        page = 1;
-                        swipeRefreshLayout.setRefreshing(false);
-                        mSVProgressHUD.showSuccessWithStatus(getString(R.string.update_already), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                }, 3000);
-            }
-        });
-
 
         /**
          * 加载更多
@@ -110,7 +91,13 @@ public class CustomeDynamicActivity extends BaseActivity {
     }
 
     private void loadData() {
-        PostRequest request = new PostRequest(Constants.DYNAMIC_GETDYNAMICLIST, new Response.Listener<JsonObject>() {
+        if (page == 1)
+            mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+        HashMap<String,String> map= new HashMap<>();
+        map.put("pageNO",String.valueOf(page));
+        map.put("pageSize","20");
+        PostRequest request = new PostRequest(Constants.DYNAMIC_GETDYNAMICLIST,map ,new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
 
@@ -119,15 +106,13 @@ public class CustomeDynamicActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(CustomeDynamicActivity.this);
         mQueue.add(request);
-
-
-
-
 
 
         if (page == 1) {

@@ -1,7 +1,6 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,8 +46,6 @@ public class HealthFriendsListActivity extends BaseActivity {
     EditText etSearchContent;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.no_data)
     TextView noData;
 
@@ -98,17 +95,7 @@ public class HealthFriendsListActivity extends BaseActivity {
             }
         });
 
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                page = 1;
-                datas.clear();
-                loadData();
-            }
-        });
+
 
 
         /**
@@ -138,7 +125,6 @@ public class HealthFriendsListActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.USER_SEARCHFRIENDLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {
@@ -173,10 +159,9 @@ public class HealthFriendsListActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
         Map<String, String> data = new HashMap<>();
-        PostRequest request = new PostRequest(Constants.USER_CONCERNLIST, data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {

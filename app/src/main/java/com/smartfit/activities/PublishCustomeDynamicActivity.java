@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -9,11 +10,27 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.GridViewPublishPhotoAdapter;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +61,9 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
 
     private ArrayList<String> mSelectPath;
     private static final int REQUEST_IMAGE = 2;
+
+    private List<String> urls = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,27 +84,78 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
         });
 
         ivFunction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSVProgressHUD.showSuccessWithStatus("发布成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-            }
-        });
+                                          @Override
+                                          public void onClick(View v) {
+                                              if (TextUtils.isEmpty(etMoodContent.getEditableText().toString())) {
+                                                  mSVProgressHUD.showInfoWithStatus("请填写心情内容哦~");
+                                                  return;
+                                              }
 
-        ivSelectPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goPhotoThum();
-            }
-        });
+                                              StringBuffer stringBuffer = new StringBuffer();
+                                              if (urls.size() > 0) {
 
-        gvSelectPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                  for (String item : urls) {
+                                                      stringBuffer.append(item).append("|");
+                                                  }
+                                              }
+
+                                              addDynamic(etMoodContent.getEditableText().toString(), stringBuffer.toString());
+
+
+                                          }
+                                      }
+
+        );
+
+        ivSelectPhotos.setOnClickListener(new View.OnClickListener()
+
+                                          {
+                                              @Override
+                                              public void onClick(View v) {
+                                                  goPhotoThum();
+                                              }
+                                          }
+
+        );
+
+        gvSelectPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+                                              {
+                                                  @Override
+                                                  public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                                      if (null != mSelectPath && mSelectPath.size() > 0) {
+                                                          goPhotoThum();
+                                                      }
+                                                  }
+                                              }
+
+        );
+    }
+
+    private void addDynamic(String content, String urlsContent) {
+        mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("content", content);
+        if (!TextUtils.isEmpty(urlsContent.toString())) {
+            maps.put("ImgUrl", urlsContent);
+        }
+        PostRequest request = new PostRequest(Constants.DYNAMIC_ADDDYNAMIC, maps, new Response.Listener<JsonObject>() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (null != mSelectPath && mSelectPath.size() > 0) {
-                    goPhotoThum();
-                }
+            public void onResponse(JsonObject response) {
+
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
             }
         });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PublishCustomeDynamicActivity.this);
+        mQueue.add(request);
+
     }
 
 
@@ -110,13 +181,61 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE){
-            if(resultCode == RESULT_OK){
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
                 mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                if(null != mSelectPath  && mSelectPath.size()>0){
-                    gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(PublishCustomeDynamicActivity.this,mSelectPath));
+                if (null != mSelectPath && mSelectPath.size() > 0) {
+                    gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(PublishCustomeDynamicActivity.this, mSelectPath));
+                    urls.clear();
+                    for (String item : mSelectPath) {
+                        getCardUrl(item);
+                    }
                 }
             }
         }
+    }
+
+
+    /**
+     * 获取省份证图片路径
+     *
+     * @param cards
+     */
+    private void getCardUrl(String cards) {
+        RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
+        params.setMultipart(true);
+        try {
+            params.addBodyParameter("imageFile", new File(cards));
+        } catch (Exception ex) {
+        }
+        x.http().post(params, new Callback.CommonCallback<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+
+                String url = null;
+                try {
+                    url = result.getString("data");
+                    urls.add(url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (!TextUtils.isEmpty(url)) {
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+
     }
 }
