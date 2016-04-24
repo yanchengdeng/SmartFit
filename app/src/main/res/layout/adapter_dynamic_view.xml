@@ -15,8 +15,8 @@
 
         <com.smartfit.views.SelectableRoundedImageView
             android:id="@+id/iv_icon"
-            android:layout_width="@dimen/icon_normal_size"
-            android:layout_height="@dimen/icon_normal_size"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"
             android:src="@mipmap/icon_class_tx"
@@ -67,7 +67,7 @@
         android:textSize="@dimen/text_normal" />
 
     <ImageView
-        android:id="@+id/gv_photos"
+        android:id="@+id/iv_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/bg_pic"
@@ -91,6 +91,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_weight="1">
 
             <TextView
@@ -115,7 +116,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-
             android:layout_weight="1">
             <TextView
                 android:id="@+id/tv_message"

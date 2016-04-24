@@ -276,6 +276,12 @@
         </activity>
         <activity android:name=".activities.FriendsMessageActivity" >
         </activity>
+        <activity android:name=".activities.UserCustomClassOneActivity" />
+        <activity android:name=".activities.UserCustomClassTwoActivity" />
+        <activity
+            android:name=".activities.UserCustomClassThreeActivity"
+            android:label="@string/title_activity_custom_class_three" >
+        </activity>
     </application>
 
 </manifest>

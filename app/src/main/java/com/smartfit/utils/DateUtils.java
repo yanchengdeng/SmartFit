@@ -436,6 +436,16 @@ public class DateUtils {
 
     }
 
+
+    public static String getData(String longSeconds,String style) {
+
+        Date date = new Date(Long.parseLong(longSeconds) * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(style);
+        return simpleDateFormat.format(date);
+
+    }
+
     public static String getDataTimeMonth(String longSeconds) {
 
         Date date = new Date(Long.parseLong(longSeconds) * 1000);

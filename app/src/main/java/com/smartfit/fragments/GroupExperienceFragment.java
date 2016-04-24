@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.LoginActivity;
 import com.smartfit.activities.MainBusinessActivity;
-import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
@@ -62,7 +59,7 @@ import butterknife.ButterKnife;
  * Created by dengyancheng on 16/2/28.
  * 团操课
  */
-public class GroupExperienceFragment extends Fragment {
+public class GroupExperienceFragment extends BaseFragment {
 
 
     /****
@@ -105,6 +102,10 @@ public class GroupExperienceFragment extends Fragment {
     private List<WorkPointAddress> addresses;
     private String selectType = "0";
     private String venueId = "0";
+    /** 标志位，标志已经初始化完成 */
+    private boolean isPrepared;
+    /** 是否已被加载过一次，第二次就不再去请求数据了 */
+    private boolean isLoaded = false;
 
 
     @Override
@@ -125,7 +126,7 @@ public class GroupExperienceFragment extends Fragment {
      * 初始化数据列表加载
      */
     private void initListView() {
-
+        isPrepared = true;
         adapter = new GroupExpericeItemAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
         String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
@@ -137,7 +138,8 @@ public class GroupExperienceFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-                loadData();
+                isLoaded = false;
+                lazyLoad();
             } else {
                 getVenueList();
             }
@@ -162,8 +164,8 @@ public class GroupExperienceFragment extends Fragment {
 
     private void loadData() {
         datas.clear();
-        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.Clear));
-        Map<String, String> data = new HashMap<>();
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+          Map<String, String> data = new HashMap<>();
         data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
@@ -175,6 +177,7 @@ public class GroupExperienceFragment extends Fragment {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                isLoaded = true;
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
@@ -226,7 +229,8 @@ public class GroupExperienceFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
                 selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
-                loadData();
+                isLoaded = false;
+                lazyLoad();
             }
         });
     }
@@ -268,7 +272,8 @@ public class GroupExperienceFragment extends Fragment {
                 if (reqeustAddresses != null && reqeustAddresses.size() > 0) {
                     addresses = reqeustAddresses;
                     venueId = addresses.get(0).getVenueId();
-                    loadData();
+                    isLoaded = false;
+                    lazyLoad();
                 } else {
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
@@ -336,6 +341,14 @@ public class GroupExperienceFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    protected void lazyLoad() {
+        if (!isPrepared || !isVisible || isLoaded) {
+            return;
+        }
+            loadData();
+    }
+
 
     private class AddressCustomPop extends BasePopup<AddressCustomPop> {
 
@@ -375,7 +388,8 @@ public class GroupExperienceFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     venueId = addresses.get(position).getVenueId();
-                    loadData();
+                    isLoaded = false;
+                    lazyLoad();
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                 }
@@ -419,7 +433,8 @@ public class GroupExperienceFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     orderCustomePop.dismiss();
                     selectType = Util.getSortList(getContext()).get(position).getId();
-                    loadData();
+                    isLoaded = false;
+                    lazyLoad();
                     ivCoverBg.setVisibility(View.GONE);
                 }
             });

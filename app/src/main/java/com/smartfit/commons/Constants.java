@@ -79,6 +79,8 @@ public class Constants {
     public static final String COMMENT_SAVE = "/comment/save";
     public static final String COURSE_COACHJOINCOURSE = "/course/coachJoinCourse";
     public static final String COACH_BESPOKECOACH = "/coach/bespokeCoach";
+    public static final String CLASSIF_GETCLASSIFICATION = "/ClassIf/getClassification";
+    public static final String CLASSIF_GETIDLECLASSROOMSVENUELIST = "/ClassIf/getIdleClassroomsVenueList";
 
 
     //用户信息
@@ -104,6 +106,7 @@ public class Constants {
     public static final String  WORKSPACE_ADD = "/workspace/Add";
     public static final  String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
     public static final String  CLASSIF_LISTTHEVENUEIDLECLASSROOMS= "/ClassIf/listTheVenueIdleClassrooms";
+    public static final String COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE = "/coach/listIdleCoachesByVenueIdAndCourseTypeCode";
 
 
     //系统数据
@@ -124,6 +127,7 @@ public class Constants {
     public static final String EVENT_LISTUSEREVENT = "/event/listUserEvents";
     public static final String DYNAMIC_GETDYNAMICLIST = "/dynamic/getDynamicList";
     public static final String DYNAMIC_ADDDYNAMIC = "/dynamic/addDynamic";
+    public static final String DYNAMIC_GOOD = "/dynamic/good";
 
 
     //消息
@@ -160,8 +164,8 @@ public class Constants {
     }
 
     public static class Net {
-        //普通接口
-//        public static final String URL = "http://222.77.181.80:8080/smartFit";//接口域名
+        //发布时的接口
+//        public static final String URL = "139.196.228.98:8098";//
         public static final String URL =  "http://123.57.164.115:8098";
 
 

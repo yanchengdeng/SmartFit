@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
@@ -70,7 +72,6 @@ public class OtherCustomeMainActivity extends BaseActivity {
         uid = getIntent().getExtras().getString(Constants.PASS_STRING);
         Map<String, String> maps = new HashMap<>();
         maps.put("uid", uid);
-        maps.put("isCoach", "0");
         PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -83,7 +84,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -147,6 +148,30 @@ public class OtherCustomeMainActivity extends BaseActivity {
             }else{
                 tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_man),null);
             }
+        }
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DeviceUtil.dp2px(OtherCustomeMainActivity.this, 60), DeviceUtil.dp2px(OtherCustomeMainActivity.this, 60));
+        params.topMargin = 16;
+        params.leftMargin = 16;
+        params.bottomMargin = 16;
+        LinearLayout linearLayout = (LinearLayout) scrollView.getPullRootView().findViewById(R.id.ll_pictures);
+        if (userInfo.getCoachDynamicPics() != null && userInfo.getCoachDynamicPics().length > 0) {
+
+            for (String item : userInfo.getCoachDynamicPics()) {
+                ImageView imageView = new ImageView(OtherCustomeMainActivity.this);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setLayoutParams(params);
+                ImageLoader.getInstance().displayImage(item, imageView, Options.getListOptions());
+                if (linearLayout.getChildCount() < 3) {
+                    linearLayout.addView(imageView);
+                }
+            }
+        } else {
+            ImageView imageView = new ImageView(OtherCustomeMainActivity.this);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(params);
+            imageView.setImageResource(R.mipmap.icon_pic);
+            linearLayout.addView(imageView);
         }
     }
 

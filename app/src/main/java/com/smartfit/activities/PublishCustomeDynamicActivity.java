@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateDynamic;
 import com.smartfit.R;
 import com.smartfit.adpters.GridViewPublishPhotoAdapter;
 import com.smartfit.commons.Constants;
@@ -21,6 +23,7 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -64,11 +67,14 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
 
     private List<String> urls = new ArrayList<>();
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_custome_dynamic);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
         tvTittle.setText("动态");
         ivFunction.setVisibility(View.VISIBLE);
         ivFunction.setImageResource(R.mipmap.icon_right);
@@ -95,7 +101,7 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
                                               if (urls.size() > 0) {
 
                                                   for (String item : urls) {
-                                                      stringBuffer.append(item).append("|");
+                                                      stringBuffer.append(item);
                                                   }
                                               }
 
@@ -137,14 +143,20 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("content", content);
         if (!TextUtils.isEmpty(urlsContent.toString())) {
-            maps.put("ImgUrl", urlsContent);
+            maps.put("imgUrl", urlsContent);
         }
         PostRequest request = new PostRequest(Constants.DYNAMIC_ADDDYNAMIC, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
-
                 mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                eventBus.post(new UpdateDynamic());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 2000);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -167,7 +179,7 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
         // 是否显示拍摄图片
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
         // 最大可选择图片数量
-        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
         // 选择模式
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_MULTI);
         // 默认选择

@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
                     SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
                     SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
-                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
+                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
                 }
             }
         }, new Response.ErrorListener() {
@@ -164,8 +164,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
                 if (NetUtil.isLogin(getApplicationContext())) {
-
-                }else{
+                    openActivity(UserCustomClassOneActivity.class);
+                } else {
                     openActivity(LoginActivity.class);
                 }
             }

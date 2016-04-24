@@ -16,8 +16,6 @@
 
 package com.smartfit.utils;
 
-import android.text.TextUtils;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -31,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.smartfit.commons.Constants;
-import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,11 +110,19 @@ public class PostRequest extends Request<JsonObject> {
                         return Response.success(new JsonObject(), HttpHeaderParser.parseCacheHeaders(response));
                     }
 
+
+
                     if(jb.opt("data") instanceof String){
                         JsonObject jsonObject = new JsonObject();
                         jsonObject.addProperty("data",(String)jb.opt("data"));
                         return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
                     }
+                    if(jb.opt("data") instanceof Integer){
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("data",String.valueOf(jb.opt("data")));
+                        return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
+                    }
+
 
                     JsonObject jsonObject = null;
                     if (jb.opt("data") instanceof JSONArray) {

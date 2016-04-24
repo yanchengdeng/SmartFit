@@ -24,6 +24,7 @@ import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
@@ -49,6 +50,7 @@ public class CustomeCoachActivity extends BaseActivity {
     private SelectableRoundedImageView imageViewHeader;
 
     private TextView tvName, tvSigneture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,6 +359,30 @@ public class CustomeCoachActivity extends BaseActivity {
         TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);
         if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
             tvGoingClasses.setText("正在进行" + userInfo.getCurClassCount() + "课程");
+        }
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DeviceUtil.dp2px(CustomeCoachActivity.this, 60), DeviceUtil.dp2px(CustomeCoachActivity.this, 60));
+        params.topMargin = 16;
+        params.leftMargin = 16;
+        params.bottomMargin = 16;
+        LinearLayout linearLayout = (LinearLayout) scrollView.getPullRootView().findViewById(R.id.ll_pictures);
+        if (userInfo.getCoachDynamicPics() != null && userInfo.getCoachDynamicPics().length > 0) {
+
+            for (String item : userInfo.getCoachDynamicPics()) {
+                ImageView imageView = new ImageView(CustomeCoachActivity.this);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setLayoutParams(params);
+                ImageLoader.getInstance().displayImage(item, imageView, Options.getListOptions());
+                if (linearLayout.getChildCount() < 3) {
+                    linearLayout.addView(imageView);
+                }
+            }
+        } else {
+            ImageView imageView = new ImageView(CustomeCoachActivity.this);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(params);
+            imageView.setImageResource(R.mipmap.icon_pic);
+            linearLayout.addView(imageView);
         }
     }
 

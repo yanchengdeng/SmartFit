@@ -20,6 +20,7 @@
             android:button="@null"
             android:checked="false"
             android:drawablePadding="@dimen/image_padding"
+            android:textColor="@color/text_color_gray"
             android:drawableRight="@mipmap/icon_down"
             android:text="更多"
             android:textSize="@dimen/text_normal_down" />
@@ -32,7 +33,7 @@
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/ck_more_select"
             android:layout_toRightOf="@+id/ck_more_address"
-            android:background="@drawable/bg_search_gray">
+           >
 
             <TextView
                 android:id="@+id/tv_address"
@@ -41,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="请选择运动场地"
-                android:textColor="@color/text_color_gray"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal_down" />
 
         </RelativeLayout>
@@ -107,7 +108,7 @@
                 android:drawablePadding="@dimen/image_padding"
                 android:drawableRight="@mipmap/icon_next_w_on"
                 android:gravity="center_vertical"
-                android:text="11:45"
+                android:text=""
                 android:textColor="@color/text_color_gray" />
         </RelativeLayout>
 

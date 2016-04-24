@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.FansActivity">
+
+    <include layout="@layout/common_header_view" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:padding="@dimen/image_padding"
+        android:text="@string/small_class"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/gv_class"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:horizontalSpacing="@dimen/image_padding_big"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:padding="@dimen/image_padding_big"
+            android:verticalSpacing="@dimen/image_padding_big" />
+
+        <include layout="@layout/listview_no_data"/>
+    </FrameLayout>
+
+</LinearLayout>
