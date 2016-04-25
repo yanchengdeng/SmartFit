@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.UserCustomClassFourActivity">
+
+    <include layout="@layout/common_header_view" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <EditText
+                    android:id="@+id/et_class_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:gravity="left|center_vertical"
+                    android:hint="请输入课程名称"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <EditText
+                    android:id="@+id/et_class_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:background="@null"
+                    android:gravity="left|center_vertical"
+                    android:hint="请输入一段课程描述"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_friends_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/white"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/tv_friends_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="伙伴人数"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:id="@+id/tv_friends_tip_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_friends_tips"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:text="一共有多少伙伴参加课程？"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <TextView
+                    android:id="@+id/tv_friends_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="@dimen/image_padding"
+                    android:drawableRight="@mipmap/icon_next_w_on"
+                    android:text="1人"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_open_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:background="@color/white"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/tv_open_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开放人数"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:id="@+id/tv_open_tip_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_open_tips"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:text="开放多少人数给其他人加入。"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <TextView
+                    android:id="@+id/tv_open_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="@dimen/image_padding"
+                    android:drawableRight="@mipmap/icon_next_w_on"
+                    android:text="1人"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="费用清单"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="健身馆场地费"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <TextView
+                        android:id="@+id/tv_venue_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="0元"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="健身教练费用"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <TextView
+                        android:id="@+id/tv_coach_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="0元*1"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="总计："
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <TextView
+                        android:id="@+id/tv_count_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="0元"
+                        android:textColor="@color/blue_light"
+                        android:textSize="@dimen/text_normal_down" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_width="match_parent"
+            android:background="@drawable/bg_dialog_selector_red"
+            android:text="支付自订课程"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/header_bar_height"
+            android:layout_marginRight="@dimen/header_bar_height"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_height="@dimen/btn_height" />
+
+    </RelativeLayout>
+
+</LinearLayout>

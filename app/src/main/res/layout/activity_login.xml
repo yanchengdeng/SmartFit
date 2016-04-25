@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.LoginActivity">
@@ -32,12 +34,23 @@
         </RelativeLayout>
 
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/icon_avatar"
-            />
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_header"
+                android:layout_width="50dp"
+                android:layout_centerVertical="true"
+                android:layout_height="50dp"
+                android:layout_margin="@dimen/image_padding_big"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:scaleType="centerCrop"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_pay_mr"
+                app:sriv_border_color="@color/white"
+                app:sriv_border_width="2dip"
+                app:sriv_left_bottom_corner_radius="0dip"
+                app:sriv_left_top_corner_radius="0dip"
+                app:sriv_oval="true"
+                app:sriv_right_bottom_corner_radius="0dip"
+                app:sriv_right_top_corner_radius="0dip" />
 
 
             <ImageView
@@ -80,11 +93,12 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="@dimen/text_normal"
+                    android:inputType="phone"
                     android:background="@null"
                     android:layout_toRightOf="@+id/iv_name"
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:hint="@string/user_name"/>
+                    android:hint="@string/phone_num"/>
                 
                 <TextView
                     android:layout_width="match_parent"

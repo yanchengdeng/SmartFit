@@ -102,9 +102,13 @@ public class GroupExperienceFragment extends BaseFragment {
     private List<WorkPointAddress> addresses;
     private String selectType = "0";
     private String venueId = "0";
-    /** 标志位，标志已经初始化完成 */
+    /**
+     * 标志位，标志已经初始化完成
+     */
     private boolean isPrepared;
-    /** 是否已被加载过一次，第二次就不再去请求数据了 */
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
     private boolean isLoaded = false;
 
 
@@ -165,7 +169,7 @@ public class GroupExperienceFragment extends BaseFragment {
     private void loadData() {
         datas.clear();
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-          Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
@@ -346,7 +350,7 @@ public class GroupExperienceFragment extends BaseFragment {
         if (!isPrepared || !isVisible || isLoaded) {
             return;
         }
-            loadData();
+        loadData();
     }
 
 

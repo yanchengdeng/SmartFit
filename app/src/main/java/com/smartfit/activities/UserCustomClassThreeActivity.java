@@ -15,6 +15,11 @@ import com.smartfit.fragments.CustomClassThreeFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * @author yanchengdeng
+ *         create at 2016/4/25 11:30
+ *         用户自定义课程第三步
+ */
 public class UserCustomClassThreeActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
@@ -24,11 +29,13 @@ public class UserCustomClassThreeActivity extends BaseActivity {
     @Bind(R.id.tv_function)
     TextView tvFunction;
     @Bind(R.id.iv_function)
- public    ImageView ivFunction;
+    public ImageView ivFunction;
     @Bind(R.id.viewpagertab)
     SmartTabLayout viewpagertab;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
+
+    private String startTime, endTime, courseClassId,venueId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +51,27 @@ public class UserCustomClassThreeActivity extends BaseActivity {
         tvTittle.setText("自订课程(3/4)");
         ivFunction.setVisibility(View.VISIBLE);
         ivFunction.setImageResource(R.mipmap.icon_next_w);
+
+        /**
+         *  bundle.putString("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+         bundle.putString("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+         bundle.putString("courseClassId",classId);
+         */
+        startTime = getIntent().getStringExtra("startTime");
+        endTime = getIntent().getStringExtra("endTime");
+        courseClassId = getIntent().getStringExtra("courseClassId");
+        venueId = getIntent().getStringExtra("venueId");
     }
 
-    private void initViewPage(){
+    private void initViewPage() {
+        Bundle bundle = getIntent().getExtras();
+        CustomClassThreeFragment custom = new CustomClassThreeFragment();
+        custom.setArguments(bundle);
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("评分", CustomClassThreeFragment.class)
-                .add("价格", CustomClassThreeFragment.class)
-                .add("性别", CustomClassThreeFragment.class)
+                .add("评分", CustomClassThreeFragment.class,bundle)
+                .add("价格", CustomClassThreeFragment.class,bundle)
+                .add("性别", CustomClassThreeFragment.class,bundle)
                 .create());
 
 
@@ -60,7 +80,7 @@ public class UserCustomClassThreeActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(3);
         final SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(1);
     }
 
     private void addLisener() {

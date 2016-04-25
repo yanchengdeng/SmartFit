@@ -34,7 +34,7 @@
     <application
         android:name=".SmartAppliction"
         android:allowBackup="true"
-        android:icon="@mipmap/icon_logo"
+        android:icon="@mipmap/message_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme" >
@@ -281,6 +281,8 @@
         <activity
             android:name=".activities.UserCustomClassThreeActivity"
             android:label="@string/title_activity_custom_class_three" >
+        </activity>
+        <activity android:name=".activities.UserCustomClassFourActivity" >
         </activity>
     </application>
 

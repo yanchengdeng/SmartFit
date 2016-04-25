@@ -11,6 +11,7 @@
             backward-compatibility can go here.
         -->
         <item name="android:windowNoTitle">true</item>
+        <item name="android:screenOrientation">portrait</item>
     </style>
 
     <!-- Application theme. -->

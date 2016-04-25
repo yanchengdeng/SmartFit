@@ -17,6 +17,7 @@ import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
@@ -50,7 +51,6 @@ public class CustomeCoachActivity extends BaseActivity {
     private SelectableRoundedImageView imageViewHeader;
 
     private TextView tvName, tvSigneture;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,10 +136,11 @@ public class CustomeCoachActivity extends BaseActivity {
             }
         } else if (event instanceof LoginSuccess) {
             finish();
+        } else if (event instanceof LoginOut) {
+            finish();
         }
     }
 
-    ;
 
     private void initView() {
         getCoachInfo();
@@ -384,6 +385,10 @@ public class CustomeCoachActivity extends BaseActivity {
             imageView.setImageResource(R.mipmap.icon_pic);
             linearLayout.addView(imageView);
         }
+        if (!TextUtils.isEmpty(userInfo.getCoachId())) {
+            SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfo.getCoachId());
+        }
+
     }
 
 

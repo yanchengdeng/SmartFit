@@ -21,6 +21,16 @@ public class UserInfoDetail {
     private String weight;//null,
     private String balance;//0
 
+    public String getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(String coachId) {
+        this.coachId = coachId;
+    }
+
+    private String coachId;
+
     public String getUid() {
         return uid;
     }

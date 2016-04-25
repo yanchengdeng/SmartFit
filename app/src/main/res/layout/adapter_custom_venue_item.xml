@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/image_padding_big">
+
+        <RelativeLayout
+            android:id="@+id/rl_icon_ui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/icon_normal_size"
+                android:layout_height="@dimen/icon_normal_size"
+                android:layout_marginTop="2dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/bg_pic"
+                app:sriv_left_bottom_corner_radius="4dip"
+                app:sriv_left_top_corner_radius="4dip"
+                app:sriv_oval="false"
+                app:sriv_right_bottom_corner_radius="4dip"
+                app:sriv_right_top_corner_radius="4dip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_office"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_context_ui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/ch_select"
+            android:layout_toRightOf="@+id/rl_icon_ui"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_venue_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/image_padding"
+                android:singleLine="true"
+                android:text="省体店"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal_down"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:singleLine="true"
+                android:text="距离0米   共1个教室"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <com.smartfit.views.MyListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:divider="@color/line_gray"
+        android:dividerHeight="1px" />
+</LinearLayout>

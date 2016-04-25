@@ -2,6 +2,7 @@ package com.smartfit.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.UserCustomClassFourActivity;
 import com.smartfit.activities.UserCustomClassThreeActivity;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.beans.PrivateEducationClass;
@@ -46,16 +48,42 @@ public class CustomClassThreeFragment extends BaseFragment {
     private PrivateEducationAdapter adapter;
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
 
-    /** 标志位，标志已经初始化完成 */
+    /**
+     * 标志位，标志已经初始化完成
+     */
     private boolean isPrepared;
-    /** 是否已被加载过一次，第二次就不再去请求数据了 */
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
     private boolean isLoaded = false;
+
+
+    private String startTime, endTime, courseClassId, venueId, venuPrice;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            startTime = getArguments().getString("startTime");
+            endTime = getArguments().getString("endTime");
+            courseClassId = getArguments().getString("courseClassId");
+            venueId = getArguments().getString("venueId");
+            venuPrice = getArguments().getString("venuePrice");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_custom_three, container, false);
         ButterKnife.bind(this, view);
+        if (getArguments() != null) {
+            startTime = getArguments().getString("startTime");
+            endTime = getArguments().getString("endTime");
+            courseClassId = getArguments().getString("courseClassId");
+            venueId = getArguments().getString("venueId");
+            venuPrice = getArguments().getString("venuePrice");
+        }
         isPrepared = true;
         initListView();
         return view;
@@ -64,10 +92,10 @@ public class CustomClassThreeFragment extends BaseFragment {
     private void getData() {
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions("2016-04-24 16:45")));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions("2016-04-24 18:45")));
-        data.put("venueId", "11");
-        data.put("courseType", "2");
+        data.put("startTime", startTime);
+        data.put("endTime", endTime);
+        data.put("venueId", venueId);
+        data.put("courseTypeCode", courseClassId);
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -126,12 +154,30 @@ public class CustomClassThreeFragment extends BaseFragment {
             public void onClick(View v) {
                 List<PrivateEducationClass> selectPricates = countSelectNum(datas);
                 if (selectPricates.size() == 0) {
-
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("已选择" + selectPricates.size() + "个");
-                }
 
+                    Bundle bundle = new Bundle();
+                    bundle.putString("startTime", startTime);
+                    bundle.putString("endTime", endTime);
+                    bundle.putString("courseClassId", courseClassId);
+                    bundle.putString("venueId", venueId);
+                    bundle.putString("venuePrice", venuPrice);
+                    float price = 0;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (PrivateEducationClass item : selectPricates) {
+                        stringBuilder.append(item.getCoachId()).append("|");
+                        if (!TextUtils.isEmpty(item.getPrice())) {
+                            if (Float.parseFloat(item.getPrice()) > price) {
+                                price = Float.parseFloat(item.getPrice());
+                            }
+                        }
+                    }
+                    bundle.putString("coachPrice", String.valueOf(price));
+                    bundle.putString("coachId",stringBuilder.toString());
+                    ((BaseActivity) getActivity()).openActivity(UserCustomClassFourActivity.class, bundle);
+                }
             }
         });
 

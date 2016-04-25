@@ -66,7 +66,7 @@ public class SplashActivity extends FragmentActivity {
             public void run() {
                 requestCityList();
             }
-        }, 1500);
+        },100);
     }
 
     private void initGuideGallery() {

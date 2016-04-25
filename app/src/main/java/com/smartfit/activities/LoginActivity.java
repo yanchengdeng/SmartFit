@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.R;
@@ -23,6 +24,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 
@@ -61,6 +63,8 @@ public class LoginActivity extends BaseActivity {
     ImageView ivLoginQq;
     @Bind(R.id.btn_login_phone)
     Button btnLoginPhone;
+    @Bind(R.id.iv_header)
+    ImageView ivHeader;
 
     private EventBus eventBus;
 
@@ -81,9 +85,20 @@ public class LoginActivity extends BaseActivity {
         addLisener();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(userInfo)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
+            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getListOptions());
+        }
+    }
+
     private void initView() {
-        String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT,"");
-        String pwd = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD,"");
+        String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "");
+        String pwd = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "");
         if (!TextUtils.isEmpty(account)) {
             etName.setText(account);
         }
@@ -152,9 +167,9 @@ public class LoginActivity extends BaseActivity {
 
         mSVProgressHUD.showWithStatus(getString(R.string.login_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("mobileNo",accont);
+        data.put("mobileNo", accont);
         data.put("password", MD5.getMessageDigest(password.getBytes()));
-        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD,data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(final JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -165,7 +180,7 @@ public class LoginActivity extends BaseActivity {
                         if (ckRemeber.isChecked()) {
                             SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, accont);
                             SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, password);
-                        }else{
+                        } else {
                             SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, "");
                             SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, "");
                         }
@@ -173,20 +188,23 @@ public class LoginActivity extends BaseActivity {
                         if (customeInfo != null) {
                             SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());
                             SharedPreferencesUtils.getInstance().putString(Constants.UID, customeInfo.getUid());
-                            SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF,customeInfo.getIsICF());
-                            SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(customeInfo));
+                            SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, customeInfo.getIsICF());
+                            SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(customeInfo));
+                            if (!TextUtils.isEmpty(customeInfo.getCoachId())) {
+                                SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, customeInfo.getCoachId());
+                            }
                         }
 
                         eventBus.post(new LoginSuccess());
                         String isICF = SharedPreferencesUtils.getInstance().getString(Constants.IS_ICF, "0");
-                        if (isICF.equals("1")) {
-                           openActivity(CustomeCoachActivity.class);
+                      /*  if (isICF.equals("1")) {
+                            openActivity(CustomeCoachActivity.class);
                         } else {
-                           openActivity(CustomeMainActivity.class);
-                        }
+                            openActivity(CustomeMainActivity.class);
+                        }*/
                         finish();
                     }
-                }, 2000);
+                }, 1500);
 
 
             }

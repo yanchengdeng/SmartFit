@@ -3,7 +3,6 @@ package com.smartfit.activities;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +33,7 @@ import butterknife.ButterKnife;
  */
 public class AttentionListActivity extends BaseActivity {
 
+
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.tv_tittle)
@@ -42,17 +42,12 @@ public class AttentionListActivity extends BaseActivity {
     TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
-    @Bind(R.id.iv_search)
-    ImageView ivSearch;
+    @Bind(R.id.no_data)
+    TextView noData;
     @Bind(R.id.listView)
     LoadMoreListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.et_search_content)
-    EditText etSearchContent;
-    @Bind(R.id.no_data)
-    TextView noData;
-
     private int page = 1;
     private FansAdapter adapter;
     private List<AttentionBean> datas = new ArrayList<AttentionBean>();
@@ -115,8 +110,8 @@ public class AttentionListActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
         Map<String, String> data = new HashMap<>();
-        data.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID,""));
-        data.put("nickname",etSearchContent.getEditableText().toString());
+        data.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        data.put("nickname", "");
         PostRequest request = new PostRequest(Constants.USER_CONCERNLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

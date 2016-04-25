@@ -2,17 +2,25 @@ package com.smartfit.activities;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.R;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,12 +62,14 @@ public class SettingActivity extends BaseActivity {
     RelativeLayout rlRingUi;
     @Bind(R.id.rl_quite_ui)
     RelativeLayout rlQuiteUi;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -70,6 +80,16 @@ public class SettingActivity extends BaseActivity {
         initView();
         addLisener();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(userInfo)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
+            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getListOptions());
+        }
     }
 
     private void initView() {
@@ -96,11 +116,11 @@ public class SettingActivity extends BaseActivity {
         rlRingUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ivAcceptRing.getVisibility() == View.VISIBLE){
+                if (ivAcceptRing.getVisibility() == View.VISIBLE) {
                     ivAcceptRing.setVisibility(View.GONE);
                     ivAcceptRingNot.setVisibility(View.VISIBLE);
                     mSVProgressHUD.showInfoWithStatus("关闭声音");
-                }else{
+                } else {
                     ivAcceptRing.setVisibility(View.VISIBLE);
                     ivAcceptRingNot.setVisibility(View.GONE);
                     mSVProgressHUD.showInfoWithStatus("打开声音");
@@ -112,11 +132,11 @@ public class SettingActivity extends BaseActivity {
         rlQuiteUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ivQuietMsg.getVisibility()== View.VISIBLE){
+                if (ivQuietMsg.getVisibility() == View.VISIBLE) {
                     ivQuietMsg.setVisibility(View.GONE);
                     ivAcceptQuietNot.setVisibility(View.VISIBLE);
                     mSVProgressHUD.showInfoWithStatus("关闭震动");
-                }else{
+                } else {
                     ivQuietMsg.setVisibility(View.VISIBLE);
                     ivAcceptQuietNot.setVisibility(View.GONE);
                     mSVProgressHUD.showInfoWithStatus("关闭震动");
@@ -150,9 +170,9 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View v) {
                 SharedPreferencesUtils.getInstance().remove(Constants.UID);
                 SharedPreferencesUtils.getInstance().remove(Constants.SID);
-                SharedPreferencesUtils.getInstance().remove(Constants.ACCOUNT);
                 SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
                 openActivity(LoginActivity.class);
+                eventBus.post(new LoginOut());
                 finish();
             }
         });

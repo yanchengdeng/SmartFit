@@ -18,6 +18,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
@@ -30,6 +31,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -95,31 +97,40 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             getUserInfo();
         }
 
-
         addLisener();
     }
 
     private void getUserInfo() {
-        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-
-                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
-                if (userInfoDetail != null) {
-                    SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
-                    SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
-                    SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
-                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
+        String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "");
+        String password = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "");
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
+            Map<String, String> data = new HashMap<>();
+            data.put("mobileNo", account);
+            data.put("password", MD5.getMessageDigest(password.getBytes()));
+            PostRequest request = new PostRequest(Constants.LOGIN_IN_METHOD, data, new Response.Listener<JsonObject>() {
+                @Override
+                public void onResponse(final JsonObject response) {
+                    UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                    if (userInfoDetail != null) {
+                        SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
+                        SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
+                        SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
+                        SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
+                        if (!TextUtils.isEmpty(userInfoDetail.getCoachId())) {
+                            SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
+                        }
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-        request.setTag(new Object());
-        request.headers = NetUtil.getRequestBody(MainActivity.this);
-        mQueue.add(request);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            request.setTag(TAG);
+            request.headers = NetUtil.getRequestBody(MainActivity.this);
+            mQueue.add(request);
+        }
     }
 
     private void addLisener() {

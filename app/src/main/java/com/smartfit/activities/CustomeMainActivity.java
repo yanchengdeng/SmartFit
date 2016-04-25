@@ -17,6 +17,7 @@ import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
@@ -49,6 +50,7 @@ public class CustomeMainActivity extends BaseActivity {
     private SelectableRoundedImageView imageViewHeader;
 
     private TextView tvName, tvSigneture;
+
 
 
     @Override
@@ -145,6 +147,8 @@ public class CustomeMainActivity extends BaseActivity {
                 tvSigneture.setText(((UpdateCoachInfo) event).getSignature());
             }
         } else if (event instanceof LoginSuccess) {
+            finish();
+        }else if(event instanceof LoginOut){
             finish();
         }
     }

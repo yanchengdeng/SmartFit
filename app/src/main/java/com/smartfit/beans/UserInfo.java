@@ -24,6 +24,16 @@ public class UserInfo {
     private String curClassCount;//null,
     private String[] coachDynamicPics;//
 
+    public String getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(String coachId) {
+        this.coachId = coachId;
+    }
+
+    private String   coachId;
+
    private String  certificates;//陌路,陌路,
     private String        coachClassDesc;//null,
     private String       authenCoachClassDesc;//null,

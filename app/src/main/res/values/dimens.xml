@@ -38,4 +38,5 @@
     <dimen name="text_small">10sp</dimen>
     <dimen name="text_small_donw">7sp</dimen>
     <dimen name="text_larger_big">23sp</dimen>
+    <dimen name="btn_height">40dp</dimen>
 </resources>
