@@ -284,6 +284,10 @@
         </activity>
         <activity android:name=".activities.UserCustomClassFourActivity" >
         </activity>
+        <activity
+            android:name=".activities.CustomeClassActivity"
+            android:label="@string/title_activity_custome_class" >
+        </activity>
     </application>
 
 </manifest>
