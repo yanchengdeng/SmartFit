@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'yancheng'
             keyPassword 'yancheng'
-            storeFile file('C:/Users/Administrator/AndroidStudioProjects/SmartFit/keystore/yancheng.jks')
+            storeFile file('/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/keystore/yancheng.jks')
             storePassword 'yancheng'
         }
     }

@@ -167,19 +167,23 @@ public class UserCustomClassTwoActivity extends BaseActivity {
                 if (null != customClassVenues && customClassVenues.size() > 0) {
                     int seletcPosition = 0;
                     String venuePrice ="0";
+                    String roomId= "0";
                     for (int i = 0; i < customClassVenues.size(); i++) {
                         for (CustomClassVenueItem subItem : customClassVenues.get(i).getClassroomList()) {
                             if (subItem.isCheck()) {
                                 seletcPosition = i;
                                 venuePrice = subItem.getClassroomPrice();
+                                roomId = subItem.getClassroomId();
                             }
                         }
                     }
+
                     Bundle bundle = new Bundle();
                     bundle.putString("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
                     bundle.putString("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
                     bundle.putString("courseClassId", classId);
                     bundle.putString("venueId", customClassVenues.get(seletcPosition).getVenueId());
+                    bundle.putString("roomId", roomId);
                     bundle.putString("venuePrice",venuePrice);
                     openActivity(UserCustomClassThreeActivity.class, bundle);
                 } else {

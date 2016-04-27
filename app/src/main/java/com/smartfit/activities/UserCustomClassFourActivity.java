@@ -17,7 +17,9 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.beans.CustomClassReleaseInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -77,7 +79,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
     private int friends = 1;
     //开放人群数
     private int opener = 1;
-    private String startTime, endTime, courseClassId, venueId, venuPrice, coachPrice, coachId;
+    private String startTime, endTime, courseClassId, venueId, venuPrice, coachPrice, coachId,roomId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
         venuPrice = getIntent().getStringExtra("venuePrice");
         coachPrice = getIntent().getStringExtra("coachPrice");
         coachId = getIntent().getStringExtra("coachId");
+        roomId = getIntent().getStringExtra("roomId");
         countPrice();
     }
 
@@ -208,7 +211,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
         maps.put("courseName", name);
         maps.put("courseDetail", content);
         maps.put("courseClassId", courseClassId);
-        maps.put("classroomId", venueId);
+        maps.put("classroomId", roomId);
         maps.put("startTime", startTime);
         maps.put("endTime", endTime);
         maps.put("partnerCount", String.valueOf(friends));
@@ -221,6 +224,15 @@ public class UserCustomClassFourActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
 
                 mSVProgressHUD.dismiss();
+
+                CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response,CustomClassReleaseInfo.class);
+                if(customClassReleaseInfo != null){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 4);
+                    bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
+                    bundle.putString(Constants.COURSE_MONEY, customClassReleaseInfo.getTotalPrice());
+                    openActivity(PayActivity.class,bundle);
+                }
             }
         }, new Response.ErrorListener() {
             @Override

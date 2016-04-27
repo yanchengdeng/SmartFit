@@ -203,4 +203,6 @@
     <string name="title_activity_custom_class_three">CustomClassThreeActivity</string>
     <string name="class_name">课程名称</string>
     <string name="class_content">课程内容</string>
+    <string name="title_activity_custome_class">CustomeClassActivity</string>
+    <string name="start_custom_class">开始自顶课程</string>
 </resources>

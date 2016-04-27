@@ -22,7 +22,6 @@ import com.smartfit.activities.UserCustomClassThreeActivity;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -58,7 +57,7 @@ public class CustomClassThreeFragment extends BaseFragment {
     private boolean isLoaded = false;
 
 
-    private String startTime, endTime, courseClassId, venueId, venuPrice;
+    private String startTime, endTime, courseClassId, venueId,roomId, venuPrice;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +68,7 @@ public class CustomClassThreeFragment extends BaseFragment {
             courseClassId = getArguments().getString("courseClassId");
             venueId = getArguments().getString("venueId");
             venuPrice = getArguments().getString("venuePrice");
+            roomId = getArguments().getString("roomId");
         }
     }
 
@@ -83,8 +83,10 @@ public class CustomClassThreeFragment extends BaseFragment {
             courseClassId = getArguments().getString("courseClassId");
             venueId = getArguments().getString("venueId");
             venuPrice = getArguments().getString("venuePrice");
+            roomId = getArguments().getString("roomId");
         }
         isPrepared = true;
+        lazyLoad();
         initListView();
         return view;
     }
@@ -164,6 +166,7 @@ public class CustomClassThreeFragment extends BaseFragment {
                     bundle.putString("courseClassId", courseClassId);
                     bundle.putString("venueId", venueId);
                     bundle.putString("venuePrice", venuPrice);
+                    bundle.putString("roomId",roomId);
                     float price = 0;
                     StringBuilder stringBuilder = new StringBuilder();
                     for (PrivateEducationClass item : selectPricates) {

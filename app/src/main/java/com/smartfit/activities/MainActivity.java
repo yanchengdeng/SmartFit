@@ -18,7 +18,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
@@ -175,7 +174,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
                 if (NetUtil.isLogin(getApplicationContext())) {
-                    openActivity(UserCustomClassOneActivity.class);
+                    openActivity(CustomeClassActivity.class);
                 } else {
                     openActivity(LoginActivity.class);
                 }

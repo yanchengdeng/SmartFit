@@ -1,7 +1,5 @@
 package com.smartfit.commons;
 
-import java.net.PortUnreachableException;
-
 /**
  * Created by dengyancheng on 16/2/23.
  * 常量类  主要为一些网络地址     键值对等
@@ -21,7 +19,7 @@ public class Constants {
 
     public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
-     * //定义  1 ：团体课  2.小班课  3.私教课
+     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程
      */
     public static final String PAGE_INDEX = "page_index";
 
@@ -85,6 +83,7 @@ public class Constants {
     public static final String CLASSIF_GETCLASSIFICATION = "/ClassIf/getClassification";
     public static final String CLASSIF_GETIDLECLASSROOMSVENUELIST = "/ClassIf/getIdleClassroomsVenueList";
     public static final String COURSE_MEMBERRELEASECOURSE = "/course/memberReleaseCourse";
+    public static final String CLASSIF_GETSELFDESIGNCOURSELIST = "/ClassIf/getSelfDesignCourseList";
 
 
     //用户信息
