@@ -15,6 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginSuccess;
@@ -22,6 +24,7 @@ import com.smartfit.R;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
@@ -174,27 +177,27 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(final JsonObject response) {
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.login_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                if (ckRemeber.isChecked()) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, accont);
+                    SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, password);
+                } else {
+                    SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, "");
+                    SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, "");
+                }
+                UserInfoDetail customeInfo = JsonUtils.objectFromJson(response, UserInfoDetail.class);
+                if (customeInfo != null) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.UID, customeInfo.getUid());
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, customeInfo.getIsICF());
+                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(customeInfo));
+                    if (!TextUtils.isEmpty(customeInfo.getCoachId())) {
+                        SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, customeInfo.getCoachId());
+                    }
+                    LoginHX(customeInfo.getUid());
+                }
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (ckRemeber.isChecked()) {
-                            SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, accont);
-                            SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, password);
-                        } else {
-                            SharedPreferencesUtils.getInstance().putString(Constants.ACCOUNT, "");
-                            SharedPreferencesUtils.getInstance().putString(Constants.PASSWORD, "");
-                        }
-                        UserInfoDetail customeInfo = JsonUtils.objectFromJson(response, UserInfoDetail.class);
-                        if (customeInfo != null) {
-                            SharedPreferencesUtils.getInstance().putString(Constants.SID, customeInfo.getSid());
-                            SharedPreferencesUtils.getInstance().putString(Constants.UID, customeInfo.getUid());
-                            SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, customeInfo.getIsICF());
-                            SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(customeInfo));
-                            if (!TextUtils.isEmpty(customeInfo.getCoachId())) {
-                                SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, customeInfo.getCoachId());
-                            }
-                        }
-
                         eventBus.post(new LoginSuccess());
                         String isICF = SharedPreferencesUtils.getInstance().getString(Constants.IS_ICF, "0");
                       /*  if (isICF.equals("1")) {
@@ -219,6 +222,33 @@ public class LoginActivity extends BaseActivity {
         request.setTag(TAG);
         request.headers = NetUtil.getRequestBody(LoginActivity.this);
         mQueue.add(request);
+    }
+
+    /**
+     * 登陆环信
+     *
+     * @param uid
+     */
+    private void LoginHX(String uid) {
+        String hxAccount = "user_" + uid;
+        //登录
+        EMClient.getInstance().login(hxAccount, MD5.getMessageDigest(hxAccount.getBytes()), new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                LogUtil.w("dyc","环信登陆陈宫");
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+            }
+        });
+
     }
 
 }

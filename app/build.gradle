@@ -35,6 +35,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':multi-image-selector')
+    compile project(':easeui')
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'

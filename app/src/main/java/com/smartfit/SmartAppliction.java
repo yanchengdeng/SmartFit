@@ -1,7 +1,9 @@
 package com.smartfit;
 
 import android.app.Application;
+import android.os.Handler;
 
+import com.hyphenate.easeui.controller.EaseUI;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -41,7 +43,14 @@ public class SmartAppliction extends Application {
         super.onCreate();
         initImageLoader();
         x.Ext.init(this);
-        registerUncaughtExceptionHandler();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                EaseUI.getInstance().init(getApplicationContext(), null);
+            }
+        });
+
+
     }
 
     // 注册App异常崩溃处理器
