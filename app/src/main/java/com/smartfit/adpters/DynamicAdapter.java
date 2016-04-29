@@ -16,10 +16,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.hyphenate.util.DensityUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.ClassMoreCommentsActivity;
+import com.smartfit.activities.DynamicMakeDiscussActivity;
 import com.smartfit.beans.DynamicInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
@@ -50,8 +52,8 @@ public class DynamicAdapter extends BaseAdapter {
         this.context = context;
         this.datas = datas;
         params = new LinearLayout.LayoutParams(DeviceUtil.getWidth(context) / 2, DeviceUtil.getWidth(context) / 2);
-        params.gravity = Gravity.CENTER_HORIZONTAL;
-
+        params.gravity = Gravity.LEFT;
+        params.leftMargin = DensityUtil.dip2px(context,16);
     }
 
     @Override
@@ -119,6 +121,15 @@ public class DynamicAdapter extends BaseAdapter {
             public void onClick(View v) {
                 //TODO  这里  需要改成  动态id
                 supportGood(item.getId(), position);
+            }
+        });
+
+        viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getTopicId());
+                ((BaseActivity) context).openActivity(DynamicMakeDiscussActivity.class, bundle);
             }
         });
 

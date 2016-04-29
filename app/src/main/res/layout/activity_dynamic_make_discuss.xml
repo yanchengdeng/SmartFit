@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.DynamicMakeDiscussActivity">
+
+    <include layout="@layout/common_header_view" />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:gravity="top|left"
+        android:hint="输入评论"
+        android:lineSpacingExtra="5dp"
+        android:padding="@dimen/image_padding"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+</LinearLayout>

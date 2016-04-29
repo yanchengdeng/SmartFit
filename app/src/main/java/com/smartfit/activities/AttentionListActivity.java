@@ -46,8 +46,6 @@ public class AttentionListActivity extends BaseActivity {
     TextView noData;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     private int page = 1;
     private FansAdapter adapter;
     private List<AttentionBean> datas = new ArrayList<AttentionBean>();
@@ -73,18 +71,6 @@ public class AttentionListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                datas.clear();
-                page = 1;
-                loadData();
             }
         });
 
@@ -115,12 +101,12 @@ public class AttentionListActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.USER_CONCERNLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {
                     datas.addAll(beans);
                     adapter.setData(datas);
+                    showDataView();
                 } else {
                     if (datas.size() > 0) {
                         listView.onLoadMoreComplete();
@@ -134,7 +120,12 @@ public class AttentionListActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage());
-                showNoData();
+                if (datas.size() > 0) {
+                    listView.onLoadMoreComplete();
+                    showDataView();
+                } else {
+                    showNoData();
+                }
             }
         });
         request.setTag(TAG);
@@ -152,5 +143,6 @@ public class AttentionListActivity extends BaseActivity {
     private void showDataView() {
         listView.setVisibility(View.VISIBLE);
         noData.setVisibility(View.GONE);
+        listView.onLoadMoreComplete();
     }
 }

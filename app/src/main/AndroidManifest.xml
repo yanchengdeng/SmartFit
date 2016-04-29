@@ -31,7 +31,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-    <!-- 环信-->
+    <!-- 环信 -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -47,8 +47,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-
 
     <application
         android:name=".SmartAppliction"
@@ -89,20 +87,17 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
 
         <activity
             android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"
-            android:screenOrientation="portrait"
-            />
-
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
-            android:screenOrientation="portrait"
-            />
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -346,6 +341,10 @@
         <activity
             android:name=".activities.CustomeClassActivity"
             android:label="@string/title_activity_custome_class" >
+        </activity>
+        <activity android:name=".activities.ChatActivity" >
+        </activity>
+        <activity android:name=".activities.DynamicMakeDiscussActivity" >
         </activity>
     </application>
 

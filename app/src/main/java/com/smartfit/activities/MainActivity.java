@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
+import com.hyphenate.chat.EMClient;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
@@ -118,6 +119,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         if (!TextUtils.isEmpty(userInfoDetail.getCoachId())) {
                             SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
                         }
+                        LoginHX(userInfoDetail.getUid());
                     }
                 }
             }, new Response.ErrorListener() {
@@ -131,6 +133,11 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             mQueue.add(request);
         }
     }
+
+    private void LoginHX(String uid) {
+    }
+
+
 
     private void addLisener() {
         cardSmallClass.setOnClickListener(new View.OnClickListener() {

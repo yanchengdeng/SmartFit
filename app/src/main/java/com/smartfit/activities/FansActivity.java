@@ -43,8 +43,6 @@ public class FansActivity extends BaseActivity {
     ImageView ivFunction;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.no_data)
     TextView noData;
 
@@ -76,17 +74,6 @@ public class FansActivity extends BaseActivity {
             }
         });
 
-        /***
-         * 下拉刷新
-         */
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                        page = 1;
-                      loadData();
-            }
-        });
-
 
         /**
          * 加载更多
@@ -113,12 +100,12 @@ public class FansActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.USER_FANSLIST,data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                swipeRefreshLayout.setRefreshing(false);
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {
                     datas.addAll(beans);
                     adapter.setData(datas);
+                    showDataView();
                 } else {
                     if (datas.size() > 0) {
                         listView.onLoadMoreComplete();
@@ -134,7 +121,12 @@ public class FansActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage());
-
+                if (datas.size() > 0) {
+                    listView.onLoadMoreComplete();
+                    showDataView();
+                } else {
+                    showNoData();
+                }
             }
         });
         request.setTag(TAG);

@@ -7,6 +7,6 @@
 
     <uses-sdk
 
-        tools:overrideLibrary="android.support.v13" />
+        />
 
 </manifest>

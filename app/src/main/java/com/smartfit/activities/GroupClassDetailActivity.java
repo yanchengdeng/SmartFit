@@ -207,7 +207,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(detail.getPrice())) {
-            tvClassPrice.setText( detail.getPrice());
+            tvClassPrice.setText(detail.getPrice());
         }
 
         tvSpaceInfo.setText("暂无");
@@ -254,7 +254,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         tvClassTime.setText(DateUtils.getData(detail.getStartDate()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
 
 
-        if (detail.getCommentList().size()>0) {
+        if (detail.getCommentList().size() > 0) {
             ClassCommend commentInfo = detail.getCommentList().get(0);
             if (!TextUtils.isEmpty(commentInfo.getCommentStar())) {
                 ratingBarMyClass.setRating(Float.parseFloat(commentInfo.getCommentStar()));
@@ -271,7 +271,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvShareFriends.setText("发送给朋友");
                 tvShareFriends.setBackgroundColor(getResources().getColor(R.color.common_header_bg));
                 tvShareFriends.setClickable(true);
-            }else{
+            } else {
                 tvShareFriends.setText("已发送");
                 tvShareFriends.setBackgroundColor(getResources().getColor(R.color.line_gray));
             }
@@ -335,7 +335,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
 
-            }else if (detail.getOrderStatus().equals("7")) {
+            } else if (detail.getOrderStatus().equals("7")) {
                 //订单详情页  已结束 未评论
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -349,7 +349,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
 
-            }else if (detail.getOrderStatus().equals("8")) {
+            } else if (detail.getOrderStatus().equals("8")) {
                 //订单详情页  已结束 未评论
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -363,7 +363,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.GONE);//评论列表
                 tvMore.setVisibility(View.GONE);
 
-            }else{
+            } else {
                 //去订购
                 btnOrder.setVisibility(View.VISIBLE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -471,8 +471,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             return;
         mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
-        if (classInfoDetail.getCommentList()!=null && classInfoDetail.getCommentList().size()>0) {
-                    data.put("commentId", classInfoDetail.getCommentList().get(0).getCommentId());
+        if (classInfoDetail.getCommentList() != null && classInfoDetail.getCommentList().size() > 0) {
+            data.put("commentId", classInfoDetail.getCommentList().get(0).getCommentId());
         }
 
         data.put("topicId", classInfoDetail.getTopicId());

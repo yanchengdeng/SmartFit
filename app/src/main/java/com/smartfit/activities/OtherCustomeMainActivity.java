@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,10 +16,12 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.gson.JsonObject;
+import com.hyphenate.easeui.EaseConstant;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
@@ -26,6 +29,7 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
@@ -209,6 +213,28 @@ public class OtherCustomeMainActivity extends BaseActivity {
             }
         });
 
+        scrollView.getPullRootView().findViewById(R.id.tv_send_message).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userInfo != null) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EaseConstant.EXTRA_USER_ID, "user_" + userInfo.getUid());
+                    bundle.putString("name",userInfo.getNickName());
+                    bundle.putString("icon",userInfo.getUserPicUrl());
+                    String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+                    UserInfoDetail userInfoDetail;
+                    if (!TextUtils.isEmpty(userInfo)) {
+                         userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
+                        bundle.putString("user_icon",userInfoDetail.getUserPicUrl());
+                    }else {
+                        bundle.putString("user_icon", "");
+                    }
+                    openActivity(ChatActivity.class, bundle);
+                }
+
+            }
+        });
 
     }
 

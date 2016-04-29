@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginOut;
@@ -171,9 +173,27 @@ public class SettingActivity extends BaseActivity {
                 SharedPreferencesUtils.getInstance().remove(Constants.UID);
                 SharedPreferencesUtils.getInstance().remove(Constants.SID);
                 SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
-                openActivity(LoginActivity.class);
-                eventBus.post(new LoginOut());
-                finish();
+
+                EMClient.getInstance().logout(false, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        openActivity(LoginActivity.class);
+                        eventBus.post(new LoginOut());
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        openActivity(LoginActivity.class);
+                        eventBus.post(new LoginOut());
+                        finish();
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
             }
         });
 

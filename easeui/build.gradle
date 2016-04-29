@@ -3,13 +3,11 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 20
+        targetSdkVersion 23
     }
-	
-	sourceSets {
+    sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
@@ -33,18 +31,19 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-	//release时需要把easemobchatsdk的依赖注释掉，sdk已经被打成jar包放在libs底下
-	//compile project(':hyphenatechatsdk')
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:support-v13:23.1.1'
+    //release时需要把easemobchatsdk的依赖注释掉，sdk已经被打成jar包放在libs底下
+    //compile project(':hyphenatechatsdk')
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile 'com.android.support:support-v4:23.+'
 }
