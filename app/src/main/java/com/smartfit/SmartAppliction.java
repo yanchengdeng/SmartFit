@@ -1,9 +1,8 @@
 package com.smartfit;
 
 import android.app.Application;
-import android.os.Handler;
 
-import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.chat.EMOptions;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -43,13 +42,11 @@ public class SmartAppliction extends Application {
         super.onCreate();
         initImageLoader();
         x.Ext.init(this);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                EaseUI.getInstance().init(getApplicationContext(), null);
-            }
-        });
-
+        EMOptions options = new EMOptions();
+// 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+//        EaseUI.getInstance().init(getApplicationContext(), options);
+        registerUncaughtExceptionHandler();
 
     }
 

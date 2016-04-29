@@ -240,7 +240,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(int i, String s) {
-
+                LogUtil.w("dyc","环信登陆失败"+i+"..."+s);
             }
 
             @Override
