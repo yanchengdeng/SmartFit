@@ -66,9 +66,8 @@ public class SystemMessageListActivity extends BaseActivity {
 
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String,String>maps = new HashMap<>();
-        maps.put("type",String.valueOf( MessageType.MESSAGE_TYPE_SYTEM));
+        maps.put("queryType",String.valueOf( MessageType.MESSAGE_TYPE_SYTEM));
         maps.put("pageNo", String.valueOf(page));
-        maps.put("latestTime","");
         PostRequest request = new PostRequest(Constants.MESSAGE_LIST, maps,new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
