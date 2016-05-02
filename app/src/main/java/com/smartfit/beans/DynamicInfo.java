@@ -1,10 +1,13 @@
 package com.smartfit.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 作者：dengyancheng on 16/4/24 15;//06
  * 邮箱：yanchengdeng@gmail.com
  */
-public class DynamicInfo {
+public class DynamicInfo implements Parcelable{
 
     public String getId() {
         return id;
@@ -96,4 +99,49 @@ public class DynamicInfo {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.topicId);
+        dest.writeString(this.good);
+        dest.writeString(this.userPicUrl);
+        dest.writeString(this.uid);
+        dest.writeString(this.nickName);
+        dest.writeString(this.commentCount);
+        dest.writeString(this.content);
+        dest.writeString(this.addTime);
+        dest.writeString(this.imgUrl);
+    }
+
+    public DynamicInfo() {
+    }
+
+    protected DynamicInfo(Parcel in) {
+        this.id = in.readString();
+        this.topicId = in.readString();
+        this.good = in.readString();
+        this.userPicUrl = in.readString();
+        this.uid = in.readString();
+        this.nickName = in.readString();
+        this.commentCount = in.readString();
+        this.content = in.readString();
+        this.addTime = in.readString();
+        this.imgUrl = in.readString();
+    }
+
+    public static final Creator<DynamicInfo> CREATOR = new Creator<DynamicInfo>() {
+        public DynamicInfo createFromParcel(Parcel source) {
+            return new DynamicInfo(source);
+        }
+
+        public DynamicInfo[] newArray(int size) {
+            return new DynamicInfo[size];
+        }
+    };
 }

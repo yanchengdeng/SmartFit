@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/image_padding"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/iv_header">
 
         <TextView

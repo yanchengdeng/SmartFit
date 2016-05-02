@@ -51,7 +51,8 @@ public class SplashActivity extends FragmentActivity {
         setContentView(R.layout.activity_splash);
         AppManager.getAppManager().addActivity(this);
         boolean firstTimeUse = SharedPreferencesUtils.getInstance().getBoolean(Constants.FRIST_OPEN_APP, true);
-        if (firstTimeUse) {
+        //TODO   后期可添加闪屏图
+        if (false) {
             initGuideGallery();
         } else {
             initLaunchLogo();

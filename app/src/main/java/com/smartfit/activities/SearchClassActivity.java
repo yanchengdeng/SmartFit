@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
 import com.smartfit.beans.ClassInfo;
+import com.smartfit.beans.SearchClassAllInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -57,6 +58,9 @@ public class SearchClassActivity extends BaseActivity {
     private GroupExpericeItemAdapter adapter;
     private List<ClassInfo> datas = new ArrayList<ClassInfo>();
 
+    private boolean isLoaderMore = true;//  是否允许加载到底
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class SearchClassActivity extends BaseActivity {
     private void initView() {
         adapter = new GroupExpericeItemAdapter(this, datas);
         listView.setAdapter(adapter);
-        loadData("");
+        loadData(etContent.getEditableText().toString());
     }
 
 
@@ -88,8 +92,8 @@ public class SearchClassActivity extends BaseActivity {
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                page++;
-                loadData("");
+                if (isLoaderMore)
+                    loadData(etContent.getEditableText().toString());
             }
         });
 
@@ -99,7 +103,7 @@ public class SearchClassActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
-                bundle.putString(Constants.COURSE_TYPE, TextUtils.isEmpty(datas.get(position).getCourseType())? "0":datas.get(position).getCourseType());
+                bundle.putString(Constants.COURSE_TYPE, TextUtils.isEmpty(datas.get(position).getCourseType()) ? "0" : datas.get(position).getCourseType());
                 openActivity(GroupClassDetailActivity.class, bundle);
             }
         });
@@ -115,6 +119,7 @@ public class SearchClassActivity extends BaseActivity {
                 }
                 page = 1;
                 datas.clear();
+                isLoaderMore = true;
                 loadData(etContent.getEditableText().toString());
             }
         });
@@ -126,17 +131,26 @@ public class SearchClassActivity extends BaseActivity {
         }
         Map<String, String> data = new HashMap<>();
         data.put("keyword", contions);
+        data.put("pageNo", String.valueOf(page));
+        data.put("pageSize", String.valueOf(Constants.SIZE));
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
-                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
-                if (null != requestList && requestList.size() > 0) {
-                    datas.addAll(requestList);
+                SearchClassAllInfo searchClassAllInfo = JsonUtils.objectFromJson(response, SearchClassAllInfo.class);
+                if (null != searchClassAllInfo && searchClassAllInfo.getListData().size() > 0) {
+                    datas.addAll(searchClassAllInfo.getListData());
                     adapter.setData(datas);
                     listView.setVisibility(View.VISIBLE);
                     listView.onLoadMoreComplete();
                     tvCount.setText(String.valueOf(datas.size()));
+                    if (searchClassAllInfo.getListData().size() == Constants.SIZE) {
+                        page++;
+                    } else {
+                        listView.onLoadMoreComplete();
+                        isLoaderMore = false;
+                    }
+
                     if (!TextUtils.isEmpty(contions)) {
                         tvSearchCondition.setText(String.format(getString(R.string.find_conditon_result), new Object[]{contions}));
                         llSearchResult.setVisibility(View.VISIBLE);
@@ -162,6 +176,7 @@ public class SearchClassActivity extends BaseActivity {
     }
 
     private void noMoreData(List<ClassInfo> datas) {
+        isLoaderMore = false;
         if (datas.size() > 0) {
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);

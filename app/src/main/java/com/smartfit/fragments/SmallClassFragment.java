@@ -1,6 +1,7 @@
 package com.smartfit.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -113,7 +114,7 @@ public class SmallClassFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
         ButterKnife.bind(this, view);
 
-        orderCustomePop = new OrderCustomePop(getActivity());
+
         initDateSelect();
         isPrepared = true;
         initListView();
@@ -241,7 +242,17 @@ public class SmallClassFragment extends BaseFragment {
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
                     if (addresses != null && addresses.size() > 0) {
-                        showAddressPop();
+                        if (null != addressCustomPop) {
+                            if (addressCustomPop.isShowing()) {
+                                addressCustomPop.dismiss();
+                                ivCoverBg.setVisibility(View.GONE);
+                            } else {
+                                addressCustomPop.show();
+                                ivCoverBg.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            showAddressPop();
+                        }
                     } else {
                         ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
@@ -252,7 +263,17 @@ public class SmallClassFragment extends BaseFragment {
         ckMoreSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderPop();
+                if (null != orderCustomePop) {
+                    if (orderCustomePop.isShowing()) {
+                        orderCustomePop.dismiss();
+                        ivCoverBg.setVisibility(View.GONE);
+                    } else {
+                        orderCustomePop.show();
+                        ivCoverBg.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    showOrderPop();
+                }
             }
         });
 
@@ -309,7 +330,22 @@ public class SmallClassFragment extends BaseFragment {
                 .dimEnabled(false)
                 .show();
 
-        addressCustomPop.setCanceledOnTouchOutside(false);
+        addressCustomPop.setCanceledOnTouchOutside(true);
+        addressCustomPop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        }) ;
+
+        addressCustomPop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
     }
 
 
@@ -318,6 +354,7 @@ public class SmallClassFragment extends BaseFragment {
      */
     private void showOrderPop() {
         ivCoverBg.setVisibility(View.VISIBLE);
+        orderCustomePop = new OrderCustomePop(getActivity());
         orderCustomePop
                 .anchorView(rlConditionHead)
                 .offset(0, -15)
@@ -327,7 +364,22 @@ public class SmallClassFragment extends BaseFragment {
                 .dimEnabled(false)
                 .show();
 
-        orderCustomePop.setCanceledOnTouchOutside(false);
+        orderCustomePop.setCanceledOnTouchOutside(true);
+
+        orderCustomePop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                orderCustomePop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+        orderCustomePop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                orderCustomePop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
     }
 
 

@@ -92,7 +92,7 @@ public class Constants {
     public static final String USER_CONCERNLIST ="/User/concernList";
     public static final String USER_FANSLIST  = "/User/fansList";
     public static final String USER_SEARCHFRIENDLIST = "/User/searchFriendList";
-    public static final String USER_ADDFOCUS ="/User/addFocus";
+    public static final String USER_ADDFOCUS ="/User/addfocus";
     public static final String USER_ADDFRIEND = "/User/addFriend";
     public static final String USER_SAVEUSERINFO = "/User/saveUserInfo";
     public static final String USER_FRIENDLIST = "/User/friendList";
@@ -115,8 +115,8 @@ public class Constants {
     //系统数据
     public static final String GET_CITY_LIST = "/sys/dict/listCities";
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
-    public static final String MESSAGE_LIST = "/message/list";
     public static final String MESSAGE_GETMESSAGEMAIN = "/message/getMessageMain";
+    public static final String SYS_SAVEFEEDBACK = "/sys/saveFeedback";
 
 
     //订单
@@ -135,7 +135,10 @@ public class Constants {
 
     //消息
     public static  final String MESSAGE_DEL = "/message/del";
+    public static final String MESSAGE_LIST = "/message/list";
 
+
+    public static final int SIZE = 20;
 
 
     /*****
@@ -168,7 +171,10 @@ public class Constants {
 
     public static class Net {
         //发布时的接口
-        public static final String URL = "http://139.196.228.98:8098";//
+//        public static final String URL = "http://139.196.228.98:8098";
+
+        //测试
+        public static final String URL = "http://123.57.164.115:8098";
 
 
 

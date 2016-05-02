@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/ll_content"
@@ -14,23 +13,24 @@
             android:id="@+id/iv_more_address_arrow"
             android:layout_width="22dp"
             android:layout_height="14dp"
-            android:visibility="visible"
             android:layout_gravity="left"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@mipmap/icon_team_arr"/>
+            android:src="@mipmap/icon_team_arr"
+            android:visibility="visible" />
+
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
-            android:listSelector="@android:color/transparent"
             android:cacheColorHint="@color/transparent"
             android:divider="@color/line_gray"
             android:dividerHeight="1px"
+            android:listSelector="@android:color/transparent"
             android:paddingBottom="@dimen/header_bar_height"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"/>
+            android:paddingRight="15dp" />
     </LinearLayout>
 </RelativeLayout>

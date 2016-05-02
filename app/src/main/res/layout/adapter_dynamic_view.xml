@@ -76,6 +76,18 @@
        android:scaleType="centerCrop"/>
 
     <TextView
+        android:id="@+id/tv_dynamic_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:lineSpacingExtra="3dp"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:text="2016-03-04 13:32"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="@dimen/image_padding_big"

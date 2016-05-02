@@ -1,6 +1,5 @@
 package com.smartfit.activities;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -98,7 +97,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
     }
 
     UserInfo userInfo;
-    TextView tvDoAttention, tvAddFriends;//操作关注用户 /添加健身伙伴
+    TextView tvDoAttention, tvAddFriends, tvHisClass;//操作关注用户 /添加健身伙伴
 
     private void fillData(UserInfo userInfo) {
         this.userInfo = userInfo;
@@ -132,9 +131,9 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(userInfo.getIsFoused())) {
             if (userInfo.getIsFoused().equals("0")) {
-                tvAddFriends.setText("关注");
+                tvDoAttention.setText("关注");
             } else {
-                tvAddFriends.setText("已关注");
+                tvDoAttention.setText("已关注");
             }
         }
 
@@ -148,10 +147,14 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(userInfo.getSex())) {
             if (userInfo.getSex().equals("0")) {
-                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_woman),null);
-            }else{
-                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.icon_man),null);
+                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
+            } else {
+                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
             }
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
+            tvHisClass.setText(" 正在进行" + userInfo.getCurClassCount() + "个课程");
         }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DeviceUtil.dp2px(OtherCustomeMainActivity.this, 60), DeviceUtil.dp2px(OtherCustomeMainActivity.this, 60));
@@ -220,14 +223,14 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
                     Bundle bundle = new Bundle();
                     bundle.putString(EaseConstant.EXTRA_USER_ID, "user_" + userInfo.getUid());
-                    bundle.putString("name",userInfo.getNickName());
-                    bundle.putString("icon",userInfo.getUserPicUrl());
+                    bundle.putString("name", userInfo.getNickName());
+                    bundle.putString("icon", userInfo.getUserPicUrl());
                     String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
                     UserInfoDetail userInfoDetail;
                     if (!TextUtils.isEmpty(userInfo)) {
-                         userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
-                        bundle.putString("user_icon",userInfoDetail.getUserPicUrl());
-                    }else {
+                        userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
+                        bundle.putString("user_icon", userInfoDetail.getUserPicUrl());
+                    } else {
                         bundle.putString("user_icon", "");
                     }
                     openActivity(ChatActivity.class, bundle);
@@ -280,14 +283,14 @@ public class OtherCustomeMainActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.showSuccessWithStatus(getString(R.string.focus_success), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                tvAddFriends.setText("已关注");
+                tvDoAttention.setText("已关注");
                 mSVProgressHUD.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later));
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
             }
         });
         request.setTag(TAG);
@@ -305,6 +308,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         scrollView.setZoomView(zoomView);
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
+        tvHisClass = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_his_classes);
 
 
     }

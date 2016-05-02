@@ -107,10 +107,9 @@ public class CustomeDynamicActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(UpdateDynamic event) {
-        datas.clear();
-        isLoadMore = true;
-        page = 1;
-        loadData();
+        int postion = adapter.getSelectPostion();
+        datas.get(postion).setCommentCount(String.valueOf(Integer.parseInt(datas.get(postion).getCommentCount())+1));
+        adapter.notifyDataSetChanged();
     /* Do something */
     }
 

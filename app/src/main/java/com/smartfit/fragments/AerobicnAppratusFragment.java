@@ -1,11 +1,11 @@
 package com.smartfit.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -110,8 +110,6 @@ public class AerobicnAppratusFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_experience, container, false);
         ButterKnife.bind(this, view);
-
-        orderCustomePop = new OrderCustomePop(getActivity());
         rlOrderTime.setVisibility(View.VISIBLE);
         initDateSelect();
         initListView();
@@ -232,8 +230,20 @@ public class AerobicnAppratusFragment extends Fragment {
                 if (TextUtils.isEmpty(citycode)) {
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
-                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""))) {
-                        getVenueList();
+                    if (addresses != null && addresses.size() > 0) {
+                        if (null != addressCustomPop) {
+                            if (addressCustomPop.isShowing()) {
+                                addressCustomPop.dismiss();
+                                ivCoverBg.setVisibility(View.GONE);
+                            } else {
+                                addressCustomPop.show();
+                                ivCoverBg.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            showAddressPop();
+                        }
+                    } else {
+                        ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
                 }
             }
@@ -242,7 +252,17 @@ public class AerobicnAppratusFragment extends Fragment {
         ckMoreSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderPop();
+                if (null != orderCustomePop) {
+                    if (orderCustomePop.isShowing()) {
+                        orderCustomePop.dismiss();
+                        ivCoverBg.setVisibility(View.GONE);
+                    } else {
+                        orderCustomePop.show();
+                        ivCoverBg.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    showOrderPop();
+                }
             }
         });
 
@@ -311,8 +331,23 @@ public class AerobicnAppratusFragment extends Fragment {
 //                .dismissAnim(new SlideBottomExit())
                 .dimEnabled(false)
                 .show();
+        addressCustomPop.setCanceledOnTouchOutside(true);
 
-        addressCustomPop.setCanceledOnTouchOutside(false);
+        addressCustomPop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                addressCustomPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+        addressCustomPop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                addressCustomPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+
     }
 
 
@@ -321,6 +356,7 @@ public class AerobicnAppratusFragment extends Fragment {
      */
     private void showOrderPop() {
         ivCoverBg.setVisibility(View.VISIBLE);
+        orderCustomePop = new OrderCustomePop(getActivity());
         orderCustomePop
                 .anchorView(rlConditionHead)
                 .offset(0, -15)
@@ -329,8 +365,23 @@ public class AerobicnAppratusFragment extends Fragment {
 //                .dismissAnim(new SlideBottomExit())
                 .dimEnabled(false)
                 .show();
+        orderCustomePop.setCanceledOnTouchOutside(true);
+        orderCustomePop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        }) ;
 
-        orderCustomePop.setCanceledOnTouchOutside(false);
+        orderCustomePop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+
     }
 
 

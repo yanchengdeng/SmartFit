@@ -90,8 +90,8 @@
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textColor="@color/text_color_gray"
+                    android:textColorHint="@color/text_color_gray"
                     android:textSize="@dimen/text_normal"
                     android:inputType="phone"
                     android:background="@null"
@@ -127,8 +127,8 @@
                     android:id="@+id/et_pass"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textColor="@color/text_color_gray"
+                    android:textColorHint="@color/text_color_gray"
                     android:textSize="@dimen/text_normal"
                     android:background="@null"
                     android:inputType="textPassword"
@@ -195,6 +195,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:visibility="invisible"
             android:orientation="horizontal">
 
             <TextView
@@ -230,6 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="invisible"
             android:orientation="horizontal">
 
             <ImageView

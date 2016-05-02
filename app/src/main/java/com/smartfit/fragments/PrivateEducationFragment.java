@@ -1,6 +1,7 @@
 package com.smartfit.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -111,7 +112,6 @@ public class PrivateEducationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_private_education, container, false);
         ButterKnife.bind(this, view);
-        conditionSelectPop = new ConditionSelectPop(getActivity());
         initDateSelect();
         initListView();
         addLisener();
@@ -319,9 +319,20 @@ public class PrivateEducationFragment extends Fragment {
                 if (TextUtils.isEmpty(citycode)) {
                     ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
-                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""))) {
-                        getVenueList();
-
+                    if (addresses != null && addresses.size() > 0) {
+                        if (null != addressCustomPop) {
+                            if (addressCustomPop.isShowing()) {
+                                addressCustomPop.dismiss();
+                                ivCoverBg.setVisibility(View.GONE);
+                            } else {
+                                addressCustomPop.show();
+                                ivCoverBg.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            showAddressPop();
+                        }
+                    } else {
+                        ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_address_list), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
                 }
             }
@@ -330,7 +341,17 @@ public class PrivateEducationFragment extends Fragment {
         ckMoreSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderPop();
+                if (null != conditionSelectPop) {
+                    if (conditionSelectPop.isShowing()) {
+                        conditionSelectPop.dismiss();
+                        ivCoverBg.setVisibility(View.GONE);
+                    } else {
+                        conditionSelectPop.show();
+                        ivCoverBg.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    showOrderPop();
+                }
             }
         });
 
@@ -401,7 +422,22 @@ public class PrivateEducationFragment extends Fragment {
                 .dimEnabled(false)
                 .show();
 
-        addressCustomPop.setCanceledOnTouchOutside(false);
+        addressCustomPop.setCanceledOnTouchOutside(true);
+
+        addressCustomPop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                addressCustomPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+        addressCustomPop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                addressCustomPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
     }
 
 
@@ -410,6 +446,7 @@ public class PrivateEducationFragment extends Fragment {
      */
     private void showOrderPop() {
         ivCoverBg.setVisibility(View.VISIBLE);
+        conditionSelectPop = new ConditionSelectPop(getActivity());
         conditionSelectPop
                 .anchorView(rlConditionHead)
                 .offset(0, -15)
@@ -419,7 +456,22 @@ public class PrivateEducationFragment extends Fragment {
                 .dimEnabled(false)
                 .show();
 
-        conditionSelectPop.setCanceledOnTouchOutside(false);
+        conditionSelectPop.setCanceledOnTouchOutside(true);
+
+        conditionSelectPop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                conditionSelectPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+        conditionSelectPop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                conditionSelectPop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
     }
 
 

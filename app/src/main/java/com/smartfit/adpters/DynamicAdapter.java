@@ -21,9 +21,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.ClassMoreCommentsActivity;
+import com.smartfit.activities.DynamicDetailActivity;
 import com.smartfit.activities.DynamicMakeDiscussActivity;
 import com.smartfit.beans.DynamicInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
@@ -46,6 +48,8 @@ public class DynamicAdapter extends BaseAdapter {
     private Context context;
 
     private LinearLayout.LayoutParams params;
+
+    private int selectPostion = 0 ;
 
 
     public DynamicAdapter(Context context, List<DynamicInfo> datas) {
@@ -107,6 +111,9 @@ public class DynamicAdapter extends BaseAdapter {
             viewHolder.tvPraise.setText(item.getGood());
         }
 
+        if (!TextUtils.isEmpty(item.getAddTime())){
+            viewHolder.tvDynamicDate.setText(DateUtils.getData(item.getAddTime()));
+        }
         viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,13 +136,26 @@ public class DynamicAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getTopicId());
+                selectPostion = position;
                 ((BaseActivity) context).openActivity(DynamicMakeDiscussActivity.class, bundle);
+            }
+        });
+
+        viewHolder.llDynamicUi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle =  new Bundle();
+                bundle.putParcelable(Constants.PASS_OBJECT,datas.get(position));
+                ((BaseActivity)context).openActivity(DynamicDetailActivity.class, bundle);
             }
         });
 
         return convertView;
     }
 
+    public  int getSelectPostion(){
+        return selectPostion;
+    }
     private void supportGood(String id, final int position) {
         Map<String, String> maps = new HashMap<>();
         maps.put("dynamicId", id);
@@ -186,6 +206,8 @@ public class DynamicAdapter extends BaseAdapter {
         TextView tvPraise;
         @Bind(R.id.ll_dynamic_ui)
         LinearLayout llDynamicUi;
+        @Bind(R.id.tv_dynamic_date)
+        TextView tvDynamicDate;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

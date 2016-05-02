@@ -17,6 +17,7 @@ import com.smartfit.adpters.ListMessageAllInfoAdaper;
 import com.smartfit.beans.ListMessageAllInfoItem;
 import com.smartfit.beans.MessageAllInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.commons.MessageType;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -126,15 +127,19 @@ public class MessageActivity extends BaseActivity {
 
 
         /***
-         * 1-系统消息；2-课程邀请消息；3-预约成功消息；4-课程请求消息；5-好友邀请消息；6-订单成功消息
+         * /**
+         * 1-系统消息；2-课程邀请消息；3-预约成功消息；4-课程请求消息；5-好友邀请消息；6-订单成功消息；7拒绝课程；
+         * 8请求代课－发给教练 9教练代课成功－发给用户确认 10教练代课确认－发送给请求代课的教练
          */
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListMessageAllInfoItem item = listMessageAllInfoItems.get(position);
                 if (!TextUtils.isEmpty(item.getSysMessage().getType())) {
-                    if (item.getSysMessage().getType().equals("1")) {
+                    if (item.getSysMessage().getType().equals(String.valueOf(MessageType.MESSAGE_TYPE_SYTEM))) {
+                        openActivity(SystemMessageListActivity.class);
 
                     } else if (item.getSysMessage().getType().equals("2")) {
 

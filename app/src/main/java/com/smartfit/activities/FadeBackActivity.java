@@ -2,19 +2,29 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.GridViewPublishPhotoAdapter;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.LogUtil;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyGridView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +49,8 @@ public class FadeBackActivity extends BaseActivity {
     ImageView ivSelectPhotos;
     @Bind(R.id.btn_submmit)
     Button btnSubmmit;
+    @Bind(R.id.et_content)
+    EditText etContent;
     private ArrayList<String> mSelectPath;
     private static final int REQUEST_IMAGE = 3;
 
@@ -74,8 +86,6 @@ public class FadeBackActivity extends BaseActivity {
         });
 
 
-
-
         gvSelectPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -89,10 +99,42 @@ public class FadeBackActivity extends BaseActivity {
         btnSubmmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSVProgressHUD.showSuccessWithStatus("反馈成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                doFadeBack(etContent.getEditableText().toString());
+
             }
         });
 
+    }
+
+    /**
+     * 反馈
+     * @param content
+     */
+    private void doFadeBack(String content) {
+        if (TextUtils.isEmpty(content)) {
+            mSVProgressHUD.showInfoWithStatus("请填写反馈内容", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
+
+        Map<String,String> maps = new HashMap<>();
+        maps.put("feedBackContent",content);
+
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        PostRequest request = new PostRequest(Constants.SYS_SAVEFEEDBACK, maps,new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("反馈成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(FadeBackActivity.this);
+        mQueue.add(request);
     }
 
     /**
@@ -117,12 +159,12 @@ public class FadeBackActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE){
-            if(resultCode == RESULT_OK){
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
                 mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 LogUtil.d("dyc", mSelectPath.toString());
-                if(null != mSelectPath  && mSelectPath.size()>0){
-                    gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(FadeBackActivity.this,mSelectPath));
+                if (null != mSelectPath && mSelectPath.size() > 0) {
+                    gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(FadeBackActivity.this, mSelectPath));
                 }
             }
         }
