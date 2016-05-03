@@ -14,6 +14,7 @@ import com.smartfit.adpters.CourseMessagItemAdapter;
 import com.smartfit.beans.MesageInfo;
 import com.smartfit.beans.MessageList;
 import com.smartfit.commons.Constants;
+import com.smartfit.commons.MessageGroupType;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -79,7 +80,7 @@ public class CourseMessageActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         isLoadEnd = false;
         Map<String, String> data = new HashMap<>();
-        data.put("queryType", "3");
+        data.put("queryType", MessageGroupType.MESSAGE_GROUP_TYPE_COURSE);
         data.put("pageNo", String.valueOf(page));
         PostRequest request = new PostRequest(Constants.MESSAGE_LIST, data, new Response.Listener<JsonObject>() {
             @Override
@@ -91,7 +92,12 @@ public class CourseMessageActivity extends BaseActivity {
                     courseMessagItemAdapter.setData(messageLists);
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);
-                    page++;
+                    if (submessages.getListData().size()==Constants.SIZE){
+                        page++;
+                    }else{
+                        listView.onLoadMoreComplete();
+                        isLoadEnd = true;
+                    }
                 } else {
                     if (messageLists.size() > 0) {
                         listView.setVisibility(View.VISIBLE);

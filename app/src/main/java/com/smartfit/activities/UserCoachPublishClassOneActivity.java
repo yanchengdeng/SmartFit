@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -25,9 +26,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 用户自定课程 第一步 只能发布小班课
+ * 教练发布课程第一步
+ *
+ * @author yanchengdeng
+ *         create at 2016/5/3 11:52
  */
-public class UserCustomClassOneActivity extends BaseActivity {
+public class UserCoachPublishClassOneActivity extends BaseActivity {
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.tv_tittle)
@@ -45,7 +49,7 @@ public class UserCustomClassOneActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_class_one);
+        setContentView(R.layout.activity_user_coach_publish_class_one);
         ButterKnife.bind(this);
         initView();
         getData();
@@ -54,28 +58,25 @@ public class UserCustomClassOneActivity extends BaseActivity {
     }
 
     private void initView() {
-        tvTittle.setText("自定课程1/4");
-
-
-
+        tvTittle.setText("自定课程1/3");
     }
 
 
-    private void getData(){
+    private void getData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        HashMap<String,String> maps = new HashMap<>();
-        maps.put("classType","1");
-        PostRequest request = new PostRequest(Constants.CLASSIF_GETCLASSIFICATION, maps,new Response.Listener<JsonObject>() {
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("classType", "1");
+        PostRequest request = new PostRequest(Constants.CLASSIF_GETCLASSIFICATION, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                List<ClassFication> classFicationList = JsonUtils.listFromJson(response.getAsJsonArray("list"),ClassFication.class);
-                if (classFicationList!= null && classFicationList.size()>0){
+                List<ClassFication> classFicationList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassFication.class);
+                if (classFicationList != null && classFicationList.size() > 0) {
                     gvClass.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);
-                        gvClass.setAdapter(new CustomClassGridViewItem(UserCustomClassOneActivity.this,classFicationList,false));
+                    gvClass.setAdapter(new CustomClassGridViewItem(UserCoachPublishClassOneActivity.this, classFicationList,true));
 
 
-                }else{
+                } else {
                     gvClass.setVisibility(View.INVISIBLE);
                     noData.setVisibility(View.VISIBLE);
                 }
@@ -88,10 +89,11 @@ public class UserCustomClassOneActivity extends BaseActivity {
             }
         });
         request.setTag(new Object());
-        request.headers = NetUtil.getRequestBody(UserCustomClassOneActivity.this);
+        request.headers = NetUtil.getRequestBody(UserCoachPublishClassOneActivity.this);
         mQueue.add(request);
 
     }
+
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +101,6 @@ public class UserCustomClassOneActivity extends BaseActivity {
                 finish();
             }
         });
-
 
 
     }

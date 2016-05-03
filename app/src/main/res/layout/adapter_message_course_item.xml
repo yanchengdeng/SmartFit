@@ -1,130 +1,152 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:padding="@dimen/activity_horizontal_margin">
 
     <com.smartfit.views.SelectableRoundedImageView
         android:id="@+id/iv_icon"
-        android:scaleType="centerCrop"
         android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="2dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/bg_pic"
-        app:sriv_left_top_corner_radius="4dip"
-        app:sriv_right_top_corner_radius="4dip"
         app:sriv_left_bottom_corner_radius="4dip"
-        app:sriv_right_bottom_corner_radius="4dip"
+        app:sriv_left_top_corner_radius="4dip"
         app:sriv_oval="false"
-        android:layout_height="50dp" />
+        app:sriv_right_bottom_corner_radius="4dip"
+        app:sriv_right_top_corner_radius="4dip" />
 
     <TextView
         android:id="@+id/tv_date"
-        android:textColor="@color/text_color_gray"
-        android:textSize="@dimen/text_normal"
-        android:text="11-4 8:00"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:text="11-4 8:00"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
 
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_black"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="姓名"/>
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="姓名"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
 
 
     <TextView
         android:id="@+id/tv_tittle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_black"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_name"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="请求您作为教练，教练以下课程"/>
-
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="请求您作为教练，教练以下课程"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
 
 
     <TextView
         android:id="@+id/tv_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal_down"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_gray"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_tittle"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="私教课"/>
-
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="私教课"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
 
 
     <TextView
         android:id="@+id/tv_class_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal_down"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_gray"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_type"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="课程介绍"/>
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="课程介绍"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
 
 
     <TextView
         android:id="@+id/tv_class_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal_down"
-        android:layout_marginTop="@dimen/image_padding"
-        android:textColor="@color/text_color_gray"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_class_info"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="2016-11-21 13:00~13:30"/>
+        android:layout_marginTop="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="2016-11-21 13:00~13:30"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
 
 
     <TextView
         android:id="@+id/tv_class_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:textColor="@color/black"
-        android:layout_toRightOf="@+id/iv_icon"
         android:layout_below="@+id/tv_class_time"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="免费"/>
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="免费"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal" />
 
 
     <TextView
         android:id="@+id/tv_class_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
         android:layout_alignParentRight="true"
-        android:textColor="@color/blue_light"
         android:layout_below="@+id/tv_class_price"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="查看课程详情"/>
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:text="查看课程详情"
+        android:textColor="@color/blue_light"
+        android:textSize="@dimen/text_normal" />
 
 
+    <Button
+        android:id="@+id/btn_aggren"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_class_detail"
+        android:layout_marginLeft="@dimen/header_bar_height"
+        android:background="@drawable/bg_dialog_selector_gray_empty"
+        android:gravity="center"
+        android:paddingLeft="@dimen/image_padding_big"
+        android:paddingRight="@dimen/image_padding_big"
+        android:text="@string/aggree_to_instead_class"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
 
-
-
-
+    <Button
+        android:id="@+id/btn_refuse"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_class_detail"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@+id/btn_aggren"
+        android:background="@drawable/bg_dialog_selector_red"
+        android:gravity="center"
+        android:paddingLeft="@dimen/image_padding_big"
+        android:paddingRight="@dimen/image_padding_big"
+        android:text="@string/refuse_to_instead_class"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal" />
 
 
 </RelativeLayout>

@@ -97,28 +97,32 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             }
         }
 
-        viewHolder.tvFitnessCenter.setText("暂无");
+        if (!TextUtils.isEmpty(item.getCourseDetail())) {
+            viewHolder.tvFitnessCenter.setText(item.getCourseDetail());
+        }
+
         if (!TextUtils.isEmpty(item.getSignCount())) {
-            viewHolder.tvHaveRegiseter.setText(item.getSignCount()+"人已报名");
+            viewHolder.tvHaveRegiseter.setText(item.getSignCount() + "人已报名");
         }
 
         if (!TextUtils.isEmpty(item.getMaxPersonCount()) && !TextUtils.isEmpty(item.getSignCount())) {
-            viewHolder.tvEmptyRegister.setText((Integer.parseInt(item.getMaxPersonCount())-Integer.parseInt(item.getSignCount()))+"");
+            viewHolder.tvEmptyRegister.setText((Integer.parseInt(item.getMaxPersonCount()) - Integer.parseInt(item.getSignCount())) + "");
         }
         //找人代课
         viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,"12");
-                ((BaseActivity) context).openActivity(FindSubstitueActivity.class,bundle);
+                //TODO
+                bundle.putSerializable(Constants.PASS_OBJECT, item);
+                ((BaseActivity) context).openActivity(FindSubstitueActivity.class, bundle);
             }
         });
         //取消课程
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    cancle(item.getId());
+                cancle(item.getId());
             }
         });
 
@@ -127,10 +131,14 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getId());
-                        ((BaseActivity) context).openActivity(MembersListActivity.class,bundle);
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                ((BaseActivity) context).openActivity(MembersListActivity.class, bundle);
             }
         });
+
+        if (!TextUtils.isEmpty(item.getCoursePrice())) {
+            viewHolder.tvMoney.setText("￥"+item.getCoursePrice());
+        }
 
 
         return convertView;
@@ -138,24 +146,25 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
 
 
     private void cancle(String id) {
-        Map<String ,String > maps = new HashMap<>();
+        Map<String, String> maps = new HashMap<>();
         maps.put("courseId", id);
-        PostRequest request = new PostRequest(Constants.USER_CANCELCOURSELIST,maps, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_CANCELCOURSELIST, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ((BaseActivity)context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                ((BaseActivity) context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 eventBus.post(new CancleCoachClass());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(context);
-        ((BaseActivity)context).mQueue.add(request);
+        ((BaseActivity) context).mQueue.add(request);
     }
+
     public void setData(List<MyAddClass> datas) {
         this.datas = datas;
     }

@@ -84,6 +84,9 @@ public class Constants {
     public static final String CLASSIF_GETIDLECLASSROOMSVENUELIST = "/ClassIf/getIdleClassroomsVenueList";
     public static final String COURSE_MEMBERRELEASECOURSE = "/course/memberReleaseCourse";
     public static final String CLASSIF_GETSELFDESIGNCOURSELIST = "/ClassIf/getSelfDesignCourseList";
+    public static final String COURSE_COACHRELEASECOURSE = "/course/coachReleaseCourse";
+    public static final String COURSE_MEMBERLIST = "/course/memberList";
+    public static final String COACH_SUBSTITUTECOACH = "/coach/substituteCoach";
 
 
     //用户信息
@@ -146,11 +149,11 @@ public class Constants {
      */
     public static class AliPay {
         // 商户PID
-        public static final String PARTNER = "2088021690798954";
+        public static final String PARTNER = "2088801811437081";
         // 商户收款账号
-        public static final String SELLER = "zhiniao@goodrobin.com";
+        public static final String SELLER = "nubiazfb@163.com";
         // 商户私钥，pkcs8格式
-        public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKeSRx67y34xhLmzalrwERR3k/1/v+XIAuNP/Nmv5rHh95VPvL9WDV9FFoeLMULe1w6P8f9uJz3+LRgFhKgESG1vZyKEsJ4S7utAzZdskKoPyAkw8EjjP3p9IOhM9f7UBHECVmeGrn11MW8Pe2rH8hHbTX92Y/D3dP4wDEgL8VuLAgMBAAECgYBFbB2YxvZ8NmmlQYZLXG/HCe8+s4E94goIQGghi3VItrQKoLkyj6UElivKRclHyehQuSPpzanmTfpCnG6j6PpT6IVcRMM5axrnKAosM5iuHCTbGwE/+XUS7EpclyTuYU4BSoyFO4zkf4ZY3cGx3XefckkFaE5hwUXCTflbw/4N6QJBANVgdljKqdTVWSd10SYQMIjllFErm6Ya6fFMOOHcYhkq4WCbixsWj1raGFHh8Fis7+80zVXQhbp5eFYXkD2XVT8CQQDJC3IKxTmk/iiq0OJw9ewIAvu+h1CJwqmOqCBGlkYzNEdkk6rybGWnz8TBGgr3aDyPMMoGquouRNEHgmgB2mq1AkEAwKdLs3eoR0YqLPqvUBKl/7RpabBZ5GvAdeFAKo109QxGWZeWzWpdHMZ11tiMzUO3jt651pVjaK5r/C9iSHnuuQJBAMfbhu1KDvoEZ20X5mOhNZjpTlWjst6gE2rrm9pP/U1dxTMo0SHZvFzMYK4OM6SrjLhUKiHiupZwdtPeQYLGHJkCQCaPAg7UruzSVXOl17VSY0FNWAMCxMe62MVzuAZN4YTYp7JgvEGXTp4OAs08ZhXwf+j9kPK494xe7tptFGOAu7M=";
+        public static final String RSA_PRIVATE = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANAshb9FgtZ3KM/o98QwohXofTLGza+Ec/XAekYB71Nc2jRVKM7ZR/mG5QLwyOVjyk+RldbVEZ72AXv/qT93JTD5bg8YgkKeKqiQ4TUZtAcRpdeZJ6v+3b77E+Lr89mIxJq5o9MueTi/GmDFlGdqgKhtj5KZRWVFMatNqidRos7VAgMBAAECgYEAz1HH0Xl0mAoMByNIvYaBpbfoF82NwqLyqWiLXXVH14m9dijpfzc9SvBg2tDaAjmjniKrS0zfQ6RUTh2LfL03twaXHVKo8yYzcIuErMT2zHSC58rpWPm4HNL1/4gepyKGXSAVLft4VzT0A5CBYyHajoRqc7oQyZ2w0vlEOSVhfwECQQDp45IR6fu6CqI9Za5wZj1JDRNbyTPw/G8Fzel6k0U1arEtwWgTk8ZPj8tgWx9OQJ2pMuCMKOJ9rB/qY6qgj6AxAkEA49qc/klOaNhgkwDN5j4D2hO0ozfz2Gg+rBqNfj/e1CtFET+6uZlEAaRPz9v2x94DxhGDM4w8DwHw84JI4Trz5QJABanoGJz05o1pXlk+/yPKqiEx7dASfOxv99EDrV8xltiNj9EWJxs1+yk9QIkUWf3Ak59SxrIawfZQE4n0UM0JkQJBANPGLIRrveTUt23qIXUNzqayCgJpzsokmZt8UmY1FvY8AUW25eX6/apI/aVD3GqHfxpozHjsriWEuF6biQFNucECQQCZjKTzWMtSGa3CQFFtVggNvNLqJ/WOZmokc+BR9qW++fXyFXsxYon3Rrat269EP3JHZ+O4VEURPpWk8gxH3ykn";
         // 支付宝公钥
         public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
         public static final int SDK_PAY_FLAG = 1;

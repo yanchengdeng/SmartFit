@@ -16,6 +16,7 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.beans.MemeberInfo;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -28,10 +29,10 @@ import butterknife.ButterKnife;
  */
 public class MemberListAdapter extends BaseAdapter {
 
-    private List<String> datas;
+    private List<MemeberInfo> datas;
     private Context context;
 
-    public MemberListAdapter(Context context, List<String> datas) {
+    public MemberListAdapter(Context context, List<MemeberInfo> datas) {
         this.context = context;
         this.datas = datas;
     }
@@ -73,7 +74,7 @@ public class MemberListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setData(List<String> datas) {
+    public void setData(List<MemeberInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

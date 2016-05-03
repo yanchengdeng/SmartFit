@@ -350,6 +350,12 @@
             android:name=".activities.SystemMessageListActivity"
             android:label="@string/title_activity_system_message_list" >
         </activity>
+        <activity android:name=".activities.UserCoachPublishClassOneActivity" >
+        </activity>
+        <activity android:name=".activities.UserCoachPublishClassTwoActivity" >
+        </activity>
+        <activity android:name=".activities.UserCoachPublishClassThreeActivity" >
+        </activity>
     </application>
 
 </manifest>

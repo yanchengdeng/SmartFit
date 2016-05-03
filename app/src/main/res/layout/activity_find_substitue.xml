@@ -8,14 +8,7 @@
     tools:context="com.smartfit.activities.DealInfoActivity">
 
     <include layout="@layout/common_header_view" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray_light"
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/text_color_black"
-        android:padding="@dimen/image_padding_big"
-        android:text="找其他符合要求的教练来代上本课程"/>
+
 
     <FrameLayout
         android:layout_width="match_parent"

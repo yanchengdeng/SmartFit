@@ -89,6 +89,13 @@ public class CoachClassesActivity extends BaseActivity {
                 finish();
             }
         });
+
+        tvFunction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(UserCoachPublishClassOneActivity.class);
+            }
+        });
     }
 
 }

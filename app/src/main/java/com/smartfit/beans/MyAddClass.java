@@ -1,9 +1,11 @@
 package com.smartfit.beans;
 
+import java.io.Serializable;
+
 /**
  * Created by dengyancheng on 16/4/14.
  */
-public class MyAddClass {
+public class MyAddClass implements Serializable{
 
     private String id;//41,
     private String courseType;//0,
@@ -20,6 +22,16 @@ public class MyAddClass {
     private String maxPersonCount;//2,
     private String startTime;//-1373806336,
     private String endTime;//-1373806336
+
+    public String getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(String venueId) {
+        this.venueId = venueId;
+    }
+
+    private String venueId;
 
     public String getId() {
         return id;

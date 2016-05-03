@@ -209,4 +209,8 @@
     <string name="no_sign">这个人太懒，还没有签名</string>
     <string name="title_activity_system_message_list">SystemMessageListActivity</string>
     <string name="system_message">系统消息</string>
+    <string name="aggree_to_instead_class">同意代课</string>
+    <string name="refuse_to_instead_class">拒绝代课</string>
+    <string name="course_aggree_info">Hi，我是您参加的‘%s’课程教练，有什么疑问请主动联系我！</string>
+    <string name="reqeust_have_send">请求已发出</string>
 </resources>

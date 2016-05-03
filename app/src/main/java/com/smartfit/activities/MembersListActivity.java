@@ -12,7 +12,9 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.MemberListAdapter;
+import com.smartfit.beans.MemeberInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
@@ -49,7 +51,7 @@ public class MembersListActivity extends BaseActivity {
 
     private int page = 1;
     private MemberListAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<MemeberInfo> datas = new ArrayList<MemeberInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class MembersListActivity extends BaseActivity {
 
     }
 
-    private void addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,53 +80,41 @@ public class MembersListActivity extends BaseActivity {
             }
         });
 
-
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                loadData();
-            }
-        });
     }
+
     private void loadData() {
-        if(page==1){
+        if (page == 1) {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
-
-
 
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
         data.put("courseId", crousrID);
-        PostRequest request = new PostRequest(Constants.COURSE_COACHJOINCOURSE, data, new Response.Listener<JsonObject>() {
+        final PostRequest request = new PostRequest(Constants.COURSE_MEMBERLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
                 mSVProgressHUD.dismiss();
-
+                List<MemeberInfo> memeberInfos = JsonUtils.listFromJson(response.getAsJsonArray("list"), MemeberInfo.class);
+                if (memeberInfos != null && memeberInfos.size() > 0) {
+                    datas.addAll(memeberInfos);
+                    adapter.setData(datas);
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+                } else {
+                    listView.setVisibility(View.GONE);
+                    noData.setVisibility(View.VISIBLE);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
+                listView.setVisibility(View.GONE);
+                noData.setVisibility(View.VISIBLE);
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(MembersListActivity.this);
         mQueue.add(request);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
-                adapter.setData(datas);
-                mSVProgressHUD.dismiss();
-            }
-        }, 2000);
     }
-
 }

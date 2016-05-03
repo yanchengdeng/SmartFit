@@ -11,10 +11,14 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.adpters.AerobincnAppratusItemAdapter;
 import com.smartfit.adpters.FindSubstitutAdapter;
 import com.smartfit.adpters.MemberListAdapter;
+import com.smartfit.beans.MyAddClass;
+import com.smartfit.beans.SustituteCoach;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -48,9 +52,7 @@ public class FindSubstitueActivity extends BaseActivity {
     @Bind(R.id.listView)
     LoadMoreListView listView;
 
-    private int page = 1;
-    private List<String> datas = new ArrayList<>();
-    private FindSubstitutAdapter adapter;
+    private MyAddClass addClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,7 @@ public class FindSubstitueActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.find_substitue));
-        adapter = new FindSubstitutAdapter(this, datas);
-        listView.setAdapter(adapter);
+        addClass = (MyAddClass) getIntent().getSerializableExtra(Constants.PASS_OBJECT);
         loadData();
 
     }
@@ -78,60 +79,56 @@ public class FindSubstitueActivity extends BaseActivity {
             }
         });
 
-
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                loadData();
-            }
-        });
     }
 
     private void loadData() {
-        String venderId = getIntent().getStringExtra(Constants.PASS_STRING);
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-
         Map<String, String> data = new HashMap<>();
-//        data.put("startTime", "");
-        data.put("venueId", venderId);
-//        data.put("endTime", );
-//        data.put("courseType", );
-//        data.put("sex", );
-//        data.put("startPrice", );
-//        data.put("endPrice",);
-        PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
+        final String requestHost;
+        //自订课程获取空闲教练
+        if (addClass.getCourseType().equals("1")) {
+            requestHost = Constants.COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE;
+            data.put("startTime", addClass.getStartTime());
+            data.put("venueId", addClass.getVenueId());
+            data.put("endTime", addClass.getEndTime());
+            //TODO
+            data.put("courseTypeCode", "11");
+        } else {
+            //私教课下 获取空闲教练
+            requestHost = Constants.COACH_LISTIDLECOACHESBYVENUEID;
+            data.put("sex", "");
+            data.put("startPrice", "");
+            data.put("endPrice", "");
+            data.put("startTime", addClass.getStartTime());
+            data.put("venueId", addClass.getVenueId());
+            data.put("endTime", addClass.getEndTime());
+            data.put("courseType", addClass.getCourseType());
+        }
+        PostRequest request = new PostRequest(requestHost, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc私教课", response.toString());
                 mSVProgressHUD.dismiss();
-
-
+                List<SustituteCoach> sustituteCoaches = JsonUtils.listFromJson(response.getAsJsonArray("list"), SustituteCoach.class);
+                if (sustituteCoaches != null && sustituteCoaches.size() > 0) {
+                    listView.setAdapter(new FindSubstitutAdapter(FindSubstitueActivity.this, sustituteCoaches,addClass.getId()));
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+                } else {
+                    noData.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
-                LogUtil.w("dyc", "..... " + error.getMessage());
+                noData.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(FindSubstitueActivity.this);
         mQueue.add(request);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    datas.add("模拟数据" + i + String.valueOf(page));
-                }
-                listView.setVisibility(View.VISIBLE);
-                listView.onLoadMoreComplete();
-                adapter.setData(datas);
-                mSVProgressHUD.dismiss();
-            }
-        }, 2000);
     }
 
 }

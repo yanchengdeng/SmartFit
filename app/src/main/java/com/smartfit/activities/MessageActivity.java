@@ -138,21 +138,12 @@ public class MessageActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListMessageAllInfoItem item = listMessageAllInfoItems.get(position);
                 if (!TextUtils.isEmpty(item.getSysMessage().getType())) {
-                    if (item.getSysMessage().getType().equals(String.valueOf(MessageType.MESSAGE_TYPE_SYTEM))) {
+                    if (item.getSysMessage().getType().equals(MessageType.MESSAGE_TYPE_SYTEM)) {
                         openActivity(SystemMessageListActivity.class);
-
-                    } else if (item.getSysMessage().getType().equals("2")) {
-
-                    } else if (item.getSysMessage().getType().equals("3")) {
-
-                    } else if (item.getSysMessage().getType().equals("4")) {
-                        openActivity(CourseMessageActivity.class);
-
-                    } else if (item.getSysMessage().getType().equals("5")) {
+                    } else if (item.getSysMessage().getType().equals(MessageType.MESSAGE_TYPE_FRIEND_INVITE)) {
                         openActivity(FriendsMessageActivity.class);
-                    } else if (item.getSysMessage().getType().equals("6")) {
-//                        bundle.putString(Constants.PASS_STRING, TextUtils.isEmpty(item.getSysMessage().getTime()) ? "" : item.getSysMessage().getTime());
-//                        openActivity(CourseMessageActivity.class, bundle);
+                    } else {
+                        openActivity(CourseMessageActivity.class);
                     }
                 }
             }
