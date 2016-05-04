@@ -1,32 +1,636 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@null"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.smartfit.activities.DealInfoActivity">
 
     <include layout="@layout/common_header_view"></include>
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="30dp"
-    android:layout_marginRight="40dp"
-    android:layout_marginLeft="40dp"
-    android:layout_marginBottom="30dp"
-    android:scrollbarStyle="outsideInset"
-    >
-
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:text="@string/app_regiter_tittle"
-        android:textSize="@dimen/text_normal"
-        android:lineSpacingExtra="5dp"
-        android:textColor="@color/text_color_black"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
 
-</ScrollView>
+        android:scrollbarStyle="outsideInset">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_one"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_one_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_one_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_one_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_one_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_two"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_two_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_two_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_three"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_three_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_three_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_three_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_three_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_three_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_four"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_four_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_four_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_four_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_four_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_five"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_six"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_seven"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_eight"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_nine"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_ten"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_eleven"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_twleve"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_thirten"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_fourten"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_fiften"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_sixten"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_seventen"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_six"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_six_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_six_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_six_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_six_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_six_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_seven"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_no__responsblity_tips"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_six"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_seven"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_eight"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_nine"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_ten"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_eleven"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_eight"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_nine"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_nine_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_ten"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_ten_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_ten_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_ten_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

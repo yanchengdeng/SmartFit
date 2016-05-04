@@ -356,6 +356,10 @@
         </activity>
         <activity android:name=".activities.UserCoachPublishClassThreeActivity" >
         </activity>
+        <activity android:name=".activities.FaqContentActivity" >
+        </activity>
+        <activity android:name=".activities.ReopenClassActivity" >
+        </activity>
     </application>
 
 </manifest>

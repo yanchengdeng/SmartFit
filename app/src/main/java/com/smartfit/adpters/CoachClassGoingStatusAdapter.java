@@ -41,14 +41,12 @@ import butterknife.ButterKnife;
 public class CoachClassGoingStatusAdapter extends BaseAdapter {
     private Context context;
     private List<MyAddClass> datas;
-    private boolean isHandleShow = true;
     private EventBus eventBus;
 
     public CoachClassGoingStatusAdapter(Context context, List<MyAddClass> datas, boolean isHandleShow) {
         this.context = context;
         this.datas = datas;
         eventBus = EventBus.getDefault();
-        this.isHandleShow = isHandleShow;
 
     }
 
@@ -59,7 +57,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return datas.get(position);
     }
 
     @Override
@@ -137,7 +135,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         });
 
         if (!TextUtils.isEmpty(item.getCoursePrice())) {
-            viewHolder.tvMoney.setText("￥"+item.getCoursePrice());
+            viewHolder.tvMoney.setText("￥" + item.getCoursePrice());
         }
 
 

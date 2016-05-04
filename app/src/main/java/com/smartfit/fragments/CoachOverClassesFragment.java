@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MyClassesActivity;
+import com.smartfit.adpters.MyClassOrderOverStatusAdapter;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
@@ -48,7 +49,7 @@ public class CoachOverClassesFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
 
-    private MyClassOrderStatusAdapter adapter;
+    private MyClassOrderOverStatusAdapter adapter;
     private List<MyAddClass> datas = new ArrayList<>();
 
     @Override
@@ -66,7 +67,7 @@ public class CoachOverClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), datas, false);
+        adapter = new MyClassOrderOverStatusAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
         loadData();
 
