@@ -212,6 +212,8 @@
     <string name="aggree_to_instead_class">同意代课</string>
     <string name="refuse_to_instead_class">拒绝代课</string>
     <string name="course_aggree_info">Hi，我是您参加的‘%s’课程教练，有什么疑问请主动联系我！</string>
+    <string name="refuse_your_course">‘%1$s’拒绝了你的‘%2$s’课程的代课请求！</string>
+    <string name="accept_your_course">‘%1$s’接受了你的‘%2$s’课程的代课请求！</string>
     <string name="reqeust_have_send">请求已发出</string>
     <string name="fqa_1_tittle">SmartFit一共有几家门店，具体在什么地方？</string>
     <string name="about_us">关于我们</string>
@@ -285,6 +287,7 @@
     <string name="deal_ten_two">2、本人身体健康且没有本协议中约定的不适合进行运动健身的疾病；</string>
     <string name="deal_ten_three">3、本人已阅读、理解并同意上述条纹；</string>
     <string name="reopen_class">再次开课</string>
+    <string name="do_later">稍后再试</string>
     <string-array name="fqa_tittle">
         <item>1.SmartFit一共有几家门店，具体在什么地方？</item>
         <item>2.SmartFit线下门店跟传统健身房有什么区别？</item>

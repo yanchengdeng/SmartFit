@@ -105,6 +105,8 @@ public class AerobicnAppratusFragment extends Fragment {
     private String venueId = "0";
     private String selectType = "0";
 
+    private String  startTime, endTime;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -132,7 +134,7 @@ public class AerobicnAppratusFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-                loadData();
+//                loadData();
             } else {
                 getVenueList();
             }
@@ -151,16 +153,24 @@ public class AerobicnAppratusFragment extends Fragment {
 
 
     private void loadData() {
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
+
+            ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
+
         datas.clear();
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading, SVProgressHUD.SVProgressHUDMaskType.ClearCancel));
         Map<String, String> data = new HashMap<>();
-        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
 //        data.put("coachSex", "0");
 //        data.put("priceRang", "0");
 //        data.put("timeRang", "0");
+        data.put("venueId", venueId);
         data.put("courseType", "3");
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
         PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -310,8 +320,11 @@ public class AerobicnAppratusFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
-            if (!TextUtils.isEmpty(data.getExtras().getString(Constants.PASS_STRING))) {
-                tvTime.setText(data.getStringExtra(Constants.PASS_STRING));
+            if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
+                tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
+                startTime = selectDate + " " + data.getExtras().getString("time_before");
+                endTime = selectDate + " " + data.getExtras().getString("time_after");
+                loadData();
             }
 
         }

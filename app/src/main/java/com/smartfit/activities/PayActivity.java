@@ -89,10 +89,13 @@ public class PayActivity extends BaseActivity {
 
     private String orderID;
 
+    //订单课程失败后提示
+    private String messsge ="该课程已经开课。请预定其他课程";
+
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械
      */
     private int pageIndex = 1;
 
@@ -190,7 +193,7 @@ public class PayActivity extends BaseActivity {
         pageIndex = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
         courseId = getIntent().getStringExtra(Constants.COURSE_ID);
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
-        tvPayMoney.setText("￥" + payMoney + "元");
+        tvPayMoney.setText( payMoney + "元");
     }
 
     private void addLisener() {
@@ -291,7 +294,9 @@ public class PayActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                messsge = error.getMessage();
+                mSVProgressHUD.dismiss();
+//                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -321,7 +326,7 @@ public class PayActivity extends BaseActivity {
      */
     private void payOrder() {
         if (TextUtils.isEmpty(orderID)) {
-            mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later));
+            mSVProgressHUD.showInfoWithStatus(messsge, SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
         //TODO  临时支付接口   后面hi以下面的支付为准
@@ -335,7 +340,7 @@ public class PayActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
-                if(pageIndex==3){
+                if(pageIndex==4){
                     //有氧器械
                     Bundle bundle = new Bundle();
                     bundle.putString(Constants.PASS_STRING,courseId);

@@ -10,27 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.google.gson.JsonObject;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
-import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.ReopenClassActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.DateUtils;
-import com.smartfit.utils.NetUtil;
-import com.smartfit.utils.Options;
-import com.smartfit.utils.PostRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -105,7 +91,7 @@ public class MyClassOrderOverStatusAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING,item.getId());
-                ((BaseActivity) context).openActivity(ReopenClassActivity.class, bundle);
+//                ((BaseActivity) context).openActivity(ReopenClassActivity.class, bundle);
             }
         });
 

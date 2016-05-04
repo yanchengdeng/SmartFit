@@ -180,6 +180,10 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvCoachName.setText(detail.getCoachRealName() + "教练");
         }
 
+        if (!TextUtils.isEmpty(detail.getSignature())) {
+            tvCoachInfo.setText(detail.getSignature());
+        }
+
         if (!TextUtils.isEmpty(detail.getUserSex())) {
             if (detail.getUserSex().equals("0")) {
                 tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
@@ -210,7 +214,12 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvClassPrice.setText(detail.getPrice());
         }
 
+        if (!TextUtils.isEmpty(detail.getUserNickName())){
+            tvOperateAddress.setText(detail.getUserNickName());
+        }
+
         tvSpaceInfo.setText("暂无");
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(),ivSpaceIcon,Options.getListOptions());
         ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
         ImageLoader.getInstance().displayImage(detail.getUserHeadImg(), ivOperatePerson, Options.getHeaderOptions());
         tvOperateAddress.setText(TextUtils.isEmpty(detail.getUserNickName()) ? "暂无" : detail.getUserNickName());

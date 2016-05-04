@@ -89,6 +89,7 @@ public class Constants {
     public static final String COACH_SUBSTITUTECOACH = "/coach/substituteCoach";
 
 
+
     //用户信息
     public static final String MAIN_PAGE_INFO = "/User/mainPage";
     public static final String USER_USERINFO = "/User/userInfo";
@@ -139,7 +140,8 @@ public class Constants {
     //消息
     public static  final String MESSAGE_DEL = "/message/del";
     public static final String MESSAGE_LIST = "/message/list";
-
+    public static final String  COACH_RECEIVESUBSTITUTECOACH = "/coach/receiveSubstituteCoach";
+public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstituteCoach";
 
     public static final int SIZE = 20;
 
@@ -174,10 +176,10 @@ public class Constants {
 
     public static class Net {
         //发布时的接口
-//        public static final String URL = "http://139.196.228.98:8098";
+        public static final String URL = "http://139.196.228.98:8098";
 
         //测试
-        public static final String URL = "http://123.57.164.115:8098";
+//        public static final String URL = "http://123.57.164.115:8098";
 
 
 

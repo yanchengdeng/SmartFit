@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/heade_ui"
         android:scrollbars="none"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -306,8 +306,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_coach_name"
                         android:layout_marginTop="@dimen/image_padding"
+                        android:singleLine="true"
                         android:layout_toRightOf="@+id/iv_coach_icon"
-                        android:text="暂无"
+                        android:text="@string/no_sign"
                         android:textColor="@color/text_color_gray"
                         android:textSize="@dimen/text_normal_down" />
 

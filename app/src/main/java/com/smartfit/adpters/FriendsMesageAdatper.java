@@ -1,6 +1,5 @@
 package com.smartfit.adpters;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,8 +22,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.SelectableRoundedImageView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -96,13 +93,13 @@ public class FriendsMesageAdatper extends BaseAdapter {
         return convertView;
     }
 
-    private void accepterFriends(String sourseUid, int position) {
+    private void accepterFriends(final String sourseUid, final int position) {
         Map<String, String> map = new HashMap<>();
         map.put("friendId", sourseUid);
         PostRequest request = new PostRequest(Constants.USER_ADDFRIEND, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                ignoreFriends(sourseUid, position);
             }
 
         }, new Response.ErrorListener() {

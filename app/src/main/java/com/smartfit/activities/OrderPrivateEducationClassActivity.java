@@ -184,7 +184,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 PrivateClassOrderInfo privateClassOrderInfo = JsonUtils.objectFromJson(response.toString(), PrivateClassOrderInfo.class);
                 if (privateClassOrderInfo != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 2);
+                    bundle.putInt(Constants.PAGE_INDEX, 3);
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
                     openActivity(PayActivity.class, bundle);

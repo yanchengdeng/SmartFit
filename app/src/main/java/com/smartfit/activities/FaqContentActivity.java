@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.smartfit.R;
 
-import java.io.FileNotFoundException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -42,6 +40,12 @@ public class FaqContentActivity extends BaseActivity {
 
         key = getIntent().getIntExtra("key", 0);
         String[] contents = getResources().getStringArray(R.array.fqa_content);
+
+        String[] tittle = getResources().getStringArray(R.array.fqa_tittle);
+        if (!TextUtils.isEmpty(tittle[key])) {
+            tvTittle.setText(tittle[key]);
+        }
+
         if (!TextUtils.isEmpty(contents[key])) {
             tvContent.setText(contents[key]);
         }
