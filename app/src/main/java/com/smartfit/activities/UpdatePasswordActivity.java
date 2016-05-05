@@ -1,7 +1,5 @@
 package com.smartfit.activities;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -33,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * 忘记密码
  */
-public class ForgetActivity extends BaseActivity {
+public class UpdatePasswordActivity extends BaseActivity {
 
 
     @Bind(R.id.iv_back)
@@ -131,12 +129,15 @@ public class ForgetActivity extends BaseActivity {
                             mSVProgressHUD.showInfoWithStatus(getString(R.string.code_cannot_empty));
                         } else {
                             if (TextUtils.isEmpty(etOldPassword.getEditableText().toString())) {
-                                mSVProgressHUD.showInfoWithStatus(getString(R.string.old_password_cannot_empty));
+                                mSVProgressHUD.showInfoWithStatus(getString(R.string.please_input_new_password));
                             } else {
-                                if (!TextUtils.isEmpty(etNewPassword.getEditableText().toString()))
-                                {
-                                   resetPassword(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etOldPassword.getEditableText().toString(), etNewPassword.getEditableText().toString());
-                                }else{
+                                if (!TextUtils.isEmpty(etNewPassword.getEditableText().toString())) {
+                                    if (etOldPassword.getEditableText().toString().equals(etNewPassword.getEditableText().toString())) {
+                                        resetPassword(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etOldPassword.getEditableText().toString(), etNewPassword.getEditableText().toString());
+                                    } else {
+                                        mSVProgressHUD.showInfoWithStatus(getString(R.string.twice_new_pass_not_eaqual));
+                                    }
+                                } else {
                                     mSVProgressHUD.showInfoWithStatus(getString(R.string.new_password_cannot_empty));
                                 }
                             }
@@ -170,13 +171,13 @@ public class ForgetActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
-        request.headers = NetUtil.getRequestBody(ForgetActivity.this);
+        request.headers = NetUtil.getRequestBody(UpdatePasswordActivity.this);
         mQueue.add(request);
 
     }
 
     private void showResetSuccessDialog() {
-        final NormalDialog dialog = new NormalDialog(ForgetActivity.this);
+        final NormalDialog dialog = new NormalDialog(UpdatePasswordActivity.this);
         dialog.content("重置密码成功！！")//
                 .btnNum(1)
                 .btnText("确定")//
@@ -218,7 +219,7 @@ public class ForgetActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
-        request.headers = NetUtil.getRequestBody(ForgetActivity.this);
+        request.headers = NetUtil.getRequestBody(UpdatePasswordActivity.this);
         mQueue.add(request);
 
 

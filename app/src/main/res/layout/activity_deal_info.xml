@@ -129,24 +129,6 @@
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/deal_three_four"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/deal_three_five"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down" />
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -180,15 +162,6 @@
                 android:layout_marginTop="@dimen/image_padding"
                 android:lineSpacingExtra="3dp"
                 android:text="@string/deal_four_three"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/deal_four_four"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down" />
 
@@ -351,6 +324,15 @@
                 android:layout_marginTop="@dimen/image_padding"
                 android:lineSpacingExtra="3dp"
                 android:text="@string/deal_five_seventen"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_five_eighten"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down" />
 
@@ -521,6 +503,95 @@
                 android:layout_marginTop="@dimen/image_padding"
                 android:lineSpacingExtra="3dp"
                 android:text="@string/deal_senver_eleven"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_twele"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_senver_thirteen"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/deal_eight_add"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_one"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_two"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_three"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_four"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_five"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_six"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/deal_eight_add_seven"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal_down" />
 

@@ -18,7 +18,7 @@
     <string name="forget_pass">忘记密码</string>
     <string name="forget_pass_ask">忘记密码？</string>
     <string name="phone_quick_regist">手机快速登记</string>
-    <string name="code">验证码</string>
+    <string name="code">请输入验证码</string>
     <string name="send_success">短信已发送</string>
 
     <string name="third_login_type">第三方方式</string>
@@ -218,97 +218,113 @@
     <string name="fqa_1_tittle">SmartFit一共有几家门店，具体在什么地方？</string>
     <string name="about_us">关于我们</string>
     <string name="about_us_info">Smartfit是一个小而精的智能化健身系统，我们拥有线上独立APP和线下自有场馆，所有场馆及课程均可在APP端自主预约。我们还是一个开放性的教练轻创业平台，拥有资深、专业的签约教练团队，专注教学，通过提升课程质量打造个人品牌。Smartfit正以创新扩展健身的新可能，希望经过数字之手的改造，让更多人享受到优质、便捷的健身体验。</string>
-    <string name="deal_one">一、会员资格</string>
-    <string name="deal_one_one">1、SmartFit运动健身采用会员制服务模式，只有注册成为会员方能享受SmartFit提供的各项专业健身服务及相关配套服务。</string>
-    <string name="deal_one_two">2、取得会员资格应办理相关入会手续，取得会员资格后，即代表已知晓SmartFit有关健身的规则与警示，承诺遵守SmartFit的相关规定。</string>
-    <string name="deal_one_three">3、因经营管理需要，SmartFit会针对不同用户办理不同类别的电子会员卡，但无论您持有何种电子会员卡，都将在享受会员权利的同时，受到本协议的约束。</string>
-    <string name="deal_one_four">4、本协议所称“会员”，是指年满16周岁未满60周岁身体健康，并购买健身服务商品缴纳全部相关费用，能如实提供和陈述个人信息，取得SmartFit发放的电子会员卡的人士。因此您有义务对入会时所提供资料的真实性、合法性负责。</string>
-    <string name="deal_two">二、电子会员卡的取得方式</string>
-    <string name="deal_two_one">1、原始取得，指在微信公众账号“SmartFit健身圈”或SmartFit手机客户端注册、填写真实、有效、全面的个人资料，办理入会手续并交纳全部相关费用后取得会员资格。</string>
-    <string name="deal_two_two">2、继受或转让取得，指在本协议约定的特殊事由出现时，通过办理一定的手续，由非会员的第三方取得会员资格，或获得由其他注册会员赠送的健身服务，原会员资格终止。</string>
-    <string name="deal_three">三、电子会员卡的管理</string>
-    <string name="deal_three_one">1、会员卡仅供会员本人使用（体验卡除外），一经使用，概不退换。</string>
-    <string name="deal_three_two">2、包月卡会员，开卡后不提供停卡服务。所有卡种，不能有偿转让或变相出售。</string>
-    <string name="deal_three_three">3、任何未经SmartFit同意并办理变更手续的会员，私自向非会员转让会籍资格的行为均为无效，SmartFit门店将不予接待，并取消其会员资格。</string>
-    <string name="deal_three_four">4、严重违反SmartFit规章制度者，SmartFit有权取消其会籍资格并不予退还剩余费用。</string>
-    <string name="deal_three_five">5、期满后，若会员逾期不续费缴费，SmartFit后台自动取消该会员的会员权限，会员资格终止。</string>
-    <string name="deal_four">四、会员权利</string>
-    <string name="deal_four_one">1、依照所持卡的类别享受相应的SmartFit对该类别持卡会员作出的全部服务承诺。</string>
-    <string name="deal_four_two">2、针对SmartFit的服务，会员有提出批评、投诉及改进建议的权利。</string>
-    <string name="deal_four_three">3、期满后会员有优先续约的权利。</string>
-    <string name="deal_four_four">4、女会员在怀孕期间凭县级以上医院证明，可给予办理资格延期手续，但延期最长不超过六个月。</string>
-    <string name="deal_five">五、会员义务</string>
+    <string name="deal_one">一、用户资格</string>
+    <string name="deal_one_one">1、SmartFit运动健身采用用户制服务模式，只有注册成为用户方能享受SmartFit提供的各项专业健身服务及相关配套服务。</string>
+    <string name="deal_one_two">2、取得用户资格应办理相关入会手续，取得用户资格后，即代表已知晓SmartFit有关健身的规则与警示，承诺遵守SmartFit的相关规定。</string>
+    <string name="deal_one_three">3、因经营管理需要，SmartFit会针对不同用户办理不同类别的电子用户卡，但无论您持有何种电子用户卡，都将在享受用户权利的同时，受到本协议的约束。</string>
+    <string name="deal_one_four">4、本协议所称“用户”，是指年满16周岁未满60周岁身体健康，并购买健身服务商品缴纳全部相关费用，能如实提供和陈述个人信息，取得SmartFit发放的电子用户卡的人士。因此您有义务对入会时所提供资料的真实性、合法性负责。</string>
+    <string name="deal_two">二、用户资格的取得方式</string>
+    <string name="deal_two_one">1、原始取得，指在微信公众账号“SmartFit健身圈”或SmartFit手机客户端注册、填写真实、有效、全面的个人资料，办理入会手续并交纳全部相关费用后取得用户资格。</string>
+    <string name="deal_two_two">2、继受或转让取得，指在本协议约定的特殊事由出现时，通过办理一定的手续，由非用户的第三方取得用户资格，或获得由其他注册用户赠送的健身服务，原用户资格终止。</string>
+    <string name="deal_three">三、SmartFit电子产品的管理</string>
+    <string name="deal_three_one">1、购买的SmartFit任何产品一经使用，或超过有效期未使用，概不退换。</string>
+    <string name="deal_three_two">2、包月卡用户，开卡后不提供停卡服务。</string>
+    <string name="deal_three_three">3、包月卡等一定时间段内提供服务的产品，从用户购买成功之日起即自动开卡开始计时，私教、小班课等按次提供服务的商品，订单生成付款后即视为已经生效，并通过订单上的时间凭二维码进店使用。</string>
+    <string name="deal_four">四、用户权利</string>
+    <string name="deal_four_one">1、依照所持卡的类别享受相应的SmartFit对该类别持卡用户作出的全部服务承诺。</string>
+    <string name="deal_four_two">2、针对SmartFit的服务，用户有提出批评、投诉及改进建议的权利。</string>
+    <string name="deal_four_three">3、期满后用户有优先续约的权利。</string>
+    <string name="deal_five">五、用户义务</string>
     <string name="deal_five_one">1、如实向SmartFit提供个人信息资料，并在资料发生变动后及时通知SmartFit。</string>
-    <string name="deal_five_two">2、进入SmartFit线下门店时凭电子会员卡，并随时接受工作人员验证和抽查。</string>
+    <string name="deal_five_two">2、进入SmartFit线下门店时凭电子用户卡，并随时接受工作人员验证和抽查。</string>
     <string name="deal_five_three">3、严禁未预约课程，强行进入操房上操课。</string>
     <string name="deal_five_four">4、严禁携带十六周岁以下儿童进入健身区域，对于擅自进入健身区域造成伤害或损失的，SmartFit概不负责。</string>
     <string name="deal_five_five">5、严禁在健身区内吸烟、进食。</string>
     <string name="deal_five_six">6、严禁携带宠物进入SmartFit线下门店。</string>
-    <string name="deal_five_seven">7、严禁心肺功能疾病、颈椎病、皮肤病及一切传染病患者进入SmartFit线下门店，有以上疾病的患者隐瞒病情取得会员资格的，SmartFit有权终止其资格，并保留追究其法律责任的权利。</string>
+    <string name="deal_five_seven">7、严禁心肺功能疾病、颈椎病、皮肤病及一切传染病患者进入SmartFit线下门店，有以上疾病的患者隐瞒病情取得用户资格的，SmartFit有权终止其资格，并保留追究其法律责任的权利。</string>
     <string name="deal_five_eight">8、为了您的健身安全，请穿着运动服饰、运动鞋参加运动，不得赤裸上身或穿着不得体的服饰进行运动。否则工作人员有权利劝离并取消当日运动权利。</string>
     <string name="deal_five_nine">9、运动前严禁饮酒或饮用含酒精类饮料，因违反本条规定造成的人身伤害等意外情况，SmartFit概不负责。</string>
-    <string name="deal_five_ten">10、禁止会员在SmartFit线下门店内销售任何商品。健身会员不得参与任何盈利性健身指导，违反本条规定的，SmartFit有权取消其会员资格。</string>
+    <string name="deal_five_ten">10、禁止用户在SmartFit线下门店内销售任何商品。健身用户不得参与任何盈利性健身指导，违反本条规定的，SmartFit有权取消其用户资格。</string>
     <string name="deal_five_eleven">11、未征得SmartFit运营部门负责人同意，禁止在场馆内拍照、摄像或录音。</string>
     <string name="deal_five_twleve">12、SmartFit线下门店原则上不接受60周岁以上老年人入会，能出具真实有效的健康证明者除外，但因隐瞒或错报个人健康信息发生的一切责任都由其本人承担。</string>
-    <string name="deal_five_thirten">13、会员在运动健身时必须正确使用各种健身器械，否则出现任何人身伤亡，SmartFit概不负责。</string>
-    <string name="deal_five_fourten">14、会员应自觉爱惜合理使用SmartFit线下门店内各项设施、设备、器械，使用后须归放原位，如有损坏须照价赔偿。</string>
+    <string name="deal_five_thirten">13、用户在运动健身时必须正确使用各种健身器械，否则出现任何人身伤亡，SmartFit概不负责。</string>
+    <string name="deal_five_fourten">14、用户应自觉爱惜合理使用SmartFit线下门店内各项设施、设备、器械，使用后须归放原位，如有损坏须照价赔偿。</string>
     <string name="deal_five_fiften">15、严禁在SmartFit线下门店内大声喧哗，使用污秽语言以及进行一切违法活动。</string>
     <string name="deal_five_sixten">16、严禁在SmartFit线下门店内吸烟、吐痰、乱丢垃圾，请自觉维护场馆内的环境卫生。</string>
     <string name="deal_five_seventen">17、请勿携带贵重物品或大量现金进入SmartFit线下门店，如有丢失概不负责。</string>
+    <string name="deal_five_eighten">18、请勿携带贵重物品或大量现金进入SmartFit线下门店，如有丢失概不负责。</string>
     <string name="deal_six">六、保留权利</string>
     <string name="deal_six_one">1、SmartFit线下门店，营业时间原则上为9:00—22:00,营业时间如有变动，会在无线公众平台以及门店公式。</string>
-    <string name="deal_six_two">2、因国家政策或法律法规的规定，SmartFit有权合理修改营业时间，并在无线公众平台及线下门店内公式，怒不另行通知会员，该公示即视为通知。</string>
-    <string name="deal_six_three">3、因经营管理需要，SmartFit有权调整、增减部分项目，该行为不视为违约，且在门店内公示后即视为通知，无需另行报告给会员个人。</string>
+    <string name="deal_six_two">2、因国家政策或法律法规的规定，SmartFit有权合理修改营业时间，并在无线公众平台及线下门店内公式，怒不另行通知用户，该公示即视为通知。</string>
+    <string name="deal_six_three">3、因经营管理需要，SmartFit有权调整、增减部分项目，该行为不视为违约，且在门店内公示后即视为通知，无需另行报告给用户个人。</string>
     <string name="deal_six_four">4、因器械、设备（设施）检修、维护、SmartFit有权在某一时间段内对某一项目或某类项目采取停用或限用措施。</string>
-    <string name="deal_six_five">5、其他出于会员安全及集体利益的需要，SmartFit有权采取必要措施以恢复经营次序。</string>
+    <string name="deal_six_five">5、其他出于用户安全及集体利益的需要，SmartFit有权采取必要措施以恢复经营次序。</string>
     <string name="deal_seven">七、免责条款</string>
     <string name="deal_no__responsblity_tips">出现下列情形的，SmartFit不予承担任何责任</string>
-    <string name="deal_senver_one">1、遇不可抗力（如战争、自然灾害等）造成SmartFit线下门店营业终止或会员会籍不能继续，致使会员遭受损失；</string>
-    <string name="deal_senver_two">2、会员所受损害是因为其自身故意或过失造成的；</string>
-    <string name="deal_senver_three">3、会员所受损害是SmartFit工作人员以外的任何第三方故意或过失行为导致的；</string>
-    <string name="deal_senver_four">4、非会员不听劝阻，擅自进入或强行进入SmartFit线下门店造成损害的，由其自身或致害方承担责任；</string>
+    <string name="deal_senver_one">1、遇不可抗力（如战争、自然灾害等）造成SmartFit线下门店营业终止或用户会籍不能继续，致使用户遭受损失；</string>
+    <string name="deal_senver_two">2、用户所受损害是因为其自身故意或过失造成的；</string>
+    <string name="deal_senver_three">3、用户所受损害是SmartFit工作人员以外的任何第三方故意或过失行为导致的；</string>
+    <string name="deal_senver_four">4、非用户不听劝阻，擅自进入或强行进入SmartFit线下门店造成损害的，由其自身或致害方承担责任；</string>
     <string name="deal_senver_five">5、受害方严重违反SmartFit制定的规章制度视所以造成损害的；</string>
-    <string name="deal_senver_six">6、未交由SmartFit线下门店工作人员保管，而由会员或会员随同人员个人保管的贵重物品发生损毁、灭失、遗失的；</string>
-    <string name="deal_senver_seven">7、因会员资料或个人信息发生变动未及时通知中心，从而造成损失或会员权利受限的；</string>
+    <string name="deal_senver_six">6、未交由SmartFit线下门店工作人员保管，而由用户或用户随同人员个人保管的贵重物品发生损毁、灭失、遗失的；</string>
+    <string name="deal_senver_seven">7、因用户资料或个人信息发生变动未及时通知中心，从而造成损失或用户权利受限的；</string>
     <string name="deal_senver_eight">8、未听从SmartFit工作人员指导，擅自使用或违反操作规程使用器械、设备造成自身受伤的，由自身负责；造成他人受损或门店内财产损毁的，其本人应承担全部赔偿责任，对此SmartFit不承担任何责任；</string>
-    <string name="deal_senver_nine">9、因会员自身行为不当或会员之间的争议产生的人身和财产安损失，SmartFit不承担责任；</string>
-    <string name="deal_senver_ten" >10、包月卡等一定时间段内使用的商品，从会员购买成功之日起即自动开卡开始计时，私教、小班课等按次计算的商品，刷电子凭证进入SmartFit线下门店后即视为已使用。</string>
-    <string name="deal_senver_eleven">11、SmartFit线下门店的淋浴房为有偿使用，会员可根据个人需求选择是否付费使用。</string>
-    <string name="deal_eight">八、安全提示</string>
-    <string name="deal_eight_one">1、会员在锻炼前，应先做必要的热身练习，以免受伤。</string>
+    <string name="deal_senver_nine">9、因用户自身行为不当或用户之间的争议产生的人身和财产安损失，SmartFit不承担责任；</string>
+    <string name="deal_senver_ten">10、SmatrFit仅提供开放的运动健身服务平台及空间，线下门店的教练均为第三方合作教练或通过APP客户端自主注册成为教练的用户，因此教练在SmartFit线下门店为健身用户提供服务的过程中，发生的任何危险及伤亡情况，SmartFit均不承担任何责任；</string>
+    <string name="deal_senver_eleven">11、SmartFit旨在提供一种新型的，方便运动健身服务供需双方，自主预约服务的平台，对于爽约行为不承担责任；对于不提前与对方沟通单方面爽约预约服务，SmartFit有权采取处罚措施；</string>
+    <string name="deal_senver_twele">12、在APP客户端及微信公众平台使用过程中，将产生通信数据流量费用，该服务与费用由您的通信运营商提供，SmartFit不提供通信服务和流量费用的收取；</string>
+    <string name="deal_senver_thirteen">13、SmartFit线下门店的淋浴房是满足用户淋浴需求的自助空间，用户在使用过程中，故意或过失造成的任何伤亡，SmartFit均不承担任何责任；</string>
+    <string name="deal_eight_add">八、隐私条款</string>
+    <string name="deal_eight_add_one">1、您通过您的移动设备使用本APP应用程序时，可能会提示您输入您的地理位置，并实时地跟踪您的地理位置信息，以便我们为您提供增强的体验。例如，我们使用这些信息来允许您查看您所在地区离您最近的运动场地，有了这些技术数据我们的应用程序管理员可以管理应用程序，通过这种方式，我们可以确保您可以（持续）以快速和简单的方式获得服务信息。</string>
+    <string name="deal_eight_add_two">2、当您在注册成为用户或购买产品过程中，我们将收集您的手机号码信息。我们将使用您的手机号码用于发送短信验证码，以确认您的手机号和验证码。当您通过使用本APP应用程序发布或接受运动健身需求时，我们提供您的手机号码给接受您需求的健身用户或教练用户及SmartFit工作人员，以便在需要时对方能够及时跟您联系。我们也会使用您的联系方式给您发送关于我们的新闻、产品和活动消息。</string>
+    <string name="deal_eight_add_three">3、我们会以汇总统计的方式使用您的个人资料，分析使用这些数据，以密切观察线上及线下的营运及服务情况，并确定在哪些地方我们应该优化或改变我们的服务，我们会分享这些信息与第三方做行业分析和统计。</string>
+    <string name="deal_eight_add_four">4、我们可能会聘请第三方公司和个人，代表我们提供客户支持。我们向第三方提供您的地理位置、联系方式等信息，进行线上相关的服务（例如：包括但不限于，维修服务、数据库管理、网络分析和改善APP客户端的功能），或协助我们分析如何使我们的服务更加完善。这些第三方仅会为完成前述工作访问您的个人信息且受到与我们的合同的约束不得披露或将信息用于任何其他目的。</string>
+    <string name="deal_eight_add_five">5、除非本隐私和Cookie政策规定，否则，我们将保留您的信息直到您取消帐户，或者直到您的帐户已闲置了一年。如果您希望取消帐户或要求我们不再使用您的信息，请联系我们的后台客服人员。</string>
+    <string name="deal_eight_add_six">6、我们已采取防止您个人资料丢失或被非法处理的适当的技术和安全措施。为了达到这个目的，您的个人资料被安全地储存在我们的数据库中。我们使用标准的、行业通行的、商业上合理的安全措施，如加密，防火墙和SSL（安全接字层），并在保存数据的地方加强安保工作。然而，没有安全系统是不能破解的。我们不能完全保证我们的数据库不会被攻破，我们也不能保证您提供的信息在互联网上转输时不会被拦截，任何您向我们传输个人信息的风险需要您自行承担。</string>
+    <string name="deal_eight_add_seven">7、我们会更新本隐私政策，以反映我们变更后的信息操作。我们鼓励您定期查看本页以了解有关我们最新的有关隐私保护的操作。</string>
+    <string name="deal_eight">九、安全提示</string>
+    <string name="deal_eight_one">1、用户在锻炼前，应先做必要的热身练习，以免受伤。</string>
     <string name="deal_eight_two">2、过渡锻炼及违规锻炼均有受伤的可能，所以在锻炼前应对自身的身体状况进行判断，并保持运动强度和时间的适当控制。</string>
     <string name="deal_eight_three">3、对违反本协议约定从而造成物品丢失及人员伤亡的，SmartFit不承担任何法律责任。</string>
     <string name="deal_eight_four">4、SmartFit线下任何运动项目及器械设施均有严格的操作方法和程序，请务必在专业人员或者安全手册指导下进行操作，如有违背致使人员受损，SmartFit不承担任何责任。</string>
-    <string name="deal_eight_five">5、会员进行任何单项或器械的操作均应在知晓操作方法及注意事项后进行，同时充分注意自身的身体状况及承受能力，否则因此发生的任何损害，SmartFit均不承担任何责任。</string>
-    <string name="deal_nine">九、特别声明</string>
-    <string name="deal_nine_one">在法律允许的范围内，SmartFit对该协议约定的内容有最终解释权，同时为更好地服务会员之需要，SmartFit有权对相关内容进行修改，且修改后的条款自在SmartFit网站、手机客户端、微信公众平台或其他传播渠道显著位置公示后，即对全体会员产生约束力。</string>
-    <string name="deal_ten">十、会员承诺</string>
+    <string name="deal_eight_five">5、用户进行任何单项或器械的操作均应在知晓操作方法及注意事项后进行，同时充分注意自身的身体状况及承受能力，否则因此发生的任何损害，SmartFit均不承担任何责任。</string>
+    <string name="deal_nine">十、特别声明</string>
+    <string name="deal_nine_one">在法律允许的范围内，SmartFit对该协议约定的内容有最终解释权，同时为更好地服务用户之需要，SmartFit有权对相关内容进行修改，且修改后的条款自在SmartFit网站、手机客户端、微信公众平台或其他传播渠道显著位置公示后，即对全体用户产生约束力。</string>
+    <string name="deal_ten">十一、用户承诺</string>
     <string name="deal_ten_one">1、本人保证所有提供的入会资料及个人信息真实有效；</string>
     <string name="deal_ten_two">2、本人身体健康且没有本协议中约定的不适合进行运动健身的疾病；</string>
     <string name="deal_ten_three">3、本人已阅读、理解并同意上述条纹；</string>
     <string name="reopen_class">再次开课</string>
     <string name="do_later">稍后再试</string>
+    <string name="please_input_username">请输入5~15位用户名</string>
+    <string name="please_input_password">请输入6~14位密码</string>
+    <string name="update_password">修改密码</string>
+    <string name="please_input_old_password">请输入旧密码</string>
+    <string name="please_input_new_password">请输入6~14位新密码</string>
+    <string name="please_input_password_again">请再次输入密码</string>
+    <string name="twice_new_pass_not_eaqual">两次新密码不一致</string>
     <string-array name="fqa_tittle">
         <item>1.SmartFit一共有几家门店，具体在什么地方？</item>
         <item>2.SmartFit线下门店跟传统健身房有什么区别？</item>
         <item>3.支持24小时健身吗？</item>
         <item>4.SmartFit有自己的教练团队吗？</item>
-        <item>5.可以洗澡吗？</item>
-        <item>6.可以线下购买吗？</item>
-        <item>7.线上购买后，可以在任意门店锻炼吗？</item>
-        <item>8.139元包月是什么意思？</item>
-        <item>9.不包月可以来锻炼吗？</item>
-        <item>10.线上销售的话，如何反馈、解决线下售后问题？</item>
-        <item>11.购买后的商品能否转送给他人？</item>
-        <item>12.门店有轻食、饮品销售吗？怎么购买？</item>
-        <item>13.购买后可以开发票吗？</item>
-        <item>14.去健身需要准备什么吗？</item>
-        <item>15.都有哪些健身器械？</item>
-        <item>16.团操课有哪些课程？</item>
-        <item>17.小班课有哪些课程？</item>
-        <item>18.私教课有哪些课程？</item>
-        <item>19.怎么预约操课？</item>
-        <item>20.购买了包月卡也需要预约吗？</item>
+        <item>5.如何成为SmartFit教练？</item>
+        <item>6.线下门店可以洗澡吗？</item>
+        <item>7.可以线下购买吗？</item>
+        <item>8.线上购买后，可以在任意门店锻炼吗？</item>
+        <item>9.139元包月是什么意思？</item>
+        <item>10.不包月可以来锻炼吗？</item>
+        <item>11.线上销售的话，如何反馈、解决线下售后问题？</item>
+        <item>12.购买后的商品能否转送给他人？</item>
+        <item>13.门店有轻食、饮品销售吗？怎么购买？</item>
+        <item>14.购买后可以开发票吗？</item>
+        <item>15.去健身需要准备什么吗？</item>
+        <item>16.都有哪些健身器械？</item>
+        <item>17.团操课有哪些课程？</item>
+        <item>18.小班课有哪些课程？</item>
+        <item>19.私教课有哪些课程？</item>
+        <item>20.怎么预约操课？</item>
+        <item>21.购买了包月卡也需要预约吗？</item>
     </string-array>
 
     <string-array name="fqa_content">
@@ -321,11 +337,16 @@
    一应俱全。</item>
         <item>SmartFit暂未提供24小时健身，我们门店的营业时间为9:00—22:00,未来我们会根据
  用户需求开放更多的时段。</item>
-        <item> SmartFit拥有专业的课程研发团队及优秀的合作教练团队，他们都是国内优秀的健
-   身私人教练、瑜伽导师、操舞教练随时“颜”阵以待。</item>
+        <item>SmartFit是一个开放的，提供运动健身空间的自助平台，SmartFit拥有专业的课程
+  研发团队及优秀的合作团操教练团队，同时欢迎私人教练及团操教练通过APP客户端
+  注册成为SmartFit平台教练用户，利用SmartFit的线上平台及线下空间自主创业。</item>
+        <item> 如果您想成为SmartFit合作团操教练团队的教练，请您联系后台客服人员，留下您
+  的联系方式，我们会将您的请求转交给合作团操教练团队。您也可以通过APP客户端
+  在线申请成为教练用户，当您通过我们后台工作人员的认证后，您就有权在APP客户
+  端上自主发布私教、团操课等教学信息。</item>
         <item>SmartFit门店提供按时付费淋浴服务，但不配备沐浴露、洗发水、毛巾、浴巾。</item>
         <item>除了线上购买，您还能在SmartFit门店及合作第三方购买到线下“实体商品卡”，
-  您可以用“实体商品卡”对会员账户进行充值。</item>
+  您可以用“实体商品卡”对用户账户进行充值。</item>
         <item>线上购买后，您可以在SmartFit线下任意门店使用。</item>
         <item> 139元包月，是指可以在一个月有效期内无限次享受SmartFit的“团操课+自由健
   身”，有效期以购买日起的一个月计算（以自然月天数为准）。</item>

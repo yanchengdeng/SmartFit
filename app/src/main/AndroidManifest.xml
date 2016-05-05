@@ -121,7 +121,7 @@
             android:label="@string/title_activity_login"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
-            android:name=".activities.ForgetActivity"
+            android:name=".activities.UpdatePasswordActivity"
             android:label="@string/title_activity_forget"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
@@ -359,6 +359,8 @@
         <activity android:name=".activities.FaqContentActivity" >
         </activity>
         <activity android:name=".activities.ReopenClassActivity" >
+        </activity>
+        <activity android:name=".activities.ForgetPasswordActivity" >
         </activity>
     </application>
 

@@ -4,7 +4,7 @@
     android:background="@null"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.smartfit.activities.ForgetActivity">
+    tools:context="com.smartfit.activities.UpdatePasswordActivity">
 
     <include layout="@layout/common_header_view"></include>
 
@@ -135,7 +135,7 @@
                 android:layout_toRightOf="@+id/iv_user_name"
                 android:gravity="center_vertical"
                 android:layout_centerVertical="true"
-                android:hint="@string/user_name"/>
+                android:hint="@string/please_input_username"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                 android:layout_toRightOf="@+id/iv_new_password"
                 android:gravity="center_vertical"
                 android:layout_centerVertical="true"
-                android:hint="@string/new_password"/>
+                android:hint="@string/please_input_password"/>
 
             <TextView
                 android:layout_width="match_parent"

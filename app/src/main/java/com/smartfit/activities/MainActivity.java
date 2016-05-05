@@ -18,10 +18,14 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.NetUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
@@ -98,7 +102,10 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
 
         addLisener();
+
     }
+
+
 
     private void getUserInfo() {
         String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "");
@@ -136,7 +143,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
     private void LoginHX(String uid) {
     }
-
 
 
     private void addLisener() {
@@ -320,6 +326,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         request.headers = NetUtil.getRequestBody(MainActivity.this);
         mQueue.add(request);
     }
+
+
+
 
     @Override
     protected void onDestroy() {

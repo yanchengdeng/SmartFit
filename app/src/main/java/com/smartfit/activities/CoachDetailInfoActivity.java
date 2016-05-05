@@ -253,7 +253,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
         tvUpdatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(ForgetActivity.class);
+                openActivity(ForgetPasswordActivity.class);
             }
         });
 

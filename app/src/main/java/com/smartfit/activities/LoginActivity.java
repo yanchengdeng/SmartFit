@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity {
         tvFoget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(ForgetActivity.class);
+                openActivity(UpdatePasswordActivity.class);
                 finish();
             }
         });
