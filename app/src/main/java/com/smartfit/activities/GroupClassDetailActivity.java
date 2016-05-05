@@ -37,6 +37,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -218,7 +219,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvOperateAddress.setText(detail.getUserNickName());
         }
 
-        tvSpaceInfo.setText("暂无");
+        tvSpaceInfo.setText("距离"+ Util.getDistance(detail.getLat(),detail.getLongit()));
         ImageLoader.getInstance().displayImage(detail.getVenueUrl(),ivSpaceIcon,Options.getListOptions());
         ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
         ImageLoader.getInstance().displayImage(detail.getUserHeadImg(), ivOperatePerson, Options.getHeaderOptions());

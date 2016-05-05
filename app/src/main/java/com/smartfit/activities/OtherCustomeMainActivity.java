@@ -239,6 +239,17 @@ public class OtherCustomeMainActivity extends BaseActivity {
             }
         });
 
+        scrollView.getPullRootView().findViewById(R.id.rl_dynamic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null !=userInfo) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.PASS_STRING,userInfo.getUid());
+                    openActivity(CustomeDynamicActivity.class,bundle);
+                }
+            }
+        });
+
     }
 
     /***

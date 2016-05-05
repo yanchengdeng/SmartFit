@@ -6,9 +6,26 @@ package com.smartfit.beans;
  */
 public class WorkPointAddress {
     private String venueId; //3,
-    private String range;//11033.88,
     private String venueName;//fz2,
     private String venueUrl;// null
+    private String longit;
+    private String lat;
+
+    public String getLongit() {
+        return longit;
+    }
+
+    public void setLongit(String longit) {
+        this.longit = longit;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 
     public String getVenueId() {
         return venueId;
@@ -16,14 +33,6 @@ public class WorkPointAddress {
 
     public void setVenueId(String venueId) {
         this.venueId = venueId;
-    }
-
-    public String getRange() {
-        return range;
-    }
-
-    public void setRange(String range) {
-        this.range = range;
     }
 
     public String getVenueName() {

@@ -380,6 +380,8 @@
    团操课。为了保证用户体验，避免排队使用器械的情况发生，使用器械区也需要在
    线预约。</item>
     </string-array>
+    <string name="title_activity_search_health_friends">SearchHealthFriendsActivity</string>
+    <string name="search_health_friends">查找健身好友</string>
 
 
 </resources>

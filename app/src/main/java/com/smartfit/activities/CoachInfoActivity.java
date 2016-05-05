@@ -2,22 +2,34 @@ package com.smartfit.activities;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.adpters.CoachAppraiseAdapter;
+import com.smartfit.beans.UserInfo;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 教练详情页
@@ -47,9 +59,35 @@ public class CoachInfoActivity extends BaseActivity {
         scrollView.setHeaderLayoutParams(localObject);
         getCoachInfo();
     }
-
+String uid;
     private void getCoachInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        uid = getIntent().getExtras().getString(Constants.PASS_STRING);
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", uid);
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                if (null != userInfo) {
+                    fillData(userInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CoachInfoActivity.this);
+        mQueue.add(request);
 
+
+    }
+
+    private void fillData(UserInfo userInfo) {
 
     }
 
@@ -70,6 +108,11 @@ public class CoachInfoActivity extends BaseActivity {
     RatingBar ratingBar;
     View tvMoreAppraise,tvCoachMoreInfo;
 
+    //////////////////TODO   明天整理下
+    ImageView ivBack,ivHeader;
+    TextView tvTeachCaptial,tvCoachCaptial;
+    TextView tvVIP,tvName,tvMotto,tvAttention,tvFans;
+
     private void initView() {
         myListView = (MyListView) scrollView.getPullRootView().findViewById(R.id.listView);
         List<String> appraises = new ArrayList<>();
@@ -79,12 +122,7 @@ public class CoachInfoActivity extends BaseActivity {
         tvCoachMoreInfo = scrollView.getPullRootView().findViewById(R.id.tv_read_more_info);
         ratingBar = (RatingBar) scrollView.getPullRootView().findViewById(R.id.ratingBar);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24));
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.scrollTo(0, 0);
-            }
-        });
+
 
     }
 
@@ -124,7 +162,7 @@ public class CoachInfoActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.tv_his_classes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CoachClassesActivity.class);
+//                openActivity(CoachClassesActivity.class);
             }
         });
 

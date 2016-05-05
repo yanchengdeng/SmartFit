@@ -17,6 +17,7 @@ import com.smartfit.R;
 import com.smartfit.beans.CustomClassVenue;
 import com.smartfit.beans.CustomClassVenueItem;
 import com.smartfit.utils.Options;
+import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.SelectableRoundedImageView;
 
@@ -60,29 +61,29 @@ public class CustomClassVenueAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_custom_venue_item, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
 
-     final CustomClassVenue item =    customClassVenues.get(position);
-        if (!TextUtils.isEmpty(item.getVenueName())){
+        final CustomClassVenue item = customClassVenues.get(position);
+        if (!TextUtils.isEmpty(item.getVenueName())) {
             viewHolder.tvVenueName.setText(item.getVenueName());
         }
-        if (!TextUtils.isEmpty(item.getLat()) &&!TextUtils.isEmpty(item.getLongit()) && !TextUtils.isEmpty(item.getCount())) {
-            //TODO  经纬度换算
-            viewHolder.tvInfo.setText("距离：" + 0 + "共" + item.getCount() + "个教室");
+        if (!TextUtils.isEmpty(item.getLat()) && !TextUtils.isEmpty(item.getLongit()) && !TextUtils.isEmpty(item.getCount())) {
+
+            viewHolder.tvInfo.setText("距离：" + Util.getDistance(item.getLat(), item.getLongit()) + "共" + item.getCount() + "个教室");
         }
 
         ImageLoader.getInstance().displayImage(item.getVenueUrl(), viewHolder.ivIcon, Options.getListOptions());
 
-        if (item.getClassroomList()!= null &&item.getClassroomList().size()>0){
-            viewHolder.listView.setAdapter(new CustomVenuPriceItem(context,item.getClassroomList()));
+        if (item.getClassroomList() != null && item.getClassroomList().size() > 0) {
+            viewHolder.listView.setAdapter(new CustomVenuPriceItem(context, item.getClassroomList()));
             viewHolder.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    for(CustomClassVenue customClassVenue:customClassVenues){
-                        for (CustomClassVenueItem item:customClassVenue.getClassroomList()){
+                    for (CustomClassVenue customClassVenue : customClassVenues) {
+                        for (CustomClassVenueItem item : customClassVenue.getClassroomList()) {
                             item.setIsCheck(false);
                         }
                     }
@@ -94,7 +95,6 @@ public class CustomClassVenueAdapter extends BaseAdapter {
                 }
             });
         }
-
 
 
         return convertView;

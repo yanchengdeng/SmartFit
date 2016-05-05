@@ -1,6 +1,7 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,11 +59,21 @@ public class CustomeDynamicActivity extends BaseActivity {
     private List<DynamicInfo> datas = new ArrayList<DynamicInfo>();
     private boolean isLoadMore = true;
 
+    private String uid;//其他用户传递过来的uid
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custome_dynamic);
         ButterKnife.bind(this);
+        if (getIntent()!=null){
+            if (getIntent().getExtras()!=null){
+                if (!TextUtils.isEmpty(getIntent().getExtras().getString(Constants.PASS_STRING))) {
+                    uid = getIntent().getStringExtra(Constants.PASS_STRING);
+                    ivFunction.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new CustomAnimationDemoFragment())
@@ -120,6 +131,9 @@ public class CustomeDynamicActivity extends BaseActivity {
         HashMap<String, String> map = new HashMap<>();
         map.put("pageNo", String.valueOf(page));
         map.put("pageSize", "20");
+        if (!TextUtils.isEmpty(uid)){
+            map.put("uid",uid);
+        }
         PostRequest request = new PostRequest(Constants.DYNAMIC_GETDYNAMICLIST, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

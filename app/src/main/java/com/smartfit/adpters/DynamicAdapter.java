@@ -114,6 +114,15 @@ public class DynamicAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getAddTime())){
             viewHolder.tvDynamicDate.setText(DateUtils.getData(item.getAddTime()));
         }
+
+        if (TextUtils.isEmpty(item.getHadGood())) {
+            if (item.getHadGood().equals("1")){
+                //TODO  点赞图标
+//                viewHolder.tvPraise
+            }else{
+
+            }
+        }
         viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +135,6 @@ public class DynamicAdapter extends BaseAdapter {
         viewHolder.tvPraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO  这里  需要改成  动态id
                 supportGood(item.getId(), position);
             }
         });

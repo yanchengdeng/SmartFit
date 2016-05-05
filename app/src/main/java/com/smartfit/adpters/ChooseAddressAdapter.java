@@ -1,7 +1,6 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.beans.WorkPointAddress;
+import com.smartfit.utils.Util;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class ChooseAddressAdapter extends BaseAdapter {
         }
 
         viewHolder.tvAddress.setText(addresses.get(position).getVenueName());
-        viewHolder.tvDistance.setText(addresses.get(position).getRange() + "m");
+        viewHolder.tvDistance.setText(Util.getDistance(addresses.get(position).getLat(),addresses.get(position).getLongit()));
         return convertView;
     }
 

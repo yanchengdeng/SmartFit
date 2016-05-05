@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.utils.Options;
+import com.smartfit.utils.Util;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -68,10 +69,7 @@ public class SelectWorkPointAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getVenueName())) {
             viewHolder.tvAddress.setText(item.getVenueName());
         }
-
-        if (!TextUtils.isEmpty(item.getRange())) {
-            viewHolder.tvDistance.setText(item.getRange());
-        }
+        viewHolder.tvDistance.setText(Util.getDistance(item.getLat(), item.getLongit()));
         ImageLoader.getInstance().displayImage(item.getVenueUrl(), viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }

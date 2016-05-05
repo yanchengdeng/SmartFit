@@ -3,6 +3,8 @@ package com.smartfit.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.model.LatLng;
 import com.smartfit.R;
 import com.smartfit.beans.CityBean;
 import com.smartfit.beans.SelectedSort;
@@ -54,6 +56,30 @@ public class Util {
         return (int) (dpValue * scale + 0.5f);
     }
 
+
+    /**
+     * 获取与本地距离
+     * @param endLat
+     * @param endLong
+     * @return
+     */
+    public static String getDistance(String endLat, String endLong) {
+
+        String startLat = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, "");
+        String startLng = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, "");
+        if (TextUtils.isEmpty(startLat) || TextUtils.isEmpty(startLng)) {
+            return "0km";
+        }
+        if (TextUtils.isEmpty(endLat) || TextUtils.isEmpty(endLong)) {
+            return "0km";
+        }
+        LatLng startLatlng = new LatLng(Float.parseFloat(startLat), Float.parseFloat(endLong));
+        LatLng endLatlng = new LatLng(Float.parseFloat(endLat), Float.parseFloat(endLong));
+// 计算量坐标点距离
+        float distance = AMapUtils.calculateLineDistance(startLatlng, endLatlng);
+
+        return String.format("%.2fkm", distance/1000);
+    }
 
     /**
      * pxתdp
@@ -114,10 +140,10 @@ public class Util {
 
     public static List<SelectedSort> getSortList(Context context) {
         List<SelectedSort> selectedSorts = new ArrayList<>();
-        String[] ids = new String[]{"0","1","2"};
-        int[] names = new int []{R.string.select_by_time,R.string.select_by_coach,R.string.select_by_left};
-        for(int i = 0 ;i<ids.length;i++){
-            selectedSorts.add(new SelectedSort(ids[i],context.getString(names[i])));
+        String[] ids = new String[]{"0", "1", "2"};
+        int[] names = new int[]{R.string.select_by_time, R.string.select_by_coach, R.string.select_by_left};
+        for (int i = 0; i < ids.length; i++) {
+            selectedSorts.add(new SelectedSort(ids[i], context.getString(names[i])));
         }
         return selectedSorts;
     }
@@ -140,16 +166,16 @@ public class Util {
                 }
 
                 @Override
-                public void checkServerTrusted(X509Certificate[] chain,	String authType) throws java.security.cert.CertificateException {
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
                 }
             };
 
-            sslContext.init(null, new TrustManager[] { tm }, null);
+            sslContext.init(null, new TrustManager[]{tm}, null);
         }
 
         @Override
         public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
-            return sslContext.getSocketFactory().createSocket(socket, host,	port, autoClose);
+            return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
         }
 
         @Override
@@ -184,16 +210,17 @@ public class Util {
 
     /**
      * 设置当前城市信息
+     *
      * @param cityname
      */
-    public static void setCityInfo(String cityname){
+    public static void setCityInfo(String cityname) {
         String cityinfos = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LIST_INOF, "");
         if (!TextUtils.isEmpty(cityinfos)) {
             List<CityBean> cityBeans = JsonUtils.listFromJson(cityinfos, CityBean.class);
             for (CityBean item : cityBeans) {
                 if (item.getDictionaryName().equals(cityname)) {
                     SharedPreferencesUtils.getInstance().putString(Constants.CITY_CODE, item.getDictionaryCode());
-                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_NAME,cityname+"市");
+                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_NAME, cityname + "市");
                     return;
                 }
             }
@@ -203,11 +230,11 @@ public class Util {
     /**
      * 初始化场馆列表
      */
-    public static  List<WorkPointAddress> getVenueList() {
-        String venuList =SharedPreferencesUtils.getInstance().getString(Constants.VENUE_LIST_INFO,"");
+    public static List<WorkPointAddress> getVenueList() {
+        String venuList = SharedPreferencesUtils.getInstance().getString(Constants.VENUE_LIST_INFO, "");
         if (!TextUtils.isEmpty(venuList)) {
-            List<WorkPointAddress>  workPointAddresses = JsonUtils.listFromJson(venuList,WorkPointAddress.class);
-            if (workPointAddresses!= null && workPointAddresses.size()>0){
+            List<WorkPointAddress> workPointAddresses = JsonUtils.listFromJson(venuList, WorkPointAddress.class);
+            if (workPointAddresses != null && workPointAddresses.size() > 0) {
                 return workPointAddresses;
             }
         }

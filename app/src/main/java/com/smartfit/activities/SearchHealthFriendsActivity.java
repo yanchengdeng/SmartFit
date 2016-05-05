@@ -28,9 +28,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 健身伙伴
+ * 查找健身伙伴
  */
-public class HealthFriendsListActivity extends BaseActivity {
+public class SearchHealthFriendsActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -44,10 +44,10 @@ public class HealthFriendsListActivity extends BaseActivity {
     ImageView ivSearch;
     @Bind(R.id.et_search_content)
     EditText etSearchContent;
-    @Bind(R.id.listView)
-    LoadMoreListView listView;
     @Bind(R.id.no_data)
     TextView noData;
+    @Bind(R.id.listView)
+    LoadMoreListView listView;
 
     private int page = 1;
     private FansAdapter adapter;
@@ -56,16 +56,14 @@ public class HealthFriendsListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_health_friends_list);
+        setContentView(R.layout.activity_search_health_friends);
         ButterKnife.bind(this);
         initView();
         addLisener();
     }
 
     private void initView() {
-        tvTittle.setText(getString(R.string.health_friends));
-        ivFunction.setVisibility(View.VISIBLE);
-        ivFunction.setImageResource(R.mipmap.icon_add_friends);
+        tvTittle.setText(getString(R.string.search_health_friends));
         adapter = new FansAdapter(this, datas);
         listView.setAdapter(adapter);
         loadData();
@@ -122,7 +120,7 @@ public class HealthFriendsListActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
         data.put("nickName",key);
-        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_SEARCHFRIENDLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -148,7 +146,7 @@ public class HealthFriendsListActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
-        request.headers = NetUtil.getRequestBody(HealthFriendsListActivity.this);
+        request.headers = NetUtil.getRequestBody(SearchHealthFriendsActivity.this);
         mQueue.add(request);
 
     }
@@ -159,7 +157,7 @@ public class HealthFriendsListActivity extends BaseActivity {
             mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
         Map<String, String> data = new HashMap<>();
-        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_SEARCHFRIENDLIST, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
@@ -185,7 +183,7 @@ public class HealthFriendsListActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
-        request.headers = NetUtil.getRequestBody(HealthFriendsListActivity.this);
+        request.headers = NetUtil.getRequestBody(SearchHealthFriendsActivity.this);
         mQueue.add(request);
     }
 
@@ -200,4 +198,5 @@ public class HealthFriendsListActivity extends BaseActivity {
         listView.setVisibility(View.VISIBLE);
         noData.setVisibility(View.GONE);
     }
+
 }

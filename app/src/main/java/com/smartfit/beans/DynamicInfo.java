@@ -7,7 +7,20 @@ import android.os.Parcelable;
  * 作者：dengyancheng on 16/4/24 15;//06
  * 邮箱：yanchengdeng@gmail.com
  */
-public class DynamicInfo implements Parcelable{
+public class DynamicInfo implements Parcelable {
+
+
+    private String id;
+    private String topicId;//2016042414574927058890,
+    private String good;//0,
+    private String userPicUrl;//http;////123.57.164.115;//8098/uploadimgs/picture/2016/4/13/1460539717143/1460539717.jpg,
+    private String uid;//33,
+    private String nickName;//粉末,
+    private String commentCount;//0,
+    private String content;//哭咯弄,
+    private String addTime;//1461481069,
+    private String imgUrl;
+    private String hadGood;//1 表示已点赞
 
     public String getId() {
         return id;
@@ -16,17 +29,6 @@ public class DynamicInfo implements Parcelable{
     public void setId(String id) {
         this.id = id;
     }
-
-    private String id;
-  private String  topicId;//2016042414574927058890,
-    private String          good;//0,
-    private String         userPicUrl;//http;////123.57.164.115;//8098/uploadimgs/picture/2016/4/13/1460539717143/1460539717.jpg,
-    private String       uid;//33,
-    private String       nickName;//粉末,
-    private String      commentCount;//0,
-    private String       content;//哭咯弄,
-    private String        addTime;//1461481069,
-    private String        imgUrl;
 
     public String getTopicId() {
         return topicId;
@@ -100,6 +102,14 @@ public class DynamicInfo implements Parcelable{
         this.imgUrl = imgUrl;
     }
 
+    public String getHadGood() {
+        return hadGood;
+    }
+
+    public void setHadGood(String hadGood) {
+        this.hadGood = hadGood;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -117,6 +127,7 @@ public class DynamicInfo implements Parcelable{
         dest.writeString(this.content);
         dest.writeString(this.addTime);
         dest.writeString(this.imgUrl);
+        dest.writeString(this.hadGood);
     }
 
     public DynamicInfo() {
@@ -133,6 +144,7 @@ public class DynamicInfo implements Parcelable{
         this.content = in.readString();
         this.addTime = in.readString();
         this.imgUrl = in.readString();
+        this.hadGood = in.readString();
     }
 
     public static final Creator<DynamicInfo> CREATOR = new Creator<DynamicInfo>() {

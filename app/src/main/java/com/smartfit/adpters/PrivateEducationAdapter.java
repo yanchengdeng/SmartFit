@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.smartfit.R;
 import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.Options;
 
 import java.util.List;
@@ -70,7 +72,7 @@ public class PrivateEducationAdapter extends BaseAdapter  {
 
         viewHolder.ratingBar.setLayoutParams(params);
 
-         PrivateEducationClass item = datas.get(position);
+         final PrivateEducationClass item = datas.get(position);
         if (!TextUtils.isEmpty(item.getNickName())) {
             viewHolder.tvCoach.setText("教练 "+item.getNickName());
         }
@@ -98,7 +100,9 @@ public class PrivateEducationAdapter extends BaseAdapter  {
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getUid());
+                        ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class,bundle);
             }
         });
         if (!TextUtils.isEmpty(item.getStars())) {
