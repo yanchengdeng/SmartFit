@@ -29,6 +29,8 @@ public class FaqContentActivity extends BaseActivity {
     ImageView ivFunction;
     @Bind(R.id.tv_content)
     TextView tvContent;
+    @Bind(R.id.tv_tips)
+    TextView tvTips;
     private int key;
 
     @Override
@@ -43,7 +45,7 @@ public class FaqContentActivity extends BaseActivity {
 
         String[] tittle = getResources().getStringArray(R.array.fqa_tittle);
         if (!TextUtils.isEmpty(tittle[key])) {
-            tvTittle.setText(tittle[key]);
+            tvTips.setText(tittle[key]);
         }
 
         if (!TextUtils.isEmpty(contents[key])) {

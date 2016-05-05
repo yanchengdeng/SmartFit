@@ -57,3 +57,8 @@ mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgr
         mQueue.add(request);
     }
 
+
+
+    1. 异地登录  提示  回到首页
+    2.
+
