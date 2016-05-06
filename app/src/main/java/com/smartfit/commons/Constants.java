@@ -89,6 +89,7 @@ public class Constants {
     public static final String COURSE_MEMBERLIST = "/course/memberList";
     public static final String COACH_SUBSTITUTECOACH = "/coach/substituteCoach";
     public static final String COURSE_COACHREOPENCOURSE = "/course/coachReopenCourse";
+    public static final String CLASSROOM_GETIDLEAEROBICCLASSROOMS = "/classroom/getIdleAerobicClassrooms";
 
 
 

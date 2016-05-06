@@ -164,22 +164,17 @@ public class AerobicnAppratusFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
-//        data.put("coachSex", "0");
-//        data.put("priceRang", "0");
-//        data.put("timeRang", "0");
-        data.put("venueId", venueId);
-        data.put("courseType", "3");
         data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
         data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
-        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.CLASSROOM_GETIDLEAEROBICCLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
-                if (null != requestList && requestList.size() > 0) {
-                    datas.addAll(requestList);
-                    adapter.setData(datas);
-                }
+//                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+//                if (null != requestList && requestList.size() > 0) {
+//                    datas.addAll(requestList);
+//                    adapter.setData(datas);
+//                }
                 noMoreData(datas);
             }
         }, new Response.ErrorListener() {
