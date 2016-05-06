@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.ReopenClassActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
 
@@ -91,7 +93,8 @@ public class MyClassOrderOverStatusAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING,item.getId());
-//                ((BaseActivity) context).openActivity(ReopenClassActivity.class, bundle);
+                bundle.putString("type",item.getCourseType());
+                ((BaseActivity) context).openActivity(ReopenClassActivity.class, bundle);
             }
         });
 

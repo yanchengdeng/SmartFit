@@ -55,10 +55,17 @@ public class CoachAuthentitionActivity extends BaseActivity {
     @Bind(R.id.tv_age)
     TextView tvAge;
 
+    private String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_authentition);
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
+                uid = getIntent().getStringExtra(Constants.PASS_STRING);
+            }
+        }
         ButterKnife.bind(this);
         initView();
     }
@@ -82,7 +89,12 @@ public class CoachAuthentitionActivity extends BaseActivity {
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+
+        if (TextUtils.isEmpty(uid)) {
+            maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        } else {
+            maps.put("uid", uid);
+        }
 
         if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
             maps.put("isCoach", "1");
@@ -112,7 +124,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
     private void fillData(UserInfo userInfo) {
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivIcon, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
-            tvName.setText(userInfo.getNickName()+" 教练");
+            tvName.setText(userInfo.getNickName() + " 教练");
         }
         if (!TextUtils.isEmpty(userInfo.getSex())) {
             if (userInfo.getSex().equals("0")) {
@@ -124,11 +136,11 @@ public class CoachAuthentitionActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(userInfo.getAge())) {
-tvAge.setText(userInfo.getAge());
+            tvAge.setText(userInfo.getAge());
         }
 
         if (!TextUtils.isEmpty(userInfo.getHight()) && !TextUtils.isEmpty(userInfo.getWeight())) {
-            tvBaseInfo.setText("身高："+userInfo.getHight()+" CM 体重："+userInfo.getWeight()+" KG");
+            tvBaseInfo.setText("身高：" + userInfo.getHight() + " CM 体重：" + userInfo.getWeight() + " KG");
         }
 
         if (!TextUtils.isEmpty(userInfo.getCertificates())) {

@@ -37,6 +37,26 @@ public class ClassInfoDetail {
     private String userNickName;//,
     private String[] coursePics;
 
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+
+    private String mobileNo;
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    private String orderCode;
+
     public String getSignature() {
         return signature;
     }

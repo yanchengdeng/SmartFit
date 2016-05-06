@@ -189,6 +189,19 @@
 
         </ScrollView>
 
+        <TextView
+            android:id="@+id/tv_waiting_accept"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/white"
+            android:background="@color/transparent_deep_black"
+            android:padding="@dimen/image_padding_big"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:text="@string/waiting_coach_accepter"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/btn_order"
             android:layout_width="match_parent"
@@ -197,6 +210,7 @@
             android:layout_margin="@dimen/image_padding"
             android:background="@color/common_header_bg"
             android:gravity="center"
+            android:visibility="visible"
             android:padding="@dimen/image_padding_big"
             android:text="立即预约"
             android:textColor="@color/white" />

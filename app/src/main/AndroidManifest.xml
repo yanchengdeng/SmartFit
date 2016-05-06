@@ -366,6 +366,8 @@
             android:name=".activities.SearchHealthFriendsActivity"
             android:label="@string/title_activity_search_health_friends" >
         </activity>
+        <activity android:name=".activities.InviteFriendsActivity" >
+        </activity>
     </application>
 
 </manifest>

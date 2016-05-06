@@ -84,7 +84,7 @@ public class FriendsMesageAdatper extends BaseAdapter {
         viewHolder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accepterFriends(item.getMessageContent().getSourseUid(),position);
+                accepterFriends(item.getMessageContent().getSourseUid(),position,item.getId());
 
             }
         });
@@ -93,13 +93,13 @@ public class FriendsMesageAdatper extends BaseAdapter {
         return convertView;
     }
 
-    private void accepterFriends(final String sourseUid, final int position) {
+    private void accepterFriends(final String sourseUid, final int position,final String id) {
         Map<String, String> map = new HashMap<>();
         map.put("friendId", sourseUid);
         PostRequest request = new PostRequest(Constants.USER_ADDFRIEND, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ignoreFriends(sourseUid, position);
+                ignoreFriends(id, position);
             }
 
         }, new Response.ErrorListener() {

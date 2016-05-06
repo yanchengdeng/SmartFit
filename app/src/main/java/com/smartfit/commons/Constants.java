@@ -38,6 +38,7 @@ public class Constants {
 
     public static final String COURSE_TYPE = "course_type";
     public static final String COURSE_ID = "course_id";
+    public static final String COURSE_ORDER_CODE = "course_order_code";
     public static final String COURSE_MONEY = "course_pay";
 
     public static final String ORDER_TIME = "order_time";
@@ -87,6 +88,7 @@ public class Constants {
     public static final String COURSE_COACHRELEASECOURSE = "/course/coachReleaseCourse";
     public static final String COURSE_MEMBERLIST = "/course/memberList";
     public static final String COACH_SUBSTITUTECOACH = "/coach/substituteCoach";
+    public static final String COURSE_COACHREOPENCOURSE = "/course/coachReopenCourse";
 
 
 
@@ -176,10 +178,10 @@ public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstitut
 
     public static class Net {
         //发布时的接口
-//        public static final String URL = "http://139.196.228.98:8098";
+        public static final String URL = "http://139.196.228.98:8098";
 
         //测试
-        public static final String URL = "http://123.57.164.115:8098";
+//        public static final String URL = "http://123.57.164.115:8098";
 
 
 

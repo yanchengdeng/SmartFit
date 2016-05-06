@@ -69,7 +69,7 @@
         android:lineSpacingExtra="@dimen/image_padding"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:text="暂无"
         android:textColor="@color/black"
         android:textSize="@dimen/text_normal" />
 
@@ -119,14 +119,14 @@
             android:focusableInTouchMode="false"
             android:isIndicator="true"
             android:numStars="5"
-            android:rating="4" />
+            android:rating="0" />
 
         <TextView
             android:id="@+id/tv_core"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/image_padding_big"
-            android:text="4.8"
+            android:text="0"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
@@ -136,43 +136,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/image_padding_big"
-            android:text="已授321节课"
+            android:text="已授0节课"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
-
-    <com.smartfit.views.MyListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/line_gray"
-        android:dividerHeight="1px"
-        android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/line_gray" />
-
-    <TextView
-        android:id="@+id/tv_read_more_discuss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="right"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="查看详情"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/text_normal" />
 
 
     <TextView
@@ -196,7 +169,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="身高:178CM"
+            android:text="身高:0CM"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
@@ -205,7 +178,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/header_bar_height"
-            android:text="体重：77KG"
+            android:text="体重：0KG"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
@@ -220,7 +193,7 @@
         android:lineSpacingExtra="@dimen/image_padding"
         android:maxLines="2"
         android:padding="@dimen/activity_horizontal_margin"
-        android:text="持有证书：国家一级运动员xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:text="持有证书：暂无"
         android:textColor="@color/text_color_gray"
         android:textSize="@dimen/text_normal" />
 
@@ -260,7 +233,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_next_w_on"
             android:gravity="right"
-            android:text="正在进行2个课程"
+            android:text="正在进行0个课程"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>
@@ -295,24 +268,7 @@
             android:layout_marginTop="@dimen/image_padding_big"
             android:layout_toRightOf="@+id/tv_dynamic"
             android:gravity="right"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_pic" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_pic" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_pic" />
-
-        </LinearLayout>
+            android:orientation="horizontal" />
     </RelativeLayout>
 
 </LinearLayout>

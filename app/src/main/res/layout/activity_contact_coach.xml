@@ -44,7 +44,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="王小二教练"
+                android:text="教练"
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal"
                 />
@@ -54,7 +54,7 @@
                 android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="13067380836"
+                android:text="暂未提供号码"
                 android:layout_marginTop="@dimen/image_padding_big"
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal"

@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.MessageEvent.UpdateRoom;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
@@ -24,6 +25,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.SelectableRoundedImageView;
 
@@ -68,6 +70,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     TextView tvClassPrice;
     @Bind(R.id.btn_order)
     Button btnOrder;
+    @Bind(R.id.tv_waiting_accept)
+    TextView tvWaitingAccept;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private IdleClassListInfo idleClassListInfo;
@@ -97,7 +101,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         tvClassTime.setText(startTime + " ~ " + DateUtils.getDataType(endTime));
         ImageLoader.getInstance().displayImage(idleClassListInfo.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
         if (!TextUtils.isEmpty(idleClassListInfo.getLat()) && !TextUtils.isEmpty(idleClassListInfo.getLongit())) {
-            tvSpaceInfo.setText(idleClassListInfo.getLat() + ".." + idleClassListInfo.getLongit());
+            tvSpaceInfo.setText(Util.getDistance(idleClassListInfo.getLat(),idleClassListInfo.getLongit()));
         }
         if (!TextUtils.isEmpty(idleClassListInfo.getVenueName())) {
             tvSpaceName.setText(idleClassListInfo.getVenueName());
@@ -106,8 +110,14 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEvent(UpdateRoom event) {/* Do something */
-        initRoom(event.getPositon());
+    public void onEvent(Object event) {/* Do something */
+        if (event instanceof UpdateRoom) {
+            initRoom(((UpdateRoom) event).getPositon());
+        }
+        if (event instanceof UpdatePrivateClassDetail){
+            btnOrder.setVisibility(View.INVISIBLE);
+            tvWaitingAccept.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initRoom(int positon) {
@@ -188,7 +198,6 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
                     openActivity(PayActivity.class, bundle);
-                    finish();
                 }
             }
         }, new Response.ErrorListener() {

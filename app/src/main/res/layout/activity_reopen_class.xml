@@ -1,10 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.smartfit.activities.ReopenClassActivity">
 
-</RelativeLayout>
+    <include layout="@layout/common_header_view" />
+
+    <com.smartfit.views.HorizontalListView
+        android:id="@+id/listview_date"
+        widget:dividerWidth="1dp"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:divider="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/rl_order_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/image_padding_big"
+            android:text="@string/order_experise_time"
+            android:textColor="@color/black" />
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_next_w_on"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/text_color_gray" />
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <RelativeLayout
+            android:id="@+id/rl_icon_ui"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.smartfit.views.SelectableRoundedImageView
+                android:id="@+id/iv_icon"
+                android:scaleType="centerCrop"
+                android:layout_width="@dimen/icon_normal_size"
+                android:layout_marginTop="2dp"
+                android:src="@mipmap/bg_pic"
+                app:sriv_left_top_corner_radius="4dip"
+                app:sriv_right_top_corner_radius="4dip"
+                app:sriv_left_bottom_corner_radius="4dip"
+                app:sriv_right_bottom_corner_radius="4dip"
+                app:sriv_oval="false"
+                android:layout_height="@dimen/icon_normal_size" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:src="@mipmap/icon_office"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_context_ui"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/rl_icon_ui"
+            android:layout_toLeftOf="@+id/ll_price_ui"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_class_tittle"
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal"
+                android:text=""
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_below="@+id/tv_class_tittle"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_couch"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down"
+                        android:text="教练 "
+                        android:layout_marginRight="@dimen/image_padding"
+                        android:layout_height="wrap_content" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding"
+                        style="@style/roomRatingBar"
+                        android:isIndicator="true"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
+                        android:numStars="5"
+                        android:rating="4"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_join"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down"
+                        android:text="0/0人"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_class_time"
+                        android:layout_marginLeft="@dimen/image_padding_big"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down"
+                        android:text="8:00~8:00"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_price_ui"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal_down"
+                android:text="0元"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_price_info"
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal_down"
+                android:text="会员免费"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_reopen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/white"
+        android:text="@string/publish_class"
+        android:padding="@dimen/image_padding_big"
+        android:gravity="center"
+        android:background="@drawable/bg_dialog_selector_red"
+        android:layout_margin="@dimen/image_padding_big"
+        android:layout_gravity="bottom"/>
+
+
+</LinearLayout>

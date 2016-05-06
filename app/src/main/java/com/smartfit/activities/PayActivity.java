@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateGroupClassDetail;
+import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.OrderCourse;
 import com.smartfit.beans.UserInfoDetail;
@@ -38,6 +40,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.greenrobot.eventbus.EventBus;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.StringReader;
@@ -90,7 +93,7 @@ public class PayActivity extends BaseActivity {
     private String orderID;
 
     //订单课程失败后提示
-    private String messsge ="该课程已经开课。请预定其他课程";
+    private String messsge = "该课程已经开课。请预定其他课程";
 
     /****
      * 页面跳转 index
@@ -104,6 +107,10 @@ public class PayActivity extends BaseActivity {
     private String leftMoney;
 
     private String courseId;
+
+    private String orderCode;
+
+    private EventBus eventBus;
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -156,7 +163,7 @@ public class PayActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
         ButterKnife.bind(this);
-        getLeftMoney();
+        eventBus = EventBus.getDefault();
         initView();
         addLisener();
     }
@@ -172,8 +179,12 @@ public class PayActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
                         tvYeLeft.setText(userInfoDetail.getBalance());
                         leftMoney = userInfoDetail.getBalance();
-                        getOrderCorse();
-
+                        if (TextUtils.isEmpty(orderCode)){
+                            getOrderCorse();
+                        }else{
+                            orderID = orderCode;
+                            mSVProgressHUD.dismiss();
+                        }
                     }
                 }
             }
@@ -193,7 +204,9 @@ public class PayActivity extends BaseActivity {
         pageIndex = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
         courseId = getIntent().getStringExtra(Constants.COURSE_ID);
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
-        tvPayMoney.setText( payMoney + "元");
+        orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
+        tvPayMoney.setText(payMoney + "元");
+        getLeftMoney();
     }
 
     private void addLisener() {
@@ -307,7 +320,6 @@ public class PayActivity extends BaseActivity {
     }
 
     private void goPay() {
-        //TODO   orderID   = ;
         if (payStyle == 1) {
             //微信支付
             weixinPay();
@@ -329,26 +341,26 @@ public class PayActivity extends BaseActivity {
             mSVProgressHUD.showInfoWithStatus(messsge, SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
-        //TODO  临时支付接口   后面hi以下面的支付为准
         mSVProgressHUD.showWithStatus("正在支付", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> map = new HashMap<>();
         map.put("orderCode", orderID);
-        map.put("type","0");
-//        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
-        PostRequest request = new PostRequest(Constants.PAY_PAYMOCK, map, new Response.Listener<JsonObject>() {
+        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.PAY_BALANCEPAY, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
-                if(pageIndex==4){
-                    //有氧器械
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.PASS_STRING,courseId);
-                    openActivity(AerobicAppratusOrderSuccessActivity.class,bundle);
-                    finish();
-                }else if(pageIndex==2){
-                    finish();
+                if (pageIndex==1) {
+                    eventBus.post(new UpdateGroupClassDetail());
+                }else if(pageIndex==3){
+                    eventBus.post(new UpdatePrivateClassDetail());
                 }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                      finish();
+                    }
+                },1000);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -359,27 +371,6 @@ public class PayActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(PayActivity.this);
         mQueue.add(request);
-
-
-
-      /*  Map<String, String> map = new HashMap<>();
-        map.put("orderId", orderID);
-        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
-        PostRequest request = new PostRequest(Constants.PAY_BALANCEPAY, map, new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-                mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-                mSVProgressHUD.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-            }
-        });
-        request.setTag(new Object());
-        request.headers = NetUtil.getRequestBody(PayActivity.this);
-        mQueue.add(request);*/
     }
 
 
@@ -521,7 +512,7 @@ public class PayActivity extends BaseActivity {
             xml.append("</xml>");
             List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
             packageParams.add(new BasicNameValuePair("appid", Constants.WXPay.APP_ID));
-            packageParams.add(new BasicNameValuePair("body", "标题"));//注：如果商品为中文时，需要转码 否则会报签名失败paySuccess.getTitle()
+            packageParams.add(new BasicNameValuePair("body", "smartFit"));//注：如果商品为中文时，需要转码 否则会报签名失败paySuccess.getTitle()
             packageParams.add(new BasicNameValuePair("mch_id", Constants.WXPay.MCH_ID));
             packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
             packageParams.add(new BasicNameValuePair("notify_url", Constants.Net.WX_PAY_CALLBACK));

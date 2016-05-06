@@ -46,7 +46,7 @@
     <string name="order_experise_time">预约锻炼时间</string>
     <string name="sure">确认</string>
     <string name="update_already">已更新</string>
-    <string name="input_search_contition">请输入您的搜索内容</string>
+    <string name="input_search_contition">课程名称/教练名/健身馆</string>
     <string name="find_conditon_result">个‘%s’的结果</string>
     <string name="less_fifty">&lt;50</string>
     <string name="coach">教练</string>
@@ -382,6 +382,7 @@
     </string-array>
     <string name="title_activity_search_health_friends">SearchHealthFriendsActivity</string>
     <string name="search_health_friends">查找健身好友</string>
+    <string name="waiting_coach_accepter">等待教练接单中...</string>
 
 
 </resources>

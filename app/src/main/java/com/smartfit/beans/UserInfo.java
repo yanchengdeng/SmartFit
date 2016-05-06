@@ -21,8 +21,28 @@ public class UserInfo {
     private String balance;//0,
     private ArrayList<CommentInfo> commonList;//null,
     private String coachInfo;//null,
-    private String curClassCount;//null,
+    private String courseCount;//null,
     private String[] coachDynamicPics;//
+
+    public String getCurClassCount() {
+        return curClassCount;
+    }
+
+    public void setCurClassCount(String curClassCount) {
+        this.curClassCount = curClassCount;
+    }
+
+    private String curClassCount;
+
+    public String getStars() {
+        return stars;
+    }
+
+    public void setStars(String stars) {
+        this.stars = stars;
+    }
+
+    private String stars;
 
     public String getCoachId() {
         return coachId;
@@ -225,12 +245,12 @@ public class UserInfo {
         this.coachInfo = coachInfo;
     }
 
-    public String getCurClassCount() {
-        return curClassCount;
+    public String getCourseCount() {
+        return courseCount;
     }
 
-    public void setCurClassCount(String curClassCount) {
-        this.curClassCount = curClassCount;
+    public void setCourseCount(String curClassCount) {
+        this.courseCount = curClassCount;
     }
 
     public String[] getCoachDynamicPics() {

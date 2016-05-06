@@ -61,7 +61,6 @@ public class SearchClassActivity extends BaseActivity {
     private boolean isLoaderMore = true;//  是否允许加载到底
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +73,6 @@ public class SearchClassActivity extends BaseActivity {
     private void initView() {
         adapter = new GroupExpericeItemAdapter(this, datas);
         listView.setAdapter(adapter);
-        loadData(etContent.getEditableText().toString());
     }
 
 

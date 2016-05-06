@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 
 /***
  * 团体课 预定成功
+ * 已废弃 不适用
  */
 public class GroupClassOrderSuccessActivity extends BaseActivity {
 
@@ -127,6 +128,13 @@ public class GroupClassOrderSuccessActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(ContactCoachActivity.class);
+            }
+        });
+
+        tvInviteFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(InviteFriendsActivity.class);
             }
         });
 

@@ -120,7 +120,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(userInfo.getFocusCount())) {
-            TextView tvFoucs = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attentioon);
+            TextView tvFoucs = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attentioon_num);
             tvFoucs.setText("关注  " + userInfo.getFocusCount());
         }
 

@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/image_padding_big"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal"
-            android:text="瑜伽课，激情活力"
+            android:text=""
             android:layout_height="wrap_content" />
 
         <LinearLayout
@@ -68,7 +68,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="教练  王二小"
+                    android:text="教练"
                     android:layout_marginRight="@dimen/image_padding"
                     android:layout_height="wrap_content" />
 
@@ -98,7 +98,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="11/13人"
+                    android:text="0/0人"
                     android:layout_height="wrap_content" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
-                    android:text="11:00-13:00AM"
+                    android:text=""
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -137,7 +137,7 @@
             android:singleLine="true"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal_down"
-            android:text="120元"
+            android:text="0元"
             android:layout_height="wrap_content" />
 
         <TextView

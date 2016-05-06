@@ -26,6 +26,7 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.ClassCommend;
@@ -41,6 +42,9 @@ import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -147,17 +151,22 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private String type = "0";
 
+    private EventBus eventBus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_class_detail);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         id = getIntent().getStringExtra(Constants.PASS_STRING);
         type = getIntent().getStringExtra(Constants.COURSE_TYPE);
         tvTittle.setText(getString(R.string.class_detail));
         ivFunction.setImageResource(R.mipmap.ic_more_share);
-        ivFunction.setVisibility(View.VISIBLE);
+        //TODO  分享暂时隐藏
+        ivFunction.setVisibility(View.INVISIBLE);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
         ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
         ratingBarForCoach.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
@@ -166,6 +175,14 @@ public class GroupClassDetailActivity extends BaseActivity {
         addLisener();
 
     }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof UpdateGroupClassDetail){
+            loadData();
+        }
+
+    /* Do something */};
 
 
     private void initView(ClassInfoDetail detail) {
@@ -215,12 +232,12 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvClassPrice.setText(detail.getPrice());
         }
 
-        if (!TextUtils.isEmpty(detail.getUserNickName())){
+        if (!TextUtils.isEmpty(detail.getUserNickName())) {
             tvOperateAddress.setText(detail.getUserNickName());
         }
 
-        tvSpaceInfo.setText("距离"+ Util.getDistance(detail.getLat(),detail.getLongit()));
-        ImageLoader.getInstance().displayImage(detail.getVenueUrl(),ivSpaceIcon,Options.getListOptions());
+        tvSpaceInfo.setText("距离" + Util.getDistance(detail.getLat(), detail.getLongit()));
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
         ImageLoader.getInstance().displayImage(detail.getUserPicUrl(), ivCoachIcon, Options.getHeaderOptions());
         ImageLoader.getInstance().displayImage(detail.getUserHeadImg(), ivOperatePerson, Options.getHeaderOptions());
         tvOperateAddress.setText(TextUtils.isEmpty(detail.getUserNickName()) ? "暂无" : detail.getUserNickName());
@@ -233,6 +250,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DeviceUtil.dp2px(mContext, 40), DeviceUtil.dp2px(mContext, 40));
             params.gravity = Gravity.CENTER;
             params.leftMargin = 15;
+            llHaveOrderedMembers.removeAllViews();
             for (int i = 0; i < detail.getPersionList().size(); i++) {
                 ImageView imageView = new ImageView(GroupClassDetailActivity.this);
                 imageView.setLayoutParams(params);
@@ -308,7 +326,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvContent.setVisibility(View.VISIBLE);
             llMyclassScore.setVisibility(View.GONE);//我的课程得分
             llMackScore.setVisibility(View.GONE);//评分
-            llScanBar.setVisibility(View.GONE);//发送朋友
+            //TODO  暂时隐藏
+            llScanBar.setVisibility(View.GONE);//发送朋友 二维码
             llOrderSuccess.setVisibility(View.GONE);//订购成功底部
             tvAppriseListTips.setVisibility(View.VISIBLE);
             lisviewDiscuss.setVisibility(View.VISIBLE);
@@ -324,7 +343,8 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvContent.setVisibility(View.VISIBLE);
                 llMyclassScore.setVisibility(View.GONE);//我的课程得分
                 llMackScore.setVisibility(View.GONE);//评分
-                llScanBar.setVisibility(View.GONE);//发送朋友
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
@@ -339,7 +359,8 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvContent.setVisibility(View.GONE);
                 llMyclassScore.setVisibility(View.GONE);//我的课程得分
                 llMackScore.setVisibility(View.GONE);//评分
-                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.VISIBLE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
@@ -353,7 +374,8 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvContent.setVisibility(View.GONE);
                 llMyclassScore.setVisibility(View.GONE);//我的课程得分
                 llMackScore.setVisibility(View.VISIBLE);//评分
-                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
@@ -367,7 +389,8 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvContent.setVisibility(View.GONE);
                 llMyclassScore.setVisibility(View.VISIBLE);//我的课程得分
                 llMackScore.setVisibility(View.GONE);//评分
-                llScanBar.setVisibility(View.GONE);//发送朋友
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.GONE);//评论列表
                 lisviewDiscuss.setVisibility(View.GONE);//评论列表
@@ -381,7 +404,8 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvContent.setVisibility(View.VISIBLE);
                 llMyclassScore.setVisibility(View.GONE);//我的课程得分
                 llMackScore.setVisibility(View.GONE);//评分
-                llScanBar.setVisibility(View.VISIBLE);//发送朋友
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.VISIBLE);
                 lisviewDiscuss.setVisibility(View.VISIBLE);
@@ -389,11 +413,11 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         }
 
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_UP);
                 scrollView.setVisibility(View.VISIBLE);
             }
         }, 1000);
@@ -465,12 +489,27 @@ public class GroupClassDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 1);
+                    bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
+                    bundle.putString(Constants.COURSE_ORDER_CODE,classInfoDetail.getOrderCode());
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                }
+            }
+        });
+
+        //联系教练
+        tvContactCoach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (classInfoDetail != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("icon",classInfoDetail.getUserPicUrl());
+                    bundle.putString("name",classInfoDetail.getCoachRealName());
+                    bundle.putString("phone",classInfoDetail.getMobileNo());
+                    openActivity(ContactCoachActivity.class,bundle);
                 }
             }
         });
