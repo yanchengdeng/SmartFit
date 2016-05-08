@@ -19,6 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateAreoClassDetail;
+import com.smartfit.MessageEvent.UpdateCoachClass;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
@@ -98,7 +101,7 @@ public class PayActivity extends BaseActivity {
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程
      */
     private int pageIndex = 1;
 
@@ -110,12 +113,15 @@ public class PayActivity extends BaseActivity {
 
     private String orderCode;
 
+    private String startTime, endTime;
+
     private EventBus eventBus;
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            mSVProgressHUD.dismiss();
             switch (msg.what) {
                 case Constants.AliPay.SDK_PAY_FLAG: {
                     PayResult payResult = new PayResult((String) msg.obj);
@@ -127,25 +133,18 @@ public class PayActivity extends BaseActivity {
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        mSVProgressHUD.showSuccessWithStatus("支付成功");
-
+                        mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        dealAfterPay();
 
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
-                            mSVProgressHUD.showSuccessWithStatus("支付结果确认中");
+                            mSVProgressHUD.showSuccessWithStatus("支付结果确认中", SVProgressHUD.SVProgressHUDMaskType.Clear);
 
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            mSVProgressHUD.showInfoWithStatus("支付失败");
-                            if (pageIndex == 1) {
-                                openActivity(GroupClassOrderSuccessActivity.class);
-                            } else if (pageIndex == 2) {
-                                openActivity(GroupClassOrderSuccessActivity.class);
-                            }
-                            finish();
-
+                            mSVProgressHUD.showSuccessWithStatus("支付失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
                         }
                     }
                     break;
@@ -179,11 +178,24 @@ public class PayActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
                         tvYeLeft.setText(userInfoDetail.getBalance());
                         leftMoney = userInfoDetail.getBalance();
-                        if (TextUtils.isEmpty(orderCode)){
+                        if (pageIndex == 4) {
+                            if (TextUtils.isEmpty(orderCode)) {
+                                payAreao();
+                            } else {
+                                orderID = orderCode;
+                                mSVProgressHUD.dismiss();
+                            }
+                        } else if (pageIndex == 5) {
                             getOrderCorse();
-                        }else{
-                            orderID = orderCode;
-                            mSVProgressHUD.dismiss();
+                        } else if(pageIndex==6){
+                            getOrderCorse();
+                        }else {
+                            if (TextUtils.isEmpty(orderCode)) {
+                                getOrderCorse();
+                            } else {
+                                orderID = orderCode;
+                                mSVProgressHUD.dismiss();
+                            }
                         }
                     }
                 }
@@ -199,12 +211,41 @@ public class PayActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+    /**
+     * 根据余额选择支付方式
+     *
+     * @param leftMoney
+     * @param payMoney
+     */
+    private void selectPayStyle(String leftMoney, String payMoney) {
+        if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(payMoney)) {
+            if (Float.parseFloat(leftMoney) >= Float.parseFloat(payMoney)) {
+                rlYe.setClickable(true);
+                ivYeSelected.setVisibility(View.VISIBLE);
+                ivWxSelected.setVisibility(View.GONE);
+                ivAlipaySelected.setVisibility(View.GONE);
+                payStyle = 0;
+            } else {
+                rlYe.setClickable(false);
+                payStyle = 1;
+                ivWxSelected.setVisibility(View.GONE);
+                ivYeSelected.setVisibility(View.GONE);
+                ivAlipaySelected.setVisibility(View.VISIBLE);
+
+            }
+        }
+    }
+
     private void initView() {
         tvTittle.setText("付款");
         pageIndex = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
         courseId = getIntent().getStringExtra(Constants.COURSE_ID);
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
         orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
+        if (pageIndex == 4) {
+            startTime = getIntent().getStringExtra("start_time");
+            endTime = getIntent().getStringExtra("end_time");
+        }
         tvPayMoney.setText(payMoney + "元");
         getLeftMoney();
     }
@@ -274,7 +315,7 @@ public class PayActivity extends BaseActivity {
         mSVProgressHUD.setText("获取订单信息");
         Map<String, String> map = new HashMap<>();
         map.put("courseId", courseId);
-        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+//        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         PostRequest request = new PostRequest(Constants.ORDER_ORDERCOURSE, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -284,23 +325,8 @@ public class PayActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
+                    selectPayStyle(leftMoney, orderCourse.getOrderPrice());
 
-                    if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(orderCourse.getOrderPrice())) {
-                        if (Float.parseFloat(leftMoney) >= Float.parseFloat(orderCourse.getOrderPrice())) {
-                            rlYe.setClickable(true);
-                            ivYeSelected.setVisibility(View.VISIBLE);
-                            ivWxSelected.setVisibility(View.GONE);
-                            ivAlipaySelected.setVisibility(View.GONE);
-                            payStyle = 0;
-                        } else {
-                            rlYe.setClickable(false);
-                            payStyle = 1;
-                            ivWxSelected.setVisibility(View.VISIBLE);
-                            ivYeSelected.setVisibility(View.GONE);
-                            ivAlipaySelected.setVisibility(View.GONE);
-
-                        }
-                    }
                 }
                 mSVProgressHUD.dismiss();
             }
@@ -309,7 +335,7 @@ public class PayActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 messsge = error.getMessage();
                 mSVProgressHUD.dismiss();
-//                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -334,6 +360,42 @@ public class PayActivity extends BaseActivity {
     }
 
     /***
+     * 支付有氧课程
+     */
+    private void payAreao() {
+
+
+        mSVProgressHUD.setText("创建订单中");
+        Map<String, String> map = new HashMap<>();
+        map.put("classroomId", courseId);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERAEROBIC, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
+                if (orderCourse != null) {
+                    if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
+                        orderID = orderCourse.getOrderCode();
+                    }
+                    selectPayStyle(leftMoney, orderCourse.getOrderPrice());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                messsge = error.getMessage();
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
+    }
+
+    /***
      * 本地余额支付订单
      */
     private void payOrder() {
@@ -350,17 +412,7 @@ public class PayActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
-                if (pageIndex==1) {
-                    eventBus.post(new UpdateGroupClassDetail());
-                }else if(pageIndex==3){
-                    eventBus.post(new UpdatePrivateClassDetail());
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                      finish();
-                    }
-                },1000);
+                dealAfterPay();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -371,6 +423,30 @@ public class PayActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(PayActivity.this);
         mQueue.add(request);
+    }
+
+    /**
+     * 自付完成后  需要操作的步骤
+     */
+    private void dealAfterPay() {
+        if (pageIndex == 1) {
+            eventBus.post(new UpdateGroupClassDetail());
+        } else if (pageIndex == 3) {
+            eventBus.post(new UpdatePrivateClassDetail());
+        } else if (pageIndex == 4) {
+            eventBus.post(new UpdateAreoClassDetail());
+        } else if (pageIndex == 5) {
+            eventBus.post(new UpdateCoachClass());
+        }else if (pageIndex==6){
+            eventBus.post(new UpdateCustomClassInfo());
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1000);
+
     }
 
 
@@ -625,7 +701,7 @@ public class PayActivity extends BaseActivity {
     private void pay() {
         mSVProgressHUD.showWithStatus("加载中...");
         // 订单
-        String orderInfo = AliPayUtiils.getOrderInfo(getString(R.string.app_name), orderID, "0.01");//String.valueOf(payMoney)
+        String orderInfo = AliPayUtiils.getOrderInfo(getString(R.string.app_name), orderID, payMoney);//String.valueOf(payMoney)
 
         // 对订单做RSA 签名
         String sign = AliPayUtiils.sign(orderInfo);

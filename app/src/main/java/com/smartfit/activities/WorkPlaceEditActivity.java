@@ -19,7 +19,6 @@ import com.smartfit.beans.WorkPoint;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.WheelView;
@@ -29,7 +28,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -326,7 +324,7 @@ public class WorkPlaceEditActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

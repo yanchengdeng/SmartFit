@@ -96,6 +96,14 @@ public class PostRequest extends Request<JsonObject> {
         return headers;
     }
 
+    @Override
+    public void deliverError(VolleyError error) {
+        VolleyError newErro = error;
+        if (error.getCause() instanceof java.net.ConnectException ){
+            newErro=  new VolleyError("请检查网络");
+        }
+        super.deliverError(newErro);
+    }
 
     @Override
     protected Response<JsonObject> parseNetworkResponse(NetworkResponse response) {

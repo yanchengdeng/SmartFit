@@ -36,7 +36,7 @@
                 android:id="@+id/tv_pay_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="150元"
+                android:text="0元"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/text_color_blue"
                 android:textSize="@dimen/text_larger" />
@@ -131,12 +131,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
+                android:visibility="gone"
                 android:background="@color/line_gray" />
 
             <RelativeLayout
                 android:id="@+id/rl_wx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView

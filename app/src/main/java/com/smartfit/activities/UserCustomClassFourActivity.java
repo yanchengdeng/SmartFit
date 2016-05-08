@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.R;
 import com.smartfit.beans.CustomClassReleaseInfo;
 import com.smartfit.commons.Constants;
@@ -23,6 +24,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,15 +84,22 @@ public class UserCustomClassFourActivity extends BaseActivity {
     //开放人群数
     private int opener = 1;
     private String startTime, endTime, courseClassId, venueId, venuPrice, coachPrice, coachId,roomId;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_custom_class_four);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this);eventBus =EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
     }
+    @Subscribe
+    public void onEvent(UpdateCustomClassInfo event) {/* Do something */
+        finish();
+    }
+
 
     private void initView() {
         tvTittle.setText("自订课程(4/4)");
@@ -228,7 +239,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
                 CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response,CustomClassReleaseInfo.class);
                 if(customClassReleaseInfo != null){
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 4);
+                    bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
                     bundle.putString(Constants.COURSE_MONEY, customClassReleaseInfo.getTotalPrice());
                     openActivity(PayActivity.class,bundle);
@@ -237,7 +248,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

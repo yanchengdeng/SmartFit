@@ -94,6 +94,7 @@ public class CourseMessageActivity extends BaseActivity {
                     noData.setVisibility(View.GONE);
                     if (submessages.getListData().size()==Constants.SIZE){
                         page++;
+                        isLoadEnd = false;
                     }else{
                         listView.onLoadMoreComplete();
                         isLoadEnd = true;
@@ -104,11 +105,11 @@ public class CourseMessageActivity extends BaseActivity {
                         noData.setVisibility(View.GONE);
                         mSVProgressHUD.showInfoWithStatus("已加载到底", SVProgressHUD.SVProgressHUDMaskType.Clear);
                         listView.onLoadMoreComplete();
-                        isLoadEnd = true;
                     } else {
                         listView.setVisibility(View.GONE);
                         noData.setVisibility(View.VISIBLE);
                     }
+                    isLoadEnd = true;
                 }
                 listView.onLoadMoreComplete();
             }
@@ -123,6 +124,7 @@ public class CourseMessageActivity extends BaseActivity {
                     noData.setVisibility(View.VISIBLE);
                 }
                 listView.onLoadMoreComplete();
+                isLoadEnd = true;
                 mSVProgressHUD.dismiss();
             }
         });

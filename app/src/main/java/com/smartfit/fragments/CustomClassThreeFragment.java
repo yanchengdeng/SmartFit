@@ -97,7 +97,7 @@ public class CustomClassThreeFragment extends BaseFragment {
         data.put("startTime", startTime);
         data.put("endTime", endTime);
         data.put("venueId", venueId);
-        data.put("courseTypeCode", courseClassId);
+        data.put("courseClassId", courseClassId);
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

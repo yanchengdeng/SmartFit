@@ -9,10 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.beans.ClassInfo;
-import com.smartfit.utils.Options;
+import com.smartfit.beans.AreoInfo;
 
 import java.util.List;
 
@@ -25,10 +23,10 @@ import butterknife.ButterKnife;
  */
 public class AerobincnAppratusItemAdapter extends BaseAdapter {
     private Context context;
-    private List<ClassInfo> datas;
+    private List<AreoInfo> datas;
 
     public AerobincnAppratusItemAdapter(Context context
-            , List<ClassInfo> datas) {
+            , List<AreoInfo> datas) {
         this.context = context;
         this.datas = datas;
 
@@ -60,28 +58,25 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ClassInfo item = datas.get(position);
-        if (!TextUtils.isEmpty(item.getCourseName())) {
-            viewHolder.tvTittle.setText(item.getCourseName());
+        AreoInfo item = datas.get(position);
+        if (!TextUtils.isEmpty(item.getClassroomName())) {
+            viewHolder.tvTittle.setText(item.getClassroomName());
         }
 
-        if (!TextUtils.isEmpty(item.getCourseDetail())) {
-            viewHolder.tvInfo.setText(item.getCourseDetail());
+
+
+        if (!TextUtils.isEmpty(item.getPartCount())) {
+            viewHolder.tvJoin.setText("该时段已有"+item.getPartCount()+"人预约");
         }
 
-        if (!TextUtils.isEmpty(item.getPersonCount())) {
-            viewHolder.tvJoin.setText("该时段已有"+item.getPersonCount()+"人预约");
+        if (!TextUtils.isEmpty(item.getClassroomPrice())) {
+            viewHolder.tvPrice.setText(item.getClassroomPrice()+"元/次");
         }
 
-        if (!TextUtils.isEmpty(item.getPrice())) {
-            viewHolder.tvPrice.setText(item.getPrice()+"元/次");
-        }
-
-        ImageLoader.getInstance().displayImage(item.getClassUrl(),viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }
 
-    public void setData(List<ClassInfo> datas) {
+    public void setData(List<AreoInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

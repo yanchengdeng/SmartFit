@@ -9,8 +9,12 @@ import android.widget.TextView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.R;
 import com.smartfit.fragments.CustomClassThreeFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,14 +41,23 @@ public class UserCustomClassThreeActivity extends BaseActivity {
 
     private String startTime, endTime, courseClassId,venueId;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_class_three);
         ButterKnife.bind(this);
+        eventBus =EventBus.getDefault();
+        eventBus.register(this);
         initView();
         initViewPage();
         addLisener();
+    }
+
+    @Subscribe
+    public void onEvent(UpdateCustomClassInfo event) {/* Do something */
+        finish();
     }
 
     private void initView() {

@@ -37,7 +37,9 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
                 android:hint="请填写金额"
+                android:background="@null"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/text_color_blue"
                 android:textSize="@dimen/text_normal" />
@@ -63,6 +65,7 @@
                 android:id="@+id/rl_wx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
@@ -150,7 +153,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
                     android:layout_margin="@dimen/image_padding_big"
                     android:src="@mipmap/icon_pay_choose" />
 

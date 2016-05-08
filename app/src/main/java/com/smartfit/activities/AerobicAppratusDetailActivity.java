@@ -21,14 +21,19 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
-import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.AreaDetailInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.Util;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,22 +72,40 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     ScrollView scrollView;
 
 
-    private String courseId;
+    private String classroomid;
+    private String startTime, endTime;
 
-    private ClassInfoDetail classInfoDetail;
+    private AreaDetailInfo classInfoDetail;
+
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aerobic_appratus_detail);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         ButterKnife.bind(this);
         initView();
         addLisener();
     }
 
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof UpdateAreoClassDetail) {
+            getClassInfo();
+        }
+
+    /* Do something */
+    }
+
+    ;
+
     private void initView() {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
-        courseId = getIntent().getStringExtra(Constants.COURSE_ID);
+        classroomid = getIntent().getStringExtra(Constants.COURSE_ID);
+        startTime = getIntent().getStringExtra("start");
+        endTime = getIntent().getStringExtra("end");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
 
@@ -91,12 +114,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     private void getClassInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
-        data.put("courseId", courseId);
-        data.put("courseType", "3");
-        PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
+        data.put("classroomId", classroomid);
+        PostRequest request = new PostRequest(Constants.CLASSROOM_GETCLASSROOM, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
+                AreaDetailInfo detail = JsonUtils.objectFromJson(response.toString(), AreaDetailInfo.class);
                 if (detail != null) {
                     classInfoDetail = detail;
                     fillData(detail);
@@ -115,41 +137,58 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         mQueue.add(request);
     }
 
-    private void fillData(ClassInfoDetail detail) {
-        if (!TextUtils.isEmpty(detail.getVenueName())) {
-            tvAddress.setText(detail.getVenueName());
+    private void fillData(AreaDetailInfo detail) {
+        /**
+         * 订单状态（
+         * 1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了，
+         * 7课程已结束未评论
+         * 8已评论）
+         */
+        if (TextUtils.isEmpty(detail.getState()))
+
+
+
+        if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {
+            tvAddress.setText(detail.getVenue().getVenueName());
         }
-        if (!TextUtils.isEmpty(detail.getCourseName())) {
-            tvRoom.setText(detail.getCourseName());
+        if (!TextUtils.isEmpty(detail.getClassroomName())) {
+            tvRoom.setText(detail.getClassroomName());
         }
 
-        tvDistance.setText("距离 0km");
+        tvDistance.setText("距离 " + Util.getDistance(detail.getVenue().getLatitude(), detail.getVenue().getLongitude()));
 
-        if (!TextUtils.isEmpty(detail.getStartDate())) {
-            tvTime.setText(DateUtils.getData(detail.getStartDate()));
+        if (!TextUtils.isEmpty(detail.getVenue().getLastModifyTime())) {
+            tvTime.setText(DateUtils.getData(detail.getVenue().getLastModifyTime()));
         }
 
-        if (!TextUtils.isEmpty(detail.getPrice())) {
-            tvPrice.setText(detail.getPrice());
+        if (!TextUtils.isEmpty(detail.getVenue().getOrderPriceSum())) {
+            tvPrice.setText(detail.getVenue().getOrderPriceSum());
+        } else {
+            detail.getVenue().setOrderPriceSum("0");
+            tvPrice.setText("0");
         }
 
-        if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
+        if (null != detail.getClassroomPics() && detail.getClassroomPics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
             rollViewPager.setVisibility(View.GONE);
         }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
-        rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getCourseName()));
+        rollViewPager.setAdapter(new TestNomalAdapter(detail.getClassroomPics(), detail.getClassroomName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
-
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_UP);
                 scrollView.setVisibility(View.VISIBLE);
             }
-        }, 500);
+        }, 1000);
     }
 
 
@@ -166,14 +205,16 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 3);
-                    bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+                    bundle.putInt(Constants.PAGE_INDEX, 4);
+                    bundle.putString(Constants.COURSE_ID, classInfoDetail.getId());
+                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getClassroomPrice());
+                    bundle.putString("start_time", startTime);
+                    bundle.putString("end_time", endTime);
+                    bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 }
-                finish();
             }
         });
     }

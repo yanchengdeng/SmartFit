@@ -14,13 +14,11 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.beans.BriefInfo;
-import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.utils.SharedPreferencesUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -83,7 +81,7 @@ public class CoachBriefActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -142,7 +140,7 @@ public class CoachBriefActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

@@ -17,10 +17,12 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.R;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.ReopenClassInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
@@ -29,6 +31,9 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.HorizontalListView;
 import com.smartfit.views.SelectableRoundedImageView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -99,16 +104,25 @@ public class ReopenClassActivity extends BaseActivity {
 
     private String startTime, endTime;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reopen_class);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         courserId = getIntent().getStringExtra(Constants.PASS_STRING);
         type = getIntent().getStringExtra("type");
         initView();
         loadData();
         initDateSelect();
+    }
+
+    @Subscribe
+    public void onEvent(UpdateCoachClass event) {/* Do something */
+        finish();
     }
 
     private void loadData() {
@@ -229,6 +243,14 @@ public class ReopenClassActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
+                ReopenClassInfo reopenClassInfo = JsonUtils.objectFromJson(response,ReopenClassInfo.class);
+                if (reopenClassInfo != null){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 5);//     再次开课    5   一样处理
+                    bundle.putString(Constants.COURSE_ID, reopenClassInfo.getId());
+                    bundle.putString(Constants.COURSE_MONEY, reopenClassInfo.getTotalPrice());
+                    openActivity(PayActivity.class, bundle);
+                }
 
             }
         }, new Response.ErrorListener() {

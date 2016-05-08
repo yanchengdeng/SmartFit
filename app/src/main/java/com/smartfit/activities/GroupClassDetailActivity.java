@@ -178,11 +178,14 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof UpdateGroupClassDetail){
+        if (event instanceof UpdateGroupClassDetail) {
             loadData();
         }
 
-    /* Do something */};
+    /* Do something */
+    }
+
+    ;
 
 
     private void initView(ClassInfoDetail detail) {
@@ -278,8 +281,9 @@ public class GroupClassDetailActivity extends BaseActivity {
 
         }
 
-
-        tvClassTime.setText(DateUtils.getData(detail.getStartDate()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
+        if (!TextUtils.isEmpty(detail.getStartTime()) && !TextUtils.isEmpty(detail.getEndTime())) {
+            tvClassTime.setText(DateUtils.getData(detail.getStartTime()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
+        }
 
 
         if (detail.getCommentList().size() > 0) {
@@ -291,7 +295,6 @@ public class GroupClassDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(commentInfo.getCommentContent())) {
                 tvMyClassScore.setText(commentInfo.getCommentContent());
             }
-
         }
 
         if (!TextUtils.isEmpty(detail.getShared())) {
@@ -490,7 +493,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
-                    bundle.putString(Constants.COURSE_ORDER_CODE,classInfoDetail.getOrderCode());
+                    bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
                     openActivity(PayActivity.class, bundle);
@@ -506,10 +509,24 @@ public class GroupClassDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("icon",classInfoDetail.getUserPicUrl());
-                    bundle.putString("name",classInfoDetail.getCoachRealName());
-                    bundle.putString("phone",classInfoDetail.getMobileNo());
-                    openActivity(ContactCoachActivity.class,bundle);
+                    bundle.putString("icon", classInfoDetail.getUserPicUrl());
+                    bundle.putString("name", classInfoDetail.getCoachRealName());
+                    bundle.putString("phone", classInfoDetail.getMobileNo());
+                    openActivity(ContactCoachActivity.class, bundle);
+                }
+            }
+        });
+
+        //邀请好友
+        tvInviteFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (classInfoDetail != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.PASS_STRING, classInfoDetail.getCourseId());
+                    openActivity(InviteFriendsActivity.class, bundle);
+                } else {
+
                 }
             }
         });

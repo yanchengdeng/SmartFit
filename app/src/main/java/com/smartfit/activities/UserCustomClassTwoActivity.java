@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.R;
 import com.smartfit.adpters.CustomClassVenueAdapter;
 import com.smartfit.beans.CustomClassVenue;
@@ -23,6 +24,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -64,16 +68,24 @@ public class UserCustomClassTwoActivity extends BaseActivity {
 
     List<CustomClassVenue> customClassVenues;
 
+    private EventBus eventBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_class_two);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         classId = getIntent().getStringExtra(Constants.PASS_STRING);
         intView();
 
         addLisener();
 
+    }
+    @Subscribe
+    public void onEvent(UpdateCustomClassInfo event) {/* Do something */
+        finish();
     }
 
     private void intView() {

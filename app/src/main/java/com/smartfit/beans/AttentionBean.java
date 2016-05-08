@@ -7,11 +7,21 @@ package com.smartfit.beans;
  */
 public class AttentionBean {
 
-  private String  uid;//23,
+    private String  uid;//23,
     private String    sex;//1,
     private String   nickName;//Gordon,
     private String  signature;//null,
     private String  userPicUrl;//null
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    private boolean isCheck;
 
     public String getUid() {
         return uid;

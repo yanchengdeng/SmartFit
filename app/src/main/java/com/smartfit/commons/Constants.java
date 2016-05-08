@@ -7,9 +7,11 @@ package com.smartfit.commons;
 public class Constants {
 
 
-    public final  static  String FRIST_OPEN_APP = "first_open_app";
+    public final static String FRIST_OPEN_APP = "first_open_app";
 
-    /*****首页传入 位置*/
+    /*****
+     * 首页传入 位置
+     */
     public final static String FRAGMENT_POSITION = "positon";
 
 
@@ -30,7 +32,7 @@ public class Constants {
 
 
     public static final String CITY_LIST_INOF = "city_list";
-    public static final String CITY_NAME =  "city_name";
+    public static final String CITY_NAME = "city_name";
 
     public static final String VENUE_LIST_INFO = "venue_list_info";//场馆列表信息
 
@@ -44,13 +46,9 @@ public class Constants {
     public static final String ORDER_TIME = "order_time";
 
 
-
-
-
-
     public static final String UID = "uid";//用户id
     public static final String ACCOUNT = "account";//账号
-    public static final String PASSWORD  = "password";
+    public static final String PASSWORD = "password";
     public static final String SID = "sid";//会话id
     public static final String IS_ICF = "is_icf";//是否教练认证
     public static final String OPEN_COACH_AUTH = "open_coach_auth";
@@ -67,7 +65,7 @@ public class Constants {
     public static final String LOGIN_IN_METHOD = "/User/Login";
     public static final String SMS_SMSSEND = "/SMS/SMSSend";
     public static final String RESET_PASSOWRD = "/User/ResetPassword";
-    public static final String USER_CONTACTCOURSELIST= "/User/myContactCourseList";
+    public static final String USER_CONTACTCOURSELIST = "/User/myContactCourseList";
     public static final String RECORD_GETRECORDLIST = "/Record/getRecordList";
 
     //课程相关接口
@@ -90,32 +88,34 @@ public class Constants {
     public static final String COACH_SUBSTITUTECOACH = "/coach/substituteCoach";
     public static final String COURSE_COACHREOPENCOURSE = "/course/coachReopenCourse";
     public static final String CLASSROOM_GETIDLEAEROBICCLASSROOMS = "/classroom/getIdleAerobicClassrooms";
-
+    public static final String CLASSROOM_GETCLASSROOM = "/classroom/getClassroom";
+    public static final String ORDER_ORDERAEROBIC = "/order/orderAerobic";
 
 
     //用户信息
     public static final String MAIN_PAGE_INFO = "/User/mainPage";
     public static final String USER_USERINFO = "/User/userInfo";
-    public static final String USER_CONCERNLIST ="/User/concernList";
-    public static final String USER_FANSLIST  = "/User/fansList";
+    public static final String USER_CONCERNLIST = "/User/concernList";
+    public static final String USER_FANSLIST = "/User/fansList";
     public static final String USER_SEARCHFRIENDLIST = "/User/searchFriendList";
-    public static final String USER_ADDFOCUS ="/User/addfocus";
+    public static final String USER_ADDFOCUS = "/User/addfocus";
     public static final String USER_ADDFRIEND = "/User/addFriend";
     public static final String USER_SAVEUSERINFO = "/User/saveUserInfo";
     public static final String USER_FRIENDLIST = "/User/friendList";
+    public static final String USER_APPLYCASH = "/User/applyCash";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
     public static final String COACH_LISTCERTIFICATE = "/coach/listCertificate";
     public static final String COACH_GETCOACHINFO = "/coach/getCoachInfo";
-    public static final String  COACH_GETRESUME = "/coach/getResume";
+    public static final String COACH_GETRESUME = "/coach/getResume";
     public static final String COACH_UPDATERESUME = "/coach/updateResume";
-    public static final String GET_COACHPAGEINFO  = "/coach/getCoachPageInfo";
-    public static final String WORKSPACE_LIST ="/workspace/List";
+    public static final String GET_COACHPAGEINFO = "/coach/getCoachPageInfo";
+    public static final String WORKSPACE_LIST = "/workspace/List";
     public static final String WORKSPACE_DELETE = "/workspace/Delete";
-    public static final String  WORKSPACE_ADD = "/workspace/Add";
-    public static final  String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
-    public static final String  CLASSIF_LISTTHEVENUEIDLECLASSROOMS= "/ClassIf/listTheVenueIdleClassrooms";
+    public static final String WORKSPACE_ADD = "/workspace/Add";
+    public static final String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
+    public static final String CLASSIF_LISTTHEVENUEIDLECLASSROOMS = "/ClassIf/listTheVenueIdleClassrooms";
     public static final String COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE = "/coach/listIdleCoachesByVenueIdAndCourseTypeCode";
 
 
@@ -141,10 +141,11 @@ public class Constants {
 
 
     //消息
-    public static  final String MESSAGE_DEL = "/message/del";
+    public static final String MESSAGE_DEL = "/message/del";
     public static final String MESSAGE_LIST = "/message/list";
-    public static final String  COACH_RECEIVESUBSTITUTECOACH = "/coach/receiveSubstituteCoach";
-public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstituteCoach";
+    public static final String COACH_RECEIVESUBSTITUTECOACH = "/coach/receiveSubstituteCoach";
+    public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstituteCoach";
+    public static final String CLASSIF_INVITEFRIENDS = "/ClassIf/inviteFriends";
 
     public static final int SIZE = 20;
 
@@ -179,16 +180,15 @@ public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstitut
 
     public static class Net {
         //发布时的接口
-        public static final String URL = "http://139.196.228.98:8098";
+//        public static final String URL = "http://139.196.228.98:8098";
 
         //测试
-//        public static final String URL = "http://123.57.164.115:8098";
-
+        public static final String URL = "http://123.57.164.115:8098";
 
 
         //支付回调
-        public static final String ALIPAY_CALLBACK = Net.URL+"/Pay/aliCallback";
-        public static final String WX_PAY_CALLBACK = Net.URL+"/Pay/weixinCallback";
+        public static final String ALIPAY_CALLBACK = Net.URL + "/Pay/aliCallback";
+        public static final String WX_PAY_CALLBACK = Net.URL + "/Pay/weixinCallback";
 
     }
 }

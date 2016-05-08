@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.R;
 import com.smartfit.adpters.CustomClassGridViewItem;
 import com.smartfit.beans.ClassFication;
@@ -17,6 +18,9 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,19 +46,29 @@ public class UserCustomClassOneActivity extends BaseActivity {
     TextView noData;
 
 
+    private EventBus eventBus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_class_one);
         ButterKnife.bind(this);
+        eventBus  = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         getData();
         addLisener();
 
     }
 
+    @Subscribe
+    public void onEvent(UpdateCustomClassInfo event) {/* Do something */
+        finish();
+    }
+
     private void initView() {
-        tvTittle.setText("自定课程1/4");
+        tvTittle.setText("自订课程1/4");
 
 
 
@@ -84,7 +98,7 @@ public class UserCustomClassOneActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_friends_ui"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
+
+
+    <CheckBox
+        android:id="@+id/ch_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:button="@null"
+        android:clickable="false"
+        android:drawablePadding="@dimen/image_padding"
+        android:drawableRight="@drawable/coach_selected_checked"
+        android:focusable="false"
+        android:gravity="center"
+        android:textColor="@color/common_header_bg"
+        android:textSize="@dimen/text_normal_down" />
+
+
+    <TextView
+        android:id="@+id/tv_coach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:singleLine="true"
+        android:text="齐天大圣"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_normal"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

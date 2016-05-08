@@ -23,6 +23,7 @@ import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -86,7 +87,9 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getCourseName())) {
             viewHolder.tvClassName.setText(item.getCourseName());
         }
-//        viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime() + "~" + DateUtils.getDataTime(item.getEndTime())));
+        if (!TextUtils.isEmpty(item.getStartTime()) && !TextUtils.isEmpty(item.getEndTime())){
+            viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime()) + "~" + DateUtils.getDataTime(item.getEndTime()));
+        }
 
         ImageLoader.getInstance().displayImage(item.getStartUserPicUrl(), viewHolder.ivIcon, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(item.getStartUserName())) {

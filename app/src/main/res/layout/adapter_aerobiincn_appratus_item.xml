@@ -65,6 +65,7 @@
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down"
                     android:text="200平教室，有多台xxx..."
+                    android:visibility="invisible"
                     android:layout_marginRight="@dimen/image_padding"
                     android:layout_height="wrap_content" />
 

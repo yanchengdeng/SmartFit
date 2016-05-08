@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
-import com.smartfit.MessageEvent.CancleCoachClass;
+import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.R;
 import com.smartfit.fragments.CoachGoingClassesFragment;
 import com.smartfit.fragments.CoachOverClassesFragment;
@@ -59,7 +59,7 @@ public class CoachClassesActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEvent(CancleCoachClass event) {/* Do something */
+    public void onEvent(UpdateCoachClass event) {/* Do something */
         initFragments();
     }
 

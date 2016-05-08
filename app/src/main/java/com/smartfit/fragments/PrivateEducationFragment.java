@@ -522,6 +522,7 @@ public class PrivateEducationFragment extends Fragment {
                     addressCustomPop.dismiss();
                     venueId = addresses.get(position).getVenueId();
                     ivCoverBg.setVisibility(View.GONE);
+                    loadData();
                 }
             });
         }

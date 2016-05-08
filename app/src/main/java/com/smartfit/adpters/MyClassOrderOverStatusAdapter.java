@@ -15,6 +15,7 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.ReopenClassActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,7 +71,9 @@ public class MyClassOrderOverStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getCourseName())) {
             viewHolder.tvClassName.setText(item.getCourseName());
         }
-//        viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime() + "~" + DateUtils.getDataTime(item.getEndTime())));
+        if (!TextUtils.isEmpty(item.getStartTime()) && !TextUtils.isEmpty(item.getEndTime())){
+            viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime()) + "~" + DateUtils.getDataTime(item.getEndTime()));
+        }
 
         if (!TextUtils.isEmpty(item.getStartUserName())) {
             viewHolder.tvName.setText(item.getStartUserName());

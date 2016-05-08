@@ -92,7 +92,7 @@ public class MyAddClassesFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

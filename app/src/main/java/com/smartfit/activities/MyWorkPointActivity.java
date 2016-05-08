@@ -19,9 +19,7 @@ import com.smartfit.R;
 import com.smartfit.adpters.WorkPointAdapter;
 import com.smartfit.beans.WorkPoint;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyListView;
@@ -117,7 +115,7 @@ public class MyWorkPointActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -167,7 +165,7 @@ public class MyWorkPointActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

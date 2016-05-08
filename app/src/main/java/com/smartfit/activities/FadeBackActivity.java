@@ -22,8 +22,16 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.MyGridView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -53,6 +61,8 @@ public class FadeBackActivity extends BaseActivity {
     EditText etContent;
     private ArrayList<String> mSelectPath;
     private static final int REQUEST_IMAGE = 3;
+
+    private List<String> urls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +129,18 @@ public class FadeBackActivity extends BaseActivity {
         Map<String,String> maps = new HashMap<>();
         maps.put("feedBackContent",content);
 
+        StringBuffer stringBuffer = new StringBuffer();
+        if (urls.size() > 0) {
+
+            for (String item : urls) {
+                stringBuffer.append(item);
+            }
+        }
+
+        if (!TextUtils.isEmpty(stringBuffer.toString())) {
+            maps.put("imgUrl", stringBuffer.toString());
+        }
+
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         PostRequest request = new PostRequest(Constants.SYS_SAVEFEEDBACK, maps,new Response.Listener<JsonObject>() {
             @Override
@@ -129,7 +151,7 @@ public class FadeBackActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -145,7 +167,7 @@ public class FadeBackActivity extends BaseActivity {
         // 是否显示拍摄图片
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
         // 最大可选择图片数量
-        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
         // 选择模式
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_MULTI);
         // 默认选择
@@ -165,10 +187,56 @@ public class FadeBackActivity extends BaseActivity {
                 LogUtil.d("dyc", mSelectPath.toString());
                 if (null != mSelectPath && mSelectPath.size() > 0) {
                     gvSelectPhotos.setAdapter(new GridViewPublishPhotoAdapter(FadeBackActivity.this, mSelectPath));
+                    for (String item : mSelectPath) {
+                        getCardUrl(item);
+                    }
                 }
             }
         }
     }
 
+
+    /**
+     * 获取省份证图片路径
+     *
+     * @param cards
+     */
+    private void getCardUrl(String cards) {
+        RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
+        params.setMultipart(true);
+        try {
+            params.addBodyParameter("imageFile", new File(cards));
+        } catch (Exception ex) {
+        }
+        x.http().post(params, new Callback.CommonCallback<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject result) {
+
+                String url = null;
+                try {
+                    url = result.getString("data");
+                    urls.add(url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (!TextUtils.isEmpty(url)) {
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+
+    }
 
 }

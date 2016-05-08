@@ -94,14 +94,14 @@
     <string name="how_publish_class">如何使用课程发起？</string>
     <string name="cannot_topup">钱包无法充值？</string>
     <string name="server_phone">客服电话</string>
-    <string name="server_phone_num">0591-5558888</string>
-    <string name="server_time">(周一至周日 8：00 ~18：00)</string>
+    <string name="server_phone_num">4006053337</string>
+    <string name="server_time">(周一至周日 9：00 ~22：00)</string>
     <string name="help">帮助</string>
     <string name="suggest_fadeback">意见反馈</string>
     <string name="title_activity_fade_back">FadeBackActivity</string>
     <string name="question_desc">问题描述</string>
     <string name="fadeback_tips">请告诉我们你的疑惑或意见</string>
-    <string name="question_desc_photo">图片(问题截图、选图)</string>
+    <string name="question_desc_photo">图片(问题截图、选填)</string>
     <string name="submit">提交</string>
     <string name="fans">粉丝</string>
     <string name="search">搜索</string>
@@ -204,7 +204,7 @@
     <string name="class_name">课程名称</string>
     <string name="class_content">课程内容</string>
     <string name="title_activity_custome_class">CustomeClassActivity</string>
-    <string name="start_custom_class">开始自顶课程</string>
+    <string name="start_custom_class">开始自订课程</string>
     <string name="title_activity_dynamic_detail">DynamicDetailActivity</string>
     <string name="no_sign">这个人太懒，还没有签名</string>
     <string name="title_activity_system_message_list">SystemMessageListActivity</string>
@@ -383,6 +383,9 @@
     <string name="title_activity_search_health_friends">SearchHealthFriendsActivity</string>
     <string name="search_health_friends">查找健身好友</string>
     <string name="waiting_coach_accepter">等待教练接单中...</string>
+    <string name="invite_wx_friends">邀请微信好友</string>
+    <string name="invite_friends">邀请好友</string>
+    <string name="title_activity_private_class_by_message">PrivateClassByMessageActivity</string>
 
 
 </resources>

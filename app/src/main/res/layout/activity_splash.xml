@@ -18,14 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@mipmap/icon_slogan"/>
-        <ImageView
-           android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/splash_bottome_height"
-            android:src="@mipmap/icon_logo"
-           />
+
 
     </RelativeLayout>
 

@@ -12,7 +12,7 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
@@ -89,7 +89,7 @@
                         android:textSize="@dimen/text_normal"
                         android:textColor="@color/text_color_gray"
                         android:layout_marginTop="@dimen/image_padding"
-                        android:text="2016/1/2 17:00pm~21:30pm"
+                        android:text=""
                         />
 
                 </LinearLayout>
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_larger"
-                        android:text="20"
+                        android:text="0"
                         android:textStyle="bold"
                         android:textColor="@color/text_color_blue"/>
 

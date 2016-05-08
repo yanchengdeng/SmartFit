@@ -14,7 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
-import com.smartfit.MessageEvent.CancleCoachClass;
+import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.FindSubstitueActivity;
@@ -150,7 +150,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                eventBus.post(new CancleCoachClass());
+                eventBus.post(new UpdateCoachClass());
             }
         }, new Response.ErrorListener() {
             @Override

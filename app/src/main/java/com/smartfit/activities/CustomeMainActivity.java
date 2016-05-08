@@ -91,13 +91,6 @@ public class CustomeMainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userinfo)) {
             UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userinfo, UserInfoDetail.class);
             if (userInfoDetail != null) {
-                ImageView ivheader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
-                ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivheader, Options.getHeaderOptions());
-                TextView tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
-                if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
-                    tvName.setText(userInfoDetail.getNickName());
-                }
-
                 TextView tvBallence = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
                 if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
                     tvBallence.setText("余额" + userInfoDetail.getBalance() + "元");

@@ -33,14 +33,13 @@ import com.smartfit.adpters.AerobincnAppratusItemAdapter;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
-import com.smartfit.beans.ClassInfo;
+import com.smartfit.beans.AreoInfo;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -98,7 +97,7 @@ public class AerobicnAppratusFragment extends Fragment {
 
 
     private AerobincnAppratusItemAdapter adapter;
-    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
+    private List<AreoInfo> datas = new ArrayList<AreoInfo>();
 
     private List<WorkPointAddress> addresses;
 
@@ -145,7 +144,9 @@ public class AerobicnAppratusFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.COURSE_ID, datas.get(position).getCourseId());
+                bundle.putString(Constants.COURSE_ID, datas.get(position).getClassroomId());
+                bundle.putString("start",String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+                bundle.putString("end",String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
                 ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
             }
         });
@@ -170,11 +171,11 @@ public class AerobicnAppratusFragment extends Fragment {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-//                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
-//                if (null != requestList && requestList.size() > 0) {
-//                    datas.addAll(requestList);
-//                    adapter.setData(datas);
-//                }
+                List<AreoInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), AreoInfo.class);
+                if (null != requestList && requestList.size() > 0) {
+                    datas.addAll(requestList);
+                    adapter.setData(datas);
+                }
                 noMoreData(datas);
             }
         }, new Response.ErrorListener() {
@@ -182,7 +183,6 @@ public class AerobicnAppratusFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 noMoreData(datas);
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                LogUtil.w("dyc", "..... " + error.getMessage());
             }
         });
         request.setTag(new Object());
@@ -191,7 +191,7 @@ public class AerobicnAppratusFragment extends Fragment {
     }
 
 
-    private void noMoreData(List<ClassInfo> datas) {
+    private void noMoreData(List<AreoInfo> datas) {
         if (datas.size() > 0) {
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);
@@ -308,6 +308,8 @@ public class AerobicnAppratusFragment extends Fragment {
         request.setTag(((BaseActivity) getActivity()).TAG);
         request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
+
+
 
     }
 

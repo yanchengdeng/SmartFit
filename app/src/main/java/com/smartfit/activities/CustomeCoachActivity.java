@@ -89,13 +89,6 @@ public class CustomeCoachActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userinfo)) {
             UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userinfo, UserInfoDetail.class);
             if (userInfoDetail != null) {
-                ImageView ivheader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
-                ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivheader, Options.getHeaderOptions());
-                TextView tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
-                if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
-                    tvName.setText(userInfoDetail.getNickName());
-                }
-
                 TextView tvBallence = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
                 if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
                     tvBallence.setText("余额" + userInfoDetail.getBalance() + "元");
@@ -146,7 +139,7 @@ public class CustomeCoachActivity extends BaseActivity {
         getCoachInfo();
 
 
-        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
+        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, true)) {
             openAuth();
         } else {
             closeAuth();
@@ -274,7 +267,7 @@ public class CustomeCoachActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -302,7 +295,7 @@ public class CustomeCoachActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

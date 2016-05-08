@@ -1,6 +1,5 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -58,7 +57,7 @@ public class UserCoachPublishClassOneActivity extends BaseActivity {
     }
 
     private void initView() {
-        tvTittle.setText("自定课程1/3");
+        tvTittle.setText("自订课程1/3");
     }
 
 
@@ -85,7 +84,7 @@ public class UserCoachPublishClassOneActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

@@ -31,11 +31,41 @@ public class ClassInfoDetail {
     private String classroomName;//台江－团操,
     private String courseDetail;//123123123,
     private String startDate;//1460217600,
+
+    public String getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(String classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    private String classroomId;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    private String startTime;
     private List<CommondPersion> persionList;//[
     private String userHeadImg;//,
     private String userSex;//0,
     private String userNickName;//,
     private String[] coursePics;
+
+    public List<CoachInfo> getCoachList() {
+        return coachList;
+    }
+
+    public void setCoachList(List<CoachInfo> coachList) {
+        this.coachList = coachList;
+    }
+
+    private List<CoachInfo> coachList;
 
     public String getMobileNo() {
         return mobileNo;

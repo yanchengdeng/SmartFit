@@ -1,10 +1,8 @@
 package com.smartfit.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.MyClassesActivity;
 import com.smartfit.adpters.MyClassOrderOverStatusAdapter;
-import com.smartfit.adpters.MyClassOrderStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
 import com.smartfit.commons.Constants;
@@ -51,6 +47,7 @@ public class CoachOverClassesFragment extends Fragment {
 
     private MyClassOrderOverStatusAdapter adapter;
     private List<MyAddClass> datas = new ArrayList<>();
+    private int page = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +76,8 @@ public class CoachOverClassesFragment extends Fragment {
         Map<String, String> datas = new HashMap<>();
         datas.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         datas.put("showType", "1");
+        datas.put("pageNo",String.valueOf(page));
+        datas.put("pageSize",String .valueOf(Constants.SIZE));
         PostRequest request = new PostRequest(Constants.USER_CONTACTCOURSELIST, datas, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -97,7 +96,7 @@ public class CoachOverClassesFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

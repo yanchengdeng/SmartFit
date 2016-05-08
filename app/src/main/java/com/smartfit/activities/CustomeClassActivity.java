@@ -18,12 +18,18 @@ import com.ecloud.pulltozoomview.PullToZoomListViewEx;
 import com.flyco.dialog.widget.popup.base.BaseBubblePopup;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.R;
-import com.smartfit.adpters.GroupExpericeItemAdapter;
-import com.smartfit.beans.ClassInfo;
+import com.smartfit.adpters.CustomClassAdapter;
+import com.smartfit.beans.UserCustomClass;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +44,18 @@ public class CustomeClassActivity extends BaseActivity {
 
     private View ViewHeader;
     private View tvOrder;
-    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
-    private GroupExpericeItemAdapter adapter;
+    private List<UserCustomClass> datas = new ArrayList<UserCustomClass>();
+    private CustomClassAdapter adapter;
+    ListView lv;
+
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custome_class);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -61,17 +72,22 @@ public class CustomeClassActivity extends BaseActivity {
         AbsListView.LayoutParams localObject = new AbsListView.LayoutParams(mScreenWidth, (int) (9.0F * (mScreenWidth / 16.0F)));
         listView.setHeaderLayoutParams(localObject);
         listView.setParallax(true);
-        ListView lv = listView.getPullRootView();
+        lv = listView.getPullRootView();
         listView.setBackgroundColor(getResources().getColor(R.color.gray_light));
         ViewHeader = LayoutInflater.from(this).inflate(R.layout.custom_listview_header, null);
         lv.addHeaderView(ViewHeader);
         tvOrder = ViewHeader.findViewById(R.id.tv_order);
         lv.setDividerHeight(0);
-        adapter = new GroupExpericeItemAdapter(this, datas);
+        adapter = new CustomClassAdapter(this, datas);
         lv.setAdapter(adapter);
         initData("0");//（0：按距离 1：按空缺人数 2：按价格 ）
         addLisener();
 
+    }
+
+    @Subscribe
+    public void onEvent(UpdateCustomClassInfo event) {/* Do something */
+        initData("0");
     }
 
     private void addLisener() {
@@ -97,10 +113,14 @@ public class CustomeClassActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
         maps.put("orderBy", type);
+        maps.put("longitude", SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT,""));
+        maps.put("latitude",SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT,""));
         PostRequest request = new PostRequest(Constants.CLASSIF_GETSELFDESIGNCOURSELIST, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-//TODO
+
+                List<UserCustomClass> userCustomClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"),UserCustomClass.class);
+                adapter.setData(userCustomClasses);
 
 
                 mSVProgressHUD.dismiss();
@@ -108,7 +128,7 @@ public class CustomeClassActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

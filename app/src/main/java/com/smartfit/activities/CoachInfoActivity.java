@@ -21,7 +21,6 @@ import com.hyphenate.easeui.EaseConstant;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
-import com.smartfit.adpters.CoachAppraiseAdapter;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -32,13 +31,9 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-import com.smartfit.views.MyListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 教练详情页
@@ -323,6 +318,7 @@ public class CoachInfoActivity extends BaseActivity {
 
                     Bundle bundle = new Bundle();
                     bundle.putString(EaseConstant.EXTRA_USER_ID, "user_" + userInfo.getUid());
+                    //我要发起的用户信息
                     bundle.putString("name", userInfo.getNickName());
                     bundle.putString("icon", userInfo.getUserPicUrl());
                     String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
