@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -81,7 +82,7 @@ public static final String EXTRA_SELECT_COUNT = "max_select_count";
         // 完成按钮
         mSubmitButton = (Button) findViewById(R.id.commit);
         if(resultList == null || resultList.size()<=0){
-            mSubmitButton.setText("完成");
+            mSubmitButton.setText("选择");
             mSubmitButton.setEnabled(false);
         }else{
             mSubmitButton.setText("完成("+resultList.size()+"/"+mDefaultCount+")");
@@ -96,6 +97,8 @@ public static final String EXTRA_SELECT_COUNT = "max_select_count";
                     data.putStringArrayListExtra(EXTRA_RESULT, resultList);
                     setResult(RESULT_OK, data);
                     finish();
+                }else{
+                    Toast.makeText(MultiImageSelectorActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,7 +150,7 @@ public static final String EXTRA_SELECT_COUNT = "max_select_count";
         }
         // 当为选择图片时候的状态
         if(resultList.size() == 0){
-            mSubmitButton.setText("完成");
+            mSubmitButton.setText("选择");
             mSubmitButton.setEnabled(false);
         }
     }
