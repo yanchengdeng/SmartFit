@@ -103,7 +103,7 @@ public class CoachInfoActivity extends BaseActivity {
         }
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
         if (TextUtils.isEmpty(userInfo.getSex())) {
-            if (userInfo.getSex().equals("0")) {
+            if (userInfo.getSex().equals(Constants.SEX_WOMEN)) {
                 tvName.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 tvName.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);

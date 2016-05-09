@@ -19,7 +19,6 @@ import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.CoachInfoActivity;
 import com.smartfit.beans.SustituteCoach;
-import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -91,7 +90,7 @@ public class FindSubstitutAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getSex())) {
-            if (item.getSex().equals("0")) {
+            if (item.getSex().equals(Constants.SEX_WOMEN)) {
                 viewHolder.tvName.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 viewHolder.tvName.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_man), null);

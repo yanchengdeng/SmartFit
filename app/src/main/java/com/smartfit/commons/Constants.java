@@ -150,6 +150,8 @@ public class Constants {
     public static final String CLASSIF_INVITEFRIENDS = "/ClassIf/inviteFriends";
 
     public static final int SIZE = 20;
+    public static final String SEX_MAN = "0";
+    public static final String SEX_WOMEN = "1";
 
 
     /*****
@@ -182,10 +184,10 @@ public class Constants {
 
     public static class Net {
         //发布时的接口
-//        public static final String URL = "http://139.196.228.98:8098";
+        public static final String URL = "http://139.196.228.98:8098";
 
         //测试
-        public static final String URL = "http://123.57.164.115:8098";
+//        public static final String URL = "http://123.57.164.115:8098";
 
 
         //支付回调

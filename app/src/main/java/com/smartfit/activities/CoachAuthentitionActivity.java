@@ -127,7 +127,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
             tvName.setText(userInfo.getNickName() + " 教练");
         }
         if (!TextUtils.isEmpty(userInfo.getSex())) {
-            if (userInfo.getSex().equals("0")) {
+            if (userInfo.getSex().equals(Constants.SEX_WOMEN)) {
                 tvName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 tvName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);

@@ -71,8 +71,8 @@ public class MoreCertiaicateVertifyAdapter extends BaseAdapter {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
             viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
         } else {
-            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
-            viewHolder.cbName.setImageResource(R.mipmap.icon_close);
+            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
+            viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
         }
 
 

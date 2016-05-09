@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.smartfit" >
+    package="com.smartfit">
 
     <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
 
@@ -54,7 +54,7 @@
         android:icon="@mipmap/message_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme" >
+        tools:replace="android:icon,android:theme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="38a833cf2b137bf1bb11d8857de1389d" />
@@ -70,7 +70,7 @@
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true" />
         <!-- 声明sdk所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver" >
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
@@ -101,15 +101,18 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.BaseActivity"
             android:label="@string/title_activity_base"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -119,22 +122,27 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.UpdatePasswordActivity"
             android:label="@string/title_activity_forget"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.RegisterActivity"
             android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.DealInfoActivity"
             android:label="@string/title_activity_deal_info"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MainBusinessActivity"
             android:label="@string/title_activity_main_business"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
 
         <!-- 添加Umeng 统计 -->
@@ -164,7 +172,7 @@
         <activity
             android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
 
@@ -182,56 +190,71 @@
         <activity
             android:name=".activities.SearchClassActivity"
             android:label="@string/title_activity_search_class"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.GroupClassDetailActivity"
             android:label="@string/title_activity_group_class_detail"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachInfoActivity"
             android:label="@string/title_activity_coach_info"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.PayActivity"
             android:label="@string/title_activity_pay"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.OrderPrivateEducationClassActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAppraiseActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAuthentitionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.GroupClassOrderSuccessActivity"
             android:label="@string/title_activity_group_class_order_success"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.ContactCoachActivity"
             android:label="@string/title_activity_contact_coach"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AerobicAppratusDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AerobicAppratusOrderSuccessActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CustomeMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.SettingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AboutUsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CustomeDynamicActivity"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.PublishCustomeDynamicActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
@@ -240,140 +263,184 @@
         <activity
             android:name=".activities.OrderPrivateEducationSuccessActivity"
             android:label="@string/title_activity_order_private_education_success"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MyTicketGiftActivity"
             android:label="@string/title_activity_my_ticket_gift"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.MyClassesActivity"
             android:label="@string/title_activity_my_classes"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.FadeBackActivity"
             android:label="@string/title_activity_fade_back"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.FansActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.AttentionListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.HealthFriendsListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CoachAuthBaseActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
             android:name=".activities.CityListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
-        <activity android:name=".activities.WalletActivity" >
-        </activity>
-        <activity android:name=".activities.ReChargeActivity" >
-        </activity>
-        <activity android:name=".activities.WithDrawActivity" >
-        </activity>
-        <activity android:name=".activities.CoachClassesActivity" >
-        </activity>
-        <activity android:name=".activities.MembersListActivity" >
-        </activity>
-        <activity android:name=".activities.FindSubstitueActivity" >
-        </activity>
-        <activity android:name=".activities.CustomeCoachActivity" >
-        </activity>
-        <activity android:name=".activities.CustomDetailInfoActivity" >
-        </activity>
-        <activity android:name=".activities.CoachDetailInfoActivity" >
-        </activity>
-        <activity android:name=".activities.MyWorkPointActivity" >
-        </activity>
-        <activity android:name=".activities.SelectWorkPointActivity" >
-        </activity>
-        <activity android:name=".activities.SelectWorkPointTimeActivity" >
-        </activity>
+        <activity
+            android:name=".activities.WalletActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ReChargeActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.WithDrawActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.CoachClassesActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.MembersListActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.FindSubstitueActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.CustomeCoachActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.CustomDetailInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.CoachDetailInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.MyWorkPointActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SelectWorkPointActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SelectWorkPointTimeActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.WaitVertifyActivity"
-            android:label="@string/title_activity_wait_vertify" >
-        </activity>
+            android:label="@string/title_activity_wait_vertify"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.CoachBriefActivity"
-            android:label="@string/title_activity_coach_brief" >
-        </activity>
+            android:label="@string/title_activity_coach_brief"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.OtherCustomeMainActivity"
-            android:label="@string/title_activity_other_custome_main" >
-        </activity>
-        <activity android:name=".activities.WorkPlaceEditActivity" >
-        </activity>
-        <activity android:name=".activities.SelectWorkWeekDayActivity" >
-        </activity>
-        <activity android:name=".activities.ClassMoreCommentsActivity" >
-        </activity>
-        <activity android:name=".activities.MessageActivity" >
-        </activity>
-        <activity android:name=".activities.SelfDesignCourseActivity" >
-        </activity>
-        <activity android:name=".activities.SelectVenueRoomsActivity" >
-        </activity>
+            android:label="@string/title_activity_other_custome_main"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.WorkPlaceEditActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SelectWorkWeekDayActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ClassMoreCommentsActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.MessageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SelfDesignCourseActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SelectVenueRoomsActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.CourseMessageActivity"
-            android:label="@string/title_activity_course_message" >
-        </activity>
-        <activity android:name=".activities.FriendsMessageActivity" >
-        </activity>
-        <activity android:name=".activities.UserCustomClassOneActivity" />
-        <activity android:name=".activities.UserCustomClassTwoActivity" />
+            android:label="@string/title_activity_course_message"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.FriendsMessageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserCustomClassOneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.UserCustomClassTwoActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.UserCustomClassThreeActivity"
-            android:label="@string/title_activity_custom_class_three" >
-        </activity>
-        <activity android:name=".activities.UserCustomClassFourActivity" >
-        </activity>
+            android:label="@string/title_activity_custom_class_three"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserCustomClassFourActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.CustomeClassActivity"
-            android:label="@string/title_activity_custome_class" >
-        </activity>
-        <activity android:name=".activities.ChatActivity" >
-        </activity>
-        <activity android:name=".activities.DynamicMakeDiscussActivity" >
-        </activity>
+            android:label="@string/title_activity_custome_class"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.DynamicMakeDiscussActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.DynamicDetailActivity"
-            android:label="@string/title_activity_dynamic_detail" >
-        </activity>
+            android:label="@string/title_activity_dynamic_detail"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.SystemMessageListActivity"
-            android:label="@string/title_activity_system_message_list" >
-        </activity>
-        <activity android:name=".activities.UserCoachPublishClassOneActivity" >
-        </activity>
-        <activity android:name=".activities.UserCoachPublishClassTwoActivity" >
-        </activity>
-        <activity android:name=".activities.UserCoachPublishClassThreeActivity" >
-        </activity>
-        <activity android:name=".activities.FaqContentActivity" >
-        </activity>
-        <activity android:name=".activities.ReopenClassActivity" >
-        </activity>
-        <activity android:name=".activities.ForgetPasswordActivity" >
-        </activity>
+            android:label="@string/title_activity_system_message_list"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserCoachPublishClassOneActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserCoachPublishClassTwoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.UserCoachPublishClassThreeActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.FaqContentActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ReopenClassActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ForgetPasswordActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.SearchHealthFriendsActivity"
-            android:label="@string/title_activity_search_health_friends" >
-        </activity>
-        <activity android:name=".activities.InviteFriendsActivity" >
-        </activity>
+            android:label="@string/title_activity_search_health_friends"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.InviteFriendsActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.PrivateClassByMessageActivity"
-            android:label="@string/title_activity_private_class_by_message" >
-        </activity>
-        <activity android:name=".activities.TeachClassListActivity" >
-        </activity>
+            android:label="@string/title_activity_private_class_by_message"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.TeachClassListActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

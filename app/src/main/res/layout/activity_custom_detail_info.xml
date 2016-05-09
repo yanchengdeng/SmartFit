@@ -15,7 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/white"
-        android:padding="@dimen/image_padding_big">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/image_padding_big"
+        android:paddingBottom="@dimen/image_padding_big"
+        android:paddingRight="@dimen/image_padding_big"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="爱之深，恨之切"
+            android:text="@string/no_sign"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>

@@ -45,6 +45,8 @@ public class CoachBriefActivity extends BaseActivity {
     EditText etBreif;
     @Bind(R.id.btn_submmit)
     Button btnSubmmit;
+    @Bind(R.id.tv_status)
+    TextView tvStatus;
     private String id;
 
     private EventBus eventBus;
@@ -74,6 +76,18 @@ public class CoachBriefActivity extends BaseActivity {
                     id = briefInfo.getId();
                     if (!TextUtils.isEmpty(briefInfo.getResumeContent())) {
                         etBreif.setText(briefInfo.getResumeContent());
+                    }
+                    /**
+                     * 1待审核；2审核通过；3审核不通过
+                     */
+                    if (!TextUtils.isEmpty(briefInfo.getStatus())) {
+                        if (briefInfo.getStatus().equals("1")){
+                            tvStatus.setText("您的简历正在等待审核...");
+                        }else if(briefInfo.getStatus().equals("2")){
+                            tvStatus.setText("您的简历已通过审核..");
+                        }else{
+                            tvStatus.setText("您的简历未通过审核，请重新上传...");
+                        }
                     }
                 }
                 mSVProgressHUD.dismiss();

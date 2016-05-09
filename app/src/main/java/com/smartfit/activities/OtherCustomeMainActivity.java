@@ -146,7 +146,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(userInfo.getSex())) {
-            if (userInfo.getSex().equals("0")) {
+            if (userInfo.getSex().equals(Constants.SEX_WOMEN)) {
                 tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);

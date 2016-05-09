@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
-            android:text="令狐冲"
+            android:text=""
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_larger" />
 
@@ -81,7 +81,7 @@
             android:layout_below="@+id/tv_name"
             android:layout_marginTop="@dimen/image_padding_big"
             android:singleLine="true"
-            android:text="爱生活，爱锻炼"
+            android:text="@string/no_sign"
             android:gravity="center_vertical"
             android:drawableRight="@mipmap/icon_next_w"
             android:drawablePadding="@dimen/activity_horizontal_margin"

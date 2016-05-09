@@ -15,7 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
-import com.smartfit.MessageEvent.UpdateDynamic;
+import com.smartfit.MessageEvent.AddDynaicItem;
 import com.smartfit.R;
 import com.smartfit.adpters.GridViewPublishPhotoAdapter;
 import com.smartfit.commons.Constants;
@@ -150,7 +150,7 @@ public class PublishCustomeDynamicActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                eventBus.post(new UpdateDynamic());
+                eventBus.post(new AddDynaicItem());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

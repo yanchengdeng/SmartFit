@@ -376,7 +376,7 @@ public class PayActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("classroomId", courseId);
         map.put("startTime", startTime);
-        map.put("endTime", endTime);
+        map.put("endTime", String.valueOf(Float.parseFloat(endTime)-1));
         PostRequest request = new PostRequest(Constants.ORDER_ORDERAEROBIC, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

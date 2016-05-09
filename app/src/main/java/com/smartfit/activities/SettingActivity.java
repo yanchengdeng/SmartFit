@@ -91,6 +91,8 @@ public class SettingActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo)) {
             UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
             ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getListOptions());
+            if (!TextUtils.isEmpty(userInfoDetail.getNickName())){
+            tvName.setText(userInfoDetail.getNickName());}
         }
     }
 

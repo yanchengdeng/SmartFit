@@ -30,6 +30,15 @@
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_status"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal_down"
+            android:layout_below="@+id/et_breif"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"/>
+
 
         <Button
             android:id="@+id/btn_submmit"

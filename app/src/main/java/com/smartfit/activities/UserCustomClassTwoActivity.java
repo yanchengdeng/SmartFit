@@ -118,7 +118,7 @@ public class UserCustomClassTwoActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
         data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)-1));
         data.put("classroomType", "2");
         data.put("courseTypeCode", classId);
         data.put("cityCode", SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, ""));

@@ -34,6 +34,7 @@
 
     <style name="ActivityTheme.NoActionBar" parent="@style/AppTheme.NoActionBar">
         <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
+        <item name="android:screenOrientation">portrait</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="android:Theme.Holo.Light.NoActionBar">

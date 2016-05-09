@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@+id/iv_header"
-            android:text="令狐冲"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/text_larger" />
     </RelativeLayout>

@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.activities.CoachInfoActivity;
-import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.commons.Constants;
 import com.smartfit.utils.Options;
 
 import java.util.List;
@@ -75,7 +74,7 @@ public class PrivateEducationOrderAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getSex())) {
-            if (item.getSex().equals("0")) {
+            if (item.getSex().equals(Constants.SEX_WOMEN)) {
                 viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_man), null);

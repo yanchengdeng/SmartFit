@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.AddDynaicItem;
 import com.smartfit.MessageEvent.UpdateDynamic;
 import com.smartfit.R;
 import com.smartfit.adpters.DynamicAdapter;
@@ -66,8 +67,8 @@ public class CustomeDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custome_dynamic);
         ButterKnife.bind(this);
-        if (getIntent()!=null){
-            if (getIntent().getExtras()!=null){
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
                 if (!TextUtils.isEmpty(getIntent().getExtras().getString(Constants.PASS_STRING))) {
                     uid = getIntent().getStringExtra(Constants.PASS_STRING);
                     ivFunction.setVisibility(View.INVISIBLE);
@@ -117,10 +118,16 @@ public class CustomeDynamicActivity extends BaseActivity {
 
 
     @Subscribe
-    public void onEvent(UpdateDynamic event) {
-        int postion = adapter.getSelectPostion();
-        datas.get(postion).setCommentCount(String.valueOf(Integer.parseInt(datas.get(postion).getCommentCount())+1));
-        adapter.notifyDataSetChanged();
+    public void onEvent(Object event) {
+        if (event instanceof UpdateDynamic) {
+            int postion = adapter.getSelectPostion();
+            datas.get(postion).setCommentCount(String.valueOf(Integer.parseInt(datas.get(postion).getCommentCount()) + 1));
+            adapter.notifyDataSetChanged();
+        } else if (event instanceof AddDynaicItem){
+            page=1;
+            datas.clear();
+            loadData();
+        }
     /* Do something */
     }
 
@@ -131,8 +138,8 @@ public class CustomeDynamicActivity extends BaseActivity {
         HashMap<String, String> map = new HashMap<>();
         map.put("pageNo", String.valueOf(page));
         map.put("pageSize", "20");
-        if (!TextUtils.isEmpty(uid)){
-            map.put("uid",uid);
+        if (!TextUtils.isEmpty(uid)) {
+            map.put("uid", uid);
         }
         PostRequest request = new PostRequest(Constants.DYNAMIC_GETDYNAMICLIST, map, new Response.Listener<JsonObject>() {
             @Override

@@ -71,7 +71,7 @@ public class FansAdapter extends BaseAdapter {
         }
         ImageLoader.getInstance().displayImage(item.getUserPicUrl(), viewHolder.ivIcon, Options.getListOptions());
         if (!TextUtils.isEmpty(item.getSex())) {
-            if (item.getSex().equals("0")) {
+            if (item.getSex().equals(Constants.SEX_WOMEN)) {
                 viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
                 viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_man), null);

@@ -17,7 +17,7 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
-import com.smartfit.beans.UserInfo;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
@@ -126,14 +126,11 @@ public class CoachDetailInfoActivity extends BaseActivity {
      */
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-        Map<String, String> maps = new HashMap<>();
-        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
-        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                LogUtil.w("dyc", response.toString());
                 mSVProgressHUD.dismiss();
-                UserInfo userInfoDetail = JsonUtils.objectFromJson(response, UserInfo.class);
+                UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
                 if (userInfoDetail != null) {
                     fillData(userInfoDetail);
                 }
@@ -151,7 +148,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
 
     }
 
-    private void fillData(UserInfo userInfoDetail) {
+    private void fillData(UserInfoDetail userInfoDetail) {
 
         ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeaderr, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
@@ -159,7 +156,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(userInfoDetail.getSex())) {
-            if (userInfoDetail.getSex().equals("0")) {
+            if (userInfoDetail.getSex().equals(Constants.SEX_WOMEN)) {
                 tvSex.setText("女");
             } else {
                 tvSex.setText("男");
@@ -171,20 +168,37 @@ public class CoachDetailInfoActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(userInfoDetail.getHight())) {
-            tvHeight.setText(userInfoDetail.getHight());
+            tvHeight.setText(userInfoDetail.getHight() + "CM");
         }
 
-        if (!TextUtils.isEmpty(userInfoDetail.getResumeContent())) {
-            tvEditBrief.setText("修改");
+        /**
+         * 0未设置；1待审2审核通过3；审核不通过
+         */
+        if (!TextUtils.isEmpty(userInfoDetail.getIsCCC())) {
+            if (userInfoDetail.getIsCCC().equals("0")) {
+                tvEditBrief.setText(getString(R.string.not_setting));
+
+            } else if (userInfoDetail.getIsCCC().equals("1")) {
+                tvEditBrief.setText("待审核");
+            } else if (userInfoDetail.getIsCCC().equals("2")) {
+                tvEditBrief.setText("审核通过");
+            } else {
+                tvEditBrief.setText("审核不通过");
+            }
+
         }
 
         tvBindPhone.setText(SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "未绑定"));
 
         if (!TextUtils.isEmpty(userInfoDetail.getWeight())) {
-            tvWeight.setText(userInfoDetail.getWeight());
+            tvWeight.setText(userInfoDetail.getWeight() + "KG");
         }
-        if (!TextUtils.isEmpty(userInfoDetail.getAuthenCoachClassDesc())) {
-            tvTeachedClasses.setText(getString(R.string.alreay_setting));
+        if (!TextUtils.isEmpty(userInfoDetail.getIsCTC())) {
+            if (userInfoDetail.getIsCTC().equals("0")) {
+                tvTeachedClasses.setText(getString(R.string.not_setting));
+            } else {
+                tvTeachedClasses.setText(getString(R.string.alreay_setting));
+            }
         }
     }
 
@@ -456,7 +470,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
                         tvName.setText(tag);
                         break;
                     case 3:
-                        if (tag.equals("0")) {
+                        if (tag.equals(Constants.SEX_WOMEN)) {
                             tvSex.setText("女");
                         } else {
                             tvSex.setText("男");

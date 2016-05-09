@@ -132,7 +132,7 @@ public class WaitVertifyActivity extends BaseActivity {
                 } else if (item.getStatus().equals("2")) {
                     cbCardPhoto.setImageResource(R.mipmap.icon_choose);
                 } else {
-                    cbCardPhoto.setImageResource(R.mipmap.icon_close);
+                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
                 }
             }
 
@@ -145,7 +145,7 @@ public class WaitVertifyActivity extends BaseActivity {
                 } else if (item.getStatus().equals("2")) {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
                 } else {
-                    cbWorkPhoto.setImageResource(R.mipmap.icon_close);
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
 
                 }
             }

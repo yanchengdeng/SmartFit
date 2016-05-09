@@ -390,14 +390,12 @@ public class CustomeCoachActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.VISIBLE);
         scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.VISIBLE);
-        scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setVisibility(View.VISIBLE);
     }
 
     private void closeAuth() {
         scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.VISIBLE);
         scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.GONE);
-        scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setVisibility(View.GONE);
     }
 
     private void addLisener() {

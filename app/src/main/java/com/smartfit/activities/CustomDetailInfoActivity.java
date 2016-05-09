@@ -129,7 +129,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(userInfoDetail.getSex()) && userInfoDetail.getSex().equals("0")) {
+        if (!TextUtils.isEmpty(userInfoDetail.getSex()) && userInfoDetail.getSex().equals(Constants.SEX_MAN)) {
             tvSex.setText("女");
         } else {
             tvSex.setText("男");
@@ -246,7 +246,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
                         tvName.setText(tag);
                         break;
                     case 3:
-                        if (tag.equals("0")) {
+                        if (tag.equals(Constants.SEX_WOMEN)) {
                             tvSex.setText("女");
                         } else {
                             tvSex.setText("男");
@@ -324,7 +324,9 @@ public class CustomDetailInfoActivity extends BaseActivity {
             }
         });
 
-
+/***
+ * 0：未申请1上线, 3锁定.4审核中；5审核未通过
+ */
         tvCoachAuthStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
