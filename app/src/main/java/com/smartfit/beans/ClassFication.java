@@ -14,6 +14,16 @@ public class ClassFication {
     private String lastModifyTime;//1461313392,
     private String parentId;//1
 
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    private boolean isCheck;
+
     public String getId() {
         return id;
     }

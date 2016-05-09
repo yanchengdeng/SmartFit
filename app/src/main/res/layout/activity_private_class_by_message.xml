@@ -19,7 +19,8 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -166,8 +167,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="@dimen/header_bar_height"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/header_bar_height">
+
                     <TextView
                         android:id="@+id/tv_class_price"
                         android:layout_width="match_parent"
@@ -193,15 +195,15 @@
         <TextView
             android:id="@+id/tv_waiting_accept"
             android:layout_width="match_parent"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/white"
-            android:background="@color/transparent_deep_black"
-            android:padding="@dimen/image_padding_big"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:background="@color/transparent_deep_black"
             android:gravity="center"
-            android:visibility="invisible"
+            android:padding="@dimen/image_padding_big"
             android:text="@string/waiting_coach_accepter"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/btn_order"
@@ -211,10 +213,12 @@
             android:layout_margin="@dimen/image_padding"
             android:background="@color/common_header_bg"
             android:gravity="center"
-            android:visibility="visible"
             android:padding="@dimen/image_padding_big"
             android:text="立即预约"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+        <include layout="@layout/listview_no_data"></include>
 
     </RelativeLayout>
 

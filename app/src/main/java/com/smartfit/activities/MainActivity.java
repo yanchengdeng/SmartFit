@@ -106,7 +106,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
 
-
     private void getUserInfo() {
         String account = SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "");
         String password = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "");
@@ -149,57 +148,87 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         cardSmallClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION, 1);
-                openActivity(MainBusinessActivity.class, bundle);
+                if (NetUtil.isLogin(getApplicationContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.FRAGMENT_POSITION, 1);
+                    openActivity(MainBusinessActivity.class, bundle);
+                } else {
+                    openActivity(LoginActivity.class);
+                }
             }
         });
 
         cardFindPrivateCoach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION, 2);
-                openActivity(MainBusinessActivity.class, bundle);
-            }
-        });
-
-        cardGroupExersise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION, 0);
-                openActivity(MainBusinessActivity.class, bundle);
-            }
-        });
-
-        cardAerobicAppratus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.FRAGMENT_POSITION, 3);
-                openActivity(MainBusinessActivity.class, bundle);
-            }
-        });
-
-        //自订课程
-        cardSmartFit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (NetUtil.isLogin(getApplicationContext())) {
-                    openActivity(CustomeClassActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.FRAGMENT_POSITION, 2);
+                    openActivity(MainBusinessActivity.class, bundle);
                 } else {
                     openActivity(LoginActivity.class);
                 }
             }
         });
+
+        cardGroupExersise.setOnClickListener(new View.OnClickListener() {
+                                                 @Override
+                                                 public void onClick(View v) {
+                                                     if (NetUtil.isLogin(getApplicationContext())) {
+                                                         Bundle bundle = new Bundle();
+                                                         bundle.putInt(Constants.FRAGMENT_POSITION, 0);
+                                                         openActivity(MainBusinessActivity.class, bundle);
+                                                     } else {
+                                                         openActivity(LoginActivity.class);
+                                                     }
+                                                 }
+                                             }
+
+        );
+
+        cardAerobicAppratus.setOnClickListener(new View.OnClickListener()
+
+                                               {
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       if (NetUtil.isLogin(getApplicationContext())) {
+                                                           Bundle bundle = new Bundle();
+                                                           bundle.putInt(Constants.FRAGMENT_POSITION, 3);
+                                                           openActivity(MainBusinessActivity.class, bundle);
+                                                       } else {
+                                                           openActivity(LoginActivity.class);
+                                                       }
+                                                   }
+                                               }
+
+        );
+
+        //自订课程
+        cardSmartFit.setOnClickListener(new View.OnClickListener()
+
+                                        {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (NetUtil.isLogin(getApplicationContext())) {
+                                                    openActivity(CustomeClassActivity.class);
+                                                } else {
+                                                    openActivity(LoginActivity.class);
+                                                }
+                                            }
+                                        }
+
+        );
         //城市跳转
-        tvCityName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity(CityListActivity.class, 10);
-            }
-        });
+        tvCityName.setOnClickListener(new View.OnClickListener()
+
+                                      {
+                                          @Override
+                                          public void onClick(View v) {
+                                              openActivity(CityListActivity.class, 10);
+                                          }
+                                      }
+
+        );
     }
 
 
@@ -326,8 +355,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         request.headers = NetUtil.getRequestBody(MainActivity.this);
         mQueue.add(request);
     }
-
-
 
 
     @Override

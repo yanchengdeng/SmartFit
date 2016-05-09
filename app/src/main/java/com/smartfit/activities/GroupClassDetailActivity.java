@@ -197,8 +197,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvContent.setText(detail.getCourseDetail());
         }
 
-        if (!TextUtils.isEmpty(detail.getCoachRealName())) {
-            tvCoachName.setText(detail.getCoachRealName() + "教练");
+        if (!TextUtils.isEmpty(detail.getNickName())) {
+            tvCoachName.setText(detail.getNickName() + "教练");
         }
 
         if (!TextUtils.isEmpty(detail.getSignature())) {

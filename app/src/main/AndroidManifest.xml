@@ -372,6 +372,8 @@
             android:name=".activities.PrivateClassByMessageActivity"
             android:label="@string/title_activity_private_class_by_message" >
         </activity>
+        <activity android:name=".activities.TeachClassListActivity" >
+        </activity>
     </application>
 
 </manifest>

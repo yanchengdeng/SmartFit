@@ -18,6 +18,7 @@ import com.ecloud.pulltozoomview.PullToZoomListViewEx;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.adpters.WalletAdapter;
 import com.smartfit.beans.AccountRecord;
@@ -29,6 +30,9 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +47,14 @@ public class WalletActivity extends BaseActivity {
     private WalletAdapter walletAdapter;
 
     private List<AccountRecord> accountRecords = new ArrayList<>();
+
+    private EventBus eventBus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         // 修改状态栏颜色，4.4+生效
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
@@ -95,6 +103,11 @@ public class WalletActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Subscribe
+    public void onEvent(UpdateWalletInfo event) {
+        getRecordList();
     }
 
     private void getRecordList() {

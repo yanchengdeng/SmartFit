@@ -1,6 +1,7 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -78,11 +79,9 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     TextView tvWaitingAccept;
     @Bind(R.id.btn_order)
     Button btnOrder;
+    @Bind(R.id.no_data)
+    TextView noData;
     private String couseId;
-
-
-    private EventBus eventBus;
-
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private String startTime, endTime;
@@ -94,18 +93,13 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         setContentView(R.layout.activity_private_class_by_message);
         ButterKnife.bind(this);
         couseId = getIntent().getStringExtra(Constants.PASS_STRING);
-        eventBus = EventBus.getDefault();
-        eventBus.register(this);
         initView();
         getData();
     }
 
     private void initView() {
-
-
         tvTittle.setText(getString(R.string.private_education));
-
-
+        btnOrder.setVisibility(View.GONE);
     }
 
     private void getData() {
@@ -125,6 +119,8 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
+                scrollView.setVisibility(View.GONE);
+                noData.setVisibility(View.VISIBLE);
             }
         });
         request.setTag(new Object());
@@ -145,11 +141,12 @@ public class PrivateClassByMessageActivity extends BaseActivity {
      */
 
     ClassInfoDetail detail;
+
     private void fillData(ClassInfoDetail detail) {
         this.detail = detail;
         privateEducationClasses = new ArrayList<>();
-        if (detail.getCoachList()!= null && detail.getCoachList().size()>0){
-            for (CoachInfo item:detail.getCoachList()){
+        if (detail.getCoachList() != null && detail.getCoachList().size() > 0) {
+            for (CoachInfo item : detail.getCoachList()) {
                 PrivateEducationClass privateEducationClass = new PrivateEducationClass();
                 privateEducationClass.setNickName(item.getNickName());
                 privateEducationClass.setPrice(item.getPrice());
@@ -161,10 +158,12 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         }
         adapter = new PrivateEducationOrderAdapter(this, privateEducationClasses);
         listView.setAdapter(adapter);
+        listView.setBackgroundColor(getResources().getColor(R.color.gray_light));
         startTime = detail.getStartTime();
         endTime = detail.getEndTime();
-
-        tvClassTime.setText(startTime + " ~ " + DateUtils.getDataType(endTime));
+        if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTime)) {
+            tvClassTime.setText(DateUtils.getData(startTime) + " ~ " + DateUtils.getDataTime(endTime));
+        }
         ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
         if (!TextUtils.isEmpty(detail.getLat()) && !TextUtils.isEmpty(detail.getLongit())) {
             tvSpaceInfo.setText(Util.getDistance(detail.getLat(), detail.getLongit()));
@@ -172,21 +171,17 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         if (!TextUtils.isEmpty(detail.getVenueName())) {
             tvSpaceName.setText(detail.getVenueName());
         }
-        initRoom(0,detail);
+        initRoom(0, detail);
 
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+            }
+        }, 500);
     }
 
-    @Subscribe
-    public void onEvent(Object event) {/* Do something */
-        if (event instanceof UpdateRoom) {
-           // initRoom(((UpdateRoom) event).getPositon(), detail);
-        }
-        if (event instanceof UpdatePrivateClassDetail){
-            btnOrder.setVisibility(View.INVISIBLE);
-            tvWaitingAccept.setVisibility(View.VISIBLE);
-        }
-    }
 
     private void initRoom(int positon, ClassInfoDetail detail) {
 
@@ -195,8 +190,14 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             tvRoomName.setText(detail.getClassroomName());
         }
 
-        tvRoomTime.setText(detail.getPrice() + "/小时");
-        countPrice(positon,detail);
+        if (TextUtils.isEmpty(detail.getPrice())){
+            tvRoomTime.setText("免费");
+        }else{
+            tvRoomTime.setText(detail.getPrice() + "/小时");
+        }
+
+        tvRoomTime.setVisibility(View.GONE);
+        countPrice(positon, detail);
     }
 
     /**
@@ -222,7 +223,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_room_time, R.id.btn_order,R.id.iv_back})
+    @OnClick({R.id.tv_room_time, R.id.btn_order, R.id.iv_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_room_time:
@@ -232,8 +233,8 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                 break;
             case R.id.btn_order:
                 if (detail != null)
-                orderPrivateClass();
-                break;
+//                    orderPrivateClass();
+                    break;
             case R.id.iv_back:
                 finish();
                 break;

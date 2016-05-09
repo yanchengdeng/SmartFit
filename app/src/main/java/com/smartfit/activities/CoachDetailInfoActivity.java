@@ -104,8 +104,13 @@ public class CoachDetailInfoActivity extends BaseActivity {
     @Subscribe
     public void onEvent(String status) {/* Do something */
         if (!TextUtils.isEmpty(status)) {
-            tvEditBrief.setText(status);
-            tvEditBrief.setTextColor(getResources().getColor(R.color.common_header_bg));
+            if (status.equals("couserTypes")) {
+                tvTeachedClasses.setText(getString(R.string.alreay_setting));
+            } else {
+                tvEditBrief.setText(status);
+                tvEditBrief.setTextColor(getResources().getColor(R.color.common_header_bg));
+
+            }
         }
     }
 
@@ -144,7 +149,6 @@ public class CoachDetailInfoActivity extends BaseActivity {
         mQueue.add(request);
 
 
-
     }
 
     private void fillData(UserInfo userInfoDetail) {
@@ -174,13 +178,13 @@ public class CoachDetailInfoActivity extends BaseActivity {
             tvEditBrief.setText("修改");
         }
 
-        tvBindPhone.setText(SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT,"未绑定"));
+        tvBindPhone.setText(SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "未绑定"));
 
         if (!TextUtils.isEmpty(userInfoDetail.getWeight())) {
             tvWeight.setText(userInfoDetail.getWeight());
         }
         if (!TextUtils.isEmpty(userInfoDetail.getAuthenCoachClassDesc())) {
-            tvTeachedClasses.setText(userInfoDetail.getAuthenCoachClassDesc());
+            tvTeachedClasses.setText(getString(R.string.alreay_setting));
         }
     }
 
@@ -264,6 +268,13 @@ public class CoachDetailInfoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(CoachBriefActivity.class);
+            }
+        });
+
+        tvTeachedClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(TeachClassListActivity.class);
             }
         });
     }

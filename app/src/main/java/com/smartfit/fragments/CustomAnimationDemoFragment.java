@@ -66,20 +66,28 @@ public class CustomAnimationDemoFragment extends Fragment {
 //
                     break;
                 case 1:
-                    if (!MainBusinessActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
-                        ((BaseActivity) getActivity()).openActivity(MainBusinessActivity.class);
+                    if (NetUtil.isLogin(getActivity())) {
+                        if (!MainBusinessActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                            ((BaseActivity) getActivity()).openActivity(MainBusinessActivity.class);
+                        }
+                    } else {
+                        ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
                     }
                     break;
                 case 2:
-                    if (!CustomeDynamicActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
-                        ((BaseActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
+                    if (NetUtil.isLogin(getActivity())) {
+                        if (!CustomeDynamicActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
+                            ((BaseActivity) getActivity()).openActivity(CustomeDynamicActivity.class);
+                        }
+                    } else {
+                        ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
                     }
                     break;
                 case 3:
                     if (NetUtil.isLogin(getActivity())) {
                         if (!MessageActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity())))
                             ((BaseActivity) getActivity()).openActivity(MessageActivity.class);
-                    }else{
+                    } else {
                         ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
                     }
 

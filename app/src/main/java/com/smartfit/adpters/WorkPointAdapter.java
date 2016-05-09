@@ -79,7 +79,7 @@ public class WorkPointAdapter extends BaseAdapter {
         } else {
             viewHolder.tvWorkName.setText(item.getTittle());
             viewHolder.tvWorkPoint.setText(item.getVenueName());
-            viewHolder.tvWorkTime.setText(DateUtils.getDataTime(item.getStartTime()) + " - " + DateUtils.getDataTime(item.getEndTime()));
+            viewHolder.tvWorkTime.setText(DateUtils.getTimeFromZeroToNow(item.getStartTime()) + " - " + DateUtils.getTimeFromZeroToNow(item.getEndTime()));
         }
 
         viewHolder.ivDelet.setOnClickListener(new View.OnClickListener() {

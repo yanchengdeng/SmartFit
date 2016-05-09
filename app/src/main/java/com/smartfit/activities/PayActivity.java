@@ -227,7 +227,7 @@ public class PayActivity extends BaseActivity {
                 payStyle = 0;
             } else {
                 rlYe.setClickable(false);
-                payStyle = 1;
+                payStyle = 2;
                 ivWxSelected.setVisibility(View.GONE);
                 ivYeSelected.setVisibility(View.GONE);
                 ivAlipaySelected.setVisibility(View.VISIBLE);
@@ -295,6 +295,7 @@ public class PayActivity extends BaseActivity {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO 改过来
                 if (payStyle == 1) {
                     if (!checkWeiXin()) {
                         mSVProgressHUD.showInfoWithStatus("您未安装微信客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
@@ -333,6 +334,7 @@ public class PayActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 messsge = error.getMessage();
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -346,6 +348,11 @@ public class PayActivity extends BaseActivity {
     }
 
     private void goPay() {
+
+        if (TextUtils.isEmpty(orderID)) {
+            mSVProgressHUD.showInfoWithStatus(messsge, SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
         if (payStyle == 1) {
             //微信支付
             weixinPay();
@@ -399,10 +406,6 @@ public class PayActivity extends BaseActivity {
      * 本地余额支付订单
      */
     private void payOrder() {
-        if (TextUtils.isEmpty(orderID)) {
-            mSVProgressHUD.showInfoWithStatus(messsge, SVProgressHUD.SVProgressHUDMaskType.Clear);
-            return;
-        }
         mSVProgressHUD.showWithStatus("正在支付", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> map = new HashMap<>();
         map.put("orderCode", orderID);

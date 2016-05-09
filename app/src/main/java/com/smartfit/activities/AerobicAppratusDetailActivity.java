@@ -93,7 +93,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
-            getClassInfo();
+//            getClassInfo();
+            btnOrder.setVisibility(View.GONE);
         }
 
     /* Do something */
@@ -149,8 +150,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
          * 7课程已结束未评论
          * 8已评论）
          */
-        if (TextUtils.isEmpty(detail.getState()))
-
 
 
         if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {
@@ -163,14 +162,14 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         tvDistance.setText("距离 " + Util.getDistance(detail.getVenue().getLatitude(), detail.getVenue().getLongitude()));
 
         if (!TextUtils.isEmpty(detail.getVenue().getLastModifyTime())) {
-            tvTime.setText(DateUtils.getData(detail.getVenue().getLastModifyTime()));
+            tvTime.setText(DateUtils.getData(detail.getVenue().getLastModifyTime()) + "~" + DateUtils.getDataTime(endTime));
         }
 
-        if (!TextUtils.isEmpty(detail.getVenue().getOrderPriceSum())) {
-            tvPrice.setText(detail.getVenue().getOrderPriceSum());
+        if (!TextUtils.isEmpty(detail.getClassroomPrice())) {
+            tvPrice.setText(detail.getClassroomPrice());
         } else {
-            detail.getVenue().setOrderPriceSum("0");
-            tvPrice.setText("0");
+            detail.getVenue().setOrderPriceSum("免费");
+            tvPrice.setText("免费");
         }
 
         if (null != detail.getClassroomPics() && detail.getClassroomPics().length > 0) {

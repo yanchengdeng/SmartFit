@@ -1,6 +1,7 @@
 package com.smartfit.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.smartfit.R;
 import com.smartfit.beans.CustomeDate;
@@ -437,7 +438,7 @@ public class DateUtils {
     }
 
 
-    public static String getData(String longSeconds,String style) {
+    public static String getData(String longSeconds, String style) {
 
         Date date = new Date(Long.parseLong(longSeconds) * 1000);
 
@@ -464,8 +465,50 @@ public class DateUtils {
 
     }
 
+    /**
+     * 获取 改时间段（秒） 是从0 点开始 到几点：
+     *
+     * @param longSeconds 时间段
+     * @return 返回 时 、分
+     */
+    public static String getTimeFromZeroToNow(String longSeconds) {
+        String time = null;
+        String showHour = null;
+        String showMin = null;
+        if (!TextUtils.isEmpty(longSeconds)) {
+            long seconds = Long.parseLong(longSeconds);
+            if (seconds % 3600 == 0) {
+                int hour = (int) seconds / 3600;
+                if (hour < 10) {
+                    showHour = "0" + hour;
+                }else {
+                    showHour = String.valueOf(hour);
+                }
+
+                return showHour + ":00";
+            } else {
+                int hour = (int) seconds / 3600;
+                long leftSeconds = seconds - hour * 3600;
+                int minit = (int) (leftSeconds / 60);
+                if (leftSeconds < 10) {
+                    showHour = "0" + hour;
+                }else{
+                    showHour  = String.valueOf(hour);
+                }
+                if (minit < 10) {
+                    showMin = "0" + minit;
+                }else{
+                    showMin = String.valueOf(minit);
+                }
+                return showHour + ":" + showMin;
+            }
+        }
+        return time;
+    }
+
+
     public static String getDataType(String dateString) {
-       Date date =  StringToDate(dateString, DateStyle.YYYY_MM_DD_HH_MM);
+        Date date = StringToDate(dateString, DateStyle.YYYY_MM_DD_HH_MM);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         return simpleDateFormat.format(date).toString();
     }

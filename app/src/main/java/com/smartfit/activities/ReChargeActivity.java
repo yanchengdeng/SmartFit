@@ -20,7 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
+import com.smartfit.beans.RechargeInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.AliPayUtiils;
@@ -37,6 +39,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.greenrobot.eventbus.EventBus;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.StringReader;
@@ -85,10 +88,15 @@ public class ReChargeActivity extends BaseActivity {
     @Bind(R.id.btn_pay)
     Button btnPay;
 
-///TODO  微信代开后  需改过来
+    ///TODO  微信代开后  需改过来
     private int payStyle = 2;// 1  微信   2 支付宝
 
     private Float money;
+
+    private String orderId;
+
+    private EventBus eventBus;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -106,8 +114,7 @@ public class ReChargeActivity extends BaseActivity {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-
-
+                        getUserInfo();
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -128,10 +135,36 @@ public class ReChargeActivity extends BaseActivity {
         }
     });
 
+    private void doCharge() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("chargePrice", String.valueOf(money));
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERCHARGE, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+                RechargeInfo rechargeInfo = JsonUtils.objectFromJson(response,RechargeInfo.class);
+                orderId = rechargeInfo.getOrderCode();
+                goPay();
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ReChargeActivity.this);
+        mQueue.add(request);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_re_charge);
+        eventBus = EventBus.getDefault();
+
         ButterKnife.bind(this);
         initView();
         addLisener();
@@ -182,30 +215,30 @@ public class ReChargeActivity extends BaseActivity {
                         return;
                     }
                 }
-                if (TextUtils.isEmpty(tvPayMoney.getEditableText().toString())){
+                if (TextUtils.isEmpty(tvPayMoney.getEditableText().toString())) {
                     mSVProgressHUD.showInfoWithStatus("请填写金额", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     return;
                 }
-                money = Float.parseFloat(String.format("%.2f",Float.parseFloat(tvPayMoney.getEditableText().toString())));
+                money = Float.parseFloat(String.format("%.2f", Float.parseFloat(tvPayMoney.getEditableText().toString())));
 
+                doCharge();
 
-                goPay();
 
             }
         });
     }
 
     private void goPay() {
-            if (payStyle == 1) {
-                //微信支付
-                weixinPay();
+        if (payStyle == 1) {
+            //微信支付
+            weixinPay();
 
-            } else if (payStyle == 2) {
-                //支付宝支付
-                pay();
+        } else if (payStyle == 2) {
+            //支付宝支付
+            pay();
 
-            }
         }
+    }
 
 
     private void getUserInfo() {
@@ -218,8 +251,16 @@ public class ReChargeActivity extends BaseActivity {
                     SharedPreferencesUtils.getInstance().putString(Constants.SID, userInfoDetail.getSid());
                     SharedPreferencesUtils.getInstance().putString(Constants.UID, userInfoDetail.getUid());
                     SharedPreferencesUtils.getInstance().putString(Constants.IS_ICF, userInfoDetail.getIsICF());
-                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
+                    SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
                 }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventBus.post(new UpdateWalletInfo());
+                        finish();
+                    }
+                },1000);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -354,8 +395,8 @@ public class ReChargeActivity extends BaseActivity {
 
     private String genOutTradNo() {
         Random random = new Random();
-        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
-//        retu、rn orderID;
+//        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
+        return orderId;
     }
 
 
@@ -483,7 +524,7 @@ public class ReChargeActivity extends BaseActivity {
     private void pay() {
         mSVProgressHUD.showWithStatus("充值中...");
         // 订单
-        Log.w("dyc",genOutTradNo()+"===="+money);
+        Log.w("dyc", genOutTradNo() + "====" + money);
         String orderInfo = AliPayUtiils.getOrderInfo(getString(R.string.app_name), genOutTradNo(), String.valueOf(money));//String.valueOf(payMoney)
 
         // 对订单做RSA 签名

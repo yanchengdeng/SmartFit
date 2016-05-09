@@ -103,6 +103,8 @@ public class Constants {
     public static final String USER_SAVEUSERINFO = "/User/saveUserInfo";
     public static final String USER_FRIENDLIST = "/User/friendList";
     public static final String USER_APPLYCASH = "/User/applyCash";
+    public static final String USER_SAVECOACHCOURSETYPES = "/User/saveCoachCourseTypes";
+    public static final String USER_GETCOACHCOURSETYPES = "/User/getCoachCourseTypes";
 
     //教练
     public static final String COACH_ADD_CERTIFICATE = "/coach/addCertificate";
@@ -187,8 +189,8 @@ public class Constants {
 
 
         //支付回调
-        public static final String ALIPAY_CALLBACK = Net.URL + "/Pay/aliCallback";
-        public static final String WX_PAY_CALLBACK = Net.URL + "/Pay/weixinCallback";
+        public static final String ALIPAY_CALLBACK = Net.URL + "/pay/aliCallback";
+        public static final String WX_PAY_CALLBACK = Net.URL + "/pay/weixinCallback";
 
     }
 }

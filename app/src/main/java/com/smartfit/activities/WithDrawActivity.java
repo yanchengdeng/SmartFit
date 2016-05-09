@@ -1,6 +1,7 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -19,6 +21,8 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,10 +62,13 @@ public class WithDrawActivity extends BaseActivity {
 
     private String leftMoney;
 
+    private EventBus eventBus ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_draw);
+        eventBus = EventBus.getDefault();
         ButterKnife.bind(this);
         initView();
         getLeftMoney();
@@ -175,6 +182,13 @@ public class WithDrawActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus("已提现成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                      eventBus.post(new UpdateWalletInfo());
+                        finish();
+                    }
+                },1000);
 
             }
         }, new Response.ErrorListener() {

@@ -95,7 +95,7 @@
     <string name="cannot_topup">钱包无法充值？</string>
     <string name="server_phone">客服电话</string>
     <string name="server_phone_num">4006053337</string>
-    <string name="server_time">(周一至周日 9：00 ~22：00)</string>
+    <string name="server_time">(周一至周六 9：00~18：00)</string>
     <string name="help">帮助</string>
     <string name="suggest_fadeback">意见反馈</string>
     <string name="title_activity_fade_back">FadeBackActivity</string>
@@ -386,6 +386,8 @@
     <string name="invite_wx_friends">邀请微信好友</string>
     <string name="invite_friends">邀请好友</string>
     <string name="title_activity_private_class_by_message">PrivateClassByMessageActivity</string>
+    <string name="save_ing">保存中...</string>
+    <string name="alreay_setting">已设置</string>
 
 
 </resources>
