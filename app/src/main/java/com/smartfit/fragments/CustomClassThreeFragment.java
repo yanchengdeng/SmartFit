@@ -45,7 +45,7 @@ public class CustomClassThreeFragment extends BaseFragment {
     @Bind(R.id.listView)
     ListView listView;
     private PrivateEducationAdapter adapter;
-    private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
+    public List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
 
     /**
      * 标志位，标志已经初始化完成
@@ -151,7 +151,7 @@ public class CustomClassThreeFragment extends BaseFragment {
             }
         });
 
-        ((UserCustomClassThreeActivity) getActivity()).ivFunction.setOnClickListener(new View.OnClickListener() {
+      /*  ((UserCustomClassThreeActivity) getActivity()).ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<PrivateEducationClass> selectPricates = countSelectNum(datas);
@@ -182,7 +182,7 @@ public class CustomClassThreeFragment extends BaseFragment {
                     ((BaseActivity) getActivity()).openActivity(UserCustomClassFourActivity.class, bundle);
                 }
             }
-        });
+        });*/
 
 
     }
