@@ -82,7 +82,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (getItemViewType(position) == ITEM_WITH_BUTTON) {
             ViewHolderWithButton viewHolder;
@@ -140,14 +140,14 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             viewHolder.btnAggren.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getMessageContent().getCourseId(), 1);
+                    aggree(item.getId(),position,item.getMessageContent().getCourseId(), 1);
                 }
             });
 
             viewHolder.btnRefuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getMessageContent().getCourseId(), 2);
+                    aggree(item.getId(),position,item.getMessageContent().getCourseId(), 2);
                 }
             });
 
@@ -244,7 +244,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
      * @param courseId
      * @param flag     1  同意  2  拒绝
      */
-    private void aggree(String courseId, final int flag) {
+    private void aggree(final String messageId, final int posiotn,String courseId, final int flag) {
         Map<String, String> maps = new HashMap<>();
         maps.put("courseId", courseId);
         String host;
@@ -262,11 +262,36 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                 } else {
                     ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("已拒绝", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
+
+                ignoreFriends(messageId,posiotn);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(context.getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(context);
+        ((BaseActivity) context).mQueue.add(request);
+    }
+
+
+    private void ignoreFriends(String id, final int psoiton) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        PostRequest request = new PostRequest(Constants.MESSAGE_DEL, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                messageLists.remove(psoiton);
+                notifyDataSetChanged();
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

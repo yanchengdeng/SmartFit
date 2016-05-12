@@ -3,6 +3,7 @@ package com.smartfit.adpters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MemeberInfo;
+import com.smartfit.utils.Options;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
@@ -63,12 +66,20 @@ public class MemberListAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        final MemeberInfo item = datas.get(position);
+        ImageLoader.getInstance().displayImage(item.getUserPicUrl(), viewHolder.ivIcon, Options.getListOptions());
+        if (!TextUtils.isEmpty(item.getNickName())) {
+            viewHolder.tvName.setText(item.getNickName());
+        }
 
+        if (!TextUtils.isEmpty(item.getMobileNo())) {
+            viewHolder.tvPhone.setText(item.getMobileNo());
+        }
 
         viewHolder.btnDialet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NormalDialogStyleTwo();
+                NormalDialogStyleTwo(item.getMobileNo());
             }
         });
         return convertView;
@@ -79,7 +90,7 @@ public class MemberListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private void NormalDialogStyleTwo() {
+    private void NormalDialogStyleTwo(final String mobileNo) {
         final NormalDialog dialog = new NormalDialog(context);
         dialog.content("确定要拨打客服电话吗？")//
                 .style(NormalDialog.STYLE_TWO)//
@@ -101,7 +112,7 @@ public class MemberListAdapter extends BaseAdapter {
                         dialog.dismiss();
                         try {
                             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
-                                    "13067380836"));
+                                    mobileNo));
                             ((BaseActivity)context).startActivity(intent);
                         } catch (Exception E) {
                             ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);

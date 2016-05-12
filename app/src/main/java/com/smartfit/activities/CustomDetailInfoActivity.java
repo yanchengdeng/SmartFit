@@ -320,7 +320,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
         tvUpdatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(UpdatePasswordActivity.class);
+                openActivity(ForgetPasswordActivity.class);
             }
         });
 

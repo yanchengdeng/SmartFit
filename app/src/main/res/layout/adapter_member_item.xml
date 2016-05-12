@@ -35,9 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
-            android:drawableRight="@mipmap/icon_woman"
             android:singleLine="true"
-            android:text="齐天大圣"
+            android:text="暂无昵称"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal"
             android:textStyle="bold" />
@@ -48,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding_big"
             android:singleLine="true"
-            android:text="13067380836"
+            android:text="暂无手机号"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 
