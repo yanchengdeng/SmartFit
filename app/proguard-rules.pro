@@ -101,6 +101,10 @@
 
 -keep class com.autonavi.aps.amapapi.model.**{*;}
 
+#个推
+-dontwarn com.igexin.**
+-keep class com.igexin.**{*;}
+
 #lib 包
 -keep class android.support.annotation.**{ *;}
 -keep  class android.support.**{ *;}

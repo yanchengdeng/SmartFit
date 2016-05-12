@@ -17,6 +17,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "fToF7fKCgHAAcCy5OCDMw3",
+                GETUI_APP_KEY : "nlvS7IU60Q7eXkwuK9pUP5",
+                GETUI_APP_SECRET : "pk3tscFcij7d78e6mad1vA",
+                PACKAGE_NAME : applicationId
+        ]
     }
     buildTypes {
         release {
@@ -67,4 +73,5 @@ dependencies {
     compile 'org.xutils:xutils:3.3.25'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile files('libs/AMap_2DMap_V2.8.1_20160202.jar')
+    compile files('libs/GetuiExt-2.0.3.jar')
 }
