@@ -123,6 +123,10 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                             SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
                         }
                         LoginHX(userInfoDetail.getUid());
+                        String client = SharedPreferencesUtils.getInstance().getString(Constants.CLINET_ID, "");
+                        if (!TextUtils.isEmpty(client)) {
+                            bindClient(client);
+                        }
                     }
                 }
             }, new Response.ErrorListener() {
@@ -135,6 +139,25 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             request.headers = NetUtil.getRequestBody(MainActivity.this);
             mQueue.add(request);
         }
+
+    }
+
+    private void bindClient(String client) {
+
+        Map<String, String> msp = new HashMap();
+        msp.put("clientId", client);
+        PostRequest request = new PostRequest(Constants.USER_SYNCLIENTIID, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
     }
 
     private void LoginHX(String uid) {

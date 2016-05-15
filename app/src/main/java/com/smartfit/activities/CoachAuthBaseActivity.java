@@ -112,6 +112,8 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
     private int positon = -1;
 
+    MoreCertiaicateAdapter  moreCertiaicateAdapter;
+
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -150,7 +152,8 @@ public class CoachAuthBaseActivity extends BaseActivity {
     private void initMoreCentifacate() {
 
         certificateList.add(getNewCertificate());
-        listAuthPhotos.setAdapter(new MoreCertiaicateAdapter(this, certificateList, handler));
+        moreCertiaicateAdapter =    new MoreCertiaicateAdapter(this, certificateList, handler);
+        listAuthPhotos.setAdapter(moreCertiaicateAdapter);
 
     }
 
@@ -257,7 +260,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 certificateList.add(getNewCertificate());
-                ((MoreCertiaicateAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
+                moreCertiaicateAdapter.setData(certificateList);
             }
         });
 
@@ -381,7 +384,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
             ArrayList<String> photos = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
             if (null != photos && photos.size() > 0) {
                 certificateList.get(positon).setPhoto(photos.get(0));
-                ((MoreCertiaicateAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
+                moreCertiaicateAdapter.setData(certificateList);
                 getAuthUrl(certificateList);
             }
         }

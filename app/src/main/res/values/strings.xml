@@ -389,6 +389,10 @@
     <string name="save_ing">保存中...</string>
     <string name="alreay_setting">已设置</string>
     <string name="not_setting">未设置</string>
+    <string name="no_login">您未登录</string>
+    <string name="title_activity_vertify_not_pass">VertifyNotPassActivity</string>
+    <string name="your_coach_info_resubmit">您的部分教练资料未通过审核，请重新提交</string>
+    <string name="add_vertify_info">添加认证资料</string>
 
 
 </resources>

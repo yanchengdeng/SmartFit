@@ -177,7 +177,6 @@ public class CoachDetailInfoActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfoDetail.getIsCCC())) {
             if (userInfoDetail.getIsCCC().equals("0")) {
                 tvEditBrief.setText(getString(R.string.not_setting));
-
             } else if (userInfoDetail.getIsCCC().equals("1")) {
                 tvEditBrief.setText("待审核");
             } else if (userInfoDetail.getIsCCC().equals("2")) {
@@ -185,7 +184,6 @@ public class CoachDetailInfoActivity extends BaseActivity {
             } else {
                 tvEditBrief.setText("审核不通过");
             }
-
         }
 
         tvBindPhone.setText(SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "未绑定"));

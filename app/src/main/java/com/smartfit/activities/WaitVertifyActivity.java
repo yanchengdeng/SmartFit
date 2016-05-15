@@ -12,7 +12,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.adpters.MoreCertiaicateVertifyAdapter;
+import com.smartfit.adpters.MoreCertiaicateVertifyTureAdapter;
 import com.smartfit.beans.SubmitAuthInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -128,7 +128,7 @@ public class WaitVertifyActivity extends BaseActivity {
                 ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageCard, Options.getListOptions());
                 //1待审；2通过；3不通过
                 if (item.getStatus().equals("1")) {
-                    cbCardPhoto.setImageResource(R.mipmap.icon_close);
+                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
                 } else if (item.getStatus().equals("2")) {
                     cbCardPhoto.setImageResource(R.mipmap.icon_choose);
                 } else {
@@ -141,7 +141,7 @@ public class WaitVertifyActivity extends BaseActivity {
                 ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageWork, Options.getListOptions());
                 //1待审；2通过；3不通过
                 if (item.getStatus().equals("1")) {
-                    cbWorkPhoto.setImageResource(R.mipmap.icon_close);
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
                 } else if (item.getStatus().equals("2")) {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
                 } else {
@@ -156,7 +156,7 @@ public class WaitVertifyActivity extends BaseActivity {
         }
 
         if (workAuths.size()>0){
-            listAuthPhotos.setAdapter(new MoreCertiaicateVertifyAdapter(WaitVertifyActivity.this,workAuths));
+            listAuthPhotos.setAdapter(new MoreCertiaicateVertifyTureAdapter(WaitVertifyActivity.this,workAuths));
         }
     }
 

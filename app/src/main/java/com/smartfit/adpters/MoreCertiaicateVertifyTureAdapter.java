@@ -21,13 +21,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 教练资料认证  审核未通过
  * Created by dengyancheng on 16/3/27.
  */
-public class MoreCertiaicateVertifyAdapter extends BaseAdapter {
+public class MoreCertiaicateVertifyTureAdapter extends BaseAdapter {
     private List<SubmitAuthInfo> certificates;
     private Context context;
 
-    public MoreCertiaicateVertifyAdapter(Context context, List<SubmitAuthInfo> certificates) {
+    public MoreCertiaicateVertifyTureAdapter(Context context, List<SubmitAuthInfo> certificates) {
         this.context = context;
         this.certificates = certificates;
     }
@@ -60,19 +61,19 @@ public class MoreCertiaicateVertifyAdapter extends BaseAdapter {
 
 
          SubmitAuthInfo item = certificates.get(position);
-
+         // //1待审；2通过；3不通过
 
         viewHolder.tvNameTips.setText("获得的证书");
         viewHolder.tvCertificate.setText("上传证书照片");
         if (item.getStatus().equals("1")) {
-            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-            viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
+            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
+            viewHolder.cbName.setImageResource(R.mipmap.icon_close);
         } else if (item.getStatus().equals("2")) {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
             viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
         } else {
-            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-            viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
+            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
+            viewHolder.cbName.setImageResource(R.mipmap.icon_close);
         }
 
 

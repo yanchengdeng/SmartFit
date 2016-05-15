@@ -11,6 +11,8 @@ import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.smartfit.commons.Constants;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 /**
  *
@@ -57,6 +59,7 @@ public class PushReceiver extends BroadcastReceiver {
                 // 第三方应用需要将CID上传到第三方服务器，并且将当前用户帐号和CID进行关联，以便日后通过用户帐号查找CID进行消息推送
                 String cid = bundle.getString("clientid");
                 Log.w("dyc","cid"+cid);
+                SharedPreferencesUtils.getInstance().putString(Constants.CLINET_ID,cid);
                 break;
 
             case PushConsts.THIRDPART_FEEDBACK:

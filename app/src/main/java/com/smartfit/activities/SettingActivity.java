@@ -8,7 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -18,11 +21,17 @@ import com.smartfit.R;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,6 +75,9 @@ public class SettingActivity extends BaseActivity {
     RelativeLayout rlQuiteUi;
     private EventBus eventBus;
 
+
+    UserInfoDetail userInfoDetail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +103,32 @@ public class SettingActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo)) {
             UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
             ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getListOptions());
-            if (!TextUtils.isEmpty(userInfoDetail.getNickName())){
-            tvName.setText(userInfoDetail.getNickName());}
+            if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+                tvName.setText(userInfoDetail.getNickName());
+            }
         }
     }
 
     private void initView() {
+        userInfoDetail = Util.getUserInfo(SettingActivity.this);
+        if (userInfoDetail != null) {
+            if (userInfoDetail.getOpenPush().equals("0")) {
+                ivAcceptMsg.setVisibility(View.VISIBLE);
+                ivAcceptMsgNot.setVisibility(View.GONE);
+            } else {
+                ivAcceptMsg.setVisibility(View.GONE);
+                ivAcceptMsgNot.setVisibility(View.VISIBLE);
+            }
+
+            if (userInfoDetail.getOpenSound().equals("0")) {
+                ivAcceptRing.setVisibility(View.VISIBLE);
+                ivAcceptRingNot.setVisibility(View.GONE);
+            } else {
+                ivAcceptRing.setVisibility(View.GONE);
+                ivAcceptRingNot.setVisibility(View.VISIBLE);
+            }
+        }
+
 
     }
 
@@ -104,15 +136,12 @@ public class SettingActivity extends BaseActivity {
         rlMsgUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ivAcceptMsg.getVisibility() == View.VISIBLE) {
-                    ivAcceptMsg.setVisibility(View.GONE);
-                    ivAcceptMsgNot.setVisibility(View.VISIBLE);
-                    mSVProgressHUD.showInfoWithStatus("关闭消息");
+                if (userInfoDetail != null) {
+                    doChangePush(userInfoDetail.getOpenPush());
                 } else {
-                    ivAcceptMsg.setVisibility(View.VISIBLE);
-                    ivAcceptMsgNot.setVisibility(View.GONE);
-                    mSVProgressHUD.showInfoWithStatus("打开消息");
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.no_login), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
+
             }
         });
 
@@ -120,14 +149,11 @@ public class SettingActivity extends BaseActivity {
         rlRingUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ivAcceptRing.getVisibility() == View.VISIBLE) {
-                    ivAcceptRing.setVisibility(View.GONE);
-                    ivAcceptRingNot.setVisibility(View.VISIBLE);
-                    mSVProgressHUD.showInfoWithStatus("关闭声音");
+
+                if (userInfoDetail != null) {
+                    doRingPush(userInfoDetail.getOpenSound());
                 } else {
-                    ivAcceptRing.setVisibility(View.VISIBLE);
-                    ivAcceptRingNot.setVisibility(View.GONE);
-                    mSVProgressHUD.showInfoWithStatus("打开声音");
+                    mSVProgressHUD.showInfoWithStatus(getString(R.string.no_login), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
             }
         });
@@ -207,5 +233,100 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 更新推送设置
+     * 0开启1关闭
+     */
+    private void doChangePush(final String key) {
+        final String nextPush;
+        if (key.equals("0")) {
+            nextPush = "1";
+        } else {
+            nextPush = "0";
+        }
+        Map<String, String> msp = new HashMap();
+        msp.put("toPushState", nextPush);
+        PostRequest request = new PostRequest(Constants.USER_CHGOPENPUSH, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                userInfoDetail.setOpenPush(nextPush);
+                updateSettingPush(userInfoDetail);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(SettingActivity.this);
+        mQueue.add(request);
+
+
+    }
+
+    /**
+     * 更新铃声设置
+     * 0开启1关闭
+     */
+    private void doRingPush(final String key) {
+        final String nextRigng;
+        if (key.equals("0")) {
+            nextRigng = "1";
+        } else {
+            nextRigng = "0";
+        }
+        Map<String, String> msp = new HashMap();
+        msp.put("toPushState", nextRigng);
+        PostRequest request = new PostRequest(Constants.USER_CHGOPENSOUND, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                userInfoDetail.setOpenSound(nextRigng);
+                UpdateSettingRing(userInfoDetail);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(SettingActivity.this);
+        mQueue.add(request);
+
+
+    }
+
+    /**
+     * 更新用户设置
+     *
+     * @param userInfoDetail
+     */
+    private void updateSettingPush(UserInfoDetail userInfoDetail) {
+        if (userInfoDetail.getOpenPush().equals("0")) {
+            ivAcceptMsg.setVisibility(View.VISIBLE);
+            ivAcceptMsgNot.setVisibility(View.GONE);
+            mSVProgressHUD.showSuccessWithStatus("打开消息", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        } else {
+            ivAcceptMsg.setVisibility(View.GONE);
+            ivAcceptMsgNot.setVisibility(View.VISIBLE);
+            mSVProgressHUD.showSuccessWithStatus("关闭消息", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
+
+
+        Util.saveUserInfo(userInfoDetail);
+
+    }
+
+    private void UpdateSettingRing(UserInfoDetail userInfoDetail) {
+        if (userInfoDetail.getOpenSound().equals("0")) {
+            ivAcceptRing.setVisibility(View.VISIBLE);
+            ivAcceptRingNot.setVisibility(View.GONE);
+            mSVProgressHUD.showSuccessWithStatus("打开声音", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        } else {
+            ivAcceptRing.setVisibility(View.GONE);
+            ivAcceptRingNot.setVisibility(View.VISIBLE);
+            mSVProgressHUD.showSuccessWithStatus("关闭声音", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
+        Util.saveUserInfo(userInfoDetail);
+    }
 
 }

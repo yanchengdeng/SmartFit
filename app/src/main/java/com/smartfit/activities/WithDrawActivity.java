@@ -181,7 +181,7 @@ public class WithDrawActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.USER_APPLYCASH, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                mSVProgressHUD.showSuccessWithStatus("已提现成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showSuccessWithStatus("已提交申请", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

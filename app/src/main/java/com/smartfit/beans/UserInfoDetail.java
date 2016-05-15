@@ -20,6 +20,25 @@ public class UserInfoDetail {
     private String hight;//null,
     private String weight;//null,
     private String balance;//0
+    private String openPush;//0开启1关闭
+    private String openSound;//0开启1关闭
+
+    public String getOpenPush() {
+        return openPush;
+    }
+
+    public void setOpenPush(String openPush) {
+        this.openPush = openPush;
+    }
+
+    public String getOpenSound() {
+        return openSound;
+    }
+
+    public void setOpenSound(String openSound) {
+        this.openSound = openSound;
+    }
+
 
     public String getCoachId() {
         return coachId;

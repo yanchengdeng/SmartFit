@@ -132,6 +132,7 @@
             android:id="@+id/rl_quite_ui"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:padding="@dimen/image_padding_big">
 
             <TextView
@@ -201,6 +202,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:gravity="center_vertical"
             android:padding="@dimen/image_padding_big"
+            android:visibility="gone"
             android:text="去评分"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />

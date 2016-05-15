@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.Certificate;
+import com.smartfit.utils.Options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,12 @@ import butterknife.ButterKnife;
 /**
  * Created by dengyancheng on 16/3/27.
  */
-public class MoreCertiaicateAdapter extends BaseAdapter {
+public class MoreCertiaicatePassAdapter extends BaseAdapter {
     private List<Certificate> certificates;
     private Context context;
     private Handler handler;
 
-    public MoreCertiaicateAdapter(Context context, List<Certificate> certificates, Handler handler) {
+    public MoreCertiaicatePassAdapter(Context context, List<Certificate> certificates, Handler handler) {
         this.context = context;
         this.certificates = certificates;
         this.handler = handler;
@@ -95,8 +96,6 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
             }
         });
 
-
-
         if (!TextUtils.isEmpty(item.getText_tips())) {
             viewHolder.tvNameTips.setText(item.getText_tips());
         }
@@ -113,16 +112,32 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         }
 
 
-        if (!TextUtils.isEmpty(item.getPhoto())) {
-            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-            ImageLoader.getInstance().displayImage("file:///" + item.getPhoto(), viewHolder.ivCertificate);
-            viewHolder.ivCertificate.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
-            viewHolder.ivCertificate.setVisibility(View.INVISIBLE);
+        //1待审；2通过；3不通过
+        if (!TextUtils.isEmpty(item.getStatus())) {
+            if (item.getStatus().equals("1")) {
+                viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
+                viewHolder.ivAddPhoto.setVisibility(View.VISIBLE);
+                viewHolder.cbName.setImageResource(R.mipmap.icon_close);
+            } else if (item.getStatus().equals("2")) {
+                viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
+                viewHolder.ivAddPhoto.setVisibility(View.INVISIBLE);
+                viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
+            } else {
+                viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
+                viewHolder.ivAddPhoto.setVisibility(View.VISIBLE);
+                viewHolder.cbName.setImageResource(R.mipmap.icon_close);
+            }
         }
-
-
+        if (TextUtils.isEmpty(item.getPhoto())){
+            viewHolder.ivCertificate.setVisibility(View.INVISIBLE);
+        }else {
+            if (!TextUtils.isEmpty(item.getPhoto()) && item.getPhoto().startsWith("http://")) {
+                ImageLoader.getInstance().displayImage(item.getPhoto(), viewHolder.ivCertificate, Options.getListOptions());
+            } else {
+                ImageLoader.getInstance().displayImage("file:///" + item.getPhoto(), viewHolder.ivCertificate);
+            }
+            viewHolder.ivCertificate.setVisibility(View.VISIBLE);
+        }
         viewHolder.ivAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,11 +150,6 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         });
 
         return convertView;
-    }
-
-    public void setData(List<Certificate> certificateList) {
-        this.certificates = certificateList;
-        notifyDataSetChanged();
     }
 
 

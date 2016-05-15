@@ -8,6 +8,7 @@ import com.amap.api.maps2d.model.LatLng;
 import com.smartfit.R;
 import com.smartfit.beans.CityBean;
 import com.smartfit.beans.SelectedSort;
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
 
@@ -146,6 +147,28 @@ public class Util {
             selectedSorts.add(new SelectedSort(ids[i], context.getString(names[i])));
         }
         return selectedSorts;
+    }
+
+    /**
+     * 获取用户信息
+     * @param context
+     */
+    public static UserInfoDetail getUserInfo(Context  context) {
+        String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(userInfo)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
+            return userInfoDetail;
+        }
+        return  null;
+    }
+
+
+    /**
+     *保存用户信息
+     * @param userInfoDetail
+     */
+    public static void saveUserInfo(UserInfoDetail  userInfoDetail) {
+        SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO,JsonUtils.toJson(userInfoDetail));
     }
 
     private static class SSLSocketFactoryEx extends SSLSocketFactory {

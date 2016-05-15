@@ -331,15 +331,15 @@ public class CustomDetailInfoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-
+                vertifyStatus="0";
                 if (vertifyStatus.equals("0")) {
                     openActivity(CoachAuthBaseActivity.class);
                 } else if (vertifyStatus.equals("1")) {
-                    openActivity(CoachAuthentitionActivity.class);
+//                    openActivity(CoachAuthentitionActivity.class);
                 } else if (vertifyStatus.equals("2")) {
                     mSVProgressHUD.showInfoWithStatus("下线");
                 } else if (vertifyStatus.equals("5")) {
-                    openActivity(CoachAuthBaseActivity.class);
+                    openActivity(VertifyNotPassActivity.class);
                 } else {
                     openActivity(WaitVertifyActivity.class);
                 }

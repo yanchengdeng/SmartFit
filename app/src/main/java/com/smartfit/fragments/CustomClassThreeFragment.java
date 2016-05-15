@@ -2,7 +2,6 @@ package com.smartfit.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.UserCustomClassFourActivity;
-import com.smartfit.activities.UserCustomClassThreeActivity;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.commons.Constants;
@@ -59,6 +56,8 @@ public class CustomClassThreeFragment extends BaseFragment {
 
     private String startTime, endTime, courseClassId, venueId,roomId, venuPrice;
 
+    private String type;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +68,13 @@ public class CustomClassThreeFragment extends BaseFragment {
             venueId = getArguments().getString("venueId");
             venuPrice = getArguments().getString("venuePrice");
             roomId = getArguments().getString("roomId");
+            type = getArguments().getString("type");
         }
+    }
+
+
+    public List<PrivateEducationClass> getDatas(){
+        return  this.datas;
     }
 
     @Override
@@ -84,6 +89,7 @@ public class CustomClassThreeFragment extends BaseFragment {
             venueId = getArguments().getString("venueId");
             venuPrice = getArguments().getString("venuePrice");
             roomId = getArguments().getString("roomId");
+            type = getArguments().getString("type");
         }
         isPrepared = true;
         lazyLoad();
@@ -98,6 +104,7 @@ public class CustomClassThreeFragment extends BaseFragment {
         data.put("endTime", endTime);
         data.put("venueId", venueId);
         data.put("courseClassId", courseClassId);
+        data.put("orderType",type);
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

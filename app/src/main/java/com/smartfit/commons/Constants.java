@@ -55,6 +55,8 @@ public class Constants {
     public static final String USER_INFO = "user_info";
     public static final String COACH_ID = "coach_id";
 
+    public static final String CLINET_ID="client_id";
+
 
     /**
      * 接口域名方法
@@ -126,6 +128,9 @@ public class Constants {
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
     public static final String MESSAGE_GETMESSAGEMAIN = "/message/getMessageMain";
     public static final String SYS_SAVEFEEDBACK = "/sys/saveFeedback";
+    public static final  String USER_CHGOPENPUSH = "/User/chgOpenPush";
+    public static final String USER_CHGOPENSOUND="/User/chgOpenSound";
+    public static final String USER_SYNCLIENTIID="/User/synClientiId";
 
 
     //订单
@@ -184,10 +189,10 @@ public class Constants {
 
     public static class Net {
         //发布时的接口
-        public static final String URL = "http://139.196.228.98:8098";
+//        public static final String URL = "http://139.196.228.98:8098";
 
         //测试
-//        public static final String URL = "http://123.57.164.115:8098";
+        public static final String URL = "http://123.57.164.115:8098";
 
 
         //支付回调

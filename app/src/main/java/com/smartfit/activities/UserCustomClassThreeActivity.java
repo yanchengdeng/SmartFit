@@ -1,9 +1,10 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -91,14 +92,17 @@ public class UserCustomClassThreeActivity extends BaseActivity {
     FragmentPagerItemAdapter adapter;
 
     private void initViewPage() {
-        Bundle bundle = getIntent().getExtras();
-        CustomClassThreeFragment custom = new CustomClassThreeFragment();
-        custom.setArguments(bundle);
+        Bundle bundle1 = getIntent().getExtras();
+        bundle1.putString("type","1");
+        Bundle bundle2 = getIntent().getExtras();
+        bundle2.putString("type","2");
+        Bundle bundle3 = getIntent().getExtras();
+        bundle3.putString("type","3");
         adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("评分", CustomClassThreeFragment.class, bundle)
-                .add("价格", CustomClassThreeFragment.class, bundle)
-                .add("性别", CustomClassThreeFragment.class, bundle)
+                .add("评分", CustomClassThreeFragment.class, bundle1)
+                .add("价格", CustomClassThreeFragment.class, bundle2)
+                .add("性别", CustomClassThreeFragment.class, bundle3)
                 .create());
 
 
@@ -122,7 +126,10 @@ public class UserCustomClassThreeActivity extends BaseActivity {
         ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomClassThreeFragment fragment = (CustomClassThreeFragment) adapter.getItem(viewpager.getCurrentItem());
+                CustomClassThreeFragment fragment = (CustomClassThreeFragment) getVisibleFragment();
+                if (fragment==null){
+                    return;
+                }
                 if (fragment.datas.size() > 0) {
                     List<PrivateEducationClass> selectPricates = countSelectNum(fragment.datas);
                     if (selectPricates.size() == 0) {
@@ -155,6 +162,17 @@ public class UserCustomClassThreeActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = UserCustomClassThreeActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for(Fragment fragment : fragments){
+            if(fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
     }
 
     /**
