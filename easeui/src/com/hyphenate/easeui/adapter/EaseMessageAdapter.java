@@ -17,7 +17,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -25,7 +24,6 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -278,7 +276,7 @@ public class EaseMessageAdapter extends BaseAdapter {
 
         if (message.direct() == EMMessage.Direct.SEND) {
             try {
-                Glide.with(context).load(icon).into(((EaseChatRow) convertView).userAvatarView);
+                Glide.with(context).load(userIcon).into(((EaseChatRow) convertView).userAvatarView);
             } catch (Exception e) {
                 //正常的string路径
                 Glide.with(context).load("").diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(((EaseChatRow) convertView).userAvatarView);
@@ -286,7 +284,7 @@ public class EaseMessageAdapter extends BaseAdapter {
 
         } else {
             try {
-                Glide.with(context).load(userIcon).into(((EaseChatRow) convertView).userAvatarView);
+                Glide.with(context).load(icon).into(((EaseChatRow) convertView).userAvatarView);
             } catch (Exception e) {
                 //正常的string路径
                 Glide.with(context).load("").diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(((EaseChatRow) convertView).userAvatarView);
