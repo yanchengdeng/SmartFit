@@ -46,7 +46,6 @@
                 android:text=""
                 android:textSize="@dimen/text_normal"
                 android:textColor="@color/black"
-                android:drawableRight="@mipmap/icon_woman"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:drawablePadding="@dimen/image_padding"
                 android:layout_gravity="center_vertical"/>

@@ -335,7 +335,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
                 if (vertifyStatus.equals("0")) {
                     openActivity(CoachAuthBaseActivity.class);
                 } else if (vertifyStatus.equals("1")) {
-//                    openActivity(CoachAuthentitionActivity.class);
+                    openActivity(CoachAuthentitionActivity.class);
                 } else if (vertifyStatus.equals("2")) {
                     mSVProgressHUD.showInfoWithStatus("下线");
                 } else if (vertifyStatus.equals("5")) {
@@ -358,7 +358,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                saveUserInfo("1", 3);
+                saveUserInfo(Constants.SEX_MAN, 3);
             }
         });
         dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
@@ -366,7 +366,7 @@ public class CustomDetailInfoActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
 
-                saveUserInfo("0", 3);
+                saveUserInfo(Constants.SEX_WOMEN, 3);
             }
         });
     }

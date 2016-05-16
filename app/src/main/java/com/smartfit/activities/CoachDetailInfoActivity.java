@@ -300,7 +300,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                saveUserInfo("1", 3);
+                saveUserInfo(Constants.SEX_MAN, 3);
             }
         });
         dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
@@ -308,7 +308,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
 
-                saveUserInfo("0", 3);
+                saveUserInfo(Constants.SEX_WOMEN, 3);
             }
         });
     }

@@ -60,6 +60,8 @@ public class SearchClassActivity extends BaseActivity {
 
     private boolean isLoaderMore = true;//  是否允许加载到底
 
+    String key;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,15 @@ public class SearchClassActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         addLisener();
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
+                key = getIntent().getStringExtra("key");
+            }
+        }
+
+        if (!TextUtils.isEmpty(key)) {
+            loadData(key);
+        }
     }
 
     private void initView() {
@@ -158,6 +169,7 @@ public class SearchClassActivity extends BaseActivity {
                 } else {
                     noMoreData(datas);
                 }
+                noMoreData(datas);
             }
         }, new Response.ErrorListener() {
             @Override

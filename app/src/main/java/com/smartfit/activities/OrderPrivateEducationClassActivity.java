@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -107,6 +108,15 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             tvSpaceName.setText(idleClassListInfo.getVenueName());
         }
         initRoom(0);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, privateEducationClasses.get(position).getUid());
+                openActivity(OtherCustomeMainActivity.class,bundle);
+            }
+        });
     }
 
     @Subscribe

@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -47,25 +47,27 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements AMapLocationListener {
 
     @Bind(R.id.card_small_class)
-    CardView cardSmallClass;
+    LinearLayout cardSmallClass;
     @Bind(R.id.card_find_private_coach)
-    CardView cardFindPrivateCoach;
+    LinearLayout cardFindPrivateCoach;
     @Bind(R.id.card_group_exersise)
-    CardView cardGroupExersise;
+    LinearLayout cardGroupExersise;
     @Bind(R.id.card_banner)
-    CardView cardBanner;
+    LinearLayout cardBanner;
     @Bind(R.id.card_aerobic_appratus)
-    CardView cardAerobicAppratus;
+    LinearLayout cardAerobicAppratus;
     @Bind(R.id.card_smart_fit)
-    CardView cardSmartFit;
+    LinearLayout cardSmartFit;
     @Bind(R.id.container)
     FrameLayout container;
     @Bind(R.id.tv_city_name)
     TextView tvCityName;
     @Bind(R.id.iv_search)
     ImageView ivSearch;
-
+    @Bind(R.id.et_search_content)
+    EditText etSearchContent;
     private static final Object TAG = new Object();
+
 
 
     @Override
@@ -249,6 +251,15 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                                       }
 
         );
+
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("key",etSearchContent.getEditableText().toString());
+                openActivity(SearchClassActivity.class, bundle);
+            }
+        });
     }
 
 

@@ -265,6 +265,7 @@
                 android:textSize="@dimen/text_normal" />
 
             <RelativeLayout
+                android:id="@+id/rl_coach_ui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"

@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_bar_height"
-        android:background="@color/main_bar_bg">
+        android:background="@color/common_header_bg">
 
         <TextView
             android:id="@+id/tv_city_name"
@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:drawablePadding="@dimen/image_padding"
-            android:drawableRight="@mipmap/icon_down"
+            android:drawableRight="@mipmap/icon_down_white"
             android:text="定位中"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
@@ -47,12 +47,13 @@
 
 
             <EditText
+                android:id="@+id/et_search_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/image_padding"
                 android:background="@null"
+                android:hint="@string/input_search_contition"
                 android:singleLine="true"
-                android:hint="@string/input_address"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
@@ -78,16 +79,16 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:id="@+id/card_small_class"
-                    style="@style/CardViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="2"
-                    app:cardBackgroundColor="@color/little_class">
+                    android:background="@color/common_header_bg"
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -96,33 +97,31 @@
                         android:src="@mipmap/icon_primary"></ImageView>
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
-                <android.support.v7.widget.CardView
-                    style="@style/CardViewStyle"
+                <LinearLayout
+
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="3"
-                    app:cardBackgroundColor="@color/transparent">
+                    android:layout_weight="3">
 
                     <com.smartfit.views.SelectableRoundedImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        app:sriv_left_top_corner_radius="4dip"
-                        app:sriv_right_top_corner_radius="4dip"
-                        app:sriv_left_bottom_corner_radius="4dip"
-                        app:sriv_right_bottom_corner_radius="4dip"
+                        android:src="@mipmap/icon_pic_group"
+                        app:sriv_left_bottom_corner_radius="0dip"
+                        app:sriv_left_top_corner_radius="0dip"
                         app:sriv_oval="false"
-                        android:src="@mipmap/bg_pic"/>
+                        app:sriv_right_bottom_corner_radius="0dip"
+                        app:sriv_right_top_corner_radius="0dip" />
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -133,17 +132,17 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:id="@+id/card_find_private_coach"
-                    style="@style/CardViewStyle"
+
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="3"
-                    app:cardBackgroundColor="@color/little_class">
+                    android:background="@color/find_private_coach"
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="@dimen/main_card_width"
@@ -152,19 +151,19 @@
                         android:src="@mipmap/icon_find"></ImageView>
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:id="@+id/card_group_exersise"
-                    style="@style/CardViewStyle"
+
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="2"
-                    app:cardBackgroundColor="@color/find_private_coach">
+                    android:background="#de5426"
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="@dimen/main_card_width"
@@ -173,31 +172,27 @@
                         android:src="@mipmap/icon_team"></ImageView>
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:id="@+id/card_banner"
-                style="@style/CardViewStyle"
+
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="@color/banner">
+                android:layout_marginTop="8dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="banner"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_larger"></TextView>
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_pic_surfer"></ImageView>
 
 
-            </android.support.v7.widget.CardView>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -205,17 +200,17 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:id="@+id/card_aerobic_appratus"
-                    style="@style/CardViewStyle"
+
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="2"
-                    app:cardBackgroundColor="@color/aerobic_apparatuc">
+                    android:background="#ffbc01"
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="@dimen/main_card_width"
@@ -224,28 +219,26 @@
                         android:src="@mipmap/icon_aerobic"></ImageView>
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:id="@+id/card_smart_fit"
-                    style="@style/CardViewStyle"
+
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="3"
-                    app:cardBackgroundColor="@color/order_class_myself">
+                    android:layout_weight="3">
 
                     <ImageView
-                        android:layout_width="@dimen/main_card_width"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_margin="@dimen/activity_horizontal_margin"
-                        android:src="@mipmap/icon_smar"></ImageView>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_pic_weight"></ImageView>
 
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 

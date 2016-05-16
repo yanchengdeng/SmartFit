@@ -60,6 +60,7 @@ public class Util {
 
     /**
      * 获取与本地距离
+     *
      * @param endLat
      * @param endLong
      * @return
@@ -68,6 +69,7 @@ public class Util {
 
         String startLat = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LAT, "");
         String startLng = SharedPreferencesUtils.getInstance().getString(Constants.CITY_LONGIT, "");
+
         if (TextUtils.isEmpty(startLat) || TextUtils.isEmpty(startLng)) {
             return "0km";
         }
@@ -79,7 +81,7 @@ public class Util {
 // 计算量坐标点距离
         float distance = AMapUtils.calculateLineDistance(startLatlng, endLatlng);
 
-        return String.format("%.2fkm", distance/1000);
+        return String.format("%.2fkm", distance / 1000);
     }
 
     /**

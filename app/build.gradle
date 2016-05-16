@@ -5,12 +5,12 @@ android {
         config {
             keyAlias 'yancheng'
             keyPassword 'yancheng'
-            storeFile file('/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/keystore/yancheng.jks')
+            storeFile file('C:/Users/Administrator/AndroidStudioProjects/SmartFit/keystore/yancheng.jks')
             storePassword 'yancheng'
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "com.smartfit"
         minSdkVersion 17
@@ -18,9 +18,9 @@ android {
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-                GETUI_APP_ID : "fToF7fKCgHAAcCy5OCDMw3",
-                GETUI_APP_KEY : "nlvS7IU60Q7eXkwuK9pUP5",
-                GETUI_APP_SECRET : "pk3tscFcij7d78e6mad1vA",
+                GETUI_APP_ID : "8jLZ9Ca3VM7I367qKMB0v2",
+                GETUI_APP_KEY : "zbK3CyaHK967CJs2TXrQ24",
+                GETUI_APP_SECRET : "2lBWedLLot99dZHIW40oG6",
                 PACKAGE_NAME : applicationId
         ]
     }
@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':multi-image-selector')
     compile project(':easeui')
     compile 'com.android.support:design:23.1.1'
@@ -47,7 +47,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:palette-v7:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.2.4'

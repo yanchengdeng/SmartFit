@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -141,6 +142,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     EditText etCoachApprise;
     @Bind(R.id.tv_apprise_list_tips)
     TextView tvAppriseListTips;
+    @Bind(R.id.rl_coach_ui)
+    RelativeLayout rlCoachUi;
 
 
     private DiscussItemAdapter adapter;
@@ -206,10 +209,10 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(detail.getUserSex())) {
-            if (detail.getUserSex().equals("0")) {
-                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
+            if (detail.getUserSex().equals(Constants.SEX_WOMEN)) {
+                tvCoachName.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
-                tvCoachName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
+                tvCoachName.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
             }
         }
         if (!TextUtils.isEmpty(detail.getCourseDetail())) {
@@ -499,6 +502,17 @@ public class GroupClassDetailActivity extends BaseActivity {
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                }
+            }
+        });
+
+        rlCoachUi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (classInfoDetail != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.PASS_STRING, classInfoDetail.getCoachId());
+                    openActivity(OtherCustomeMainActivity.class,bundle);
                 }
             }
         });

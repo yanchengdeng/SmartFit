@@ -101,7 +101,7 @@ public class PayActivity extends BaseActivity {
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程
      */
     private int pageIndex = 1;
 

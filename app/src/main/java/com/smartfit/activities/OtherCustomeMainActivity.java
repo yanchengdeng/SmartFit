@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -63,11 +65,57 @@ public class OtherCustomeMainActivity extends BaseActivity {
         int mScreenWidth = localDisplayMetrics.widthPixels;
         LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) (9.0F * (mScreenWidth / 16.0F)));
         scrollView.setHeaderLayoutParams(localObject);
+        getCoachInfo();
     }
+
+
+
+    RatingBar ratingBar;
+    View tvCoachMoreInfo;
+    ImageView ivBack, ivHeader;
+    TextView tvTeachCaptial, tvCoachCaptial, tvAttentionNum;
+    TextView tvVIP, tvName, tvMotto, tvAttention, tvFans, tvCore, tvaddFriends;
+    TextView tvCoachBrief, tvReadMoreBrief, tvRating, tvTeachedClass, tvHeight, tvWeight, tvCoachInfo, tvHisClasses;
+    LinearLayout llDynamic,llCoachUI;
+
+
+    private void initView() {
+        tvCoachMoreInfo = scrollView.getPullRootView().findViewById(R.id.tv_read_more_info);
+        ratingBar = (RatingBar) scrollView.getPullRootView().findViewById(R.id.ratingBar);
+        ratingBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24));
+        tvCore = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_core);
+        ///===============
+        tvAttentionNum = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attentioon_num);
+        ivBack = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_back);
+        ivHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        tvTeachCaptial = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_teach_capacity);
+        tvCoachCaptial = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_coach_capacity);
+        tvVIP = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
+        tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
+        tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
+        tvAttention = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_attention);
+        tvaddFriends = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_add_friends);
+        tvFans = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_fans);
+        tvCoachBrief = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_coach_brief);
+        tvReadMoreBrief = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_read_more_brief);
+        tvRating = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_core);
+        tvTeachedClass = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_teached_classes);
+        tvHeight = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_height);
+        tvWeight = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_weight);
+        tvCoachInfo = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_coach_info);
+        tvHisClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_his_classes);
+        llDynamic = (LinearLayout) scrollView.getPullRootView().findViewById(R.id.ll_dynamic_ui);
+        llCoachUI = (LinearLayout) scrollView.getPullRootView().findViewById(R.id.ll_coach_brief_ui);
+        llCoachUI.setVisibility(View.GONE);
+
+    }
+
+
+
 
     String uid;
 
-    private void initView() {
+    private void getCoachInfo() {
         scrollView.getPullRootView().findViewById(R.id.tv_teach_capacity).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.tv_coach_capacity).setVisibility(View.GONE);
 
@@ -147,9 +195,9 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(userInfo.getSex())) {
             if (userInfo.getSex().equals(Constants.SEX_WOMEN)) {
-                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
+                tvNickname.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_woman), null);
             } else {
-                tvNickname.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
+                tvNickname.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_man), null);
             }
         }
 
@@ -179,6 +227,52 @@ public class OtherCustomeMainActivity extends BaseActivity {
             imageView.setLayoutParams(params);
             imageView.setImageResource(R.mipmap.icon_pic);
             linearLayout.addView(imageView);
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getCoachId())){
+            llCoachUI.setVisibility(View.VISIBLE);
+            tvCoachCaptial.setVisibility(View.VISIBLE);
+        }
+        if (!TextUtils.isEmpty(userInfo.getResumeContent())) {
+            tvCoachBrief.setText(userInfo.getResumeContent());
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getStars())) {
+            ratingBar.setRating(Float.parseFloat(userInfo.getStars()));
+            tvCore.setText(userInfo.getStars());
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getCourseCount())) {
+            tvTeachedClass.setText(String.format("已授课%s节", new Object[]{userInfo.getCourseCount()}));
+        }
+        if (!TextUtils.isEmpty(userInfo.getHight())) {
+            tvHeight.setText(String.format("身高：%sCM", new Object[]{userInfo.getHight()}));
+        }
+        if (!TextUtils.isEmpty(userInfo.getWeight())) {
+            tvWeight.setText(String.format("体重：%sKG", new Object[]{userInfo.getWeight()}));
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getCertificates())) {
+            tvCoachInfo.setText(String.format("持有证书：%s", new Object[]{userInfo.getCertificates()}));
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
+            tvHisClasses.setText(String.format("正在进行%s个课程", new Object[]{userInfo.getCurClassCount()}));
+        }
+        if (!TextUtils.isEmpty(userInfo.getIsFoused())) {
+            if (userInfo.getIsFoused().equals("0")) {
+                tvAttention.setText("关注");
+            } else {
+                tvAttention.setText("已关注");
+            }
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getIsFriend())) {
+            if (userInfo.getIsFriend().equals("0")) {
+                tvaddFriends.setText("加为健身好友");
+            } else {
+                tvaddFriends.setText("已添加好友");
+            }
         }
     }
 
@@ -250,6 +344,19 @@ public class OtherCustomeMainActivity extends BaseActivity {
             }
         });
 
+        tvCoachMoreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null == userInfo) {
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, userInfo.getUid());
+                openActivity(CoachAuthentitionActivity.class, bundle);
+            }
+        });
+
+
     }
 
     /***
@@ -314,7 +421,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         PullToZoomScrollViewEx scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
         View headView = LayoutInflater.from(this).inflate(R.layout.coach_header_ui, null, false);
         View zoomView = LayoutInflater.from(this).inflate(R.layout.coach_hade_zoom_view, null, false);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.un_coach_content_ui, null, false);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.coach_content_ui, null, false);
         scrollView.setHeaderView(headView);
         scrollView.setZoomView(zoomView);
         scrollView.setScrollContentView(contentView);

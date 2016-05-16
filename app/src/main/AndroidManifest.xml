@@ -68,20 +68,20 @@
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
-            android:value="fToF7fKCgHAAcCy5OCDMw3" />
+            android:value="8jLZ9Ca3VM7I367qKMB0v2" />
         <meta-data
             android:name="PUSH_APPKEY"
-            android:value="nlvS7IU60Q7eXkwuK9pUP5" />
+            android:value="zbK3CyaHK967CJs2TXrQ24" />
         <meta-data
             android:name="PUSH_APPSECRET"
-            android:value="pk3tscFcij7d78e6mad1vA" />
+            android:value="2lBWedLLot99dZHIW40oG6" />
 
         <!-- 配置第三方Receiver -->
         <receiver
             android:name=".recieve.PushReceiver"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.igexin.sdk.action.fToF7fKCgHAAcCy5OCDMw3" />
+                <action android:name="com.igexin.sdk.action.8jLZ9Ca3VM7I367qKMB0v2" />
             </intent-filter>
         </receiver>
 
@@ -164,7 +164,7 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
-                <action android:name="com.igexin.sdk.action.fToF7fKCgHAAcCy5OCDMw3" />
+                <action android:name="com.igexin.sdk.action.8jLZ9Ca3VM7I367qKMB0v2" />
             </intent-filter>
         </receiver>
 
@@ -183,7 +183,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="122501101#smartfit" />
+            android:value="smartfit#smartfit" />
         <!-- 声明sdk所需的service -->
         <service
             android:name="com.hyphenate.chat.EMChatService"

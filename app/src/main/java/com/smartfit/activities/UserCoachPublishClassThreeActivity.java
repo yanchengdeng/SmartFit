@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.beans.CustomClassReleaseInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -221,9 +222,9 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
                 CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response, CustomClassReleaseInfo.class);
                 if (customClassReleaseInfo != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 4);
+                    bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
-                    bundle.putString(Constants.COURSE_MONEY, customClassReleaseInfo.getTotalPrice());
+                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f",customClassReleaseInfo.getTotalPrice()));
                     openActivity(PayActivity.class, bundle);
                 }
             }

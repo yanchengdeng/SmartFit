@@ -60,7 +60,7 @@
             android:drawableRight="@mipmap/icon_woman"
             android:maxLength="10"
             android:singleLine="true"
-            android:text="XXXX教练"
+            android:text="教练"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal" />
 
