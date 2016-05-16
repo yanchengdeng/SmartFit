@@ -187,9 +187,9 @@ public class PayActivity extends BaseActivity {
                             }
                         } else if (pageIndex == 5) {
                             getOrderCorse();
-                        } else if(pageIndex==6){
+                        } else if (pageIndex == 6) {
                             getOrderCorse();
-                        }else {
+                        } else {
                             if (TextUtils.isEmpty(orderCode)) {
                                 getOrderCorse();
                             } else {
@@ -218,20 +218,30 @@ public class PayActivity extends BaseActivity {
      * @param payMoney
      */
     private void selectPayStyle(String leftMoney, String payMoney) {
-        if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(payMoney)) {
-            if (Float.parseFloat(leftMoney) >= Float.parseFloat(payMoney)) {
-                rlYe.setClickable(true);
-                ivYeSelected.setVisibility(View.VISIBLE);
-                ivWxSelected.setVisibility(View.GONE);
-                ivAlipaySelected.setVisibility(View.GONE);
-                payStyle = 0;
-            } else {
-                rlYe.setClickable(false);
-                payStyle = 2;
-                ivWxSelected.setVisibility(View.GONE);
-                ivYeSelected.setVisibility(View.GONE);
-                ivAlipaySelected.setVisibility(View.VISIBLE);
 
+        if (Float.parseFloat(payMoney) == 0) {
+            payStyle = 0;
+            rlYe.setClickable(true);
+            ivYeSelected.setVisibility(View.VISIBLE);
+            ivWxSelected.setVisibility(View.GONE);
+            ivAlipaySelected.setVisibility(View.GONE);
+            payStyle = 0;
+        } else {
+            if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(payMoney)) {
+                if (Float.parseFloat(leftMoney) >= Float.parseFloat(payMoney)) {
+                    rlYe.setClickable(true);
+                    ivYeSelected.setVisibility(View.VISIBLE);
+                    ivWxSelected.setVisibility(View.GONE);
+                    ivAlipaySelected.setVisibility(View.GONE);
+                    payStyle = 0;
+                } else {
+                    rlYe.setClickable(false);
+                    payStyle = 2;
+                    ivWxSelected.setVisibility(View.GONE);
+                    ivYeSelected.setVisibility(View.GONE);
+                    ivAlipaySelected.setVisibility(View.VISIBLE);
+
+                }
             }
         }
     }
@@ -326,6 +336,7 @@ public class PayActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
+
                     selectPayStyle(leftMoney, orderCourse.getOrderPrice());
 
                 }
@@ -440,7 +451,7 @@ public class PayActivity extends BaseActivity {
             eventBus.post(new UpdateAreoClassDetail());
         } else if (pageIndex == 5) {
             eventBus.post(new UpdateCoachClass());
-        }else if (pageIndex==6){
+        } else if (pageIndex == 6) {
             eventBus.post(new UpdateCustomClassInfo());
         }
         new Handler().postDelayed(new Runnable() {

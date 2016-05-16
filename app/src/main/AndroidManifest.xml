@@ -339,11 +339,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
-            android:name=".activities.GroupClassOrderSuccessActivity"
-            android:label="@string/title_activity_group_class_order_success"
-            android:screenOrientation="portrait"
-            android:theme="@style/ActivityTheme.NoActionBar" />
-        <activity
             android:name=".activities.ContactCoachActivity"
             android:label="@string/title_activity_contact_coach"
             android:screenOrientation="portrait"

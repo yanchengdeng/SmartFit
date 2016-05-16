@@ -393,6 +393,11 @@
     <string name="title_activity_vertify_not_pass">VertifyNotPassActivity</string>
     <string name="your_coach_info_resubmit">您的部分教练资料未通过审核，请重新提交</string>
     <string name="add_vertify_info">添加认证资料</string>
+    <string name="class_nav">课程</string>
+    <string name="server_nav">客服</string>
+    <string name="purse_nav">钱包</string>
+    <string name="copy_right_info">Copyright ©2016 福州睿动体育发展有限公司</string>
+    <string name="contact_phone_server">4006053337</string>
 
 
 </resources>

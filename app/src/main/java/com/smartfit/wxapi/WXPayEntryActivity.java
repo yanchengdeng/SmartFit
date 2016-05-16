@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.GroupClassOrderSuccessActivity;
 import com.smartfit.commons.Constants;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -47,7 +46,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 		}else{
 			mSVProgressHUD.showInfoWithStatus("支付失败");
-			openActivity(GroupClassOrderSuccessActivity.class);
+//			openActivity(GroupClassOrderSuccessActivity.class);
 		}
 	}
 }

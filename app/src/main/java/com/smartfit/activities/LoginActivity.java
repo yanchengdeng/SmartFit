@@ -194,6 +194,10 @@ public class LoginActivity extends BaseActivity {
                         SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, customeInfo.getCoachId());
                     }
                     LoginHX(customeInfo.getUid());
+                    String client = SharedPreferencesUtils.getInstance().getString(Constants.CLINET_ID, "");
+                    if (!TextUtils.isEmpty(client)) {
+                        bindClient(client);
+                    }
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -207,7 +211,7 @@ public class LoginActivity extends BaseActivity {
                         }*/
                         finish();
                     }
-                }, 1500);
+                }, 2000);
 
 
             }
@@ -224,6 +228,24 @@ public class LoginActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+
+    private void bindClient(String client) {
+
+        Map<String, String> msp = new HashMap();
+        msp.put("clientId", client);
+        PostRequest request = new PostRequest(Constants.USER_SYNCLIENTIID, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(LoginActivity.this);
+        mQueue.add(request);
+    }
     /**
      * 登陆环信
      *

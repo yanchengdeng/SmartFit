@@ -87,7 +87,7 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getCourseName())) {
             viewHolder.tvClassName.setText(item.getCourseName());
         }
-        if (!TextUtils.isEmpty(item.getStartTime()) && !TextUtils.isEmpty(item.getEndTime())){
+        if (!TextUtils.isEmpty(item.getStartTime()) && !TextUtils.isEmpty(item.getEndTime())) {
             viewHolder.tvTime.setText(DateUtils.getData(item.getStartTime()) + "~" + DateUtils.getDataTime(item.getEndTime()));
         }
 
@@ -106,6 +106,41 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getCoursePrice())) {
             viewHolder.tvMoney.setText(item.getCoursePrice());
         }
+        //有氧课  无教练  可去掉联系教练功能
+        if (item.getCourseType().equals("3")) {
+            viewHolder.tvContactCoach.setVisibility(View.GONE);
+        } else {
+            viewHolder.tvContactCoach.setVisibility(View.VISIBLE);
+        }
+
+        /**
+         * （1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了
+         * ，7课程已结束未评论8已评论）
+         */
+        if (!TextUtils.isEmpty(item.getStatus())) {
+            if (item.getStatus().equals("1")) {
+                viewHolder.tvStatus.setText("报名但未付款");
+            } else if (item.getStatus().equals("2")) {
+                viewHolder.tvStatus.setText("等待接单");
+            } else if (item.getStatus().equals("3")) {
+                viewHolder.tvStatus.setText("进行中");
+            } else if (item.getStatus().equals("4")) {
+                viewHolder.tvStatus.setText("已结束");
+            } else if (item.getStatus().equals("5")) {
+                viewHolder.tvStatus.setText("已退出该课程");
+            } else if (item.getStatus().equals("6")) {
+                viewHolder.tvStatus.setText("课程已取消");
+            } else if (item.getStatus().equals("7")) {
+                viewHolder.tvStatus.setText("课程已结束");
+            } else if (item.getStatus().equals("8")) {
+                viewHolder.tvStatus.setText("已评价");
+            }
+        }
 
 
         viewHolder.tvContactCoach.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +154,8 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    cancle(item.getId());
+                NormalDialogStyleTwoDel(item.getId());
+
             }
         });
 
@@ -136,32 +172,60 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
     }
 
     private void cancle(String id) {
-        Map<String ,String > maps = new HashMap<>();
+        Map<String, String> maps = new HashMap<>();
         maps.put("courseId", id);
-        PostRequest request = new PostRequest(Constants.USER_CANCELCOURSELIST,maps, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.USER_CANCELCOURSELIST, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ((BaseActivity)context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                ((BaseActivity) context).mSVProgressHUD.showSuccessWithStatus("已取消", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 eventBus.post(new CancleClass());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(context);
-        ((BaseActivity)context).mQueue.add(request);
+        ((BaseActivity) context).mQueue.add(request);
     }
 
     public void setData(List<MyAddClass> datas) {
         this.datas = datas;
     }
 
+    private void NormalDialogStyleTwoDel(final String id) {
+
+        final NormalDialog dialog = new NormalDialog(context);
+        dialog.content("确认取消该课程吗？")//
+                .style(NormalDialog.STYLE_TWO)//
+                .titleTextSize(23)//
+                        //.showAnim(mBasIn)//
+                        //.dismissAnim(mBasOut)//
+                .show();
+
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        cancle(id);
+                    }
+                });
+
+    }
+
+
     private void NormalDialogStyleTwo(final String phone) {
-        if (TextUtils.isEmpty(phone)){
-            ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus("空号", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        if (TextUtils.isEmpty(phone)) {
+            ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("空号", SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
         final NormalDialog dialog = new NormalDialog(context);
@@ -186,9 +250,9 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
                         try {
                             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
                                     phone));
-                            ((BaseActivity)context).startActivity(intent);
+                            ((BaseActivity) context).startActivity(intent);
                         } catch (Exception E) {
-                            ((BaseActivity)context).mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                            ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);
                         }
                     }
                 });

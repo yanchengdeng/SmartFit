@@ -163,7 +163,7 @@ public class HelpActivity extends BaseActivity {
                         dialog.dismiss();
                         try {
                             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
-                                    "4006053337"));
+                                    getString(R.string.contact_phone_server)));
                             startActivity(intent);
                         } catch (Exception E) {
                             mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);

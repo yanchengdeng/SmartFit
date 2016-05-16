@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.R;
@@ -106,6 +108,12 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getMaxPersonCount()) && !TextUtils.isEmpty(item.getSignCount())) {
             viewHolder.tvEmptyRegister.setText((Integer.parseInt(item.getMaxPersonCount()) - Integer.parseInt(item.getSignCount())) + "");
         }
+
+        if (TextUtils.isEmpty(item.getStartUserName())) {
+            viewHolder.tvOperate.setText("暂无");
+        } else {
+            viewHolder.tvOperate.setText(item.getStartUserName());
+        }
         //找人代课
         viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +128,7 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancle(item.getId());
+                NormalDialogStyleTwoDel(item.getId());
             }
         });
 
@@ -140,6 +148,33 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    private void NormalDialogStyleTwoDel(final String id) {
+
+        final NormalDialog dialog = new NormalDialog(context);
+        dialog.content("确认取消该课程吗？")//
+                .style(NormalDialog.STYLE_TWO)//
+                .titleTextSize(23)//
+                        //.showAnim(mBasIn)//
+                        //.dismissAnim(mBasOut)//
+                .show();
+
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        cancle(id);
+                    }
+                });
+
     }
 
 

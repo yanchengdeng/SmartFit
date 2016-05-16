@@ -8,7 +8,7 @@
     app:fm_centerRight="50dp"
     app:fm_collapsedRadius="30dp"
     app:fm_expandedRadius="150dp"
-    app:fm_primaryColor="@color/common_header_bg"
-    app:fm_primaryDarkColor="@color/common_header_bg"/>
+    app:fm_primaryColor="@color/common_bg_menu"
+    app:fm_primaryDarkColor="@color/common_bg_menu"/>
 
 

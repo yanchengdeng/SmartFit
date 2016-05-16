@@ -17,9 +17,8 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
-import com.smartfit.beans.CustomClassReleaseInfo;
+import com.smartfit.beans.CoachClassReleaseInfo;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -219,12 +218,12 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
 
                 mSVProgressHUD.dismiss();
 
-                CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response, CustomClassReleaseInfo.class);
+                CoachClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response, CoachClassReleaseInfo.class);
                 if (customClassReleaseInfo != null) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
-                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f",customClassReleaseInfo.getTotalPrice()));
+                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f", Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
                     openActivity(PayActivity.class, bundle);
                 }
             }

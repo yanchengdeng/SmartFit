@@ -2,22 +2,27 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
@@ -27,6 +32,7 @@ import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
+import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.JsonUtils;
@@ -67,7 +73,12 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     @Bind(R.id.et_search_content)
     EditText etSearchContent;
     private static final Object TAG = new Object();
-
+    @Bind(R.id.tv_go_class)
+    TextView tvGoClass;
+    @Bind(R.id.tv_go_purse)
+    TextView tvGoPurse;
+    @Bind(R.id.tv_go_server)
+    TextView tvGoServer;
 
 
     @Override
@@ -88,6 +99,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     .add(R.id.container, new CustomAnimationDemoFragment())
                     .commit();
         }
+
         String nativeCity = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
         if (TextUtils.isEmpty(nativeCity)) {
             initLocation();
@@ -126,7 +138,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         }
                         LoginHX(userInfoDetail.getUid());
                         String client = SharedPreferencesUtils.getInstance().getString(Constants.CLINET_ID, "");
-                        if (!TextUtils.isEmpty(client)) {
+                        if (!TextUtils.isEmpty(client) && NetUtil.isLogin(MainActivity.this)) {
                             bindClient(client);
                         }
                     }
@@ -231,6 +243,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                                         {
                                             @Override
                                             public void onClick(View v) {
+                                                //TODO 暂时关闭
                                                 if (NetUtil.isLogin(getApplicationContext())) {
                                                     openActivity(CustomeClassActivity.class);
                                                 } else {
@@ -256,18 +269,101 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("key",etSearchContent.getEditableText().toString());
+                bundle.putString("key", etSearchContent.getEditableText().toString());
                 openActivity(SearchClassActivity.class, bundle);
+            }
+        });
+
+        tvGoClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtil.isLogin(MainActivity.this)) {
+                    openActivity(MainBusinessActivity.class);
+                } else {
+                    openActivity(LoginActivity.class);
+                }
+            }
+        });
+
+        tvGoPurse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtil.isLogin(MainActivity.this)) {
+                    openActivity(WalletActivity.class);
+                } else {
+                    openActivity(LoginActivity.class);
+                }
+            }
+        });
+
+        tvGoServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NormalDialogStyleTwo();
             }
         });
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        NormalDialogStyleOne();
+    private void NormalDialogStyleTwo() {
+        final NormalDialog dialog = new NormalDialog(MainActivity.this);
+        dialog.content("确定要拨打客服电话吗？")//
+                .style(NormalDialog.STYLE_TWO)//
+                .titleTextSize(23)//
+                        //.showAnim(mBasIn)//
+                        //.dismissAnim(mBasOut)//
+                .show();
+
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
+                                    getString(R.string.contact_phone_server)));
+                            startActivity(intent);
+                        } catch (Exception E) {
+                            mSVProgressHUD.showInfoWithStatus("您的设备没有打电话功能哦~", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+                    }
+                });
+
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return doubleClickExist();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private long mExitTime;
+
+    /****
+     * 连续两次点击退出
+     */
+    private boolean doubleClickExist() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+            return true;
+        } else {
+            AppManager.getAppManager().AppExit(this);
+            finish();
+        }
+
+        return false;
+    }
+
 
     private void NormalDialogStyleOne() {
         final NormalDialog dialog = new NormalDialog(MainActivity.this);

@@ -241,7 +241,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
-                    bundle.putString(Constants.COURSE_MONEY, customClassReleaseInfo.getTotalPrice());
+                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f",Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
                     openActivity(PayActivity.class,bundle);
                 }
             }

@@ -114,7 +114,7 @@
                 android:drawablePadding="@dimen/image_padding"
                 android:drawableRight="@mipmap/icon_next_w_on"
                 android:gravity="center_vertical"
-                android:text=""
+                android:text="9:00-10:00"
                 android:textColor="@color/text_color_gray" />
         </RelativeLayout>
 

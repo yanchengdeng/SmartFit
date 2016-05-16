@@ -162,7 +162,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         tvDistance.setText("距离 " + Util.getDistance(detail.getVenue().getLatitude(), detail.getVenue().getLongitude()));
 
         if (!TextUtils.isEmpty(detail.getVenue().getLastModifyTime())) {
-            tvTime.setText(DateUtils.getData(detail.getVenue().getLastModifyTime()) + "~" + DateUtils.getDataTime(endTime));
+            tvTime.setText(DateUtils.getData(startTime) + "~" + DateUtils.getDataTime(endTime));
         }
 
         if (!TextUtils.isEmpty(detail.getClassroomPrice())) {

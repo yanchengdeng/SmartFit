@@ -133,7 +133,9 @@ public class AerobicnAppratusFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-//                loadData();
+                startTime = selectDate + " " + "9:00";
+                endTime = selectDate + " " + "10:00";
+                loadData();
             } else {
                 getVenueList();
             }
