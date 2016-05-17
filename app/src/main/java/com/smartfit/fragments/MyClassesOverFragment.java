@@ -16,11 +16,11 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
-import com.smartfit.beans.MesageInfo;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
 import com.smartfit.commons.Constants;
@@ -51,7 +51,7 @@ public class MyClassesOverFragment extends Fragment {
     TextView noData;
 
     private MyClassOrderStatusAdapter adapter;
-    private List<MyAddClass> datas = new ArrayList<>();
+    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class MyClassesOverFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), datas, false);
+        adapter = new MyClassOrderStatusAdapter(getActivity(), myAddClassArrayList, false);
         listView.setAdapter(adapter);
         loadData();
 
@@ -76,7 +76,9 @@ public class MyClassesOverFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                openClass(datas.get(position));
+
+
+                openClass(myAddClassArrayList.get(position));
             }
         });
 
@@ -109,7 +111,9 @@ public class MyClassesOverFragment extends Fragment {
                 ((BaseActivity) getActivity()).openActivity(PrivateClassByMessageActivity.class,bundle);
 
             } else if (item.getCourseType().equals("3")) {
-                //TODO
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) getActivity()).openActivity(ArerobicDetailActivity.class,bundle);
             }
         }
 
@@ -118,7 +122,7 @@ public class MyClassesOverFragment extends Fragment {
     private void loadData() {
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
-        Map<String, String> datas = new HashMap<>();
+        final Map<String, String> datas = new HashMap<>();
         datas.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         datas.put("showType", "1");
         PostRequest request = new PostRequest(Constants.USER_CONTACTCOURSELIST, datas, new Response.Listener<JsonObject>() {
@@ -127,6 +131,7 @@ public class MyClassesOverFragment extends Fragment {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
+                    myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);

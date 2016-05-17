@@ -8,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.activities.ReopenClassActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
@@ -101,8 +105,42 @@ public class MyClassOrderOverStatusAdapter extends BaseAdapter {
             }
         });
 
+        viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openClass(item);
+            }
+        });
 
         return convertView;
+    }
+
+    private void openClass(MyAddClass item) {
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            //0  团操 1  小班   2  私教  3  有氧
+            if (item.getCourseType().equals("0")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "0");
+                ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("1")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "1");
+                ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("2")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class,bundle);
+
+            } else if (item.getCourseType().equals("3")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) context).openActivity(ArerobicDetailActivity.class,bundle);
+            }
+        }
     }
 
 
@@ -126,6 +164,8 @@ public class MyClassOrderOverStatusAdapter extends BaseAdapter {
         TextView tvMoney;
         @Bind(R.id.btn_reopen)
         Button btnReopen;
+        @Bind(R.id.ll_myclass_ui)
+        LinearLayout linearLayout;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

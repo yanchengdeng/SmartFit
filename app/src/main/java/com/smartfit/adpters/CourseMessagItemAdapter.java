@@ -16,6 +16,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
@@ -232,7 +233,9 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                         ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class,bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("3")) {
-                    //TODO
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getMessageContent().getCourseId());
+                ((BaseActivity) context).openActivity(ArerobicDetailActivity.class,bundle);
             }
         }
 

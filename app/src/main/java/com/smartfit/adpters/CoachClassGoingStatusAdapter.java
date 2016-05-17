@@ -151,7 +151,6 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                //TODO
                 bundle.putSerializable(Constants.PASS_OBJECT, item);
                 ((BaseActivity) context).openActivity(FindSubstitueActivity.class, bundle);
             }

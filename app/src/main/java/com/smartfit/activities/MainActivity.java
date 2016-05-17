@@ -26,6 +26,8 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.igexin.sdk.PushManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
@@ -175,6 +177,24 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
     private void LoginHX(String uid) {
+        String hxAccount = "user_" + uid;
+        //登录
+        EMClient.getInstance().login(hxAccount, MD5.getMessageDigest(hxAccount.getBytes()), new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                LogUtil.w("dyc","环信登陆陈宫");
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                LogUtil.w("dyc","环信登陆失败"+i+"..."+s);
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+            }
+        });
     }
 
 

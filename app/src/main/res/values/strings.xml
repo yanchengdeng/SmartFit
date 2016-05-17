@@ -400,6 +400,8 @@
     <string name="contact_phone_server">4006053337</string>
     <string name="wx_pay_info">待开放，请先使用订阅号\"SmartFit健身圈\"支付</string>
     <string name="forget_pass_tips">预售用户请点击忘记密码取回账号密码</string>
+    <string name="title_activity_arerobic_detail">ArerobicDetailActivity</string>
+    <string name="delet_auth_info">删除认证信息</string>
 
 
 </resources>

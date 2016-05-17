@@ -447,6 +447,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.dismiss();
+
             }
         });
         request.setTag(new Object());
@@ -561,8 +562,9 @@ public class GroupClassDetailActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.COMMENT_SAVE, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                mSVProgressHUD.showSuccessWithStatus("已评分", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("已评分", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+
 
             }
         }, new Response.ErrorListener() {

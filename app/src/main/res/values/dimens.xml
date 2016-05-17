@@ -25,7 +25,7 @@
     <dimen name="icon_normal_size">90dp</dimen>
 
 
-    <dimen name="ad_height">180dp</dimen>
+    <dimen name="ad_height">250dp</dimen>
 
     <dimen name="brief_height">200dp</dimen>
 

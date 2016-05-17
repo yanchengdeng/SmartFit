@@ -23,6 +23,16 @@ public class MyAddClass implements Serializable{
     private String startTime;//-1373806336,
     private String endTime;//-1373806336
 
+    public String getCourseClassId() {
+        return courseClassId;
+    }
+
+    public void setCourseClassId(String courseClassId) {
+        this.courseClassId = courseClassId;
+    }
+
+    private String courseClassId;
+
     public String getVenueId() {
         return venueId;
     }

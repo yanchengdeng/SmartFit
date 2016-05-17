@@ -116,15 +116,12 @@ public class MoreCertiaicatePassAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getStatus())) {
             if (item.getStatus().equals("1")) {
                 viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
-                viewHolder.ivAddPhoto.setVisibility(View.VISIBLE);
                 viewHolder.cbName.setImageResource(R.mipmap.icon_close);
             } else if (item.getStatus().equals("2")) {
                 viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-                viewHolder.ivAddPhoto.setVisibility(View.INVISIBLE);
                 viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
             } else {
                 viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
-                viewHolder.ivAddPhoto.setVisibility(View.VISIBLE);
                 viewHolder.cbName.setImageResource(R.mipmap.icon_close);
             }
         }
@@ -138,7 +135,7 @@ public class MoreCertiaicatePassAdapter extends BaseAdapter {
             }
             viewHolder.ivCertificate.setVisibility(View.VISIBLE);
         }
-        viewHolder.ivAddPhoto.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ivCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<String> photos = new ArrayList<String>();
@@ -170,8 +167,6 @@ public class MoreCertiaicatePassAdapter extends BaseAdapter {
         TextView tvCertificate;
         @Bind(R.id.iv_certificate)
         ImageView ivCertificate;
-        @Bind(R.id.iv_add_photo)
-        ImageView ivAddPhoto;
         @Bind(R.id.cb_photo)
         ImageView cbPhoto;
 

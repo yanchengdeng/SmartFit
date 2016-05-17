@@ -1,7 +1,6 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,20 +10,15 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
-import com.smartfit.adpters.AerobincnAppratusItemAdapter;
 import com.smartfit.adpters.FindSubstitutAdapter;
-import com.smartfit.adpters.MemberListAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.SustituteCoach;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +85,7 @@ public class FindSubstitueActivity extends BaseActivity {
             data.put("startTime", addClass.getStartTime());
             data.put("venueId", addClass.getVenueId());
             data.put("endTime", addClass.getEndTime());
-            //TODO
-            data.put("courseTypeCode", "11");
+            data.put("courseClassId", addClass.getCourseClassId());
         } else {
             //私教课下 获取空闲教练
             requestHost = Constants.COACH_LISTIDLECOACHESBYVENUEID;

@@ -559,6 +559,10 @@
             android:name=".activities.VertifyNotPassActivity"
             android:label="@string/title_activity_vertify_not_pass" >
         </activity>
+        <activity
+            android:name=".activities.ArerobicDetailActivity"
+            android:label="@string/title_activity_arerobic_detail" >
+        </activity>
     </application>
 
 </manifest>

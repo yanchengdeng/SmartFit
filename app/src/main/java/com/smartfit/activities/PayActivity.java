@@ -184,6 +184,15 @@ public class PayActivity extends BaseActivity {
                             } else {
                                 orderID = orderCode;
                                 mSVProgressHUD.dismiss();
+                                if (Float.parseFloat(payMoney)==0){
+                                    payStyle = 0;
+                                    rlYe.setClickable(true);
+                                    ivYeSelected.setVisibility(View.VISIBLE);
+                                    ivWxSelected.setVisibility(View.GONE);
+                                    ivAlipaySelected.setVisibility(View.GONE);
+                                    rlAlipay.setClickable(false);
+                                    rlWx.setClickable(false);
+                                }
                             }
                         } else if (pageIndex == 5) {
                             getOrderCorse();
@@ -195,6 +204,15 @@ public class PayActivity extends BaseActivity {
                             } else {
                                 orderID = orderCode;
                                 mSVProgressHUD.dismiss();
+                                if (Float.parseFloat(payMoney)==0){
+                                    payStyle = 0;
+                                    rlYe.setClickable(true);
+                                    ivYeSelected.setVisibility(View.VISIBLE);
+                                    ivWxSelected.setVisibility(View.GONE);
+                                    ivAlipaySelected.setVisibility(View.GONE);
+                                    rlAlipay.setClickable(false);
+                                    rlWx.setClickable(false);
+                                }
                             }
                         }
                     }
@@ -225,7 +243,8 @@ public class PayActivity extends BaseActivity {
             ivYeSelected.setVisibility(View.VISIBLE);
             ivWxSelected.setVisibility(View.GONE);
             ivAlipaySelected.setVisibility(View.GONE);
-            payStyle = 0;
+            rlAlipay.setClickable(false);
+            rlWx.setClickable(false);
         } else {
             if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(payMoney)) {
                 if (Float.parseFloat(leftMoney) >= Float.parseFloat(payMoney)) {

@@ -39,10 +39,10 @@ public class SplashActivity extends FragmentActivity {
     private ViewPager pager;
     private GalleryPagerAdapter adapter;
     private int[] images = {
-            R.mipmap.newer01,
-            R.mipmap.newer02,
-            R.mipmap.newer03,
-            R.mipmap.newer04
+            R.mipmap.login_bg,
+            R.mipmap.login_bg,
+            R.mipmap.login_bg,
+            R.mipmap.login_bg
     };
 
     @Override

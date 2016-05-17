@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.Certificate;
+import com.smartfit.utils.Options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,17 +85,11 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
                 if (TextUtils.isEmpty(s.toString())) {
                     viewHolder.cbName.setImageResource(R.mipmap.icon_close);
                 } else {
-                    Message msg = new Message();
-                    msg.what = position;
-                    msg.obj = s.toString();
-                    handler.sendMessage(msg);
-
+                    certificates.get(position).setName(s.toString());
                     viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
                 }
-
             }
         });
-
 
 
         if (!TextUtils.isEmpty(item.getText_tips())) {
@@ -115,15 +110,14 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
 
         if (!TextUtils.isEmpty(item.getPhoto())) {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_choose);
-            ImageLoader.getInstance().displayImage("file:///" + item.getPhoto(), viewHolder.ivCertificate);
-            viewHolder.ivCertificate.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(item.getPhoto(), viewHolder.ivCertificate, Options.getListOptions());
         } else {
             viewHolder.cbPhoto.setImageResource(R.mipmap.icon_close);
-            viewHolder.ivCertificate.setVisibility(View.INVISIBLE);
+            ImageLoader.getInstance().displayImage("", viewHolder.ivCertificate, Options.getListOptions());
         }
 
 
-        viewHolder.ivAddPhoto.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ivCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<String> photos = new ArrayList<String>();
@@ -160,8 +154,6 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         TextView tvCertificate;
         @Bind(R.id.iv_certificate)
         ImageView ivCertificate;
-        @Bind(R.id.iv_add_photo)
-        ImageView ivAddPhoto;
         @Bind(R.id.cb_photo)
         ImageView cbPhoto;
 

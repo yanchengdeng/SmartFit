@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.adpters.GridViewAuthAdapter;
 import com.smartfit.adpters.MoreCertiaicateAdapter;
 import com.smartfit.beans.Certificate;
 import com.smartfit.beans.CoachCertificate;
@@ -27,8 +26,8 @@ import com.smartfit.beans.CoachCertificateItem;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.views.MyGridView;
 import com.smartfit.views.MyListView;
 
 import org.json.JSONException;
@@ -75,26 +74,26 @@ public class CoachAuthBaseActivity extends BaseActivity {
     ImageView cbCard;
     @Bind(R.id.tv_card_photo_tips)
     TextView tvCardPhotoTips;
-    @Bind(R.id.gv_ids_photos)
-    MyGridView gvIdsPhotos;
-    @Bind(R.id.iv_add_card)
-    ImageView ivAddCard;
+    @Bind(R.id.iv_ids_photos)
+    ImageView ivIdsPhotos;
     @Bind(R.id.cb_card_photo)
     ImageView cbCardPhoto;
     @Bind(R.id.tv_work_quality)
     TextView tvWorkQuality;
-    @Bind(R.id.gv_work_photos)
-    MyGridView gvWorkPhotos;
-    @Bind(R.id.iv_work_photo)
-    ImageView ivWorkPhoto;
+    @Bind(R.id.iv_work_photos)
+    ImageView ivWorkPhotos;
     @Bind(R.id.cb_work_photo)
     ImageView cbWorkPhoto;
     @Bind(R.id.list_auth_photos)
     MyListView listAuthPhotos;
     @Bind(R.id.tv_add_more_books)
     TextView tvAddMoreBooks;
+    @Bind(R.id.tv_status)
+    TextView tvStatus;
     @Bind(R.id.btn_submmit)
     Button btnSubmmit;
+    @Bind(R.id.btn_delet)
+    Button btnDelet;
     //上传身份证
     private ArrayList<String> cards = new ArrayList<>();
     //上传工作证
@@ -112,19 +111,12 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
     private int positon = -1;
 
-    MoreCertiaicateAdapter  moreCertiaicateAdapter;
+    MoreCertiaicateAdapter moreCertiaicateAdapter;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            if (msg.obj instanceof String) {
-                Certificate item = certificateList.get(msg.what);
-                if (item != null) {
-                    certificateList.get(msg.what).setName((String) msg.obj);
-                }
-            } else {
-                UpdateCertificate(msg.what, (ArrayList<String>) msg.obj);
-            }
+            UpdateCertificate(msg.what, (ArrayList<String>) msg.obj);
             return false;
         }
     });
@@ -152,7 +144,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
     private void initMoreCentifacate() {
 
         certificateList.add(getNewCertificate());
-        moreCertiaicateAdapter =    new MoreCertiaicateAdapter(this, certificateList, handler);
+        moreCertiaicateAdapter = new MoreCertiaicateAdapter(this, certificateList, handler);
         listAuthPhotos.setAdapter(moreCertiaicateAdapter);
 
     }
@@ -222,38 +214,21 @@ public class CoachAuthBaseActivity extends BaseActivity {
             }
         });
 
-        ivAddCard.setOnClickListener(new View.OnClickListener() {
+        ivIdsPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPhotoThum(cards, REQUSET_ID_CARDS, 1);
             }
         });
 
-        gvIdsPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (cards != null && cards.size() > 0) {
-                    goPhotoThum(cards, REQUSET_ID_CARDS, 1);
-                }
-            }
-        });
 
-
-        ivWorkPhoto.setOnClickListener(new View.OnClickListener() {
+        ivWorkPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPhotoThum(works, REUQUST_WORK_AUTH, 1);
             }
         });
 
-        gvWorkPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (works != null && works.size() > 0) {
-                    goPhotoThum(works, REUQUST_WORK_AUTH, 1);
-                }
-            }
-        });
 
         //添加更多证书
         tvAddMoreBooks.setOnClickListener(new View.OnClickListener() {
@@ -267,6 +242,8 @@ public class CoachAuthBaseActivity extends BaseActivity {
         btnSubmmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 if (TextUtils.isEmpty(tvName.getEditableText().toString())) {
                     mSVProgressHUD.showInfoWithStatus("请输入姓名", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else {
@@ -282,17 +259,17 @@ public class CoachAuthBaseActivity extends BaseActivity {
                                 mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
                                 doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateCard());
                                 doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateWord());
-                                   List<Certificate> subcertificateList = new ArrayList<Certificate>();
-                                    for(Certificate item:certificateList){
-                                        if (!TextUtils.isEmpty(item.getPhoto()) && !TextUtils.isEmpty(item.getName())) {
-                                            subcertificateList.add(item);
-                                        }
+                                List<Certificate> subcertificateList = new ArrayList<Certificate>();
+                                for (Certificate item : certificateList) {
+                                    if (!TextUtils.isEmpty(item.getPhoto()) && !TextUtils.isEmpty(item.getName())) {
+                                        subcertificateList.add(item);
                                     }
+                                }
 
-                                if(subcertificateList.size()>0){
-                                    for(Certificate item:subcertificateList){
-                                        CoachCertificateItem coachCertificateItem = new CoachCertificateItem(item.getName(),item.getPhoto(),"3");
-                                        doSubmit(tvName.getEditableText().toString(),coachCertificateItem.getCertificateName(),coachCertificateItem);
+                                if (subcertificateList.size() > 0) {
+                                    for (Certificate item : subcertificateList) {
+                                        CoachCertificateItem coachCertificateItem = new CoachCertificateItem(item.getName(), item.getPhoto(), "3");
+                                        doSubmit(tvName.getEditableText().toString(), coachCertificateItem.getCertificateName(), coachCertificateItem);
                                     }
                                 }
 
@@ -314,9 +291,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.COACH_ADD_CERTIFICATE, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                int i = 0 ;
-                i++;
-                if(i==2)
+
                 mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 mSVProgressHUD.dismiss();
             }
@@ -362,8 +337,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 cards = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 if (null != cards && cards.size() > 0) {
-                    gvIdsPhotos.setAdapter(new GridViewAuthAdapter(CoachAuthBaseActivity.this, cards));
-                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
+
                     getCardUrl(cards);
                 } else {
                     cbCardPhoto.setImageResource(R.mipmap.icon_close);
@@ -373,8 +347,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 works = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 if (null != works && works.size() > 0) {
-                    gvWorkPhotos.setAdapter(new GridViewAuthAdapter(CoachAuthBaseActivity.this, works));
-                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
+
                     getWorkUrl(works);
                 } else {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_close);
@@ -392,9 +365,11 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
     /**
      * 获取该证书的图片url
+     *
      * @param certificateList
      */
     private void getAuthUrl(final List<Certificate> certificateList) {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
         params.setMultipart(true);
         try {
@@ -406,6 +381,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
+                mSVProgressHUD.dismiss();
                 String url = null;
                 try {
                     url = result.getString("data");
@@ -418,15 +394,18 @@ public class CoachAuthBaseActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                mSVProgressHUD.dismiss();
                 LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                mSVProgressHUD.dismiss();
             }
 
             @Override
             public void onFinished() {
+                mSVProgressHUD.dismiss();
             }
         });
     }
@@ -437,6 +416,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
      * @param works
      */
     private void getWorkUrl(ArrayList<String> works) {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
         params.setMultipart(true);
         try {
@@ -448,14 +428,16 @@ public class CoachAuthBaseActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
+                mSVProgressHUD.dismiss();
                 String url = null;
                 try {
                     url = result.getString("data");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                LogUtil.w("dyc", "工作证" + result + "..." + url);
                 if (!TextUtils.isEmpty(url)) {
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
+                    ImageLoader.getInstance().displayImage(url, ivWorkPhotos, Options.getListOptions());
                     coachCertificate.setCoachCertificateWord(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "2"));
                 }
             }
@@ -463,14 +445,20 @@ public class CoachAuthBaseActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
+                cbWorkPhoto.setImageResource(R.mipmap.icon_close);
+                mSVProgressHUD.dismiss();
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                mSVProgressHUD.dismiss();
+                cbWorkPhoto.setImageResource(R.mipmap.icon_close);
             }
 
             @Override
             public void onFinished() {
+                mSVProgressHUD.dismiss();
+                cbWorkPhoto.setImageResource(R.mipmap.icon_close);
             }
         });
     }
@@ -481,6 +469,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
      * @param cards
      */
     private void getCardUrl(ArrayList<String> cards) {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
         params.setMultipart(true);
         try {
@@ -492,7 +481,7 @@ public class CoachAuthBaseActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
-
+                mSVProgressHUD.dismiss();
                 String url = null;
                 try {
                     url = result.getString("data");
@@ -500,7 +489,8 @@ public class CoachAuthBaseActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 if (!TextUtils.isEmpty(url)) {
-                    LogUtil.w("dyc", "身份证" + result + "..." + url);
+                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
+                    ImageLoader.getInstance().displayImage(url, ivIdsPhotos, Options.getListOptions());
                     coachCertificate.setCoachCertificateCard(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "1"));
                 }
             }
@@ -508,14 +498,20 @@ public class CoachAuthBaseActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.w("dyc", "" + ex.getMessage() + "..." + ex.getLocalizedMessage());
+                mSVProgressHUD.dismiss();
+                cbCardPhoto.setImageResource(R.mipmap.icon_close);
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                mSVProgressHUD.dismiss();
+                cbCardPhoto.setImageResource(R.mipmap.icon_close);
             }
 
             @Override
             public void onFinished() {
+                mSVProgressHUD.dismiss();
+                cbCardPhoto.setImageResource(R.mipmap.icon_close);
             }
         });
 

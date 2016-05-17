@@ -77,7 +77,6 @@ public class MoreCertiaicateVertifyTureAdapter extends BaseAdapter {
         }
 
 
-        viewHolder.ivAddPhoto.setVisibility(View.GONE);
 
         if (!TextUtils.isEmpty(item.getCertificateName())) {
             viewHolder.tvName.setText(item.getCertificateName());
@@ -108,8 +107,6 @@ public class MoreCertiaicateVertifyTureAdapter extends BaseAdapter {
         TextView tvCertificate;
         @Bind(R.id.iv_certificate)
         ImageView ivCertificate;
-        @Bind(R.id.iv_add_photo)
-        ImageView ivAddPhoto;
         @Bind(R.id.cb_photo)
         ImageView cbPhoto;
 

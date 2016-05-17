@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
@@ -50,7 +50,7 @@ public class CoachOverClassesFragment extends Fragment {
     TextView noData;
 
     private MyClassOrderOverStatusAdapter adapter;
-    private List<MyAddClass> datas = new ArrayList<>();
+    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
     private int page = 1;
 
     @Override
@@ -68,44 +68,16 @@ public class CoachOverClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderOverStatusAdapter(getActivity(), datas);
+        adapter = new MyClassOrderOverStatusAdapter(getActivity(), myAddClassArrayList);
         listView.setAdapter(adapter);
         loadData();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                openClass(datas.get(position));
-            }
-        });
+
+
 
     }
 
-    private void openClass(MyAddClass item) {
-        if (!TextUtils.isEmpty(item.getCourseType())) {
-            //0  团操 1  小班   2  私教  3  有氧
-            if (item.getCourseType().equals("0")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, item.getId());
-                bundle.putString(Constants.COURSE_TYPE, "0");
-                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
 
-            } else if (item.getCourseType().equals("1")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, item.getId());
-                bundle.putString(Constants.COURSE_TYPE, "1");
-                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
-
-            } else if (item.getCourseType().equals("2")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getId());
-                ((BaseActivity) getActivity()).openActivity(PrivateClassByMessageActivity.class,bundle);
-
-            } else if (item.getCourseType().equals("3")) {
-                //TODO
-            }
-        }
-    }
 
     private void loadData() {
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -121,6 +93,7 @@ public class CoachOverClassesFragment extends Fragment {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
+                    myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);
