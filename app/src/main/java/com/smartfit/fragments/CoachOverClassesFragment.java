@@ -3,9 +3,11 @@ package com.smartfit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,6 +17,8 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderOverStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
@@ -68,6 +72,39 @@ public class CoachOverClassesFragment extends Fragment {
         listView.setAdapter(adapter);
         loadData();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                openClass(datas.get(position));
+            }
+        });
+
+    }
+
+    private void openClass(MyAddClass item) {
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            //0  团操 1  小班   2  私教  3  有氧
+            if (item.getCourseType().equals("0")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "0");
+                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("1")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "1");
+                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("2")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) getActivity()).openActivity(PrivateClassByMessageActivity.class,bundle);
+
+            } else if (item.getCourseType().equals("3")) {
+                //TODO
+            }
+        }
     }
 
     private void loadData() {

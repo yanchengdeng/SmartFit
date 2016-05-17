@@ -131,8 +131,8 @@ public class PrivateEducationFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-                startTime = selectDate + " " + "9:00";
-                endTime = selectDate + " " + "10:00";
+                startTime = "9:00";
+                endTime =  "10:00";
                 loadData();
             } else {
                 getVenueList();
@@ -171,8 +171,8 @@ public class PrivateEducationFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putParcelableArrayList(Constants.PASS_OBJECT, selectPricates);
                         bundle.putSerializable(Constants.PASS_IDLE_CLASS_INFO, idleClass);
-                        bundle.putString("start", startTime);
-                        bundle.putString("end",endTime);
+                        bundle.putString("start",selectDate + " " +startTime);
+                        bundle.putString("end",selectDate + " "+endTime);
                         ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
                     }else{
                         ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("暂无空闲场馆");
@@ -205,8 +205,8 @@ public class PrivateEducationFragment extends Fragment {
     private void getIdleCoachList() {
 
         Map<String, String> data = new HashMap<>();
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +endTime)));
         data.put("venueId", venueId);
         data.put("classroomType", "2");
         PostRequest request = new PostRequest(Constants.CLASSIF_LISTTHEVENUEIDLECLASSROOMS, data, new Response.Listener<JsonObject>() {
@@ -241,8 +241,8 @@ public class PrivateEducationFragment extends Fragment {
 
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions( selectDate + " " +startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions( selectDate + " " +endTime)));
         if (!TextUtils.isEmpty(startPrice)) {
             data.put("startPrice", startPrice);
             data.put("endPrice", endPrice);
@@ -401,8 +401,8 @@ public class PrivateEducationFragment extends Fragment {
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
             if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
                 tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
-                startTime = selectDate + " " + data.getExtras().getString("time_before");
-                endTime = selectDate + " " + data.getExtras().getString("time_after");
+                startTime =  data.getExtras().getString("time_before");
+                endTime =  data.getExtras().getString("time_after");
                 loadData();
             }
 

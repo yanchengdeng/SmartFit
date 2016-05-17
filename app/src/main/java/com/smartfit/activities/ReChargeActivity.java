@@ -188,9 +188,10 @@ public class ReChargeActivity extends BaseActivity {
         rlWx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                payStyle = 1;
-                ivWxSelected.setVisibility(View.VISIBLE);
-                ivAlipaySelected.setVisibility(View.GONE);
+                //TODO
+//                payStyle = 1;
+//                ivWxSelected.setVisibility(View.VISIBLE);
+//                ivAlipaySelected.setVisibility(View.GONE);
             }
         });
 

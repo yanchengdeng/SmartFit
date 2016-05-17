@@ -104,7 +104,7 @@ public class AerobicnAppratusFragment extends Fragment {
     private String venueId = "0";
     private String selectType = "0";
 
-    private String  startTime, endTime;
+    private String startTime, endTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -133,8 +133,8 @@ public class AerobicnAppratusFragment extends Fragment {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
-                startTime = selectDate + " " + "9:00";
-                endTime = selectDate + " " + "10:00";
+                startTime = "9:00";
+                endTime = "10:00";
                 loadData();
             } else {
                 getVenueList();
@@ -147,8 +147,8 @@ public class AerobicnAppratusFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.COURSE_ID, datas.get(position).getClassroomId());
-                bundle.putString("start",String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-                bundle.putString("end",String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+                bundle.putString("start", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +startTime)));
+                bundle.putString("end", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +endTime)));
                 ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
             }
         });
@@ -156,9 +156,8 @@ public class AerobicnAppratusFragment extends Fragment {
 
 
     private void loadData() {
-        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
-
-            ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
 
@@ -167,8 +166,8 @@ public class AerobicnAppratusFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
         PostRequest request = new PostRequest(Constants.CLASSROOM_GETIDLEAEROBICCLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -312,7 +311,6 @@ public class AerobicnAppratusFragment extends Fragment {
         ((BaseActivity) getActivity()).mQueue.add(request);
 
 
-
     }
 
     @Override
@@ -321,8 +319,8 @@ public class AerobicnAppratusFragment extends Fragment {
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
             if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
                 tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
-                startTime = selectDate + " " + data.getExtras().getString("time_before");
-                endTime = selectDate + " " + data.getExtras().getString("time_after");
+                startTime = data.getExtras().getString("time_before");
+                endTime = data.getExtras().getString("time_after");
                 loadData();
             }
 
@@ -384,7 +382,7 @@ public class AerobicnAppratusFragment extends Fragment {
                 dialog.dismiss();
                 ivCoverBg.setVisibility(View.GONE);
             }
-        }) ;
+        });
 
         orderCustomePop.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

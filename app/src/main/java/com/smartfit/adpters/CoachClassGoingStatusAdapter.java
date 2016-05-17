@@ -114,6 +114,38 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         } else {
             viewHolder.tvOperate.setText(item.getStartUserName());
         }
+
+        /**
+         * （1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了
+         * ，7课程已结束未评论8已评论）
+         */
+        if (!TextUtils.isEmpty(item.getStatus())) {
+            if (item.getStatus().equals("1")) {
+                viewHolder.tvOperate.setText("报名但未付款");
+            } else if (item.getStatus().equals("2")) {
+                viewHolder.tvOperate.setText("等待接单");
+            } else if (item.getStatus().equals("3")) {
+                viewHolder.tvOperate.setText("进行中");
+            } else if (item.getStatus().equals("4")) {
+                viewHolder.tvOperate.setText("已结束");
+            } else if (item.getStatus().equals("5")) {
+                viewHolder.tvOperate.setText("已退出该课程");
+            } else if (item.getStatus().equals("6")) {
+                viewHolder.tvOperate.setText("课程已取消");
+            } else if (item.getStatus().equals("7")) {
+                viewHolder.tvOperate.setText("课程已结束");
+            } else if (item.getStatus().equals("8")) {
+                viewHolder.tvOperate.setText("已评价");
+            }
+        }
+
+
+
         //找人代课
         viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
             @Override

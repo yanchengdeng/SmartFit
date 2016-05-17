@@ -184,7 +184,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 if (TextUtils.isEmpty(etContent.getEditableText().toString())) {
-                    mSVProgressHUD.showInfoWithStatus("未填写信息");
+                    mSVProgressHUD.showInfoWithStatus("未填写信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     return;
                 } else {
                     if (TextUtils.isDigitsOnly(etContent.getEditableText().toString())) {

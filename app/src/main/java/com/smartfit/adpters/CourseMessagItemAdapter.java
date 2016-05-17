@@ -232,7 +232,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                         ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class,bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("3")) {
-
+                    //TODO
             }
         }
 

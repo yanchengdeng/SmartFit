@@ -159,13 +159,6 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
             }
         });
 
-        if (isHandleShow) {
-            viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
-            viewHolder.tvStatus.setText(context.getString(R.string.going));
-        } else {
-            viewHolder.llHandleFunciton.setVisibility(View.GONE);
-            viewHolder.tvStatus.setText(context.getString(R.string.already_over));
-        }
 
 
         return convertView;

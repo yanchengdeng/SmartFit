@@ -188,6 +188,15 @@
                     android:textColor="@color/text_color_gray"/>
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:textSize="@dimen/text_normal"
+                android:text="@string/forget_pass_tips"
+                android:textColor="@color/text_color_gray"/>
         </LinearLayout>
 
         <LinearLayout

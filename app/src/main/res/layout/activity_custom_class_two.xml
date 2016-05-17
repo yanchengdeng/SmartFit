@@ -3,12 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.smartfit.activities.FansActivity">
 
     <include layout="@layout/common_header_view" />
+
+    <com.smartfit.views.HorizontalListView
+        android:id="@+id/listview_date"
+        widget:dividerWidth="1dp"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:divider="@color/white" />
 
     <RelativeLayout
         android:id="@+id/rl_select_time"

@@ -1,10 +1,10 @@
 package com.smartfit.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -16,14 +16,17 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.CustomClassVenueAdapter;
+import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomClassVenue;
 import com.smartfit.beans.CustomClassVenueItem;
+import com.smartfit.beans.CustomeDate;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.views.HorizontalListView;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,11 +37,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
-*教练发布课程第二步
-*@author yanchengdeng
-*create at 2016/5/3 11:57
-*
-*/
+ * 教练发布课程第二步
+ *
+ * @author yanchengdeng
+ *         create at 2016/5/3 11:57
+ */
 public class UserCoachPublishClassTwoActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
@@ -59,11 +62,19 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
     TextView noData;
 
     private static final int REQUEST_CODE_ORDER_TIME = 0x0011;
+    @Bind(R.id.listview_date)
+    HorizontalListView listviewDate;
     private String classId;
 
     private String startTime, endTime;
 
     List<CustomClassVenue> customClassVenues;
+
+
+    private List<CustomeDate> customeDates;
+    private SelectDateAdapter selectDateAdapter;
+    //选择日期    YYYY-MM-DD
+    private String selectDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +83,28 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
         ButterKnife.bind(this);
         classId = getIntent().getStringExtra(Constants.PASS_STRING);
         intView();
-
+        initDateSelect();
         addLisener();
 
+    }
+
+    /****
+     * 初始化日期选择器
+     **/
+    private void initDateSelect() {
+        customeDates = DateUtils.getWeekInfo();
+        selectDateAdapter = new SelectDateAdapter(customeDates, this);
+        selectDateAdapter.setCurrentPositon(0);
+        selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(0).getDate();
+        listviewDate.setAdapter(selectDateAdapter);
+        listviewDate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectDateAdapter.setCurrentPositon(position);
+                selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
+                loadData();
+            }
+        });
     }
 
     private void intView() {
@@ -90,9 +120,6 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
             if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
                 tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
-                Calendar calendar = Calendar.getInstance();
-
-                String selectDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
                 startTime = selectDate + " " + data.getExtras().getString("time_before");
                 endTime = selectDate + " " + data.getExtras().getString("time_after");
 
@@ -103,6 +130,10 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
     }
 
     private void loadData() {
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)) {
+            mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
 
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
@@ -167,8 +198,8 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
             public void onClick(View v) {
                 if (null != customClassVenues && customClassVenues.size() > 0) {
                     int seletcPosition = 0;
-                    String venuePrice ="0";
-                    String roomId= "0";
+                    String venuePrice = "0";
+                    String roomId = "0";
                     for (int i = 0; i < customClassVenues.size(); i++) {
                         for (CustomClassVenueItem subItem : customClassVenues.get(i).getClassroomList()) {
                             if (subItem.isCheck()) {
@@ -185,7 +216,7 @@ public class UserCoachPublishClassTwoActivity extends BaseActivity {
                     bundle.putString("courseClassId", classId);
                     bundle.putString("venueId", customClassVenues.get(seletcPosition).getVenueId());
                     bundle.putString("roomId", roomId);
-                    bundle.putString("venuePrice",venuePrice);
+                    bundle.putString("venuePrice", venuePrice);
                     openActivity(UserCoachPublishClassThreeActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("未选择教室", SVProgressHUD.SVProgressHUDMaskType.Clear);

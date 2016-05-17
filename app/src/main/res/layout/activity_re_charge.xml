@@ -65,7 +65,7 @@
                 android:id="@+id/rl_wx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:clickable="false"
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
@@ -92,7 +92,7 @@
                     android:layout_below="@+id/tv_wx"
                     android:layout_margin="@dimen/image_padding"
                     android:layout_toRightOf="@+id/iv_wx"
-                    android:text="推荐已开通微信支付用户使用"
+                    android:text="@string/wx_pay_info"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal_down" />
 
@@ -103,7 +103,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/image_padding_big"
-                    android:src="@mipmap/icon_pay_choose" />
+                     />
 
 
             </RelativeLayout>

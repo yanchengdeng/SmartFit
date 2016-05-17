@@ -228,7 +228,12 @@ public class CustomeCoachActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CoachClassesActivity.class);
+                boolean isCoachId = SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, true);
+                if (isCoachId) {
+                    openActivity(CoachClassesActivity.class);
+                } else {
+                    openActivity(MyClassesActivity.class);
+                }
             }
         });
 
@@ -247,7 +252,6 @@ public class CustomeCoachActivity extends BaseActivity {
                 openActivity(HelpActivity.class);
             }
         });
-
 
 
     }

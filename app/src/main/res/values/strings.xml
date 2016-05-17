@@ -398,6 +398,8 @@
     <string name="purse_nav">钱包</string>
     <string name="copy_right_info">Copyright ©2016 福州睿动体育发展有限公司</string>
     <string name="contact_phone_server">4006053337</string>
+    <string name="wx_pay_info">待开放，请先使用订阅号\"SmartFit健身圈\"支付</string>
+    <string name="forget_pass_tips">预售用户请点击忘记密码取回账号密码</string>
 
 
 </resources>

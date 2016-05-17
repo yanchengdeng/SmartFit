@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.main_bar_bg);//通知栏所需颜色
+        tintManager.setStatusBarTintResource(R.color.common_header_bg);//通知栏所需颜色
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new CustomAnimationDemoFragment())
