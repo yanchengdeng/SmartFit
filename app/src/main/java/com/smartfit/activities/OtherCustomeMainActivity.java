@@ -69,14 +69,13 @@ public class OtherCustomeMainActivity extends BaseActivity {
     }
 
 
-
     RatingBar ratingBar;
     View tvCoachMoreInfo;
     ImageView ivBack, ivHeader;
     TextView tvTeachCaptial, tvCoachCaptial, tvAttentionNum;
     TextView tvVIP, tvName, tvMotto, tvAttention, tvFans, tvCore, tvaddFriends;
     TextView tvCoachBrief, tvReadMoreBrief, tvRating, tvTeachedClass, tvHeight, tvWeight, tvCoachInfo, tvHisClasses;
-    LinearLayout llDynamic,llCoachUI;
+    LinearLayout llDynamic, llCoachUI;
 
 
     private void initView() {
@@ -111,8 +110,6 @@ public class OtherCustomeMainActivity extends BaseActivity {
     }
 
 
-
-
     String uid;
 
     private void getCoachInfo() {
@@ -145,7 +142,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
     }
 
     UserInfo userInfo;
-    TextView tvDoAttention, tvAddFriends, tvHisClass;//操作关注用户 /添加健身伙伴
+    TextView tvDoAttention, tvAddFriends, tvSendMessage, tvHisClass;//操作关注用户 /添加健身伙伴
 
     private void fillData(UserInfo userInfo) {
         this.userInfo = userInfo;
@@ -177,21 +174,6 @@ public class OtherCustomeMainActivity extends BaseActivity {
             tvfans.setText("粉丝  " + userInfo.getFansCount());
         }
 
-        if (!TextUtils.isEmpty(userInfo.getIsFoused())) {
-            if (userInfo.getIsFoused().equals("0")) {
-                tvDoAttention.setText("关注");
-            } else {
-                tvDoAttention.setText("已关注");
-            }
-        }
-
-        if (!TextUtils.isEmpty(userInfo.getIsFriend())) {
-            if (userInfo.getIsFriend().equals("0")) {
-                tvAddFriends.setText("加为健身好友");
-            } else {
-                tvAddFriends.setText("已添加好友");
-            }
-        }
 
         if (!TextUtils.isEmpty(userInfo.getSex())) {
             if (userInfo.getSex().equals(Constants.SEX_WOMEN)) {
@@ -229,7 +211,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
             linearLayout.addView(imageView);
         }
 
-        if (!TextUtils.isEmpty(userInfo.getCoachId())){
+        if (!TextUtils.isEmpty(userInfo.getCoachId())) {
             llCoachUI.setVisibility(View.VISIBLE);
             tvCoachCaptial.setVisibility(View.VISIBLE);
         }
@@ -261,17 +243,22 @@ public class OtherCustomeMainActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(userInfo.getIsFoused())) {
             if (userInfo.getIsFoused().equals("0")) {
-                tvAttention.setText("关注");
+                tvDoAttention.setText("关注");
             } else {
-                tvAttention.setText("已关注");
+                tvDoAttention.setText("已关注");
             }
         }
 
         if (!TextUtils.isEmpty(userInfo.getIsFriend())) {
             if (userInfo.getIsFriend().equals("0")) {
-                tvaddFriends.setText("加为健身好友");
+                tvAddFriends.setText("加为健身好友");
+                tvAddFriends.setVisibility(View.VISIBLE);
+                tvSendMessage.setVisibility(View.GONE);
+
             } else {
-                tvaddFriends.setText("已添加好友");
+                tvAddFriends.setText("已添加好友");
+                tvaddFriends.setVisibility(View.GONE);
+                tvSendMessage.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -336,10 +323,10 @@ public class OtherCustomeMainActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.rl_dynamic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null !=userInfo) {
+                if (null != userInfo) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constants.PASS_STRING,userInfo.getUid());
-                    openActivity(CustomeDynamicActivity.class,bundle);
+                    bundle.putString(Constants.PASS_STRING, userInfo.getUid());
+                    openActivity(CustomeDynamicActivity.class, bundle);
                 }
             }
         });
@@ -427,7 +414,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
         tvHisClass = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_his_classes);
-
+        tvSendMessage = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_send_message);
 
     }
 

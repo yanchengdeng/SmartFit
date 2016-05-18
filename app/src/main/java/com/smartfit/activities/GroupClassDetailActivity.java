@@ -1,6 +1,7 @@
 package com.smartfit.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,8 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
@@ -387,7 +390,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
 
-            } else if (detail.getOrderStatus().equals("8")) {
+            } else if (detail.getOrderStatus().equals("8")||detail.getOrderStatus().equals("5")||detail.getOrderStatus().equals("6")) {
                 //订单详情页  已结束 未评论
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -418,6 +421,19 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvMore.setVisibility(View.VISIBLE);
             }
         }
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
+        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+            if (Integer.parseInt(detail.getOrderStatus())>=4){
+                tvSaveToPhone.setVisibility(View.GONE);
+            }
+        }
+
+
 
         scrollView.fullScroll(ScrollView.FOCUS_UP);
 
@@ -457,6 +473,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     }
 
+
+    String codeBar;
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -543,6 +561,43 @@ public class GroupClassDetailActivity extends BaseActivity {
                 } else {
 
                 }
+            }
+        });
+
+        //保存手机
+        tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(codeBar)){
+                    mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            mSVProgressHUD.dismiss();
+                            Util.saveImageToPhoto(GroupClassDetailActivity.this,loadedImage);
+                            mSVProgressHUD.showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+                    });
+                }
+
             }
         });
     }

@@ -410,6 +410,7 @@
     <string name="new_info_need_revertify">新增的认证资料需要再次通过认证</string>
     <string name="actvity">活动</string>
     <string name="actvity_detail">活动详情</string>
+    <string name="publish_class_products">发布课程产品</string>
 
 
 </resources>

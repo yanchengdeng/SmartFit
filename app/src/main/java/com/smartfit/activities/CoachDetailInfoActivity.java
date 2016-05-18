@@ -180,7 +180,7 @@ public class CoachDetailInfoActivity extends BaseActivity {
             if (userInfoDetail.getIsCCC().equals("0")) {
                 tvEditBrief.setText(getString(R.string.not_setting));
             } else if (userInfoDetail.getIsCCC().equals("1")) {
-                tvEditBrief.setText("待审核");
+                tvEditBrief.setText("已填写");
             } else if (userInfoDetail.getIsCCC().equals("2")) {
                 tvEditBrief.setText("审核通过");
             } else {

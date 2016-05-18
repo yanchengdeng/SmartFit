@@ -107,6 +107,12 @@ public class AddVertifyInfoActivity extends BaseActivity {
         tvTittle.setText(getString(R.string.add_more_auth_books));
         realCoachName = getIntent().getStringExtra(Constants.PASS_STRING);
         initMoreCentifacate();
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initMoreCentifacate() {

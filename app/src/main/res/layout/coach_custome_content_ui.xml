@@ -195,13 +195,14 @@
         android:background="@color/white">
 
         <TextView
+            android:id="@+id/tv_class_tittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/icon_produce"
             android:drawablePadding="@dimen/image_padding"
             android:gravity="center_vertical"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="发布课程产品"
+            android:text="@string/publish_class_products"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal" />
 

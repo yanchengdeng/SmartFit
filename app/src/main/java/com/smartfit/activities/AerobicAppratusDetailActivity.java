@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,8 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.AreaDetailInfo;
@@ -29,6 +32,7 @@ import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
 
@@ -70,6 +74,16 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     RollPagerView rollViewPager;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+    @Bind(R.id.tv_class_name)
+    TextView tvClassName;
+    @Bind(R.id.tv_content)
+    ImageView tvContent;
+    @Bind(R.id.tv_save_to_phone)
+    TextView tvSaveToPhone;
+    @Bind(R.id.tv_share_friends)
+    TextView tvShareFriends;
+    @Bind(R.id.ll_scan_bar)
+    LinearLayout llScanBar;
 
 
     private String classroomid;
@@ -95,6 +109,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         if (event instanceof UpdateAreoClassDetail) {
 //            getClassInfo();
             btnOrder.setVisibility(View.GONE);
+            llScanBar.setVisibility(View.VISIBLE);
         }
 
     /* Do something */
@@ -138,6 +153,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+
+    String codeBar;
     private void fillData(AreaDetailInfo detail) {
         /**
          * 订单状态（
@@ -150,6 +167,17 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
          * 7课程已结束未评论
          * 8已评论）
          */
+        if (!TextUtils.isEmpty(detail.getState())) {
+            if (Integer.parseInt(detail.getState()) >= 4) {
+                tvSaveToPhone.setVisibility(View.GONE);
+            }
+        }
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), tvContent, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
 
 
         if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {
@@ -214,6 +242,43 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 }
+            }
+        });
+
+        //保存手机
+        tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(codeBar)){
+                    mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            mSVProgressHUD.dismiss();
+                            Util.saveImageToPhoto(AerobicAppratusDetailActivity.this, loadedImage);
+                            mSVProgressHUD.showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+                    });
+                }
+
             }
         });
     }

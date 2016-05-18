@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,7 +24,6 @@ import com.smartfit.beans.SubmitAuthInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
-import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -220,7 +220,7 @@ public class VertifyFinishedActivity extends BaseActivity {
         TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
         tvTittle.setText(getString(R.string.plasas_input_your_login_pass));
         final EditText etContent = (EditText) dialog.getWindow().findViewById(R.id.et_update_content);
-
+        etContent.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,7 +238,7 @@ public class VertifyFinishedActivity extends BaseActivity {
                     return;
                 } else {
                     String password = SharedPreferencesUtils.getInstance().getString(Constants.PASSWORD, "");
-                    if (MD5.getMessageDigest(etContent.getEditableText().toString().getBytes()).equals(password)) {
+                    if (etContent.getEditableText().toString().equals(password)) {
                         delAutoInfo();
                     } else {
                         mSVProgressHUD.showInfoWithStatus("登录密码不正确", SVProgressHUD.SVProgressHUDMaskType.Clear);

@@ -348,10 +348,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />
         <activity
-            android:name=".activities.AerobicAppratusOrderSuccessActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/ActivityTheme.NoActionBar" />
-        <activity
             android:name=".activities.CustomeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme.NoActionBar" />

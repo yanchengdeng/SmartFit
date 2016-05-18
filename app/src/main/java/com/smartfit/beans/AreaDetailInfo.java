@@ -31,6 +31,16 @@ public class AreaDetailInfo {
     private String[] classroomPics;
     private String isParted;
 
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
+    }
+
+    private String qrcodeUrl;
+
     public String getOrderCode() {
         return orderCode;
     }

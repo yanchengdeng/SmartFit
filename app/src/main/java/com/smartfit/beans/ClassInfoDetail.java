@@ -32,6 +32,16 @@ public class ClassInfoDetail {
     private String courseDetail;//123123123,
     private String startDate;//1460217600,
 
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
+    }
+
+    private String qrcodeUrl;
+
     public String getClassroomId() {
         return classroomId;
     }

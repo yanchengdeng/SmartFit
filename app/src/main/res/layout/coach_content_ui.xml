@@ -45,6 +45,7 @@
             android:background="@color/common_header_bg"
             android:gravity="center"
             android:padding="@dimen/image_padding_big"
+            android:visibility="gone"
             android:text="发消息"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />

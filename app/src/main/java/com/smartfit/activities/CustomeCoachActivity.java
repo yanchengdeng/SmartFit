@@ -50,7 +50,7 @@ public class CustomeCoachActivity extends BaseActivity {
 
     private SelectableRoundedImageView imageViewHeader;
 
-    private TextView tvName, tvSigneture;
+    private TextView tvName, tvSigneture,tvClassTittle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,7 @@ public class CustomeCoachActivity extends BaseActivity {
         imageViewHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
+        tvClassTittle = (TextView)scrollView.getPullRootView().findViewById(R.id.tv_class_tittle);
     }
 
 
@@ -394,12 +395,14 @@ public class CustomeCoachActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.VISIBLE);
         scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.VISIBLE);
+        tvClassTittle.setText(getString(R.string.publish_class_products));
     }
 
     private void closeAuth() {
         scrollView.getPullRootView().findViewById(R.id.iv_open_coach_auth).setVisibility(View.GONE);
         scrollView.getPullRootView().findViewById(R.id.iv_close_coach_auth).setVisibility(View.VISIBLE);
         scrollView.getPullRootView().findViewById(R.id.rl_my_work_please_ui).setVisibility(View.GONE);
+        tvClassTittle.setText(getString(R.string.my_classes));
     }
 
     private void addLisener() {
