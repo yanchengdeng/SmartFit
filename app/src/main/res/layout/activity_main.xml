@@ -101,7 +101,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-
+                    android:id="@+id/ll_activity_bind_up"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
@@ -203,7 +203,6 @@
 
                 <LinearLayout
                     android:id="@+id/card_aerobic_appratus"
-
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"
@@ -224,7 +223,6 @@
 
                 <LinearLayout
                     android:id="@+id/card_smart_fit"
-
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="4dp"

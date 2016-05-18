@@ -21,7 +21,7 @@ public class Constants {
 
     public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
-     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程
+     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定
      */
     public static final String PAGE_INDEX = "page_index";
 
@@ -121,6 +121,7 @@ public class Constants {
     public static final String COACH_CHGCOACHONLINESTATE = "/coach/chgCoachOnlineState";
     public static final String CLASSIF_LISTTHEVENUEIDLECLASSROOMS = "/ClassIf/listTheVenueIdleClassrooms";
     public static final String COACH_LISTIDLECOACHESBYVENUEIDANDCOURSETYPECODE = "/coach/listIdleCoachesByVenueIdAndCourseTypeCode";
+    public static final String COACH_DELCERTIFICATE = "/coach/delCertificate";
 
 
     //系统数据
@@ -138,6 +139,9 @@ public class Constants {
     public static final String PAY_BALANCEPAY = "/pay/balancePay";
     public static final String PAY_PAYMOCK = "/pay/payMock";
     public static final String ORDER_ORDERCHARGE = "/order/orderCharge";
+    public static final String EVENT_LISTEVENTS = "/event/listEvents";
+    public static final String EVENT_GETEVENT = "/event/getEvent";
+    public static final String ORDER_ORDEREVENT = "/order/orderEvent";
 
 
     //活动

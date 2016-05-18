@@ -125,16 +125,9 @@ public class MoreCertiaicatePassAdapter extends BaseAdapter {
                 viewHolder.cbName.setImageResource(R.mipmap.icon_close);
             }
         }
-        if (TextUtils.isEmpty(item.getPhoto())){
-            viewHolder.ivCertificate.setVisibility(View.INVISIBLE);
-        }else {
-            if (!TextUtils.isEmpty(item.getPhoto()) && item.getPhoto().startsWith("http://")) {
-                ImageLoader.getInstance().displayImage(item.getPhoto(), viewHolder.ivCertificate, Options.getListOptions());
-            } else {
-                ImageLoader.getInstance().displayImage("file:///" + item.getPhoto(), viewHolder.ivCertificate);
-            }
-            viewHolder.ivCertificate.setVisibility(View.VISIBLE);
-        }
+
+        ImageLoader.getInstance().displayImage(item.getPhoto(), viewHolder.ivCertificate, Options.getListOptions());
+
         viewHolder.ivCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

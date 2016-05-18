@@ -42,9 +42,6 @@ public class Certificate {
 
     private String status;
 
-
-
-
     public String getName() {
         return name;
     }

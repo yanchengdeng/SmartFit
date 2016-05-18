@@ -6,9 +6,11 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,9 +87,27 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
                 if (TextUtils.isEmpty(s.toString())) {
                     viewHolder.cbName.setImageResource(R.mipmap.icon_close);
                 } else {
-                    certificates.get(position).setName(s.toString());
+
                     viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
                 }
+            }
+        });
+
+
+        viewHolder.tvName.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                /*隐藏软键盘*/
+                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager.isActive()) {
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                }
+
+                viewHolder.tvName.setText(viewHolder.tvName.getEditableText().toString());
+                if (!TextUtils.isEmpty(viewHolder.tvName.getEditableText().toString())) {
+                    certificates.get(position).setName(viewHolder.tvName.getEditableText().toString());
+                }
+                return false;
             }
         });
 
@@ -102,9 +122,11 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
 
         if (!TextUtils.isEmpty(item.getName())) {
             viewHolder.tvName.setText(item.getName());
+            viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
         } else {
             viewHolder.tvName.setHint("请填写证书名称");
             viewHolder.tvName.setText("");
+            viewHolder.cbName.setImageResource(R.mipmap.icon_close);
         }
 
 
@@ -136,6 +158,10 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<Certificate> getData() {
+        return this.certificates;
+    }
+
 
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_more_ceritiface.xml'
@@ -143,11 +169,11 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    public static class ViewHolder {
         @Bind(R.id.tv_name_tips)
         TextView tvNameTips;
         @Bind(R.id.tv_name)
-        EditText tvName;
+        public EditText tvName;
         @Bind(R.id.cb_name)
         ImageView cbName;
         @Bind(R.id.tv_certificate)

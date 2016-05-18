@@ -402,6 +402,14 @@
     <string name="forget_pass_tips">预售用户请点击忘记密码取回账号密码</string>
     <string name="title_activity_arerobic_detail">ArerobicDetailActivity</string>
     <string name="delet_auth_info">删除认证信息</string>
+    <string name="title_activity_vertify_finished">VertifyFinishedActivity</string>
+    <string name="add_auth_info">增加认证信息</string>
+    <string name="your_coach_have_vertified">您的教练资料已认证</string>
+    <string name="plasas_input_your_login_pass">请输入您的登录密码</string>
+    <string name="delete_ing">正在删除</string>
+    <string name="new_info_need_revertify">新增的认证资料需要再次通过认证</string>
+    <string name="actvity">活动</string>
+    <string name="actvity_detail">活动详情</string>
 
 
 </resources>

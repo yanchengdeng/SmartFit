@@ -81,6 +81,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     TextView tvGoPurse;
     @Bind(R.id.tv_go_server)
     TextView tvGoServer;
+    @Bind(R.id.ll_activity_bind_up)
+    LinearLayout llActivityBindUp;
 
 
     @Override
@@ -182,12 +184,12 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         EMClient.getInstance().login(hxAccount, MD5.getMessageDigest(hxAccount.getBytes()), new EMCallBack() {
             @Override
             public void onSuccess() {
-                LogUtil.w("dyc","环信登陆陈宫");
+                LogUtil.w("dyc", "环信登陆陈宫");
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtil.w("dyc","环信登陆失败"+i+"..."+s);
+                LogUtil.w("dyc", "环信登陆失败" + i + "..." + s);
             }
 
             @Override
@@ -219,6 +221,18 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.FRAGMENT_POSITION, 2);
                     openActivity(MainBusinessActivity.class, bundle);
+                } else {
+                    openActivity(LoginActivity.class);
+                }
+            }
+        });
+
+        //活动买入上
+        llActivityBindUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtil.isLogin(getApplicationContext())) {
+                    openActivity(ActivityListActivity.class);
                 } else {
                     openActivity(LoginActivity.class);
                 }

@@ -1,6 +1,13 @@
 package com.smartfit.commons;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Environment;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
+
+import com.smartfit.R;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -186,31 +193,32 @@ public class AppException extends Exception implements UncaughtExceptionHandler 
         }
 //		System.out.println(exceptionStr.toString());
 
-//		final Context context = AppManager.getAppManager().currentActivity();
-//		
-//		if(context == null) {
-//			return false;
-//		}
+		final Context context = AppManager.getAppManager().currentActivity();
+
+		if(context == null) {
+			return false;
+		}
 
 //		final String crashReport = getCrashReport(context, ex);
         //显示异常信息&发送报告
-//		new Thread() {
-//			public void run() {
-//				Looper.prepare();
+		new Thread() {
+			public void run() {
+				Looper.prepare();
 //				sendAppCrashReport(context, crashReport);
-//				Looper.loop();
-//			}
-//
-//		}.start();
+                AppManager.getAppManager().AppExit(context);
+				Looper.loop();
+			}
+
+		}.start();
         return true;
     }
 
-    /**
+   /* *//**
      * 发送App异常崩溃报告
      * @param cont
      * @param crashReport
-     */
-    /*public static void sendAppCrashReport(final Context cont, final String crashReport)
+     *//*
+    public static void sendAppCrashReport(final Context cont, final String crashReport)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
 		builder.setIcon(android.R.drawable.ic_dialog_info);

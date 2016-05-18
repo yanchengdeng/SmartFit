@@ -191,5 +191,11 @@ public class BaseActivity extends FragmentActivity {
         MobclickAgent.onPause(this);
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mSVProgressHUD.isShowing()) {
+            mSVProgressHUD.dismiss();
+        }
+    }
 }

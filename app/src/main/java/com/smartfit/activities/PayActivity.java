@@ -25,6 +25,8 @@ import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
+import com.smartfit.beans.EventDetailInfo;
+import com.smartfit.beans.EventOrderResult;
 import com.smartfit.beans.OrderCourse;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -100,7 +102,7 @@ public class PayActivity extends BaseActivity {
 
     /****
      * 页面跳转 index
-     * <p/>
+     * <p>
      * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程
      */
     private int pageIndex = 1;
@@ -184,7 +186,7 @@ public class PayActivity extends BaseActivity {
                             } else {
                                 orderID = orderCode;
                                 mSVProgressHUD.dismiss();
-                                if (Float.parseFloat(payMoney)==0){
+                                if (Float.parseFloat(payMoney) == 0) {
                                     payStyle = 0;
                                     rlYe.setClickable(true);
                                     ivYeSelected.setVisibility(View.VISIBLE);
@@ -198,13 +200,15 @@ public class PayActivity extends BaseActivity {
                             getOrderCorse();
                         } else if (pageIndex == 6) {
                             getOrderCorse();
+                        } else if (pageIndex == 7) {
+                            getEventOrder();
                         } else {
                             if (TextUtils.isEmpty(orderCode)) {
                                 getOrderCorse();
                             } else {
                                 orderID = orderCode;
                                 mSVProgressHUD.dismiss();
-                                if (Float.parseFloat(payMoney)==0){
+                                if (Float.parseFloat(payMoney) == 0) {
                                     payStyle = 0;
                                     rlYe.setClickable(true);
                                     ivYeSelected.setVisibility(View.VISIBLE);
@@ -227,6 +231,37 @@ public class PayActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(PayActivity.this);
         mQueue.add(request);
+    }
+
+    /**
+     * 活动包约下单
+     */
+    private void getEventOrder() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("eventId", courseId);
+        PostRequest request = new PostRequest(Constants.ORDER_ORDEREVENT, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                EventOrderResult eventOrderResult = JsonUtils.objectFromJson(response, EventOrderResult.class);
+                if (eventOrderResult != null) {
+                    if (!TextUtils.isEmpty(eventOrderResult.getOrderCode())) {
+                        orderID = eventOrderResult.getOrderCode();
+                    }
+                    selectPayStyle(leftMoney, eventOrderResult.getOrderPrice());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
+
     }
 
     /**
@@ -329,6 +364,13 @@ public class PayActivity extends BaseActivity {
                 if (payStyle == 1) {
                     if (!checkWeiXin()) {
                         mSVProgressHUD.showInfoWithStatus("您未安装微信客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                        return;
+                    }
+                }
+
+                if (payStyle == 2) {
+                    if (!checkALi()) {
+                        mSVProgressHUD.showInfoWithStatus("您未安装支付宝客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                         return;
                     }
                 }
@@ -473,6 +515,8 @@ public class PayActivity extends BaseActivity {
             eventBus.post(new UpdateCoachClass());
         } else if (pageIndex == 6) {
             eventBus.post(new UpdateCustomClassInfo());
+        } else if (pageIndex == 7) {
+            finish();
         }
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -551,6 +595,16 @@ public class PayActivity extends BaseActivity {
     private boolean checkWeiXin() {
         try {
             getPackageManager().getApplicationInfo("com.tencent.mm", PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+
+    private boolean checkALi() {
+        try {
+            getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.GET_UNINSTALLED_PACKAGES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;

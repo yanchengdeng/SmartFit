@@ -12,6 +12,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.adpters.MoreCertiaicateVertifyAdapter;
 import com.smartfit.adpters.MoreCertiaicateVertifyTureAdapter;
 import com.smartfit.beans.SubmitAuthInfo;
 import com.smartfit.commons.Constants;
@@ -156,7 +157,7 @@ public class WaitVertifyActivity extends BaseActivity {
         }
 
         if (workAuths.size()>0){
-            listAuthPhotos.setAdapter(new MoreCertiaicateVertifyTureAdapter(WaitVertifyActivity.this,workAuths));
+            listAuthPhotos.setAdapter(new MoreCertiaicateVertifyAdapter(WaitVertifyActivity.this,workAuths));
         }
     }
 

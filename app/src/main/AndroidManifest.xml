@@ -563,6 +563,16 @@
             android:name=".activities.ArerobicDetailActivity"
             android:label="@string/title_activity_arerobic_detail" >
         </activity>
+        <activity
+            android:name=".activities.VertifyFinishedActivity"
+            android:label="@string/title_activity_vertify_finished" >
+        </activity>
+        <activity android:name=".activities.AddVertifyInfoActivity" >
+        </activity>
+        <activity android:name=".activities.ActivityListActivity" >
+        </activity>
+        <activity android:name=".activities.EventActivtyDetailActivity" >
+        </activity>
     </application>
 
 </manifest>

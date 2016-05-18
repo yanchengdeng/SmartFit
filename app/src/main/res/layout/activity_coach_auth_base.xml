@@ -243,17 +243,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
 
-            <Button
-                android:id="@+id/btn_delet"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:background="@drawable/bg_dialog_selector_red"
-                android:gravity="center"
-                android:text="@string/delet_auth_info"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_normal" />
-
         </LinearLayout>
 
 

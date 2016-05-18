@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.CoachAuthBaseActivity">
+
+    <include layout="@layout/common_header_view"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+
+            <com.smartfit.views.MyListView
+                android:id="@+id/list_auth_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/white"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/line_gray"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/tv_add_more_books"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/add_more_auth_books"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/header_bar_height"
+                android:text="@string/new_info_need_revertify"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal" />
+
+
+            <Button
+                android:id="@+id/btn_submmit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:background="@drawable/bg_dialog_selector_blue"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

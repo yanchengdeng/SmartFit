@@ -19,7 +19,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.adpters.MoreCertiaicatePassAdapter;
+import com.smartfit.adpters.MoreCertiaicateAdapter;
 import com.smartfit.beans.Certificate;
 import com.smartfit.beans.CoachCertificate;
 import com.smartfit.beans.CoachCertificateItem;
@@ -76,18 +76,14 @@ public class VertifyNotPassActivity extends BaseActivity {
     ImageView cbCard;
     @Bind(R.id.tv_card_photo_tips)
     TextView tvCardPhotoTips;
-    @Bind(R.id.image_card)
-    ImageView imageCard;
-    @Bind(R.id.iv_add_card)
-    ImageView ivAddCard;
+    @Bind(R.id.iv_ids_photos)
+    ImageView ivIdsPhotos;
     @Bind(R.id.cb_card_photo)
     ImageView cbCardPhoto;
     @Bind(R.id.tv_work_quality)
     TextView tvWorkQuality;
-    @Bind(R.id.image_work)
-    ImageView imageWork;
-    @Bind(R.id.iv_work_photo)
-    ImageView ivWorkPhoto;
+    @Bind(R.id.iv_work_photos)
+    ImageView ivWorkPhotos;
     @Bind(R.id.cb_work_photo)
     ImageView cbWorkPhoto;
     @Bind(R.id.list_auth_photos)
@@ -107,11 +103,14 @@ public class VertifyNotPassActivity extends BaseActivity {
     private static int REQUSET_ID_CARDS = 0x011;
     private static int REUQUST_WORK_AUTH = 0X012;
     private static int REQUEST_CERTIFICATE_MORE = 0x013;
-
+    MoreCertiaicateAdapter moreCertiaicateAdapter;
 
     private CoachCertificate coachCertificate;
 
     private int positon = -1;
+
+
+    private int countRequset = 0;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -133,14 +132,23 @@ public class VertifyNotPassActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vertify_not_pass);
         ButterKnife.bind(this);
+        coachCertificate = new CoachCertificate();
         initView();
+        initMoreCentifacate();
         addLisener();
+
+    }
+
+    private void initMoreCentifacate() {
+
+        certificateList.add(getNewCertificate());
+        moreCertiaicateAdapter = new MoreCertiaicateAdapter(this, certificateList, handler);
+        listAuthPhotos.setAdapter(moreCertiaicateAdapter);
 
     }
 
     private void initView() {
         tvTittle.setText(getString(R.string.add_vertify_info));
-        listAuthPhotos.setAdapter(new MoreCertiaicatePassAdapter(this, certificateList, handler));
         getVertifyInfo();
 
     }
@@ -180,39 +188,33 @@ public class VertifyNotPassActivity extends BaseActivity {
                 tvCard.setText(item.getCertificateName());
                 tvName.setText(item.getCoachRealName());
 
-                ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageCard, Options.getListOptions());
+                ImageLoader.getInstance().displayImage(item.getCertificateImg(), ivIdsPhotos, Options.getListOptions());
                 //1待审；2通过；3不通过
                 if (item.getStatus().equals("1")) {
                     cbCardPhoto.setImageResource(R.mipmap.icon_close);
                     cbName.setImageResource(R.mipmap.icon_close);
                     cbCard.setImageResource(R.mipmap.icon_close);
-                    ivAddCard.setVisibility(View.VISIBLE);
                 } else if (item.getStatus().equals("2")) {
                     cbCardPhoto.setImageResource(R.mipmap.icon_choose);
                     cbName.setImageResource(R.mipmap.icon_choose);
                     cbCard.setImageResource(R.mipmap.icon_choose);
-                    ivAddCard.setVisibility(View.INVISIBLE);
                 } else {
                     cbCardPhoto.setImageResource(R.mipmap.icon_close);
                     cbName.setImageResource(R.mipmap.icon_close);
                     cbCard.setImageResource(R.mipmap.icon_close);
-                    ivAddCard.setVisibility(View.VISIBLE);
                 }
             }
 
             if (item.getType().equals("2")) {
                 //正式照片
-                ImageLoader.getInstance().displayImage(item.getCertificateImg(), imageWork, Options.getListOptions());
+                ImageLoader.getInstance().displayImage(item.getCertificateImg(), ivWorkPhotos, Options.getListOptions());
                 //1待审；2通过；3不通过
                 if (item.getStatus().equals("1")) {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_close);
-                    ivWorkPhoto.setVisibility(View.VISIBLE);
                 } else if (item.getStatus().equals("2")) {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
-                    ivWorkPhoto.setVisibility(View.INVISIBLE);
                 } else {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_close);
-                    ivWorkPhoto.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -222,9 +224,8 @@ public class VertifyNotPassActivity extends BaseActivity {
         }
 
         if (workAuths.size() > 0) {
-            
-            for (int i = 0 ;i<workAuths.size();i++){
-                Certificate  certificate = new Certificate();
+            for (int i = 0; i < workAuths.size(); i++) {
+                Certificate certificate = new Certificate();
                 certificate.setPhoto(workAuths.get(i).getCertificateImg());
                 certificate.setName(workAuths.get(i).getCertificateName());
                 certificate.setStatus(workAuths.get(i).getStatus());
@@ -232,7 +233,7 @@ public class VertifyNotPassActivity extends BaseActivity {
                 certificate.setImage_tips("上传证书照片" + (certificateList.size() + 1));
                 certificateList.add(certificate);
             }
-            ((MoreCertiaicatePassAdapter)listAuthPhotos.getAdapter()).notifyDataSetChanged();
+            moreCertiaicateAdapter.setData(certificateList);
         }
     }
 
@@ -273,8 +274,7 @@ public class VertifyNotPassActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 cards = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 if (null != cards && cards.size() > 0) {
-                    ImageLoader.getInstance().displayImage("file:///" + cards.get(0), imageCard);
-                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
+
                     getCardUrl(cards);
                 } else {
                     cbCardPhoto.setImageResource(R.mipmap.icon_close);
@@ -284,8 +284,7 @@ public class VertifyNotPassActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 works = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 if (null != works && works.size() > 0) {
-                    ImageLoader.getInstance().displayImage("file:///" + works.get(0), imageWork);
-                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
+
                     getWorkUrl(works);
                 } else {
                     cbWorkPhoto.setImageResource(R.mipmap.icon_close);
@@ -294,10 +293,7 @@ public class VertifyNotPassActivity extends BaseActivity {
         } else if (requestCode == REQUEST_CERTIFICATE_MORE) {
             ArrayList<String> photos = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
             if (null != photos && photos.size() > 0) {
-                certificateList.get(positon).setPhoto(photos.get(0));
-                certificateList.get(positon).setStatus("2");
-                ((MoreCertiaicatePassAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
-                getAuthUrl(certificateList);
+                getAuthUrl(photos.get(0));
             }
         }
     }
@@ -307,41 +303,48 @@ public class VertifyNotPassActivity extends BaseActivity {
      *
      * @param certificateList
      */
-    private void getAuthUrl(final List<Certificate> certificateList) {
+    /**
+     * 获取该证书的图片url
+     */
+    private void getAuthUrl(final String certificateListUrl) {
+        mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         RequestParams params = new RequestParams(Constants.Net.URL + Constants.UPLOAD_PHOTOS);
         params.setMultipart(true);
-        try {
-            for (String item : works) {
-                params.addBodyParameter("imageFile", new File(item));
-            }
-        } catch (Exception ex) {
-        }
+        params.addBodyParameter("imageFile", new File(certificateListUrl));
         x.http().post(params, new Callback.CommonCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject result) {
+                mSVProgressHUD.dismiss();
                 String url = null;
                 try {
                     url = result.getString("data");
-                    certificateList.get(positon).setPhoto(url);
+                    if (!TextUtils.isEmpty(url)) {
+                        certificateList.get(positon).setPhoto(url);
+                        moreCertiaicateAdapter.setData(certificateList);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.w("dyc", "" + ex);
+                mSVProgressHUD.dismiss();
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                mSVProgressHUD.dismiss();
             }
 
             @Override
             public void onFinished() {
+                mSVProgressHUD.dismiss();
             }
         });
     }
+
 
     /**
      * 获取工作图片路径
@@ -368,6 +371,8 @@ public class VertifyNotPassActivity extends BaseActivity {
                 }
                 LogUtil.w("dyc", "工作证" + result + "..." + url);
                 if (!TextUtils.isEmpty(url)) {
+                    cbWorkPhoto.setImageResource(R.mipmap.icon_choose);
+                    ImageLoader.getInstance().displayImage(url, ivWorkPhotos, Options.getListOptions());
                     coachCertificate.setCoachCertificateWord(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "2"));
                 }
             }
@@ -411,7 +416,8 @@ public class VertifyNotPassActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 if (!TextUtils.isEmpty(url)) {
-                    LogUtil.w("dyc", "身份证" + result + "..." + url);
+                    cbCardPhoto.setImageResource(R.mipmap.icon_choose);
+                    ImageLoader.getInstance().displayImage(url, ivIdsPhotos, Options.getListOptions());
                     coachCertificate.setCoachCertificateCard(new CoachCertificateItem(tvCard.getEditableText().toString(), url, "1"));
                 }
             }
@@ -490,7 +496,7 @@ public class VertifyNotPassActivity extends BaseActivity {
             }
         });
 
-        ivAddCard.setOnClickListener(new View.OnClickListener() {
+        ivIdsPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPhotoThum(cards, REQUSET_ID_CARDS, 1);
@@ -498,39 +504,19 @@ public class VertifyNotPassActivity extends BaseActivity {
         });
 
 
-        imageCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cards != null && cards.size() > 0) {
-                    goPhotoThum(cards, REQUSET_ID_CARDS, 1);
-                }
-            }
-        });
-
-
-        ivWorkPhoto.setOnClickListener(new View.OnClickListener() {
+        ivWorkPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPhotoThum(works, REUQUST_WORK_AUTH, 1);
             }
         });
 
-        imageWork.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (works != null && works.size() > 0) {
-                    goPhotoThum(works, REUQUST_WORK_AUTH, 1);
-                }
-            }
-        });
-
-
         //添加更多证书
         tvAddMoreBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 certificateList.add(getNewCertificate());
-                ((MoreCertiaicatePassAdapter) listAuthPhotos.getAdapter()).notifyDataSetChanged();
+                moreCertiaicateAdapter.notifyDataSetChanged();
             }
         });
 
@@ -543,31 +529,33 @@ public class VertifyNotPassActivity extends BaseActivity {
                     if (TextUtils.isEmpty(tvCard.getEditableText().toString())) {
                         mSVProgressHUD.showInfoWithStatus("请输入身份证号", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     } else {
-                        if (cards.size() == 0) {
-                            mSVProgressHUD.showInfoWithStatus("请添加身份证照片", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        } else {
-                            if (works.size() == 0) {
-                                mSVProgressHUD.showInfoWithStatus("请添加正式照", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                            } else {
-                                mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateCard());
-                                doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateWord());
-                                List<Certificate> subcertificateList = new ArrayList<Certificate>();
-                                for (Certificate item : certificateList) {
-                                    if (!TextUtils.isEmpty(item.getPhoto()) && !TextUtils.isEmpty(item.getName())) {
-                                        subcertificateList.add(item);
-                                    }
-                                }
 
-                                if (subcertificateList.size() > 0) {
-                                    for (Certificate item : subcertificateList) {
-                                        CoachCertificateItem coachCertificateItem = new CoachCertificateItem(item.getName(), item.getPhoto(), "3");
-                                        doSubmit(tvName.getEditableText().toString(), coachCertificateItem.getCertificateName(), coachCertificateItem);
-                                    }
-                                }
+                        mSVProgressHUD.showWithStatus(getString(R.string.uploading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        if (null != coachCertificate.getCoachCertificateCard()) {
+                            countRequset++;
+                            doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateCard());
+                        }
 
+                        if (null != coachCertificate.getCoachCertificateWord()) {
+                            countRequset++;
+                            doSubmit(tvName.getEditableText().toString(), tvCard.getEditableText().toString(), coachCertificate.getCoachCertificateWord());
+                        }
+
+                        List<Certificate> subcertificateList = new ArrayList<Certificate>();
+                        for (Certificate item : certificateList) {
+                            if (!TextUtils.isEmpty(item.getPhoto()) && !TextUtils.isEmpty(item.getName())) {
+                                subcertificateList.add(item);
                             }
                         }
+
+                        if (subcertificateList.size() > 0) {
+                            countRequset = countRequset + subcertificateList.size();
+                            for (Certificate item : subcertificateList) {
+                                CoachCertificateItem coachCertificateItem = new CoachCertificateItem(item.getName(), item.getPhoto(), "3");
+                                doSubmit(tvName.getEditableText().toString(), coachCertificateItem.getCertificateName(), coachCertificateItem);
+                            }
+                        }
+
                     }
                 }
             }
@@ -586,27 +574,32 @@ public class VertifyNotPassActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
-                mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 2000);
-
-
+                countRequset--;
+                updateSuccess();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                countRequset--;
+                updateSuccess();
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(VertifyNotPassActivity.this);
         mQueue.add(request);
+    }
 
-
+    private void updateSuccess() {
+        if (countRequset == 0) {
+            mSVProgressHUD.showSuccessWithStatus("上传成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    openActivity(WaitVertifyActivity.class);
+                    finish();
+                }
+            }, 1000);
+        }
     }
 
 }

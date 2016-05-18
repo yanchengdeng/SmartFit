@@ -20,6 +20,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -159,6 +160,8 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void doRegister(String phone, String code, String name, String password) {
+        SharedPreferencesUtils.getInstance().remove(Constants.UID);
+        SharedPreferencesUtils.getInstance().remove(Constants.SID);
         mSVProgressHUD.showWithStatus(getString(R.string.register_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
         data.put("mobileNo", phone);

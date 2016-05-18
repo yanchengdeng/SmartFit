@@ -148,8 +148,10 @@ public class CoachDetailInfoActivity extends BaseActivity {
 
     }
 
-    private void fillData(UserInfoDetail userInfoDetail) {
+    UserInfoDetail userInfoDetail;
 
+    private void fillData(UserInfoDetail userInfoDetail) {
+        this.userInfoDetail = userInfoDetail;
         ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeaderr, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
             tvName.setText(userInfoDetail.getNickName());
@@ -229,7 +231,22 @@ public class CoachDetailInfoActivity extends BaseActivity {
         tvAlreadyAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CoachAuthentitionActivity.class);
+                /**
+                 * 教练状态0：未申请 1上线, 3锁定.4审核中；5审核未通过
+                 */
+                if (null != userInfoDetail && !TextUtils.isEmpty(userInfoDetail.getIsICF())) {
+                    if (userInfoDetail.getIsICF().equals("0")) {
+                        openActivity(CoachAuthBaseActivity.class);
+                    } else if (userInfoDetail.getIsICF().equals("1")) {
+                        openActivity(VertifyFinishedActivity.class);
+                    } else if (userInfoDetail.getIsICF().equals("2")) {
+                        mSVProgressHUD.showInfoWithStatus("下线");
+                    } else if (userInfoDetail.getIsICF().equals("5")) {
+                        openActivity(VertifyNotPassActivity.class);
+                    } else {
+                        openActivity(WaitVertifyActivity.class);
+                    }
+                }
             }
         });
 

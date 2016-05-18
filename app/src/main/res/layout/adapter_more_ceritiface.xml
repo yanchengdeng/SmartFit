@@ -32,6 +32,7 @@
             android:layout_toRightOf="@id/tv_name_tips"
             android:background="@null"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:hint="请填写证书名称"
             android:textColor="@color/text_color_black"
             android:textColorHint="@color/text_color_black"
