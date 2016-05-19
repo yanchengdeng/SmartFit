@@ -98,7 +98,9 @@ public class CoachInfoActivity extends BaseActivity {
 
     private void fillData(UserInfo userInfo) {
         this.userInfo = userInfo;
-        if (!TextUtils.isEmpty(userInfo.getNickName())) {
+        if (!TextUtils.isEmpty(userInfo.getCoachRealName())) {
+            tvName.setText(userInfo.getCoachRealName());
+        } else if (!TextUtils.isEmpty(userInfo.getNickName())) {
             tvName.setText(userInfo.getNickName());
         }
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());

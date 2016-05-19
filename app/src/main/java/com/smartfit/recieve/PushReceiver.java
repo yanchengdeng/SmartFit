@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.WindowManager;
 
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
@@ -55,7 +56,7 @@ public class PushReceiver extends BroadcastReceiver {
                 LogUtil.w("dyc", "receiver payload : " + result);
                 if (payload != null) {
                     String data = new String(payload);
-
+                    LogUtil.w("dyc", "receiver payload : " + data);
                     if (!TextUtils.isDigitsOnly(data)) {
                         PushBean msg =    JsonUtils.objectFromJson(data, PushBean.class);
                         if (msg!=null){
@@ -91,22 +92,23 @@ public class PushReceiver extends BroadcastReceiver {
     }
 
     private void NormalDialogStyleOne(final Context context,String tittle) {
-        final NormalDialog dialog = new NormalDialog(SmartAppliction.getInstance());
+        final NormalDialog dialog = new NormalDialog(context);
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.isTitleShow(false)//
-                .bgColor(Color.parseColor("#383838"))//
+                .bgColor(Color.parseColor("#ffffff"))//
                 .cornerRadius(5)//
                 .content(tittle)//
                 .contentGravity(Gravity.CENTER)//
-                .contentTextColor(Color.parseColor("#ffffff"))//
+                .contentTextColor(Color.parseColor("#222222"))//
                 .dividerColor(Color.parseColor("#222222"))//
                 .btnTextSize(15.5f, 15.5f)//
-                .btnTextColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))//
-                .btnPressColor(Color.parseColor("#2B2B2B"))//
+                .btnTextColor(Color.parseColor("#222222"), Color.parseColor("#222222"))//
+                .btnPressColor(Color.parseColor("#ffffff"))//
                 .widthScale(0.85f)//
 //                .showAnim(mBasIn)//
 //                .dismissAnim(mBasOut)//
                 .show();
-        dialog.btnText(new String[]{"好的","查看"});
+        dialog.btnText(new String[]{"取消", "查看"});
         dialog.setOnBtnClickL(
                 new OnBtnClickL() {
                     @Override

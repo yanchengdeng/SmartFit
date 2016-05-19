@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class UserInfo {
 
+    private String coachRealName;
     private String uid;//7,
     private String nickName;//吉祥三宝想,
     private String signature;//null,
@@ -23,6 +24,14 @@ public class UserInfo {
     private String coachInfo;//null,
     private String courseCount;//null,
     private String[] coachDynamicPics;//
+
+    public String getCoachRealName() {
+        return coachRealName;
+    }
+
+    public void setCoachRealName(String coachRealName) {
+        this.coachRealName = coachRealName;
+    }
 
     public String getCurClassCount() {
         return curClassCount;

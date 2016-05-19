@@ -203,8 +203,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvContent.setText(detail.getCourseDetail());
         }
 
-        if (!TextUtils.isEmpty(detail.getNickName())) {
-            tvCoachName.setText(detail.getNickName() + "教练");
+        if (!TextUtils.isEmpty(detail.getCoachRealName())) {
+            tvCoachName.setText(detail.getCoachRealName() + "教练");
         }
 
         if (!TextUtils.isEmpty(detail.getSignature())) {
@@ -530,8 +530,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constants.PASS_STRING, classInfoDetail.getCoachId());
-                    openActivity(OtherCustomeMainActivity.class,bundle);
+                    bundle.putString(Constants.PASS_STRING,classInfoDetail.getUid());
+                  openActivity(CoachInfoActivity.class, bundle);
                 }
             }
         });

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by dengyancheng on 16/3/19.
  */
 public class ClassInfoDetail {
-
+    private String uid;
     private String longit;//null,
     private String lat;//null,
     private String isParted;//0,
@@ -31,6 +31,14 @@ public class ClassInfoDetail {
     private String classroomName;//台江－团操,
     private String courseDetail;//123123123,
     private String startDate;//1460217600,
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getQrcodeUrl() {
         return qrcodeUrl;
