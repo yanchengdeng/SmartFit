@@ -155,6 +155,14 @@ public class CustomeCoachActivity extends BaseActivity {
             }
         });
 
+        //礼物
+        scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyTicketGiftActivity.class);
+            }
+        });
+
         //关注
         scrollView.getPullRootView().findViewById(R.id.ll_attenion_ui).setOnClickListener(new View.OnClickListener() {
             @Override

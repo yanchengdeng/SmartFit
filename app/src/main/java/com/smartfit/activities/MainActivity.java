@@ -273,20 +273,33 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
         //自订课程
         cardSmartFit.setOnClickListener(new View.OnClickListener()
-
                                         {
                                             @Override
                                             public void onClick(View v) {
-                                                //TODO 暂时关闭
+                                                //TODO 计入  活动
                                                 if (NetUtil.isLogin(getApplicationContext())) {
-                                                    openActivity(CustomeClassActivity.class);
+//                                                    openActivity(CustomeClassActivity.class);
+                                                    openActivity(ActivityListActivity.class);
                                                 } else {
                                                     openActivity(LoginActivity.class);
                                                 }
                                             }
                                         }
-
         );
+
+        //广告
+        //TODO  进入活动
+        cardBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtil.isLogin(getApplicationContext())) {
+                    openActivity(ActivityListActivity.class);
+                } else {
+                    openActivity(LoginActivity.class);
+                }
+            }
+        });
+
         //城市跳转
         tvCityName.setOnClickListener(new View.OnClickListener()
 

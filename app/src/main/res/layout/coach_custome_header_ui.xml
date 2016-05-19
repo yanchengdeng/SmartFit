@@ -10,8 +10,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:src="@mipmap/icon_setting" />
+
+
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/icon_gift" />
 
 
     <com.smartfit.views.SelectableRoundedImageView
@@ -35,36 +45,32 @@
         android:id="@+id/tv_vip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="-20dp"
-        android:background="@mipmap/bg_vip"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:visibility="invisible"
+        android:layout_marginTop="60dp"
         android:layout_toRightOf="@+id/iv_header"
-        android:text="会员"/>
-
-
-
+        android:background="@mipmap/bg_vip"
+        android:gravity="center"
+        android:text="会员"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small"
+        android:visibility="invisible" />
 
 
     <RelativeLayout
         android:id="@+id/rl_custome_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_alignParentRight="true"
-        >
+        android:layout_marginTop="70dp"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/image_padding"
-            android:text=""
             android:maxLength="10"
+            android:text=""
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_larger" />
 
@@ -73,11 +79,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
-            android:layout_marginTop="@dimen/image_padding_big"
-            android:singleLine="true"
-            android:maxLength="10"
-            android:text="@string/no_sign"
+            android:layout_marginTop="@dimen/image_padding"
             android:gravity="center_vertical"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:text="@string/no_sign"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
 
@@ -86,15 +92,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_motto"
-            android:layout_marginTop="@dimen/image_padding_big"
+            android:layout_marginTop="@dimen/image_padding"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:drawableRight="@mipmap/icon_next_w"
+            android:gravity="center_vertical"
             android:singleLine="true"
             android:text="教练资料认证"
-            android:gravity="center_vertical"
-            android:drawableRight="@mipmap/icon_next_w"
-            android:drawablePadding="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
-
 
 
     </RelativeLayout>

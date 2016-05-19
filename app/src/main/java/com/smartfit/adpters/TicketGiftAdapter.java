@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.beans.TicketInfo;
+import com.smartfit.utils.DateUtils;
 
 import java.util.List;
 
@@ -54,6 +56,30 @@ public class TicketGiftAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        TicketInfo item = datas.get(position);
+
+        if (!TextUtils.isEmpty(item.getEventTitle())) {
+            viewHolder.tvClassName.setText(item.getEventTitle());
+        }
+
+        if (!TextUtils.isEmpty(item.getEventDetial())) {
+            viewHolder.tvClassInfo.setText(item.getEventDetial());
+        }
+
+        if (!TextUtils.isEmpty(item.getEventEndTime())) {
+            viewHolder.tvClassOutdate.setText(String.format("%s过期", DateUtils.getData(item.getEventEndTime())));
+        }
+
+        if (!TextUtils.isEmpty(item.getEventType())) {
+            if (item.getEventType().equals("3")){
+                viewHolder.tvType.setText("月卡");
+            }else if(item.getEventType().equals("2")){
+                viewHolder.tvType.setText("买赠");
+            }else if(item.getEventType().equals("1")){
+                viewHolder.tvType.setText("活动捆绑");
+            }
+        }
         return convertView;
     }
 
@@ -62,6 +88,7 @@ public class TicketGiftAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_ticket_gift_view.xml'
      * for easy to all layout elements.
@@ -69,8 +96,8 @@ public class TicketGiftAdapter extends BaseAdapter {
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
     static class ViewHolder {
-        @Bind(R.id.tv_address)
-        TextView tvAddress;
+        @Bind(R.id.tv_type)
+        TextView tvType;
         @Bind(R.id.tv_class_name)
         TextView tvClassName;
         @Bind(R.id.tv_class_info)

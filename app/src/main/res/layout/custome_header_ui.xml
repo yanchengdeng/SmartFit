@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:src="@mipmap/icon_setting" />
 
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:src="@mipmap/icon_gift" />
 
 
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
-            android:layout_marginTop="@dimen/image_padding_big"
+            android:layout_marginTop="@dimen/image_padding"
             android:singleLine="true"
             android:text="@string/no_sign"
             android:gravity="center_vertical"

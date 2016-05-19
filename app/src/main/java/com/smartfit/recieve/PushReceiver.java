@@ -3,11 +3,16 @@ package com.smartfit.recieve;/**
  * 邮箱：yanchengdeng@gmail.com
  */
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +22,7 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
-import com.smartfit.SmartAppliction;
+import com.smartfit.R;
 import com.smartfit.activities.MessageActivity;
 import com.smartfit.beans.PushBean;
 import com.smartfit.commons.Constants;
@@ -30,7 +35,7 @@ import com.smartfit.utils.SharedPreferencesUtils;
  * 邮箱：yanchengdeng@gmail.com
  */
 public class PushReceiver extends BroadcastReceiver {
-
+    public final static int NOTIFICATION_ID = "NotificationActivityDemo".hashCode();
     /**
      * 应用未启动, 个推 service已经被唤醒,保存在该时间段内离线消息(此时 GetuiSdkDemoActivity.tLogView == null)
      */
@@ -56,11 +61,14 @@ public class PushReceiver extends BroadcastReceiver {
                 LogUtil.w("dyc", "receiver payload : " + result);
                 if (payload != null) {
                     String data = new String(payload);
-                    LogUtil.w("dyc", "receiver payload : " + data);
                     if (!TextUtils.isDigitsOnly(data)) {
-                        PushBean msg =    JsonUtils.objectFromJson(data, PushBean.class);
-                        if (msg!=null){
-                            NormalDialogStyleOne(context,msg.getTitle());
+                        PushBean msg = JsonUtils.objectFromJson(data, PushBean.class);
+                        if (msg != null) {
+//                            if (!Util.isInApp(context)) {
+//                                NormalDialogStyleOne(context, msg.getTitle());
+//                            } else {
+//                                showNotificaiton(context, msg);
+//                            }
                         }
                     }
                 }
@@ -91,7 +99,35 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
-    private void NormalDialogStyleOne(final Context context,String tittle) {
+    private void showNotificaiton(Context context, PushBean msg) {
+        Bitmap btm = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.message_icon);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                context).setSmallIcon(R.mipmap.message_icon)
+                .setContentTitle("SmartFit")
+                .setContentText(msg.getTitle());
+        mBuilder.setTicker(msg.getTitle());//第一次提示消息的时候显示在通知栏上
+        mBuilder.setNumber(12);
+        mBuilder.setLargeIcon(btm);
+        mBuilder.setAutoCancel(true);//自己维护通知的消失
+
+        //构建一个Intent
+        Intent resultIntent = new Intent(context,
+                MessageActivity.class);
+        //封装一个Intent
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                context, 0, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        // 设置通知主题的意图
+        mBuilder.setContentIntent(resultPendingIntent);
+        //获取通知管理器对象
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0, mBuilder.build());
+    }
+
+
+
+    private void NormalDialogStyleOne(final Context context, String tittle) {
         final NormalDialog dialog = new NormalDialog(context);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.isTitleShow(false)//

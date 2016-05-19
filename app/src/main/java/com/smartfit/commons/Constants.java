@@ -55,7 +55,7 @@ public class Constants {
     public static final String USER_INFO = "user_info";
     public static final String COACH_ID = "coach_id";
 
-    public static final String CLINET_ID="client_id";
+    public static final String CLINET_ID = "client_id";
 
 
     /**
@@ -129,9 +129,9 @@ public class Constants {
     public static final String UPLOAD_PHOTOS = "/sys/upload/uploadPic";
     public static final String MESSAGE_GETMESSAGEMAIN = "/message/getMessageMain";
     public static final String SYS_SAVEFEEDBACK = "/sys/saveFeedback";
-    public static final  String USER_CHGOPENPUSH = "/User/chgOpenPush";
-    public static final String USER_CHGOPENSOUND="/User/chgOpenSound";
-    public static final String USER_SYNCLIENTIID="/User/synClientiId";
+    public static final String USER_CHGOPENPUSH = "/User/chgOpenPush";
+    public static final String USER_CHGOPENSOUND = "/User/chgOpenSound";
+    public static final String USER_SYNCLIENTIID = "/User/synClientiId";
 
 
     //订单
@@ -173,7 +173,7 @@ public class Constants {
         public static final String SELLER = "smartfit2016@163.com";
         // 商户私钥，pkcs8格式
         public static final String RSA_PRIVATE = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANAshb9FgtZ3KM/o98QwohXofTLGza+Ec/XAekYB71Nc2jRVKM7ZR/mG5QLwyOVjyk+RldbVEZ72AXv/qT93JTD5bg8YgkKeKqiQ4TUZtAcRpdeZJ6v+3b77E+Lr89mIxJq5o9MueTi/GmDFlGdqgKhtj5KZRWVFMatNqidRos7VAgMBAAECgYEAz1HH0Xl0mAoMByNIvYaBpbfoF82NwqLyqWiLXXVH14m9dijpfzc9SvBg2tDaAjmjniKrS0zfQ6RUTh2LfL03twaXHVKo8yYzcIuErMT2zHSC58rpWPm4HNL1/4gepyKGXSAVLft4VzT0A5CBYyHajoRqc7oQyZ2w0vlEOSVhfwECQQDp45IR6fu6CqI9Za5wZj1JDRNbyTPw/G8Fzel6k0U1arEtwWgTk8ZPj8tgWx9OQJ2pMuCMKOJ9rB/qY6qgj6AxAkEA49qc/klOaNhgkwDN5j4D2hO0ozfz2Gg+rBqNfj/e1CtFET+6uZlEAaRPz9v2x94DxhGDM4w8DwHw84JI4Trz5QJABanoGJz05o1pXlk+/yPKqiEx7dASfOxv99EDrV8xltiNj9EWJxs1+yk9QIkUWf3Ak59SxrIawfZQE4n0UM0JkQJBANPGLIRrveTUt23qIXUNzqayCgJpzsokmZt8UmY1FvY8AUW25eX6/apI/aVD3GqHfxpozHjsriWEuF6biQFNucECQQCZjKTzWMtSGa3CQFFtVggNvNLqJ/WOZmokc+BR9qW++fXyFXsxYon3Rrat269EP3JHZ+O4VEURPpWk8gxH3ykn";
-             // 支付宝公钥
+        // 支付宝公钥
         public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
         public static final int SDK_PAY_FLAG = 1;
     }
@@ -192,10 +192,14 @@ public class Constants {
     }
 
     public static class Net {
-        //发布时的接口
+        //正式上线地址
+//       public static final String URL = "http://139.196.228.98:8097";
+
+
+        //发布测试的接口
         public static final String URL = "http://139.196.228.98:8098";
 
-        //测试
+        //内部测试接口
 //        public static final String URL = "http://123.57.164.115:8098";
 
 

@@ -18,7 +18,6 @@ package com.smartfit.utils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
@@ -152,9 +151,9 @@ public class PostRequest extends Request<JsonObject> {
                 return Response.error(new VolleyError("稍后再试"));
             }
         } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
+            return Response.error(new VolleyError("稍后再试"));
         } catch (JsonSyntaxException je) {
-            return Response.error(new ParseError(je));
+            return Response.error(new VolleyError("稍后再试"));
         }
     }
 

@@ -151,7 +151,7 @@ public class ReChargeActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -216,6 +216,13 @@ public class ReChargeActivity extends BaseActivity {
                         return;
                     }
                 }
+
+                if (payStyle == 2) {
+                    if (!checkALi()) {
+                        mSVProgressHUD.showInfoWithStatus("您未安装支付宝客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                        return;
+                    }
+                }
                 if (TextUtils.isEmpty(tvPayMoney.getEditableText().toString())) {
                     mSVProgressHUD.showInfoWithStatus("请填写金额", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     return;
@@ -227,6 +234,16 @@ public class ReChargeActivity extends BaseActivity {
 
             }
         });
+    }
+
+
+    private boolean checkALi() {
+        try {
+            getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     private void goPay() {

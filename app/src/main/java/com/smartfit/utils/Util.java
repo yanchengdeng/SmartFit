@@ -1,5 +1,7 @@
 package com.smartfit.utils;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -307,5 +309,27 @@ public class Util {
         }
 
         return null;
+    }
+
+
+    /**
+     * 需要权限:android.permission.GET_TASKS
+     *是否是当前app
+     * @param context
+     * @return
+     */
+    public static boolean isInApp(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (tasks != null && !tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
+            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

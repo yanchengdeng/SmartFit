@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tv_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding"
-            android:text="过期日期：2016-09-03"
+            android:text="2016-09-03失效"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 

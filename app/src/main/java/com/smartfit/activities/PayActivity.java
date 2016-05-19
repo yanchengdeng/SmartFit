@@ -25,7 +25,6 @@ import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
-import com.smartfit.beans.EventDetailInfo;
 import com.smartfit.beans.EventOrderResult;
 import com.smartfit.beans.OrderCourse;
 import com.smartfit.beans.UserInfoDetail;
@@ -102,14 +101,14 @@ public class PayActivity extends BaseActivity {
 
     /****
      * 页面跳转 index
-     * <p>
+     * <p/>
      * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程
      */
     private int pageIndex = 1;
 
-    private String payMoney;
+    private String payMoney = "0";
 
-    private String leftMoney;
+    private String leftMoney = "0";
 
     private String courseId;
 
@@ -289,7 +288,7 @@ public class PayActivity extends BaseActivity {
                     ivAlipaySelected.setVisibility(View.GONE);
                     payStyle = 0;
                 } else {
-                    rlYe.setClickable(false);
+                    rlYe.setClickable(true);
                     payStyle = 2;
                     ivWxSelected.setVisibility(View.GONE);
                     ivYeSelected.setVisibility(View.GONE);
@@ -325,6 +324,10 @@ public class PayActivity extends BaseActivity {
         rlYe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Float.parseFloat(leftMoney) < Float.parseFloat(payMoney)) {
+                    mSVProgressHUD.showInfoWithStatus("余额不足", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    return;
+                }
                 payStyle = 0;
                 ivAlipaySelected.setVisibility(View.GONE);
                 ivWxSelected.setVisibility(View.GONE);
@@ -479,6 +482,7 @@ public class PayActivity extends BaseActivity {
      * 本地余额支付订单
      */
     private void payOrder() {
+
         mSVProgressHUD.showWithStatus("正在支付", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> map = new HashMap<>();
         map.put("orderCode", orderID);
