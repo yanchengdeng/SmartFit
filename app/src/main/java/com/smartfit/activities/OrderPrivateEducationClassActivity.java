@@ -210,6 +210,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                     bundle.putInt(Constants.PAGE_INDEX, 3);
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
+                    bundle.putString(Constants.COURSE_TYPE,"2");
                     openActivity(PayActivity.class, bundle);
                 }
             }

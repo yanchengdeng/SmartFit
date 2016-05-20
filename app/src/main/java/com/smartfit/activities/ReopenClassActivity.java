@@ -249,6 +249,7 @@ public class ReopenClassActivity extends BaseActivity {
                     bundle.putInt(Constants.PAGE_INDEX, 5);//     再次开课    5   一样处理
                     bundle.putString(Constants.COURSE_ID, reopenClassInfo.getId());
                     bundle.putString(Constants.COURSE_MONEY, reopenClassInfo.getTotalPrice());
+                    bundle.putString(Constants.COURSE_TYPE,type);
                     openActivity(PayActivity.class, bundle);
                 }
 

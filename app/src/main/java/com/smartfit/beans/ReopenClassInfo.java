@@ -4,23 +4,22 @@ package com.smartfit.beans;/**
  */
 
 /**
- *
  * 再次开课
  * 作者：dengyancheng on 16/5/8 00;//14
  * 邮箱：yanchengdeng@gmail.com
  */
 public class ReopenClassInfo {
-  private String   id;//216,
-    private String          courseName;//的啊,
-    private String         courseDetail;//阿里郎,
-    private String        startTime;//1462678200,
-    private String        endTime;//1462680000,
-    private String        classroomName;//私教,
-    private String        venueName;//东二环泰禾店,
-    private String        classroomPrice;//24.5,
-    private String        coachPrice;//0,
-    private String        totalPrice;//24.5,
-    private String        classroomPersonCount;//6
+    private String id;//216,
+    private String courseName;//的啊,
+    private String courseDetail;//阿里郎,
+    private String startTime;//1462678200,
+    private String endTime;//1462680000,
+    private String classroomName;//私教,
+    private String venueName;//东二环泰禾店,
+    private String classroomPrice;//24.5,
+    private String coachPrice;//0,
+    private String totalPrice;//24.5,
+    private String classroomPersonCount;//6
 
     public String getId() {
         return id;

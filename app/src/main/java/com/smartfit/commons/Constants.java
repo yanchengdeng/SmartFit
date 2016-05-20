@@ -38,7 +38,7 @@ public class Constants {
 
     public static final String VENU_ID = "venu_id";
 
-    public static final String COURSE_TYPE = "course_type";
+    public static final String COURSE_TYPE = "course_type";//课程类型（0团操；1小班；2私教；3器械）
     public static final String COURSE_ID = "course_id";
     public static final String COURSE_ORDER_CODE = "course_order_code";
     public static final String COURSE_MONEY = "course_pay";
@@ -142,9 +142,12 @@ public class Constants {
     public static final String EVENT_LISTEVENTS = "/event/listEvents";
     public static final String EVENT_GETEVENT = "/event/getEvent";
     public static final String ORDER_ORDEREVENT = "/order/orderEvent";
+    public static final String PAY_PAYBYEVENT = "/pay/payByEvent";
+    public static final String PAY_PAYAEROBICBYEVENT = "/pay/payAerobicByEvent";
 
 
     //活动
+    public static final String EVENT_GETUSEFULLEVENTS = "/event/getUsefullEvents";
     public static final String EVENT_LISTUSEREVENT = "/event/listUserEvents";
     public static final String DYNAMIC_GETDYNAMICLIST = "/dynamic/getDynamicList";
     public static final String DYNAMIC_ADDDYNAMIC = "/dynamic/addDynamic";

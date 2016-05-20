@@ -9,7 +9,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +27,9 @@ import com.smartfit.MessageEvent.UpdateCustomClassInfo;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
+import com.smartfit.adpters.UserEventAdapter;
 import com.smartfit.beans.EventOrderResult;
+import com.smartfit.beans.EventUserful;
 import com.smartfit.beans.OrderCourse;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -38,6 +42,7 @@ import com.smartfit.utils.PayResult;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+import com.smartfit.views.MyListView;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -50,6 +55,7 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,11 +96,23 @@ public class PayActivity extends BaseActivity {
     ImageView ivYeSelected;
     @Bind(R.id.rl_ye)
     RelativeLayout rlYe;
+    @Bind(R.id.tv_user_event_tittle)
+    TextView tvUserEventTittle;
+    @Bind(R.id.listview)
+    MyListView listview;
+    @Bind(R.id.iv_wx)
+    ImageView ivWx;
+    @Bind(R.id.tv_wx)
+    TextView tvWx;
+    @Bind(R.id.iv_alipay)
+    ImageView ivAlipay;
+    @Bind(R.id.tv_alipay)
+    TextView tvAlipay;
 
 
-    private int payStyle = 0;// 1  微信   2 支付宝
+    private int payStyle = 0;// 1  微信   2 支付宝 3.优惠券
 
-    private String orderID;
+    private String orderID;//订单 id
 
     //订单课程失败后提示
     private String messsge = "该课程已经开课。请预定其他课程";
@@ -116,7 +134,12 @@ public class PayActivity extends BaseActivity {
 
     private String startTime, endTime;
 
+    private String couserType = "0";
+
     private EventBus eventBus;
+
+    private List<EventUserful> userfulEventes = new ArrayList<>();
+    private String classRoomId;
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -168,58 +191,19 @@ public class PayActivity extends BaseActivity {
         addLisener();
     }
 
+    UserInfoDetail userInfo;
+
     private void getLeftMoney() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         PostRequest request = new PostRequest(Constants.USER_USERINFO, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                mSVProgressHUD.dismiss();
                 UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(response, UserInfoDetail.class);
-                if (userInfoDetail != null) {
-                    if (!TextUtils.isEmpty(userInfoDetail.getBalance())) {
-                        tvYeLeft.setText(userInfoDetail.getBalance());
-                        leftMoney = userInfoDetail.getBalance();
-                        if (pageIndex == 4) {
-                            if (TextUtils.isEmpty(orderCode)) {
-                                payAreao();
-                            } else {
-                                orderID = orderCode;
-                                mSVProgressHUD.dismiss();
-                                if (Float.parseFloat(payMoney) == 0) {
-                                    payStyle = 0;
-                                    rlYe.setClickable(true);
-                                    ivYeSelected.setVisibility(View.VISIBLE);
-                                    ivWxSelected.setVisibility(View.GONE);
-                                    ivAlipaySelected.setVisibility(View.GONE);
-                                    rlAlipay.setClickable(false);
-                                    rlWx.setClickable(false);
-                                }
-                            }
-                        } else if (pageIndex == 5) {
-                            getOrderCorse();
-                        } else if (pageIndex == 6) {
-                            getOrderCorse();
-                        } else if (pageIndex == 7) {
-                            getEventOrder();
-                        } else {
-                            if (TextUtils.isEmpty(orderCode)) {
-                                getOrderCorse();
-                            } else {
-                                orderID = orderCode;
-                                mSVProgressHUD.dismiss();
-                                if (Float.parseFloat(payMoney) == 0) {
-                                    payStyle = 0;
-                                    rlYe.setClickable(true);
-                                    ivYeSelected.setVisibility(View.VISIBLE);
-                                    ivWxSelected.setVisibility(View.GONE);
-                                    ivAlipaySelected.setVisibility(View.GONE);
-                                    rlAlipay.setClickable(false);
-                                    rlWx.setClickable(false);
-                                }
-                            }
-                        }
-                    }
-                }
+                userInfo = userInfoDetail;
+                tvYeLeft.setText(userInfoDetail.getBalance());
+                leftMoney = userInfoDetail.getBalance();
+                selectPayStyle(userInfo.getBalance(), payMoney);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -236,19 +220,19 @@ public class PayActivity extends BaseActivity {
      * 活动包约下单
      */
     private void getEventOrder() {
+        mSVProgressHUD.showWithStatus("创建订单中", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> maps = new HashMap<>();
         maps.put("eventId", courseId);
         PostRequest request = new PostRequest(Constants.ORDER_ORDEREVENT, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                mSVProgressHUD.dismiss();
                 EventOrderResult eventOrderResult = JsonUtils.objectFromJson(response, EventOrderResult.class);
                 if (eventOrderResult != null) {
                     if (!TextUtils.isEmpty(eventOrderResult.getOrderCode())) {
                         orderID = eventOrderResult.getOrderCode();
                     }
-                    selectPayStyle(leftMoney, eventOrderResult.getOrderPrice());
                 }
+                goPay();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -305,12 +289,57 @@ public class PayActivity extends BaseActivity {
         courseId = getIntent().getStringExtra(Constants.COURSE_ID);
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
         orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
+        couserType = getIntent().getStringExtra(Constants.COURSE_TYPE);
         if (pageIndex == 4) {
             startTime = getIntent().getStringExtra("start_time");
             endTime = getIntent().getStringExtra("end_time");
+            classRoomId = getIntent().getStringExtra("classroom");
         }
         tvPayMoney.setText(payMoney + "元");
+        getUseFullEvent();
         getLeftMoney();
+    }
+
+    /**
+     * 获取可用的活动卷
+     */
+    private void getUseFullEvent() {
+        String courseEventId = "";
+        if (couserType.equals("0")) {
+            courseEventId = "";
+        } else if (couserType.equals("1")) {
+            courseEventId = courseId;
+        } else if (couserType.equals("2")) {
+            courseEventId = courseId;
+        } else if (couserType.equals("3")) {
+            courseEventId = "";
+        }
+        Map<String, String> maps = new HashMap<>();
+        maps.put("courseId", courseEventId);
+        maps.put("courseType", couserType);
+        PostRequest request = new PostRequest(Constants.EVENT_GETUSEFULLEVENTS, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<EventUserful> eventUserfuls = JsonUtils.listFromJson(response.getAsJsonArray("list"), EventUserful.class);
+                if (eventUserfuls != null && eventUserfuls.size() > 0) {
+                    listview.setAdapter(new UserEventAdapter(PayActivity.this, eventUserfuls));
+                    userfulEventes = eventUserfuls;
+                } else {
+                    listview.setVisibility(View.GONE);
+                    tvUserEventTittle.setVisibility(View.GONE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+                listview.setVisibility(View.GONE);
+                tvUserEventTittle.setVisibility(View.GONE);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
     }
 
     private void addLisener() {
@@ -321,6 +350,20 @@ public class PayActivity extends BaseActivity {
             }
         });
 
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                reInitUserEvent();
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                checkBox.setChecked(!checkBox.isChecked());
+                userfulEventes.get(position).setIsCheck(checkBox.isChecked());
+                payStyle = 3;
+                ivAlipaySelected.setVisibility(View.GONE);
+                ivWxSelected.setVisibility(View.GONE);
+                ivYeSelected.setVisibility(View.GONE);
+            }
+        });
+
         rlYe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -328,6 +371,7 @@ public class PayActivity extends BaseActivity {
                     mSVProgressHUD.showInfoWithStatus("余额不足", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     return;
                 }
+                reInitUserEvent();
                 payStyle = 0;
                 ivAlipaySelected.setVisibility(View.GONE);
                 ivWxSelected.setVisibility(View.GONE);
@@ -344,6 +388,7 @@ public class PayActivity extends BaseActivity {
 //                ivWxSelected.setVisibility(View.VISIBLE);
 //                ivYeSelected.setVisibility(View.GONE);
 //                ivAlipaySelected.setVisibility(View.GONE);
+                reInitUserEvent();
             }
         });
 
@@ -355,6 +400,7 @@ public class PayActivity extends BaseActivity {
                 ivAlipaySelected.setVisibility(View.VISIBLE);
                 ivWxSelected.setVisibility(View.GONE);
                 ivYeSelected.setVisibility(View.GONE);
+                reInitUserEvent();
             }
         });
 
@@ -363,7 +409,6 @@ public class PayActivity extends BaseActivity {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 改过来
                 if (payStyle == 1) {
                     if (!checkWeiXin()) {
                         mSVProgressHUD.showInfoWithStatus("您未安装微信客户端!", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
@@ -377,18 +422,33 @@ public class PayActivity extends BaseActivity {
                         return;
                     }
                 }
-                goPay();
+
+                getOrderId();
+
             }
         });
 
 
     }
 
+
+    /**
+     * 重置优惠券选择
+     */
+    private void reInitUserEvent() {
+        if (userfulEventes.size() > 0) {
+            for (EventUserful item : userfulEventes) {
+                item.setIsCheck(false);
+            }
+            ((UserEventAdapter) listview.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
     /**
      * 获取课程订单
      */
     private void getOrderCorse() {
-        mSVProgressHUD.setText("获取订单信息");
+        mSVProgressHUD.showWithStatus("获取订单信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
         map.put("courseId", courseId);
 //        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
@@ -401,11 +461,8 @@ public class PayActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
-
-                    selectPayStyle(leftMoney, orderCourse.getOrderPrice());
-
                 }
-                mSVProgressHUD.dismiss();
+                goPay();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -419,13 +476,48 @@ public class PayActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(PayActivity.this);
         mQueue.add(request);
-
-
     }
+
+    /***
+     * 获取订单id
+     */
+    private void getOrderId() {
+        if (userInfo != null) {
+            if (!TextUtils.isEmpty(userInfo.getBalance())) {
+                tvYeLeft.setText(userInfo.getBalance());
+                leftMoney = userInfo.getBalance();
+                if (pageIndex == 4) {
+                    if (TextUtils.isEmpty(orderCode)) {
+                        payAreao();
+                    } else {
+                        orderID = orderCode;
+                        goPay();
+                    }
+                } else if (pageIndex == 5) {
+                    getOrderCorse();
+                } else if (pageIndex == 6) {
+                    getOrderCorse();
+                } else if (pageIndex == 7) {
+                    getEventOrder();
+                } else {
+                    if (TextUtils.isEmpty(orderCode)) {
+                        getOrderCorse();
+                    } else {
+                        orderID = orderCode;
+                        goPay();
+                    }
+                }
+            }
+        } else {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
+    }
+
 
     private void goPay() {
 
         if (TextUtils.isEmpty(orderID)) {
+            mSVProgressHUD.dismiss();
             mSVProgressHUD.showInfoWithStatus(messsge, SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
@@ -439,7 +531,86 @@ public class PayActivity extends BaseActivity {
 
         } else if (payStyle == 0) {
             payOrder();
+        } else if (payStyle == 3) {
+
+            //支付机械课程
+            if (userfulEventes.size() != 0) {
+                if (couserType.equals(3)) {
+                    payUserCouponWithEventUserId();
+                } else {
+                    payAerobicByEvent();
+                }
+            }
         }
+    }
+
+    /**
+     * 获取选择的优惠券
+     *
+     * @return
+     */
+    private EventUserful getSeletctedEvent() {
+        for (EventUserful item : userfulEventes) {
+            if (item.isCheck()) {
+                return item;
+            }
+        }
+        return userfulEventes.get(0);
+    }
+
+    /**
+     * 使用活动卷支付
+     */
+    private void payUserCouponWithEventUserId() {
+        mSVProgressHUD.setText("正在支付");
+        Map<String, String> map = new HashMap<>();
+        map.put("eventUserId", getSeletctedEvent().getEventId());
+        map.put("courseId", courseId);
+        map.put("orderCode", orderID);
+        PostRequest request = new PostRequest(Constants.PAY_PAYBYEVENT, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                dealAfterPay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 使用活动卷支付(支付有氧器械课程)
+     */
+    private void payAerobicByEvent() {
+        mSVProgressHUD.setText("正在支付");
+        Map<String, String> map = new HashMap<>();
+        map.put("eventUserId", getSeletctedEvent().getEventId());
+        map.put("orderCode", orderID);
+        PostRequest request = new PostRequest(Constants.PAY_PAYBYEVENT, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                dealAfterPay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
     }
 
     /***
@@ -448,22 +619,22 @@ public class PayActivity extends BaseActivity {
     private void payAreao() {
 
 
-        mSVProgressHUD.setText("创建订单中");
+        mSVProgressHUD.showWithStatus("创建订单中", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
-        map.put("classroomId", courseId);
+        map.put("classroomId", classRoomId);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         PostRequest request = new PostRequest(Constants.ORDER_ORDERAEROBIC, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                mSVProgressHUD.dismiss();
                 OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
                 if (orderCourse != null) {
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
-                    selectPayStyle(leftMoney, orderCourse.getOrderPrice());
                 }
+
+                goPay();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -483,7 +654,7 @@ public class PayActivity extends BaseActivity {
      */
     private void payOrder() {
 
-        mSVProgressHUD.showWithStatus("正在支付", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        mSVProgressHUD.setText("正在支付");
         Map<String, String> map = new HashMap<>();
         map.put("orderCode", orderID);
         map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));

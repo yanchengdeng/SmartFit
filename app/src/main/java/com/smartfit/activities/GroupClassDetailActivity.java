@@ -42,6 +42,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
@@ -147,6 +148,10 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView tvAppriseListTips;
     @Bind(R.id.rl_coach_ui)
     RelativeLayout rlCoachUi;
+    @Bind(R.id.ll_view_scan_code)
+    LinearLayout llViewScanCode;//二维码  显示
+    @Bind(R.id.tv_scan_code_info)
+    TextView tvScanCodeInfo;// 链接显示
 
 
     private DiscussItemAdapter adapter;
@@ -328,6 +333,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
         if (TextUtils.isEmpty(detail.getOrderStatus())) {
+            detail.setOrderStatus("1");
             //去订购
             btnOrder.setVisibility(View.VISIBLE);
             tvWaitingAccept.setVisibility(View.GONE);
@@ -390,7 +396,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
 
-            } else if (detail.getOrderStatus().equals("8")||detail.getOrderStatus().equals("5")||detail.getOrderStatus().equals("6")) {
+            } else if (detail.getOrderStatus().equals("8") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6")) {
                 //订单详情页  已结束 未评论
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -428,11 +434,23 @@ public class GroupClassDetailActivity extends BaseActivity {
             codeBar = detail.getQrcodeUrl();
         }
         if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-            if (Integer.parseInt(detail.getOrderStatus())>=4){
+            if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
         }
 
+        if (detail.getOrderStatus().equals("3")) {
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                llViewScanCode.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setVisibility(View.GONE);
+                tvSaveToPhone.setText(getString(R.string.save_to_phone));
+            } else {
+                llViewScanCode.setVisibility(View.GONE);
+                tvScanCodeInfo.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvSaveToPhone.setText(getString(R.string.copy_link));
+            }
+        }
 
 
         scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -475,6 +493,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
     String codeBar;
+
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -518,6 +537,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+                    bundle.putString(Constants.COURSE_TYPE,"0");
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
@@ -530,8 +550,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constants.PASS_STRING,classInfoDetail.getUid());
-                  openActivity(CoachInfoActivity.class, bundle);
+                    bundle.putString(Constants.PASS_STRING, classInfoDetail.getUid());
+                    openActivity(CoachInfoActivity.class, bundle);
                 }
             }
         });
@@ -568,7 +588,10 @@ public class GroupClassDetailActivity extends BaseActivity {
         tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(codeBar)){
+                if (tvSaveToPhone.getText().equals(getString(R.string.copy_link))) {
+                    Util.copyToClob(tvScanCodeInfo.getText().toString(),GroupClassDetailActivity.this);
+                    mSVProgressHUD.showSuccessWithStatus("复制成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else if (!TextUtils.isEmpty(codeBar)) {
                     mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
                         @Override
@@ -585,7 +608,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             mSVProgressHUD.dismiss();
-                            Util.saveImageToPhoto(GroupClassDetailActivity.this,loadedImage);
+                            Util.saveImageToPhoto(GroupClassDetailActivity.this, loadedImage);
                             mSVProgressHUD.showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
 
                         }
@@ -597,7 +620,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                         }
                     });
                 }
-
             }
         });
     }

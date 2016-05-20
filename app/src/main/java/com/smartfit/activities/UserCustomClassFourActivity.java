@@ -83,18 +83,20 @@ public class UserCustomClassFourActivity extends BaseActivity {
     private int friends = 1;
     //开放人群数
     private int opener = 1;
-    private String startTime, endTime, courseClassId, venueId, venuPrice, coachPrice, coachId,roomId;
+    private String startTime, endTime, courseClassId, venueId, venuPrice, coachPrice, coachId, roomId;
     private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_custom_class_four);
-        ButterKnife.bind(this);eventBus =EventBus.getDefault();
+        ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
         eventBus.register(this);
         initView();
         addLisener();
     }
+
     @Subscribe
     public void onEvent(UpdateCustomClassInfo event) {/* Do something */
         finish();
@@ -121,7 +123,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
         tvVenueFee.setText(venuPrice + "元");
         tvCoachFee.setText(coachPrice + "元*" + friends);
         float countMoney = Float.parseFloat(venuPrice) + Float.parseFloat(coachPrice) * friends;
-        tvCountFee.setText(countMoney + "元");
+        tvCountFee.setText(String.format("%.2f", countMoney) + "元");
 
     }
 
@@ -236,13 +238,14 @@ public class UserCustomClassFourActivity extends BaseActivity {
 
                 mSVProgressHUD.dismiss();
 
-                CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response,CustomClassReleaseInfo.class);
-                if(customClassReleaseInfo != null){
+                CustomClassReleaseInfo customClassReleaseInfo = JsonUtils.objectFromJson(response, CustomClassReleaseInfo.class);
+                if (customClassReleaseInfo != null) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
-                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f",Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
-                    openActivity(PayActivity.class,bundle);
+                    bundle.putString(Constants.COURSE_MONEY, String.format("%.2f", Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
+                    bundle.putString(Constants.COURSE_TYPE, "1");
+                    openActivity(PayActivity.class, bundle);
                 }
             }
         }, new Response.ErrorListener() {

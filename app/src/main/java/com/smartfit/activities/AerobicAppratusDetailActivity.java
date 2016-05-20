@@ -34,6 +34,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,6 +51,7 @@ import butterknife.ButterKnife;
  */
 public class AerobicAppratusDetailActivity extends BaseActivity {
 
+
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.tv_tittle)
@@ -58,34 +60,36 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
-    @Bind(R.id.tv_address)
-    TextView tvAddress;
-    @Bind(R.id.tv_room)
-    TextView tvRoom;
-    @Bind(R.id.tv_distance)
-    TextView tvDistance;
-    @Bind(R.id.tv_price)
-    TextView tvPrice;
-    @Bind(R.id.btn_order)
-    Button btnOrder;
-    @Bind(R.id.tv_time)
-    TextView tvTime;
     @Bind(R.id.roll_view_pager)
     RollPagerView rollViewPager;
-    @Bind(R.id.scrollView)
-    ScrollView scrollView;
     @Bind(R.id.tv_class_name)
     TextView tvClassName;
-    @Bind(R.id.tv_content)
-    ImageView tvContent;
+    @Bind(R.id.iv_scan_bar)
+    ImageView ivScanBar;
+    @Bind(R.id.ll_view_scan_code)
+    LinearLayout llViewScanCode;
+    @Bind(R.id.tv_scan_code_info)
+    TextView tvScanCodeInfo;
     @Bind(R.id.tv_save_to_phone)
     TextView tvSaveToPhone;
     @Bind(R.id.tv_share_friends)
     TextView tvShareFriends;
     @Bind(R.id.ll_scan_bar)
     LinearLayout llScanBar;
-
-
+    @Bind(R.id.tv_address)
+    TextView tvAddress;
+    @Bind(R.id.tv_room)
+    TextView tvRoom;
+    @Bind(R.id.tv_distance)
+    TextView tvDistance;
+    @Bind(R.id.tv_time)
+    TextView tvTime;
+    @Bind(R.id.tv_price)
+    TextView tvPrice;
+    @Bind(R.id.btn_order)
+    Button btnOrder;
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
     private String classroomid;
     private String startTime, endTime;
 
@@ -110,6 +114,10 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 //            getClassInfo();
             btnOrder.setVisibility(View.GONE);
             llScanBar.setVisibility(View.VISIBLE);
+            llViewScanCode.setVisibility(View.GONE);
+            tvScanCodeInfo.setVisibility(View.VISIBLE);
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存或者发送给朋友：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvSaveToPhone.setText(getString(R.string.copy_link));
         }
 
     /* Do something */
@@ -155,7 +163,10 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 
 
     String codeBar;
+    AreaDetailInfo detail;
+
     private void fillData(AreaDetailInfo detail) {
+        this.detail = detail;
         /**
          * 订单状态（
          * 1我报名但未付款，
@@ -171,11 +182,24 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (Integer.parseInt(detail.getState()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
+            if (detail.getState().equals("3")) {
+                if (DateUtils.isQeWorked(detail.getStartTime())) {
+                    llViewScanCode.setVisibility(View.VISIBLE);
+                    tvScanCodeInfo.setVisibility(View.GONE);
+                    tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                } else {
+                    llViewScanCode.setVisibility(View.GONE);
+                    tvScanCodeInfo.setVisibility(View.VISIBLE);
+                    tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                    tvSaveToPhone.setText(getString(R.string.copy_link));
+                }
+            }
         }
+
 
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), tvContent, Options.getListOptions());
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
         }
 
@@ -215,7 +239,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             public void run() {
                 scrollView.setVisibility(View.VISIBLE);
             }
-        }, 1000);
+        }, 500);
     }
 
 
@@ -237,6 +261,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getClassroomPrice());
                     bundle.putString("start_time", startTime);
                     bundle.putString("end_time", endTime);
+                    bundle.putString("classroom",classInfoDetail.getId());
+                    bundle.putString(Constants.COURSE_TYPE,"3");
                     bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     openActivity(PayActivity.class, bundle);
                 } else {
@@ -249,7 +275,10 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(codeBar)){
+                if (tvSaveToPhone.getText().equals(getString(R.string.copy_link))) {
+                    Util.copyToClob(tvScanCodeInfo.getText().toString(), AerobicAppratusDetailActivity.this);
+                    mSVProgressHUD.showSuccessWithStatus("复制成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else if (!TextUtils.isEmpty(codeBar)) {
                     mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
                     ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
                         @Override
@@ -278,7 +307,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                         }
                     });
                 }
-
             }
         });
     }

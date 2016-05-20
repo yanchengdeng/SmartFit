@@ -1,6 +1,7 @@
 package com.smartfit.utils;
 
 import android.app.ActivityManager;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.smartfit.R;
+import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.beans.CityBean;
 import com.smartfit.beans.SelectedSort;
 import com.smartfit.beans.UserInfoDetail;
@@ -217,6 +219,18 @@ public class Util {
 
     }
 
+    /**
+     * 复制文本到剪贴板
+     *
+     * @param content
+     * @param context
+     */
+    public static void copyToClob(String content, Context context) {
+// 得到剪贴板管理器
+        ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        cmb.setText(content.trim());
+    }
+
     private static class SSLSocketFactoryEx extends SSLSocketFactory {
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -314,7 +328,8 @@ public class Util {
 
     /**
      * 需要权限:android.permission.GET_TASKS
-     *是否是当前app
+     * 是否是当前app
+     *
      * @param context
      * @return
      */

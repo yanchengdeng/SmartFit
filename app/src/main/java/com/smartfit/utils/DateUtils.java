@@ -481,7 +481,7 @@ public class DateUtils {
                 int hour = (int) seconds / 3600;
                 if (hour < 10) {
                     showHour = "0" + hour;
-                }else {
+                } else {
                     showHour = String.valueOf(hour);
                 }
 
@@ -492,12 +492,12 @@ public class DateUtils {
                 int minit = (int) (leftSeconds / 60);
                 if (leftSeconds < 10) {
                     showHour = "0" + hour;
-                }else{
-                    showHour  = String.valueOf(hour);
+                } else {
+                    showHour = String.valueOf(hour);
                 }
                 if (minit < 10) {
                     showMin = "0" + minit;
-                }else{
+                } else {
                     showMin = String.valueOf(minit);
                 }
                 return showHour + ":" + showMin;
@@ -529,6 +529,28 @@ public class DateUtils {
         return currtent.getTime() / 1000;
     }
 
+    /**
+     * 与当前系统时间比较  如果大于系统时间 1 个小时 则二维码生效
+     *
+     * @param millionTimes
+     * @return
+     */
+    public static boolean isQeWorked(String millionTimes) {
+        if (TextUtils.isEmpty(millionTimes)) {
+            return false;
+        }
+
+        long currentMillions = System.currentTimeMillis() / 1000;
+        long startMillions = Long.parseLong(millionTimes);
+
+        if (startMillions - currentMillions > 3600) {
+            return true;
+        }
+
+
+        return false;
+
+    }
 
     public static boolean isThanOneHour(String startTime, String endTime) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");

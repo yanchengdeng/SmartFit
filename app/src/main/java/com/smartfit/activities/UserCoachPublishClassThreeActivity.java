@@ -177,7 +177,7 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
                             tvFriendsNum.setText(friends + "人");
                         } else {
                             price = etContent.getEditableText().toString();
-                            tvOpenNum.setText(Float.parseFloat(price) + "元");
+                            tvOpenNum.setText(String.format("%.2f",Float.parseFloat(price)) + "元");
                         }
                     } else {
                         mSVProgressHUD.showInfoWithStatus("只能输入数字", SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -224,6 +224,7 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
                     bundle.putInt(Constants.PAGE_INDEX, 6);
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
                     bundle.putString(Constants.COURSE_MONEY, String.format("%.2f", Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
+                    bundle.putString(Constants.COURSE_TYPE,"1");
                     openActivity(PayActivity.class, bundle);
                 }
             }

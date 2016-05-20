@@ -411,6 +411,8 @@
     <string name="actvity">活动</string>
     <string name="actvity_detail">活动详情</string>
     <string name="publish_class_products">发布课程产品</string>
+    <string name="save_to_phone">保存到手机</string>
+    <string name="copy_link">复制链接</string>
 
 
 </resources>

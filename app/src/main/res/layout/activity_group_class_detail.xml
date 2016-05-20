@@ -191,32 +191,59 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_class_name"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="我的课程条码"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal" />
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_scan_bar"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg_pic" />
+                    <LinearLayout
+                        android:id="@+id/ll_view_scan_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="您可以使用该条码，扫码进入预定的健身馆，使用为你准备的私人保管箱。"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down" />
+                        <TextView
+                            android:id="@+id/tv_class_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
+                            android:text="我的课程条码"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/text_normal" />
+
+                        <ImageView
+                            android:id="@+id/iv_scan_bar"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg_pic" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/activity_horizontal_margin"
+                            android:text="您可以使用该条码，扫码进入预定的健身馆，使用为你准备的私人保管箱。"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/text_normal_down" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_scan_code_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:lineSpacingExtra="3dp"
+                        android:text="课程二维码在开课前一个小时才会生效，您可以将如下链接保存或者发送给朋友：http://123.57.164.115:8098/sys/upload/qrCodeImg?"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+
+                </FrameLayout>
+
 
                 <View
                     android:layout_width="match_parent"
@@ -236,7 +263,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="@dimen/image_padding_big"
-                        android:text="保存到手机"
+                        android:text="@string/save_to_phone"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_normal" />
 

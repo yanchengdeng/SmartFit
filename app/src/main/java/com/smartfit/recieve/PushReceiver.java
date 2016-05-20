@@ -29,6 +29,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 
 /**
  * 作者：dengyancheng on 16/5/12 21:14
@@ -44,8 +45,13 @@ public class PushReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        Log.d("GetuiSdkDemo", "onReceive() action=" + bundle.getInt("action"));
+        LogUtil.w("dyc", "onReceive() action=" + bundle.getInt("action"));
 
+        /**
+         * 10001    传透消息
+         *
+         *
+         */
         switch (bundle.getInt(PushConsts.CMD_ACTION)) {
             case PushConsts.GET_MSG_DATA:
                 // 获取透传数据
@@ -64,11 +70,11 @@ public class PushReceiver extends BroadcastReceiver {
                     if (!TextUtils.isDigitsOnly(data)) {
                         PushBean msg = JsonUtils.objectFromJson(data, PushBean.class);
                         if (msg != null) {
-//                            if (!Util.isInApp(context)) {
-//                                NormalDialogStyleOne(context, msg.getTitle());
-//                            } else {
-//                                showNotificaiton(context, msg);
-//                            }
+                            if (!Util.isInApp(context)) {
+                                NormalDialogStyleOne(context, msg.getTitle());
+                            } else {
+                                showNotificaiton(context, msg);
+                            }
                         }
                     }
                 }
@@ -79,6 +85,7 @@ public class PushReceiver extends BroadcastReceiver {
                 // 第三方应用需要将CID上传到第三方服务器，并且将当前用户帐号和CID进行关联，以便日后通过用户帐号查找CID进行消息推送
                 String cid = bundle.getString("clientid");
                 SharedPreferencesUtils.getInstance().putString(Constants.CLINET_ID, cid);
+                LogUtil.w("dyc","获取clientId"+cid);
                 break;
 
             case PushConsts.THIRDPART_FEEDBACK:
@@ -124,7 +131,6 @@ public class PushReceiver extends BroadcastReceiver {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(0, mBuilder.build());
     }
-
 
 
     private void NormalDialogStyleOne(final Context context, String tittle) {

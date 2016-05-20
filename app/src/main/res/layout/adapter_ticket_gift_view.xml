@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/splash_bottome_height"
+    android:paddingTop="@dimen/activity_horizontal_margin"
     android:orientation="horizontal">
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:id="@+id/tv_class_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_padding"
+            android:layout_marginTop="@dimen/image_padding_big"
             android:text="优惠信息"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding"
             android:text="2016-09-03失效"
+            android:visibility="gone"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 

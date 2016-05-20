@@ -67,6 +67,7 @@ public class MyTickeFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         isPre = true;
         intView();
+        lazyLoad();
         return view;
     }
 

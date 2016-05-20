@@ -1,0 +1,57 @@
+<RelativeLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/iv_useful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_coupon" />
+
+    <TextView
+        android:id="@+id/tv_useful_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/image_padding"
+        android:layout_toRightOf="@+id/iv_useful"
+        android:text="包月卡"
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_useful_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/image_padding"
+        android:layout_toRightOf="@+id/tv_useful_type"
+        android:text="这是一个包月这是一个包月卡这是一个包月卡这是一个包月卡这是一个包月卡卡"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/ch_select"
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
+
+
+    <CheckBox
+        android:id="@+id/ch_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:button="@null"
+        android:drawablePadding="@dimen/image_padding"
+        android:drawableRight="@drawable/coach_selected_checked"
+        android:gravity="center"
+        android:focusable="false"
+        android:clickable="false"
+        android:textColor="@color/common_header_bg"
+        android:textSize="@dimen/text_normal_down" />
+
+
+</RelativeLayout>
