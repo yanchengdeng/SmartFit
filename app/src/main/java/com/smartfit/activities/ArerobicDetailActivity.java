@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 
 import java.util.HashMap;
@@ -36,9 +39,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 有氧呼吸详情课程
+ * 有氧器械详情课程
+ * <p/>
+ * 只为查看课程详情
  */
 public class ArerobicDetailActivity extends BaseActivity {
+
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -50,6 +56,20 @@ public class ArerobicDetailActivity extends BaseActivity {
     ImageView ivFunction;
     @Bind(R.id.roll_view_pager)
     RollPagerView rollViewPager;
+    @Bind(R.id.tv_class_name)
+    TextView tvClassName;
+    @Bind(R.id.iv_scan_bar)
+    ImageView ivScanBar;
+    @Bind(R.id.ll_view_scan_code)
+    LinearLayout llViewScanCode;
+    @Bind(R.id.tv_scan_code_info)
+    TextView tvScanCodeInfo;
+    @Bind(R.id.tv_save_to_phone)
+    TextView tvSaveToPhone;
+    @Bind(R.id.tv_share_friends)
+    TextView tvShareFriends;
+    @Bind(R.id.ll_scan_bar)
+    LinearLayout llScanBar;
     @Bind(R.id.tv_address)
     TextView tvAddress;
     @Bind(R.id.tv_room)
@@ -60,9 +80,10 @@ public class ArerobicDetailActivity extends BaseActivity {
     TextView tvTime;
     @Bind(R.id.tv_price)
     TextView tvPrice;
+    @Bind(R.id.btn_order)
+    Button btnOrder;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
-
     private String courseId;
 
     @Override
@@ -120,6 +141,28 @@ public class ArerobicDetailActivity extends BaseActivity {
          * 8已评论）
          */
 
+        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+            if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
+                tvSaveToPhone.setVisibility(View.GONE);
+            }
+        }
+
+        btnOrder.setVisibility(View.GONE);
+
+        if (detail.getOrderStatus().equals("3")) {
+            llScanBar.setVisibility(View.VISIBLE);
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                llViewScanCode.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setVisibility(View.GONE);
+                tvSaveToPhone.setText(getString(R.string.save_to_phone));
+            } else {
+                llViewScanCode.setVisibility(View.GONE);
+                tvScanCodeInfo.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvSaveToPhone.setText(getString(R.string.copy_link));
+            }
+        }
+
 
         if (!TextUtils.isEmpty(detail.getVenueName())) {
             tvAddress.setText(detail.getVenueName());
@@ -130,7 +173,7 @@ public class ArerobicDetailActivity extends BaseActivity {
 
         tvDistance.setText("距离 " + Util.getDistance(detail.getLat(), detail.getLongit()));
 
-        if (!TextUtils.isEmpty(detail.getStartTime())&& !TextUtils.isEmpty(detail.getEndTime())) {
+        if (!TextUtils.isEmpty(detail.getStartTime()) && !TextUtils.isEmpty(detail.getEndTime())) {
             tvTime.setText(DateUtils.getData(detail.getStartTime()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
         }
 
@@ -141,10 +184,13 @@ public class ArerobicDetailActivity extends BaseActivity {
             tvPrice.setText("免费");
         }
 
+
+
         if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
-            rollViewPager.setVisibility(View.GONE);
+            detail.setCoursePics(new String[]{""});
+            rollViewPager.setVisibility(View.VISIBLE);
         }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
@@ -159,7 +205,7 @@ public class ArerobicDetailActivity extends BaseActivity {
         }, 1000);
     }
 
-    private void  addLisener(){
+    private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

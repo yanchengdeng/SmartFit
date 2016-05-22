@@ -14,7 +14,8 @@ import android.text.TextUtils;
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.smartfit.R;
-import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.MessageActivity;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.CityBean;
 import com.smartfit.beans.SelectedSort;
 import com.smartfit.beans.UserInfoDetail;
@@ -346,5 +347,46 @@ public class Util {
             }
         }
         return false;
+    }
+
+
+    /**
+     * 需要权限:android.permission.GET_TASKS
+     * 是否是当前app
+     *是否在消息列表页
+     * @param context
+     * @return
+     */
+    public static boolean isInMessageList(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (tasks != null && !tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
+            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
+            LogUtil.w("dyc", "mesage:" + MessageActivity.class.getName().toString());
+            LogUtil.w("dyc", "topActivity1111:" + topActivity.getClassName().toString());
+
+            if (topActivity.getClassName().toString().equals(MessageActivity.class.getName().toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static AttentionBean getFriendsInfoByUserid(String userid){
+       String jsoninfo =  SharedPreferencesUtils.getInstance().getString(Constants.LOCAL_FRIENDS_LIST,"");
+        if (!TextUtils.isEmpty(jsoninfo)) {
+            List<AttentionBean>  attentionBeans = JsonUtils.listFromJson(jsoninfo,AttentionBean.class);
+            if (attentionBeans!= null && attentionBeans.size()>0){
+                for (AttentionBean item:attentionBeans){
+                    if (("user_"+item.getUid()).equals(userid)){
+                        return item;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

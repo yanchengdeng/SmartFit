@@ -3,7 +3,6 @@ package com.smartfit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
-import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.GroupClassDetailActivity;
-import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderOverStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
@@ -71,10 +67,6 @@ public class CoachOverClassesFragment extends Fragment {
         adapter = new MyClassOrderOverStatusAdapter(getActivity(), myAddClassArrayList);
         listView.setAdapter(adapter);
         loadData();
-
-
-
-
     }
 
 

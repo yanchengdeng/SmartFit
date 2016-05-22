@@ -16,11 +16,14 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.MesageInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
@@ -84,7 +87,7 @@ public class FriendsMesageAdatper extends BaseAdapter {
         viewHolder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accepterFriends(item.getMessageContent().getSourseUid(),position,item.getId());
+                accepterFriends(item.getMessageContent().getSourseUid(), position, item.getId());
 
             }
         });
@@ -93,13 +96,14 @@ public class FriendsMesageAdatper extends BaseAdapter {
         return convertView;
     }
 
-    private void accepterFriends(final String sourseUid, final int position,final String id) {
+    private void accepterFriends(final String sourseUid, final int position, final String id) {
         Map<String, String> map = new HashMap<>();
         map.put("friendId", sourseUid);
         PostRequest request = new PostRequest(Constants.USER_ADDFRIEND, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 ignoreFriends(id, position);
+                getFriendsInfo();
             }
 
         }, new Response.ErrorListener() {
@@ -112,6 +116,26 @@ public class FriendsMesageAdatper extends BaseAdapter {
         request.headers = NetUtil.getRequestBody(context);
         ((BaseActivity) context).mQueue.add(request);
     }
+
+    private void getFriendsInfo() {
+        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST, JsonUtils.toJson(beans));
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.headers = NetUtil.getRequestBody(context);
+        ((BaseActivity) context).mQueue.add(request);
+    }
+
 
     private void ignoreFriends(String id, final int psoiton) {
 

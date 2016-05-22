@@ -3,9 +3,11 @@ package com.smartfit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,7 +16,10 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.GroupClassDetailActivity;
+import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
@@ -44,7 +49,7 @@ public class MyAddClassesFragment extends Fragment {
     TextView noData;
 
     private MyClassOrderStatusAdapter adapter;
-    private List<MyAddClass> datas = new ArrayList<>();
+    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,17 +66,59 @@ public class MyAddClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), datas, true);
+        adapter = new MyClassOrderStatusAdapter(getActivity(), myAddClassArrayList, true);
         listView.setAdapter(adapter);
         loadData();
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                openClass(myAddClassArrayList.get(position));
+            }
+        });
+    }
+
+    /**
+     * 跳转叨叨详情页
+     *
+     * @param item
+     */
+    private void openClass(MyAddClass item) {
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            //0  团操 1  小班   2  私教  3  有氧
+            if (item.getCourseType().equals("0")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "0");
+                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("1")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "1");
+                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("2")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) getActivity()).openActivity(PrivateClassByMessageActivity.class,bundle);
+
+            } else if (item.getCourseType().equals("3")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING,item.getId());
+                ((BaseActivity) getActivity()).openActivity(ArerobicDetailActivity.class,bundle);
+            }
+        }
 
     }
 
     private void loadData() {
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
-        Map<String, String> datas = new HashMap<>();
+        final Map<String, String> datas = new HashMap<>();
         datas.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         datas.put("showType", "0");
         PostRequest request = new PostRequest(Constants.USER_CONTACTCOURSELIST, datas, new Response.Listener<JsonObject>() {
@@ -80,6 +127,7 @@ public class MyAddClassesFragment extends Fragment {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
+                    myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);

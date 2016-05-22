@@ -1,7 +1,6 @@
 package com.smartfit.activities;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,8 +80,8 @@ public class FansActivity extends BaseActivity {
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                page++;
-                loadData();
+//                page++;
+//                loadData();
             }
         });
 

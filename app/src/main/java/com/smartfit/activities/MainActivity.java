@@ -1,14 +1,21 @@
 package com.smartfit.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,11 +34,17 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.igexin.sdk.PushManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.smartfit.MessageEvent.HxMessageList;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.AppManager;
@@ -44,6 +57,8 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +99,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     @Bind(R.id.ll_activity_bind_up)
     LinearLayout llActivityBindUp;
 
+    private EventBus eventBus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +121,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     .commit();
         }
 
+        eventBus = EventBus.getDefault();
+
+
         String nativeCity = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
         if (TextUtils.isEmpty(nativeCity)) {
             initLocation();
@@ -114,10 +134,169 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.UID, ""))) {
             getUserInfo();
+            getFriendsInfo();
         }
 
         addLisener();
 
+        initConnectLisener();
+
+
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+
+
+    }
+
+    EMMessageListener msgListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            //收到消息
+
+            LogUtil.w("dyc","收到消息1"+messages.get(0).getBody().toString());
+
+          LogUtil.w("dyc", "--ss---" +Util.isInMessageList(MainActivity.this));
+            if (Util.isInMessageList(MainActivity.this)){
+                eventBus.post(new HxMessageList(messages));
+            }else{
+                showNotificaiton(MainActivity.this,messages.get(0).getBody().toString().split(":")[1].replace("\"",""));
+            }
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            //收到透传消息
+            LogUtil.w("dyc","收到消息2"+messages.get(0).getBody().toString());
+        }
+
+        @Override
+        public void onMessageReadAckReceived(List<EMMessage> messages) {
+            //收到已读回执
+            LogUtil.w("dyc","收到消息3"+messages.get(0).getBody().toString());
+        }
+
+        @Override
+        public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+            //收到已送达回执
+            LogUtil.w("dyc","收到消息4"+message.get(0).getBody().toString());
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+            //消息状态变动
+            LogUtil.w("dyc","收到消息5"+message.getBody().toString());
+        }
+    };
+
+
+    private void showNotificaiton(Context context, String msg) {
+        Bitmap btm = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.message_icon);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                context).setSmallIcon(R.mipmap.message_icon)
+                .setContentTitle("SmartFit")
+                .setContentText(msg);
+        mBuilder.setTicker(msg);//第一次提示消息的时候显示在通知栏上
+        mBuilder.setNumber(12);
+        mBuilder.setLargeIcon(btm);
+        mBuilder.setAutoCancel(true);//自己维护通知的消失
+
+        //构建一个Intent
+        Intent resultIntent = new Intent(context,
+                MessageActivity.class);
+        //封装一个Intent
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                context, 0, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        // 设置通知主题的意图
+        mBuilder.setContentIntent(resultPendingIntent);
+        //获取通知管理器对象
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0, mBuilder.build());
+    }
+
+
+    /**
+     * 注册环信链接监听
+     */
+    private void initConnectLisener() {
+        EMClient.getInstance().addConnectionListener(new MyConnectionListener());
+    }
+
+    //实现ConnectionListener接口
+    private class MyConnectionListener implements EMConnectionListener {
+        @Override
+        public void onConnected() {
+        }
+
+        @Override
+        public void onDisconnected(final int error) {
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (error == EMError.USER_REMOVED) {
+                        // 显示帐号已经被移除
+                        mSVProgressHUD.showInfoWithStatus("账号已被移除", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                        // 显示帐号在其他设备登陆
+                        SharedPreferencesUtils.getInstance().remove(Constants.UID);
+                        SharedPreferencesUtils.getInstance().remove(Constants.SID);
+                        SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
+
+                        EMClient.getInstance().logout(true);
+                            NormalDialogOneBtn();
+                        }
+                }
+            });
+        }
+    }
+
+    private void NormalDialogOneBtn() {
+
+        final NormalDialog dialog = new NormalDialog(SmartAppliction.getInstance());
+        if (dialog.isShowing()){
+
+        }else {
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            dialog.content("您的账号已在其他设备登陆")//
+                    .btnNum(1)
+                    .btnText("确定")//
+//                .showAnim(mBasIn)//
+//                .dismissAnim(mBasOut)//
+                    .show();
+
+            dialog.setOnBtnClickL(new OnBtnClickL() {
+                @Override
+                public void onBtnClick() {
+                    dialog.dismiss();
+                    openActivity(LoginActivity.class);
+
+                }
+            });
+        }
+    }
+
+    private void getFriendsInfo() {
+        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST,JsonUtils.toJson(beans));
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
     }
 
 
@@ -288,7 +467,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         );
 
         //广告
-        //TODO  进入活动
         cardBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -543,5 +721,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             locationClient = null;
             locationOption = null;
         }
+
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }
 }

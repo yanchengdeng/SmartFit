@@ -189,7 +189,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
                     mSVProgressHUD.showInfoWithStatus("未填写信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     return;
                 } else {
-                    if (TextUtils.isDigitsOnly(etContent.getEditableText().toString())) {
+//                    if (TextUtils.isDigitsOnly(etContent.getEditableText().toString())) {
                         if (flag == 1) {
                             friends = Integer.parseInt(etContent.getEditableText().toString());
                             countPrice();
@@ -198,9 +198,9 @@ public class UserCustomClassFourActivity extends BaseActivity {
                             opener = Integer.parseInt(etContent.getEditableText().toString());
                             tvOpenNum.setText(opener + "人");
                         }
-                    } else {
-                        mSVProgressHUD.showInfoWithStatus("只能输入数字", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
+//                    } else {
+//                        mSVProgressHUD.showInfoWithStatus("只能输入数字", SVProgressHUD.SVProgressHUDMaskType.Clear);
+//                    }
                 }
             }
         });

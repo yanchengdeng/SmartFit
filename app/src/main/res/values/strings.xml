@@ -413,6 +413,7 @@
     <string name="publish_class_products">发布课程产品</string>
     <string name="save_to_phone">保存到手机</string>
     <string name="copy_link">复制链接</string>
+    <string name="title_activity_chat_list">ChatListActivity</string>
 
 
 </resources>

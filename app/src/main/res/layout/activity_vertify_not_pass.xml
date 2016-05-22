@@ -6,6 +6,7 @@
     android:background="@color/gray_light"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:id="@+id/ll_ui_root"
     tools:context="com.smartfit.activities.CoachAuthBaseActivity">
 
     <include layout="@layout/common_header_view"></include>

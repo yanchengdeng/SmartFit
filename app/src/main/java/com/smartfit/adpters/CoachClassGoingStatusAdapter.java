@@ -18,9 +18,12 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.R;
+import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.FindSubstitueActivity;
+import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.MembersListActivity;
+import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
@@ -145,7 +148,6 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         }
 
 
-
         //找人代课
         viewHolder.tvSubstitue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,8 +179,44 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             viewHolder.tvMoney.setText("￥" + item.getCoursePrice());
         }
 
+        viewHolder.llCoachGoingUI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openClass(item);
+            }
+        });
+
 
         return convertView;
+    }
+
+
+    private void openClass(MyAddClass item) {
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            //0  团操 1  小班   2  私教  3  有氧
+            if (item.getCourseType().equals("0")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "0");
+                ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("1")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString(Constants.COURSE_TYPE, "1");
+                ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("2")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class, bundle);
+
+            } else if (item.getCourseType().equals("3")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, item.getId());
+                ((BaseActivity) context).openActivity(ArerobicDetailActivity.class, bundle);
+            }
+        }
     }
 
     private void NormalDialogStyleTwoDel(final String id) {
@@ -266,6 +304,8 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         TextView tvMemberList;
         @Bind(R.id.ll_handle_funciton)
         LinearLayout llHandleFunciton;
+        @Bind(R.id.ll_coach_going_class_ui)
+        LinearLayout llCoachGoingUI;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

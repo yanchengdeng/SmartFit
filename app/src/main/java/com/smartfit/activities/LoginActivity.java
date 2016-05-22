@@ -17,10 +17,12 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.R;
+import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -34,6 +36,7 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -199,6 +202,7 @@ public class LoginActivity extends BaseActivity {
                         bindClient(client);
                     }
                 }
+                getFriendsInfo();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -221,6 +225,28 @@ public class LoginActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showInfoWithStatus(error.getLocalizedMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
+            }
+        });
+        request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(LoginActivity.this);
+        mQueue.add(request);
+    }
+
+    private void getFriendsInfo() {
+        PostRequest request = new PostRequest(Constants.USER_FRIENDLIST, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
+                if (beans != null && beans.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST,JsonUtils.toJson(beans));
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage());
             }
         });
         request.setTag(TAG);
@@ -252,17 +278,22 @@ public class LoginActivity extends BaseActivity {
      * @param uid
      */
     private void LoginHX(String uid) {
-        String hxAccount = "user_" + uid;
+        final String hxAccount = "user_" + uid;
         //登录
         EMClient.getInstance().login(hxAccount, MD5.getMessageDigest(hxAccount.getBytes()), new EMCallBack() {
             @Override
             public void onSuccess() {
-                LogUtil.w("dyc","环信登陆陈宫");
+                LogUtil.w("dyc", "环信登陆陈宫");
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtil.w("dyc","环信登陆失败"+i+"..."+s);
+                LogUtil.w("dyc", "环信登陆失败" + i + "..." + s);
+                try {
+                    regiseter(hxAccount, MD5.getMessageDigest(hxAccount.getBytes()));
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -271,6 +302,10 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void regiseter(String hxAccount, String messageDigest) throws HyphenateException {
+        EMClient.getInstance().createAccount(hxAccount,messageDigest);
     }
 
 }

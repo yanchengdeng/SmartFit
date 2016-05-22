@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:background="@color/gray_light">
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,11 +26,108 @@
             <com.jude.rollviewpager.RollPagerView
                 android:id="@+id/roll_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/ad_height"
+                android:layout_height="wrap_content"
                 app:rollviewpager_hint_gravity="right"
                 app:rollviewpager_hint_paddingRight="16dp"
                 app:rollviewpager_hint_paddingBottom="5dp"
                 app:rollviewpager_play_delay="3000" />
+
+            <LinearLayout
+                android:id="@+id/ll_scan_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/ll_view_scan_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_class_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
+                            android:text="我的课程条码"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/text_normal" />
+
+                        <ImageView
+                            android:id="@+id/iv_scan_bar"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg_pic" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/activity_horizontal_margin"
+                            android:text="您可以使用该条码，扫码进入预定的健身馆，使用为你准备的私人保管箱。"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/text_normal_down" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_scan_code_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:lineSpacingExtra="3dp"
+                        android:text="课程二维码在开课前一个小时才会生效，您可以将如下链接保存或者发送给朋友：http://123.57.164.115:8098/sys/upload/qrCodeImg?"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_save_to_phone"
+                        android:text="保存到手机"
+                        android:gravity="center"
+                        android:padding="@dimen/image_padding_big"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_share_friends"
+                        android:text="发送给朋友"
+                        android:visibility="gone"
+                        android:background="@color/common_header_bg"
+                        android:gravity="center"
+                        android:padding="@dimen/image_padding_big"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_normal"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -120,6 +217,18 @@
                         />
                 </LinearLayout>
             </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_order"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="立刻预约"
+                android:textSize="@dimen/text_normal"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_dialog_selector_red"
+                android:layout_margin="@dimen/header_bar_height"/>
+
 
         </LinearLayout>
 

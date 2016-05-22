@@ -44,7 +44,7 @@ public class CoachGoingClassesFragment extends Fragment {
     TextView noData;
 
     private CoachClassGoingStatusAdapter adapter;
-    private List<MyAddClass> datas = new ArrayList<>();
+    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
     private int page = 1;
 
     @Override
@@ -62,7 +62,7 @@ public class CoachGoingClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new CoachClassGoingStatusAdapter(getActivity(), datas, true);
+        adapter = new CoachClassGoingStatusAdapter(getActivity(), myAddClassArrayList, true);
         listView.setAdapter(adapter);
         loadData();
 
@@ -84,6 +84,7 @@ public class CoachGoingClassesFragment extends Fragment {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
+                    myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.GONE);

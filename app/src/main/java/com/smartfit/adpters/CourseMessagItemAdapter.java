@@ -101,6 +101,29 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                 viewHolder.tvName.setText(item.getMessageContent().getSourseUserName());
             }
 
+            if (item.getType().equals(MessageType.MESSAGE_TYPE_APPOStringMENT_SUCCESS)) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
+                    viewHolder.tvTittle.setText(String.format(context.getString(R.string.course_aggree_info), new Object[]{item.getMessageContent().getCourseName()}));
+                }
+            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_REFUSE)) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
+                    viewHolder.tvTittle.setText(String.format(context.getString(R.string.refuse_your_course), new Object[]{item.getMessageContent().getInvitedUserName(), item.getMessageContent().getCourseName()}));
+                }
+
+            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_SUBSITUTE_ACCEPT)) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
+                    viewHolder.tvTittle.setText(String.format(context.getString(R.string.accept_your_course), new Object[]{item.getMessageContent().getInvitedUserName(), item.getMessageContent().getCourseName()}));
+                }
+            }else if(item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_INVITE)){
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
+                    viewHolder.tvTittle.setText("邀请您加入课程");
+                }
+            } else {
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
+                    viewHolder.tvTittle.setText(String.format(context.getString(R.string.course_aggree_info), new Object[]{item.getMessageContent().getCourseName()}));
+                }
+            }
+
             if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
                 viewHolder.tvType.setText(item.getMessageContent().getCourseName());
             }

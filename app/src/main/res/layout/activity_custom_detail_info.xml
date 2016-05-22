@@ -64,8 +64,9 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text=""
@@ -90,8 +91,9 @@
 
         <TextView
             android:id="@+id/tv_sex"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="男"
@@ -116,8 +118,9 @@
 
         <TextView
             android:id="@+id/tv_motto"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/no_sign"
@@ -169,8 +172,9 @@
 
         <TextView
             android:id="@+id/tv_update_pass"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/activity_horizontal_margin"
@@ -197,8 +201,9 @@
 
         <TextView
             android:id="@+id/tv_coach_auth_status"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/activity_horizontal_margin"

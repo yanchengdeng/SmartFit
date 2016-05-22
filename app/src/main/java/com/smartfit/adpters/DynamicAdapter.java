@@ -20,9 +20,7 @@ import com.hyphenate.util.DensityUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
-import com.smartfit.activities.ClassMoreCommentsActivity;
 import com.smartfit.activities.DynamicDetailActivity;
-import com.smartfit.activities.DynamicMakeDiscussActivity;
 import com.smartfit.beans.DynamicInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
@@ -123,14 +121,14 @@ public class DynamicAdapter extends BaseAdapter {
 
             }
         }
-        viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
+     /*   viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getTopicId());
                 ((BaseActivity) context).openActivity(ClassMoreCommentsActivity.class);
             }
-        });
+        });*/
 
         viewHolder.tvPraise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,10 +140,14 @@ public class DynamicAdapter extends BaseAdapter {
         viewHolder.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, item.getTopicId());
+//                Bundle bundle = new Bundle();
+//                bundle.putString(Constants.PASS_STRING, item.getTopicId());
                 selectPostion = position;
-                ((BaseActivity) context).openActivity(DynamicMakeDiscussActivity.class, bundle);
+//                ((BaseActivity) context).openActivity(DynamicMakeDiscussActivity.class, bundle);
+
+                Bundle bundle =  new Bundle();
+                bundle.putParcelable(Constants.PASS_OBJECT,datas.get(position));
+                ((BaseActivity)context).openActivity(DynamicDetailActivity.class, bundle);
             }
         });
 

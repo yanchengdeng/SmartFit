@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -92,6 +93,8 @@ public class VertifyNotPassActivity extends BaseActivity {
     TextView tvAddMoreBooks;
     @Bind(R.id.btn_submmit)
     Button btnSubmmit;
+    @Bind(R.id.ll_ui_root)
+    LinearLayout llUiRoot;
     //上传身份证
     private ArrayList<String> cards = new ArrayList<>();
     //上传工作证
@@ -138,6 +141,7 @@ public class VertifyNotPassActivity extends BaseActivity {
         addLisener();
 
     }
+
 
     private void initMoreCentifacate() {
 

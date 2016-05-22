@@ -17,6 +17,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -105,8 +106,8 @@ public class HealthFriendsListActivity extends BaseActivity {
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                page++;
-                loadData();
+//                page++;
+//                loadData();
             }
         });
 
@@ -165,6 +166,7 @@ public class HealthFriendsListActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {
+                  SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST,JsonUtils.toJson(beans));
                     datas.addAll(beans);
                     adapter.setData(datas);
                     showDataView();

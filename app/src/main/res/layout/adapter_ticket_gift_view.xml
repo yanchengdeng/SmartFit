@@ -20,7 +20,7 @@
         android:layout_gravity="center_vertical"
         android:text="@string/eaquel_ticket"
         android:textColor="@color/common_header_bg"
-        android:textSize="@dimen/text_larger_big" />
+        android:textSize="@dimen/text_larger" />
 
 
     <LinearLayout

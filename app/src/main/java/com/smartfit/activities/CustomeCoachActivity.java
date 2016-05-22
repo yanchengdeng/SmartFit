@@ -276,7 +276,7 @@ public class CustomeCoachActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.COACH_CHGCOACHONLINESTATE, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-
+                updateClassCount();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -310,6 +310,33 @@ public class CustomeCoachActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeCoachActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 获取教练信息
+     */
+    private void updateClassCount() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                if (null != userInfo) {
+                    TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);
+                    if (!TextUtils.isEmpty(userInfo.getCurClassCount())) {
+                        tvGoingClasses.setText("正在进行" + userInfo.getCurClassCount() + "课程");
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
             }
         });
         request.setTag(new Object());

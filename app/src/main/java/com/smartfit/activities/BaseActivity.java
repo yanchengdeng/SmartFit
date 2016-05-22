@@ -11,13 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.widget.NormalDialog;
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
 import com.smartfit.commons.AppManager;
@@ -35,6 +29,8 @@ public class BaseActivity extends FragmentActivity {
     public Context mContext;
     public static final Object TAG = new Object();
 
+    private int isShow = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,59 +46,10 @@ public class BaseActivity extends FragmentActivity {
         tintManager.setStatusBarTintResource(R.color.common_header_bg);//通知栏所需颜色
         mQueue = GetSingleRequestUtils.getInstance(this).getRequestQueue();
         mSVProgressHUD = new SVProgressHUD(this);
-        initConnectLisener();
+
     }
 
-    /**
-     * 注册环信链接监听
-     */
-    private void initConnectLisener() {
-        EMClient.getInstance().addConnectionListener(new MyConnectionListener());
-    }
 
-    //实现ConnectionListener接口
-    private class MyConnectionListener implements EMConnectionListener {
-        @Override
-        public void onConnected() {
-        }
-
-        @Override
-        public void onDisconnected(final int error) {
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (error == EMError.USER_REMOVED) {
-                        // 显示帐号已经被移除
-                        mSVProgressHUD.showInfoWithStatus("账号已被移除", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                        // 显示帐号在其他设备登陆
-                        NormalDialogOneBtn();
-                    } else {
-
-                    }
-                }
-            });
-        }
-    }
-
-    private void NormalDialogOneBtn() {
-        final NormalDialog dialog = new NormalDialog(mContext);
-        dialog.content("您的账号已在其他设备登陆")//
-                .btnNum(1)
-                .btnText("确定")//
-//                .showAnim(mBasIn)//
-//                .dismissAnim(mBasOut)//
-                .show();
-
-        dialog.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialog.dismiss();
-                openActivity(LoginActivity.class);
-            }
-        });
-    }
 
     @TargetApi(19)
     protected void setTranslucentStatus() {

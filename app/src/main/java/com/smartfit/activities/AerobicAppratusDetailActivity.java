@@ -111,19 +111,17 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
-//            getClassInfo();
             btnOrder.setVisibility(View.GONE);
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
-            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存或者发送给朋友：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));
         }
 
     /* Do something */
     }
 
-    ;
 
     private void initView() {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
@@ -196,6 +194,12 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             }
         }
 
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
+
 
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
@@ -227,7 +231,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         if (null != detail.getClassroomPics() && detail.getClassroomPics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
-            rollViewPager.setVisibility(View.GONE);
+            detail.setClassroomPics(new String[]{""});
+            rollViewPager.setVisibility(View.VISIBLE);
         }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
@@ -334,7 +339,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             View relativeLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.ad_common_view, null);
             ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.iv_cover_bg);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
-            ImageLoader.getInstance().displayImage(imgs[position], imageView);
+            ImageLoader.getInstance().displayImage(imgs[position], imageView,Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             textView.setText(infos[0] + "(" + courceName + ")");
             return relativeLayout;

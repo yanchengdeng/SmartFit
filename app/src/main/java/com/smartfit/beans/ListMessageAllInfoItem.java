@@ -8,6 +8,9 @@ public class ListMessageAllInfoItem {
     private String unReadSysCount;
     private MesageInfo sysMessage;
 
+
+    public ListMessageAllInfoItem() {
+    }
     public ListMessageAllInfoItem(String unReadSysCount, MesageInfo sysMessage) {
         this.unReadSysCount = unReadSysCount;
         this.sysMessage = sysMessage;

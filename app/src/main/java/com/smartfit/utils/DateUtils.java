@@ -544,11 +544,10 @@ public class DateUtils {
         long startMillions = Long.parseLong(millionTimes);
 
         if (startMillions - currentMillions > 3600) {
+            return false;
+        } else {
             return true;
         }
-
-
-        return false;
 
     }
 
@@ -573,6 +572,14 @@ public class DateUtils {
         }
 
         return false;
+    }
+
+
+    public static Float getHourNum(String startTime, String endTime) {
+
+        int longMillions = (int) (Long.parseLong(endTime) - Long.parseLong(startTime));
+        float hour = (float)longMillions/3600;
+        return hour;
     }
 
     public static String getHour(String startTime, String endTime) {

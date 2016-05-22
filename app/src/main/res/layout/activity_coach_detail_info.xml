@@ -75,8 +75,9 @@
 
                 <TextView
                     android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/user_name"
@@ -101,8 +102,9 @@
 
                 <TextView
                     android:id="@+id/tv_sex"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="男"
@@ -127,8 +129,9 @@
 
                 <TextView
                     android:id="@+id/tv_motto"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/no_sign"
@@ -180,8 +183,9 @@
 
                 <TextView
                     android:id="@+id/tv_update_pass"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"
@@ -207,8 +211,9 @@
 
                 <TextView
                     android:id="@+id/tv_already_auth"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"
@@ -234,8 +239,9 @@
 
                 <TextView
                     android:id="@+id/tv_edit_brief"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"
@@ -262,8 +268,9 @@
 
                 <TextView
                     android:id="@+id/tv_height"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"
@@ -289,8 +296,9 @@
 
                 <TextView
                     android:id="@+id/tv_weight"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"
@@ -316,8 +324,9 @@
 
                 <TextView
                     android:id="@+id/tv_teached_classes"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/activity_horizontal_margin"

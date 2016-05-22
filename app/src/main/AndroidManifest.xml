@@ -569,6 +569,10 @@
         </activity>
         <activity android:name=".activities.EventActivtyDetailActivity" >
         </activity>
+        <activity
+            android:name=".activities.ChatListActivity"
+            android:label="@string/title_activity_chat_list" >
+        </activity>
     </application>
 
 </manifest>

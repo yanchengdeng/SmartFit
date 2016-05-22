@@ -217,7 +217,7 @@ public class PayActivity extends BaseActivity {
     }
 
     /**
-     * 活动包约下单
+     * 活动  （包月、绑定）下单
      */
     private void getEventOrder() {
         mSVProgressHUD.showWithStatus("创建订单中", SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -296,7 +296,10 @@ public class PayActivity extends BaseActivity {
             classRoomId = getIntent().getStringExtra("classroom");
         }
         tvPayMoney.setText(payMoney + "元");
-        getUseFullEvent();
+        if (pageIndex != 7) {
+            getUseFullEvent();
+        }
+
         getLeftMoney();
     }
 
@@ -535,10 +538,10 @@ public class PayActivity extends BaseActivity {
 
             //支付机械课程
             if (userfulEventes.size() != 0) {
-                if (couserType.equals(3)) {
-                    payUserCouponWithEventUserId();
-                } else {
+                if (couserType.equals("3")) {
                     payAerobicByEvent();
+                } else {
+                    payUserCouponWithEventUserId();
                 }
             }
         }
@@ -564,7 +567,7 @@ public class PayActivity extends BaseActivity {
     private void payUserCouponWithEventUserId() {
         mSVProgressHUD.setText("正在支付");
         Map<String, String> map = new HashMap<>();
-        map.put("eventUserId", getSeletctedEvent().getEventId());
+        map.put("eventUserId", getSeletctedEvent().getId());
         map.put("courseId", courseId);
         map.put("orderCode", orderID);
         PostRequest request = new PostRequest(Constants.PAY_PAYBYEVENT, map, new Response.Listener<JsonObject>() {
@@ -592,9 +595,9 @@ public class PayActivity extends BaseActivity {
     private void payAerobicByEvent() {
         mSVProgressHUD.setText("正在支付");
         Map<String, String> map = new HashMap<>();
-        map.put("eventUserId", getSeletctedEvent().getEventId());
+        map.put("eventUserId", getSeletctedEvent().getId());
         map.put("orderCode", orderID);
-        PostRequest request = new PostRequest(Constants.PAY_PAYBYEVENT, map, new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.PAY_PAYAEROBICBYEVENT, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();

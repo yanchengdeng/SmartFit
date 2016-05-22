@@ -18,7 +18,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
@@ -47,13 +46,10 @@ import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -192,12 +188,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         if (event instanceof UpdateGroupClassDetail) {
             loadData();
         }
-
-    /* Do something */
     }
-
-    ;
-
 
     private void initView(ClassInfoDetail detail) {
         classInfoDetail = detail;
@@ -278,7 +269,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
-            rollViewPager.setVisibility(View.GONE);
+            detail.setCoursePics(new String[]{""});
+            rollViewPager.setVisibility(View.VISIBLE);
         }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
@@ -367,6 +359,21 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
             } else if (detail.getOrderStatus().equals("3")) {
+                //订单详情页   预约成功
+                btnOrder.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvClassTittle.setVisibility(View.GONE);
+                tvContent.setVisibility(View.GONE);
+                llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                llMackScore.setVisibility(View.GONE);//评分
+                //TODO  暂时隐藏
+                llScanBar.setVisibility(View.GONE);//发送朋友 二维码
+                llOrderSuccess.setVisibility(View.VISIBLE);//订购成功底部
+                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
+                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
+                tvMore.setVisibility(View.VISIBLE);
+
+            }else if (detail.getOrderStatus().equals("4")) {
                 //订单详情页   预约成功
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -528,6 +535,13 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         });
 
+        ratingBarForCoach.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingBarForCoach.setRating(rating);
+            }
+        });
+
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -634,7 +648,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
         data.put("topicId", classInfoDetail.getTopicId());
-        data.put("stars", String.valueOf(rating));
+        data.put("commentStar", String.valueOf(rating));
         data.put("commentContent", comments);
         PostRequest request = new PostRequest(Constants.COMMENT_SAVE, data, new Response.Listener<JsonObject>() {
             @Override

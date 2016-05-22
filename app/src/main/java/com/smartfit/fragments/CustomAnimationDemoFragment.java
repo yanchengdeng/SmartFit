@@ -87,6 +87,8 @@ public class CustomAnimationDemoFragment extends Fragment {
                     if (NetUtil.isLogin(getActivity())) {
                         if (!MessageActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity())))
                             ((BaseActivity) getActivity()).openActivity(MessageActivity.class);
+//                        ((BaseActivity) getActivity()).openActivity(ChatListActivity.class);
+
                     } else {
                         ((BaseActivity) getActivity()).openActivity(LoginActivity.class);
                     }

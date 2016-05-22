@@ -159,7 +159,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         if (!TextUtils.isEmpty(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())) {
             monney += Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice());
         }
-        tvClassPrice.setText(String.valueOf(monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
+        tvClassPrice.setText(String.format("%.2f",monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
     }
 
 

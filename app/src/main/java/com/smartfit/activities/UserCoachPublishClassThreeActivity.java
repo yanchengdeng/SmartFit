@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.beans.CoachClassReleaseInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
@@ -103,8 +104,8 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
      * 计算费用
      */
     private void countPrice() {
-        tvVenueFee.setText(venuPrice + "元");
-        tvCountFee.setText(venuPrice + "元");
+        tvVenueFee.setText(venuPrice + "元*"+ DateUtils.getHourNum(startTime,endTime)+"小时");
+        tvCountFee.setText(String.format("%.2f元",Float.parseFloat(venuPrice)*DateUtils.getHourNum(startTime,endTime)));
 
     }
 
@@ -170,7 +171,7 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
                     mSVProgressHUD.showInfoWithStatus("未填写信息");
                     return;
                 } else {
-                    if (TextUtils.isDigitsOnly(etContent.getEditableText().toString())) {
+//                    if (TextUtils.isDigitsOnly(etContent.getEditableText().toString())) {
                         if (flag == 1) {
                             friends = Integer.parseInt(etContent.getEditableText().toString());
                             countPrice();
@@ -179,10 +180,11 @@ public class UserCoachPublishClassThreeActivity extends BaseActivity {
                             price = etContent.getEditableText().toString();
                             tvOpenNum.setText(String.format("%.2f",Float.parseFloat(price)) + "元");
                         }
-                    } else {
-                        mSVProgressHUD.showInfoWithStatus("只能输入数字", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }
-                }
+//                else {
+//                        mSVProgressHUD.showInfoWithStatus("只能输入数字", SVProgressHUD.SVProgressHUDMaskType.Clear);
+//                    }
+//                }
             }
         });
     }

@@ -10,7 +10,7 @@ public class UserInfoDetail {
     private String account;//吉祥三宝想,
     private String nickName;//吉祥三宝想,
     private String mobile;//18650328280,
-    private String sex;//0,
+    private String sex = "0";//0,
     private String userPicUrl;//null,
     private String sid;//null,
     private String signature;//null,

@@ -170,6 +170,21 @@ public class WithDrawActivity extends BaseActivity {
             mSVProgressHUD.showInfoWithStatus("请输入登陆密码", SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
+
+        if (!TextUtils.isEmpty(leftMoney)){
+
+            if (Float.parseFloat(leftMoney)<= 0 ) {
+                mSVProgressHUD.showInfoWithStatus("无余额可提现", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                return;
+            }
+            if (Float.parseFloat(leftMoney)<Float.parseFloat(money)) {
+                mSVProgressHUD.showInfoWithStatus("提现超出余额", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                return;
+            }
+        }
+
+
+
         mSVProgressHUD.showWithStatus("提现中...", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> maps = new HashMap<>();
         maps.put("cash", money);

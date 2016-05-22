@@ -12,12 +12,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:background="@color/gray_light"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray_light"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -52,7 +53,9 @@
                 android:id="@+id/tv_user_event_tittle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/image_padding_big"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/image_padding_big"
                 android:text="优惠券"
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal" />
@@ -69,7 +72,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/image_padding_big"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/image_padding_big"
                 android:text="选择支付方式"
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal" />
@@ -87,7 +92,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+                    android:paddingBottom="@dimen/image_padding_big"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/image_padding_big">
 
                     <ImageView
                         android:id="@+id/iv_ye"
@@ -163,7 +171,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:padding="@dimen/activity_horizontal_margin">
+                    android:paddingBottom="@dimen/image_padding_big"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/image_padding_big">
 
                     <ImageView
                         android:id="@+id/iv_wx"
@@ -215,7 +226,10 @@
                     android:id="@+id/rl_alipay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin">
+                    android:paddingBottom="@dimen/image_padding_big"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/image_padding_big">
 
                     <ImageView
                         android:id="@+id/iv_alipay"

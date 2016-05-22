@@ -14,8 +14,6 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
-import com.smartfit.MessageEvent.UpdateRoom;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
 import com.smartfit.beans.ClassInfoDetail;
@@ -31,9 +29,6 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.SelectableRoundedImageView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -219,7 +214,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         if (!TextUtils.isEmpty(detail.getPrice())) {
             monney += Float.parseFloat(detail.getPrice());
         }
-        tvClassPrice.setText(String.valueOf(monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
+        tvClassPrice.setText(String.format("%.2f",monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
     }
 
 
