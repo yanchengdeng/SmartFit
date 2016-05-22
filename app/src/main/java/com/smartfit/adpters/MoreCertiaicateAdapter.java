@@ -6,11 +6,9 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +68,7 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
 
 
         final Certificate item = certificates.get(position);
-
+viewHolder.ref = position;
         viewHolder.tvName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,17 +85,17 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
                 if (TextUtils.isEmpty(s.toString())) {
                     viewHolder.cbName.setImageResource(R.mipmap.icon_close);
                 } else {
-
+                    certificates.get(viewHolder.ref).setName(s.toString());
                     viewHolder.cbName.setImageResource(R.mipmap.icon_choose);
                 }
             }
         });
 
 
-        viewHolder.tvName.setOnKeyListener(new View.OnKeyListener() {
+       /* viewHolder.tvName.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                /*隐藏软键盘*/
+                *//*隐藏软键盘*//*
                 InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (inputMethodManager.isActive()) {
                     inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
@@ -110,7 +108,7 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
                 return false;
             }
         });
-
+*/
 
         if (!TextUtils.isEmpty(item.getText_tips())) {
             viewHolder.tvNameTips.setText(item.getText_tips());
@@ -182,6 +180,8 @@ public class MoreCertiaicateAdapter extends BaseAdapter {
         ImageView ivCertificate;
         @Bind(R.id.cb_photo)
         ImageView cbPhoto;
+
+        int ref;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

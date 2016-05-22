@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -86,6 +87,8 @@ public class VertifyFinishedActivity extends BaseActivity {
     Button btnSubmmit;
     @Bind(R.id.btn_del)
     Button btnDel;
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
 
 
     private EventBus eventBus;
@@ -123,8 +126,13 @@ public class VertifyFinishedActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 List<SubmitAuthInfo> submitAuthInfoList = JsonUtils.listFromJson(response.getAsJsonArray("list"), SubmitAuthInfo.class);
-                if (submitAuthInfoList != null && submitAuthInfoList.size() > 0)
+                if (submitAuthInfoList != null && submitAuthInfoList.size() > 0) {
                     fillData(submitAuthInfoList);
+                    scrollView.setVisibility(View.VISIBLE);
+                } else {
+                    openActivity(CoachAuthBaseActivity.class);
+                    finish();
+                }
 
                 mSVProgressHUD.dismiss();
             }
