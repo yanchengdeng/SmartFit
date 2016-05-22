@@ -1,39 +1,30 @@
 package com.hyphenate.easeui.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMConversationListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMChatManager;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.widget.EaseConversationList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
+
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMConversationListener;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.widget.EaseConversationList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 会话列表fragment
@@ -41,13 +32,9 @@ import android.widget.ImageButton;
  */
 public class EaseConversationListFragment extends EaseBaseFragment{
 	private final static int MSG_REFRESH = 2;
-    protected EditText query;
-    protected ImageButton clearSearch;
     protected boolean hidden;
     protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
     protected EaseConversationList conversationListView;
-    protected FrameLayout errorItemContainer;
-
     protected boolean isConflict;
     
     protected EMConversationListener convListener = new EMConversationListener(){
@@ -61,7 +48,17 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.ease_fragment_conversation_list, container, false);
+        View view = inflater.inflate(R.layout.ease_fragment_conversation_list, container, false);
+        view.findViewById(R.id.title_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity()!=null) {
+                    (getActivity()).finish();
+                }
+            }
+        });
+        return view;
+
     }
 
     @Override
@@ -76,11 +73,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         //会话列表控件
         conversationListView = (EaseConversationList) getView().findViewById(R.id.list);
-        // 搜索框
-        query = (EditText) getView().findViewById(R.id.query);
-        // 搜索框中清除button
-        clearSearch = (ImageButton) getView().findViewById(R.id.search_clear);
-        errorItemContainer = (FrameLayout) getView().findViewById(R.id.fl_error_item);
     }
     
     @Override
@@ -100,39 +92,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         }
         
         EMClient.getInstance().addConnectionListener(connectionListener);
-        
-        query.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                conversationListView.filter(s);
-                if (s.length() > 0) {
-                    clearSearch.setVisibility(View.VISIBLE);
-                } else {
-                    clearSearch.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        clearSearch.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                query.getText().clear();
-                hideSoftKeyboard();
-            }
-        });
-        
-        conversationListView.setOnTouchListener(new OnTouchListener() {
-            
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideSoftKeyboard();
-                return false;
-            }
-        });
     }
     
     
@@ -158,10 +117,8 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case 0:
-                onConnectionDisconnected();
                 break;
             case 1:
-                onConnectionConnected();
                 break;
             
             case MSG_REFRESH:
@@ -177,20 +134,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         }
     };
     
-    /**
-     * 连接到服务器
-     */
-    protected void onConnectionConnected(){
-        errorItemContainer.setVisibility(View.GONE);
-    }
-    
-    /**
-     * 连接断开
-     */
-    protected void onConnectionDisconnected(){
-        errorItemContainer.setVisibility(View.VISIBLE);
-    }
-    
 
     /**
      * 刷新页面
@@ -204,7 +147,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     /**
      * 获取会话列表
      * 
-     * @param context
      * @return
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         +    */
     protected List<EMConversation> loadConversationList(){
@@ -243,7 +185,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     /**
      * 根据最后一条消息的时间排序
      * 
-     * @param usernames
      */
     private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> conversationList) {
         Collections.sort(conversationList, new Comparator<Pair<Long, EMConversation>>() {

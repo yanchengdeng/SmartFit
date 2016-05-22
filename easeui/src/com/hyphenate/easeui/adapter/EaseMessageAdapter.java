@@ -35,7 +35,6 @@ import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowBigExpression;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowFile;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowImage;
-import com.hyphenate.easeui.widget.chatrow.EaseChatRowLocation;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowText;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowVideo;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowVoice;
@@ -242,9 +241,7 @@ public class EaseMessageAdapter extends BaseAdapter {
                     chatRow = new EaseChatRowText(context, message, position, this);
                 }
                 break;
-            case LOCATION:
-                chatRow = new EaseChatRowLocation(context, message, position, this);
-                break;
+
             case FILE:
                 chatRow = new EaseChatRowFile(context, message, position, this);
                 break;

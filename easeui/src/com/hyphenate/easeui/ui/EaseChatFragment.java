@@ -1,40 +1,5 @@
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.util.List;
-
-import com.hyphenate.EMChatRoomChangeListener;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMChatRoom;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMGroup;
-import com.hyphenate.chat.EMImageMessageBody;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessage.ChatType;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.controller.EaseUI;
-import com.hyphenate.easeui.domain.EaseEmojicon;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
-import com.hyphenate.easeui.utils.EaseImageUtils;
-import com.hyphenate.easeui.utils.EaseSmileUtils;
-import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
-import com.hyphenate.easeui.widget.EaseChatExtendMenu;
-import com.hyphenate.easeui.widget.EaseChatInputMenu;
-import com.hyphenate.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
-import com.hyphenate.easeui.widget.EaseChatMessageList;
-import com.hyphenate.easeui.widget.EaseTitleBar;
-import com.hyphenate.easeui.widget.EaseVoiceRecorderView;
-import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
-import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.hyphenate.util.EMLog;
-import com.hyphenate.util.PathUtil;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -60,6 +25,38 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.hyphenate.EMChatRoomChangeListener;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMImageMessageBody;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.EaseEmojicon;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
+import com.hyphenate.easeui.widget.EaseChatExtendMenu;
+import com.hyphenate.easeui.widget.EaseChatInputMenu;
+import com.hyphenate.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
+import com.hyphenate.easeui.widget.EaseChatMessageList;
+import com.hyphenate.easeui.widget.EaseVoiceRecorderView;
+import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.hyphenate.util.EMLog;
+import com.hyphenate.util.PathUtil;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -105,9 +102,8 @@ public class EaseChatFragment extends EaseBaseFragment {
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
 
-    protected int[] itemStrings = {R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location};
-    protected int[] itemdrawables = {R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
-            R.drawable.ease_chat_location_selector};
+    protected int[] itemStrings = {R.string.attach_take_pic, R.string.attach_picture};
+    protected int[] itemdrawables = {R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector};
     protected int[] itemIds = {ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION};
     private EMChatRoomChangeListener chatRoomChangeListener;
     private boolean isMessageListInited;
@@ -159,7 +155,7 @@ public class EaseChatFragment extends EaseBaseFragment {
         titleBar.setTitle(TextUtils.isEmpty(nickname) ? "好友" : nickname);
         titleBar.setRightImageResource(R.drawable.ease_back);
 
-        registerExtendMenuItem();
+//        registerExtendMenuItem();
         // init input menu
         inputMenu.init(null);
         inputMenu.setChatInputMenuListener(new ChatInputMenuListener() {
@@ -631,7 +627,7 @@ public class EaseChatFragment extends EaseBaseFragment {
                     selectPicFromLocal(); // 图库选择图片
                     break;
                 case ITEM_LOCATION: // 位置
-                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+//                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
                     break;
 
                 default:
