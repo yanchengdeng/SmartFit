@@ -125,20 +125,28 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getStatus())) {
             if (item.getStatus().equals("1")) {
                 viewHolder.tvStatus.setText("报名但未付款");
+                viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("2")) {
                 viewHolder.tvStatus.setText("等待接单");
+                viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("3")) {
                 viewHolder.tvStatus.setText("进行中");
+                viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("4")) {
                 viewHolder.tvStatus.setText("已结束");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("5")) {
                 viewHolder.tvStatus.setText("已退出该课程");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("6")) {
                 viewHolder.tvStatus.setText("课程已取消");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("7")) {
                 viewHolder.tvStatus.setText("课程已结束");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("8")) {
                 viewHolder.tvStatus.setText("已评价");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
             }
         }
 
@@ -158,7 +166,6 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
 
             }
         });
-
 
 
         return convertView;

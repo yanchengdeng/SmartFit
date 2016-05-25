@@ -125,8 +125,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
 
         String nativeCity = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
+        initLocation();
         if (TextUtils.isEmpty(nativeCity)) {
-            initLocation();
+
         } else {
             tvCityName.setText(nativeCity);
             getVenuList();

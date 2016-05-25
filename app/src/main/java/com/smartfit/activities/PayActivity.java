@@ -261,8 +261,6 @@ public class PayActivity extends BaseActivity {
             ivYeSelected.setVisibility(View.VISIBLE);
             ivWxSelected.setVisibility(View.GONE);
             ivAlipaySelected.setVisibility(View.GONE);
-            rlAlipay.setClickable(false);
-            rlWx.setClickable(false);
         } else {
             if (!TextUtils.isEmpty(leftMoney) && !TextUtils.isEmpty(payMoney)) {
                 if (Float.parseFloat(leftMoney) >= Float.parseFloat(payMoney)) {
@@ -391,6 +389,7 @@ public class PayActivity extends BaseActivity {
 //                ivWxSelected.setVisibility(View.VISIBLE);
 //                ivYeSelected.setVisibility(View.GONE);
 //                ivAlipaySelected.setVisibility(View.GONE);
+                mSVProgressHUD.showInfoWithStatus("待开放", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 reInitUserEvent();
             }
         });
@@ -399,6 +398,10 @@ public class PayActivity extends BaseActivity {
         rlAlipay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Float.parseFloat(payMoney) == 0) {
+                    mSVProgressHUD.showInfoWithStatus("推荐余额直接支付", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    return;
+                }
                 payStyle = 2;
                 ivAlipaySelected.setVisibility(View.VISIBLE);
                 ivWxSelected.setVisibility(View.GONE);
