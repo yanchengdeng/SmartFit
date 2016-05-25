@@ -10,17 +10,10 @@
 	    android:id="@+id/title_bar"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    hyphenate:titleBarTitle="@string/session"
+	    hyphenate:titleBarTitle="消息"
 	    />
     
-    <include layout="@layout/ease_search_bar" />
-    
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fl_error_item"
-        >
-    </FrameLayout>
+
 
 
     <com.hyphenate.easeui.widget.EaseConversationList
