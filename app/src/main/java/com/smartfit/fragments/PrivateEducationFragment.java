@@ -132,7 +132,7 @@ public class PrivateEducationFragment extends Fragment {
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
                 startTime = "9:00";
-                endTime =  "9:30";
+                endTime =  "10:00";
                 loadData();
             } else {
                 getVenueList();

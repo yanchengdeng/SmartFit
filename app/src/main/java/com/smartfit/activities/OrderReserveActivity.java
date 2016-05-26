@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartfit.R;
-import com.smartfit.commons.Constants;
 import com.smartfit.views.WheelView;
 
 import java.util.Arrays;
@@ -54,7 +53,7 @@ public class OrderReserveActivity extends BaseActivity {
     private String selectHour = "00";
     private String selectMinu = "30";
 
-    private String addMinit = "30";//默认增加30分钟
+    private String addMinit = "60";//默认增加60分钟
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,21 +155,21 @@ public class OrderReserveActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_add_thirt_min:
-                addMinit = "30";
+                addMinit = "60";
                 tvAddThirtMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_gray));
                 tvAddSixtyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvOneNintyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvAddThreeHour.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 break;
             case R.id.tv_add_sixty_min:
-                addMinit = "60";
+                addMinit = "90";
                 tvAddThirtMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvAddSixtyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_gray));
                 tvOneNintyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvAddThreeHour.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 break;
             case R.id.tv_one_ninty_min:
-                addMinit = "90";
+                addMinit = "120";
                 tvAddThirtMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvAddSixtyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_white));
                 tvOneNintyMin.setBackground(getResources().getDrawable(R.drawable.bg_dialog_selector_gray));

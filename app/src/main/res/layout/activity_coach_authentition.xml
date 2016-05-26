@@ -35,7 +35,7 @@
                 android:src="@mipmap/bg_pic"
                 app:riv_corner_radius="4dip"
                 app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
+                />
 
 
             <TextView

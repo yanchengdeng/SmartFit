@@ -201,10 +201,10 @@ public class Constants {
 
 
         //发布测试的接口
-//        public static final String URL = "http://139.196.228.98:8098";
+        public static final String URL = "http://139.196.228.98:8098";
 
         //内部测试接口
-        public static final String URL = "http://123.57.164.115:8098";
+//        public static final String URL = "http://123.57.164.115:8098";
 
         //支付回调
         public static final String ALIPAY_CALLBACK = Net.URL + "/pay/aliCallback";
