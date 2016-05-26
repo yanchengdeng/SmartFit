@@ -109,17 +109,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="3">
 
-                    <com.smartfit.views.SelectableRoundedImageView
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitXY"
                         android:src="@mipmap/icon_pic_group"
-                        app:sriv_left_bottom_corner_radius="0dip"
-                        app:sriv_left_top_corner_radius="0dip"
-                        app:sriv_oval="false"
-                        app:sriv_right_bottom_corner_radius="0dip"
-                        app:sriv_right_top_corner_radius="0dip" />
+                     />
 
 
                 </LinearLayout>

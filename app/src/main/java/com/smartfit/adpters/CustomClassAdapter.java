@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.beans.UserCustomClass;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
 
@@ -109,7 +109,7 @@ public class CustomClassAdapter extends BaseAdapter {
      */
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_class_tittle)
         TextView tvClassTittle;
         @Bind(R.id.tv_class_type)

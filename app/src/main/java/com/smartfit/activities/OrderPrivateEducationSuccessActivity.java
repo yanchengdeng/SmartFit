@@ -9,7 +9,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.smartfit.R;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +27,7 @@ public class OrderPrivateEducationSuccessActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.iv_coach_icon)
-    SelectableRoundedImageView ivCoachIcon;
+    ImageView ivCoachIcon;
     @Bind(R.id.tv_coach_name)
     TextView tvCoachName;
     @Bind(R.id.tv_coach_info)
@@ -38,7 +37,7 @@ public class OrderPrivateEducationSuccessActivity extends BaseActivity {
     @Bind(R.id.tv_coach_score)
     TextView tvCoachScore;
     @Bind(R.id.iv_space_icon)
-    SelectableRoundedImageView ivSpaceIcon;
+    ImageView ivSpaceIcon;
     @Bind(R.id.tv_space_name)
     TextView tvSpaceName;
     @Bind(R.id.tv_space_info)

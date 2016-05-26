@@ -8,18 +8,18 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.smartfit.activities.CustomDetailInfoActivity">
-    <include layout="@layout/common_header_view"/>
+
+    <include layout="@layout/common_header_view" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/white"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/image_padding_big"
         android:paddingBottom="@dimen/image_padding_big"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/image_padding_big"
-        >
+        android:paddingTop="@dimen/image_padding_big">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:textSize="@dimen/text_normal" />
 
 
-        <com.smartfit.views.SelectableRoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_headerr"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -38,13 +38,8 @@
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
             android:src="@mipmap/icon_pay_mr"
-            app:sriv_border_color="@color/white"
-            app:sriv_border_width="2dip"
-            app:sriv_left_bottom_corner_radius="0dip"
-            app:sriv_left_top_corner_radius="0dip"
-            app:sriv_oval="true"
-            app:sriv_right_bottom_corner_radius="0dip"
-            app:sriv_right_top_corner_radius="0dip" />
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dip" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -66,9 +61,9 @@
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="right"
             android:text=""
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
@@ -93,9 +88,9 @@
             android:id="@+id/tv_sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="right"
             android:text="男"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
@@ -120,9 +115,9 @@
             android:id="@+id/tv_motto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="right"
             android:text="@string/no_sign"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
@@ -174,9 +169,9 @@
             android:id="@+id/tv_update_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="right"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/update"
             android:textColor="@color/text_color_gray"
@@ -187,15 +182,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@color/white"
-      >
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/coach_auth"
             android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/coach_auth"
             android:textColor="@color/text_color_black"
             android:textSize="@dimen/text_normal" />
 
@@ -203,13 +197,13 @@
             android:id="@+id/tv_coach_auth_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:text="@string/no_coach_auth"
             android:drawablePadding="@dimen/image_padding_big"
             android:drawableRight="@mipmap/icon_next_w_on"
+            android:gravity="right"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/no_coach_auth"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>

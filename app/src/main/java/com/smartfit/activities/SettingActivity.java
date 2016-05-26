@@ -26,7 +26,6 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,7 +41,7 @@ import butterknife.ButterKnife;
 public class SettingActivity extends BaseActivity {
 
     @Bind(R.id.iv_header)
-    SelectableRoundedImageView ivHeader;
+    ImageView ivHeader;
     @Bind(R.id.tv_name)
     TextView tvName;
     @Bind(R.id.iv_accept_msg_not)

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import com.smartfit.R;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.Util;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class SelectWorkPointAdapter extends BaseAdapter {
      */
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.rl_icon_ui)
         RelativeLayout rlIconUi;
         @Bind(R.id.tv_address)

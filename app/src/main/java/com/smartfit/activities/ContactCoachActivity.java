@@ -15,7 +15,6 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.utils.Options;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,7 +34,7 @@ public class ContactCoachActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.iv_header)
-    SelectableRoundedImageView ivHeader;
+    ImageView ivHeader;
     @Bind(R.id.tv_name)
     TextView tvName;
     @Bind(R.id.tv_phone)

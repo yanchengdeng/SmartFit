@@ -28,7 +28,6 @@ import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -201,7 +200,7 @@ public class DynamicAdapter extends BaseAdapter {
      */
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_name)
         TextView tvName;
         @Bind(R.id.tv_dynamic_tittle)

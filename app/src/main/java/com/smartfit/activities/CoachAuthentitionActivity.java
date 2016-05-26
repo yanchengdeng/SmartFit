@@ -19,7 +19,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.iv_icon)
-    SelectableRoundedImageView ivIcon;
+    ImageView ivIcon;
     @Bind(R.id.tv_name)
     TextView tvName;
     @Bind(R.id.tv_base_info)

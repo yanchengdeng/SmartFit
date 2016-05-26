@@ -14,61 +14,57 @@
         android:src="@mipmap/icon_back" />
 
 
-    <com.smartfit.views.SelectableRoundedImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_header"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_pay_mr"
-        app:sriv_border_color="@color/white"
-        app:sriv_border_width="2dip"
-        app:sriv_left_bottom_corner_radius="0dip"
-        app:sriv_left_top_corner_radius="0dip"
-        app:sriv_oval="true"
-        app:sriv_right_bottom_corner_radius="0dip"
-        app:sriv_right_top_corner_radius="0dip" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="令狐冲"
-        android:layout_below="@+id/iv_header"
-        android:id="@+id/tv_name"
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/white"
-        android:padding="@dimen/image_padding_big"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/current_money"
-        android:layout_below="@+id/tv_name"
-        android:id="@+id/tv_money_tittle"
-        android:drawablePadding="@dimen/image_padding"
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/text_color_black"
-       />
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dip" />
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_header"
         android:layout_centerHorizontal="true"
-        android:text="500.00"
-        android:drawableLeft="@mipmap/icon_purse"
-        android:layout_below="@+id/tv_money_tittle"
-        android:id="@+id/tv_money"
+        android:padding="@dimen/image_padding_big"
+        android:text="令狐冲"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_money_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_centerHorizontal="true"
         android:drawablePadding="@dimen/image_padding"
-        android:textSize="@dimen/text_larger_big"
+        android:text="@string/current_money"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_money_tittle"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@mipmap/icon_purse"
+        android:drawablePadding="@dimen/image_padding"
+        android:padding="@dimen/image_padding_big"
+        android:text="500.00"
         android:textColor="@color/black"
-        android:padding="@dimen/image_padding_big"/>
+        android:textSize="@dimen/text_larger_big" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/tv_money"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/header_bar_height"
         android:layout_marginRight="@dimen/header_bar_height"
         android:orientation="horizontal">
@@ -77,24 +73,24 @@
         <Button
             android:id="@+id/btn_recharge"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="40dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_normal"
+            android:layout_weight="1"
             android:background="@drawable/bg_dialog_selector_blue"
-            android:text="@string/recharge"/>
+            android:text="@string/recharge"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+
         <Button
             android:id="@+id/btn_withdraw"
             android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="@dimen/header_bar_height"
             android:layout_weight="1"
-            android:layout_height="40dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_normal"
             android:background="@drawable/bg_dialog_selector_red"
-            android:text="@string/withdraw"/>
+            android:text="@string/withdraw"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
     </LinearLayout>
-
 
 
 </RelativeLayout>

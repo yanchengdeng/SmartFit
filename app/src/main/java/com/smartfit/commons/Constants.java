@@ -145,7 +145,7 @@ public class Constants {
     public static final String ORDER_ORDEREVENT = "/order/orderEvent";
     public static final String PAY_PAYBYEVENT = "/pay/payByEvent";
     public static final String PAY_PAYAEROBICBYEVENT = "/pay/payAerobicByEvent";
-    public static final String PAY_WEIXINPREPAY  = "/pay/weixinPrePay";
+    public static final String PAY_WEIXINPREPAY = "/pay/weixinPrePay";
 
 
     //活动
