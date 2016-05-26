@@ -27,6 +27,7 @@ import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.AliPayUtiils;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.MD5;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PayResult;
@@ -88,8 +89,7 @@ public class ReChargeActivity extends BaseActivity {
     @Bind(R.id.btn_pay)
     Button btnPay;
 
-    ///TODO  微信代开后  需改过来
-    private int payStyle = 2;// 1  微信   2 支付宝
+    private int payStyle = 1;// 1  微信   2 支付宝
 
     private Float money;
 
@@ -188,10 +188,9 @@ public class ReChargeActivity extends BaseActivity {
         rlWx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-//                payStyle = 1;
-//                ivWxSelected.setVisibility(View.VISIBLE);
-//                ivAlipaySelected.setVisibility(View.GONE);
+                payStyle = 1;
+                ivWxSelected.setVisibility(View.VISIBLE);
+                ivAlipaySelected.setVisibility(View.GONE);
             }
         });
 
@@ -435,7 +434,7 @@ public class ReChargeActivity extends BaseActivity {
             packageParams.add(new BasicNameValuePair("notify_url", Constants.Net.WX_PAY_CALLBACK));
             packageParams.add(new BasicNameValuePair("out_trade_no", genOutTradNo()));
             packageParams.add(new BasicNameValuePair("spbill_create_ip", "127.0.0.1"));
-            packageParams.add(new BasicNameValuePair("total_fee", String.valueOf(money * 100)));//支付单位是分 String.valueOf((int)(payMoney*100)))
+            packageParams.add(new BasicNameValuePair("total_fee",String.valueOf(1)));//支付单位是分 String.valueOf((int)(payMoney*100)))
             packageParams.add(new BasicNameValuePair("trade_type", "APP"));
             String sign = genPackageSign(packageParams);
             packageParams.add(new BasicNameValuePair("sign", sign));
@@ -470,8 +469,8 @@ public class ReChargeActivity extends BaseActivity {
         signParams.add(new BasicNameValuePair("timestamp", req.timeStamp));
         req.sign = genAppSign(signParams);
         sb.append("sign\n" + req.sign + "\n\n");
-        Log.w("dyc", sb.toString());
-        Log.e("orion", signParams.toString());
+        LogUtil.w("dyc", sb.toString());
+        LogUtil.e("dyc", signParams.toString());
     }
 
     /*****
@@ -480,7 +479,6 @@ public class ReChargeActivity extends BaseActivity {
     private void sendPayReq() {
         msgApi.registerApp(Constants.WXPay.APP_ID);
         msgApi.sendReq(req);
-        finish();
     }
 
     /**

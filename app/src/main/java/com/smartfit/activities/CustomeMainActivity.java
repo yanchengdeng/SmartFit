@@ -31,7 +31,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,7 +46,7 @@ public class CustomeMainActivity extends BaseActivity {
 
     private EventBus eventBus;
 
-    private SelectableRoundedImageView imageViewHeader;
+    private ImageView imageViewHeader;
 
     private TextView tvName, tvSigneture;
 
@@ -155,7 +154,7 @@ public class CustomeMainActivity extends BaseActivity {
      */
     private void fillData(UserInfo userInfo) {
 
-        SelectableRoundedImageView ivHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        ImageView ivHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
         TextView tvNickname = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
@@ -234,7 +233,7 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView.setZoomView(zoomView);
         scrollView.setScrollContentView(contentView);
         scrollView.setParallax(true);
-        imageViewHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        imageViewHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -22,7 +23,6 @@ import com.smartfit.beans.SustituteCoach;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -151,7 +151,7 @@ public class FindSubstitutAdapter extends BaseAdapter {
      */
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_name)
         TextView tvName;
         @Bind(R.id.ratingBar)

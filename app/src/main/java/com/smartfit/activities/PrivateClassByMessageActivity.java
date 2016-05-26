@@ -28,7 +28,6 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     @Bind(R.id.listView)
     MyListView listView;
     @Bind(R.id.iv_space_icon)
-    SelectableRoundedImageView ivSpaceIcon;
+    ImageView ivSpaceIcon;
     @Bind(R.id.tv_space_name)
     TextView tvSpaceName;
     @Bind(R.id.tv_room_name)

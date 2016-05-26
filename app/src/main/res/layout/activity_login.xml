@@ -1,56 +1,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.LoginActivity">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@mipmap/login_bg"
-      >
+        android:orientation="vertical">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/login_bg_distance"
             android:layout_marginLeft="@dimen/login_bg_distance"
-            android:layout_marginRight="@dimen/login_bg_distance">
+            android:layout_marginRight="@dimen/login_bg_distance"
+            android:layout_marginTop="@dimen/login_bg_distance">
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:background="@drawable/bg_tit"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            >
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_tit"></RelativeLayout>
 
 
-            <com.smartfit.views.SelectableRoundedImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_header"
                 android:layout_width="50dp"
-                android:layout_centerVertical="true"
                 android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_margin="@dimen/image_padding_big"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:scaleType="centerCrop"
-                android:layout_centerHorizontal="true"
                 android:src="@mipmap/icon_pay_mr"
-                app:sriv_border_color="@color/white"
-                app:sriv_border_width="2dip"
-                app:sriv_left_bottom_corner_radius="0dip"
-                app:sriv_left_top_corner_radius="0dip"
-                app:sriv_oval="true"
-                app:sriv_right_bottom_corner_radius="0dip"
-                app:sriv_right_top_corner_radius="0dip" />
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dip" />
 
 
             <ImageView
@@ -58,19 +49,19 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:padding="@dimen/image_padding"
                 android:layout_marginRight="-5dp"
                 android:layout_marginTop="10dp"
-                android:src="@mipmap/icon_clocse"
-                />
+                android:padding="@dimen/image_padding"
+                android:src="@mipmap/icon_clocse" />
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/login_bg_distance"
             android:layout_marginRight="@dimen/login_bg_distance"
-            android:orientation="vertical"
-            android:background="@drawable/bg_pop_1">
+            android:background="@drawable/bg_pop_1"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -84,29 +75,29 @@
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/image_padding_big"
-                    android:src="@mipmap/icon_name"/>
+                    android:src="@mipmap/icon_name" />
 
                 <EditText
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv_name"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/phone_num"
+                    android:inputType="phone"
                     android:textColor="@color/text_color_gray"
                     android:textColorHint="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
-                    android:inputType="phone"
-                    android:background="@null"
-                    android:layout_toRightOf="@+id/iv_name"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    android:hint="@string/phone_num"/>
-                
+                    android:textSize="@dimen/text_normal" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_marginRight="@dimen/image_padding_big"
-                    android:background="@color/line_gray"/>
+                    android:background="@color/line_gray" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -121,21 +112,21 @@
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/image_padding_big"
-                    android:src="@mipmap/icon_password"/>
+                    android:src="@mipmap/icon_password" />
 
                 <EditText
                     android:id="@+id/et_pass"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv_pass"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:textColor="@color/text_color_gray"
                     android:textColorHint="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal"
-                    android:background="@null"
-                    android:inputType="textPassword"
-                    android:layout_toRightOf="@+id/iv_pass"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    android:hint="@string/password"/>
+                    android:textSize="@dimen/text_normal" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -143,7 +134,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_marginRight="@dimen/image_padding_big"
-                    android:background="@color/line_gray"/>
+                    android:background="@color/line_gray" />
             </RelativeLayout>
 
 
@@ -152,116 +143,115 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:background="@drawable/bg_dialog_selector_red"
+                android:gravity="center"
                 android:text="@string/login_in"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_normal"
-                android:gravity="center"
-                android:background="@drawable/bg_dialog_selector_red"/>
-            
-            
-            
+                android:textSize="@dimen/text_normal" />
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin">
 
                 <CheckBox
                     android:id="@+id/ck_remeber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_normal"
-                    android:gravity="center_vertical"
                     android:button="@drawable/login_remeber_checked"
                     android:checked="true"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/image_padding"
                     android:text="@string/remeber_pass"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
 
                 <TextView
                     android:id="@+id/tv_foget"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/text_normal"
                     android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
                     android:text="@string/forget_pass_ask"
-                    android:textColor="@color/text_color_gray"/>
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
             </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:textSize="@dimen/text_normal"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:gravity="center_vertical"
                 android:text="@string/forget_pass_tips"
-                android:textColor="@color/text_color_gray"/>
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:visibility="invisible"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="2dp"
-                android:layout_gravity="center_vertical"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/header_bar_height"
                 android:layout_marginRight="@dimen/image_padding_big"
-                android:background="@color/line_gray"/>
+                android:layout_weight="1"
+                android:background="@color/line_gray" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/black"
-            android:text="@string/third_login_type"/>
 
             <TextView
-                android:layout_height="2dp"
-                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/third_login_type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/image_padding_big"
                 android:layout_marginRight="@dimen/header_bar_height"
-                android:background="@color/line_gray"/>
+                android:layout_weight="1"
+                android:background="@color/line_gray" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:visibility="invisible"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/iv_login_wechat"
                 android:layout_width="60dp"
-                android:src="@mipmap/icon_wechat"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:src="@mipmap/icon_wechat" />
 
             <ImageView
                 android:id="@+id/iv_login_sina"
                 android:layout_width="60dp"
-                android:src="@mipmap/icon_sina"
+                android:layout_height="60dp"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_height="60dp" />
+                android:src="@mipmap/icon_sina" />
 
             <ImageView
                 android:id="@+id/iv_login_qq"
                 android:layout_width="60dp"
-                android:src="@mipmap/icon_qq"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:src="@mipmap/icon_qq" />
         </LinearLayout>
 
         <Button
@@ -271,10 +261,10 @@
             android:layout_marginLeft="@dimen/login_bg_distance"
             android:layout_marginRight="@dimen/login_bg_distance"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@mipmap/btn_sign"
             android:text="@string/phone_quick_regist"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_normal"
-            android:background="@mipmap/btn_sign"/>
+            android:textSize="@dimen/text_normal" />
     </LinearLayout>
 
 </RelativeLayout>

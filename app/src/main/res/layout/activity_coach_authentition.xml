@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -14,170 +14,170 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/gray_light">
+        android:background="@color/gray_light"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/image_padding_big"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <com.smartfit.views.SelectableRoundedImageView
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iv_icon"
-                android:scaleType="centerCrop"
                 android:layout_width="@dimen/icon_normal_size"
+                android:layout_height="@dimen/icon_normal_size"
                 android:layout_marginTop="2dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/bg_pic"
-                app:sriv_left_top_corner_radius="4dip"
-                app:sriv_right_top_corner_radius="4dip"
-                app:sriv_left_bottom_corner_radius="4dip"
-                app:sriv_right_bottom_corner_radius="4dip"
-                app:sriv_oval="false"
-                android:layout_height="@dimen/icon_normal_size" />
+                app:riv_corner_radius="4dip"
+                app:riv_oval="false"
+                app:riv_tile_mode="repeat" />
 
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="@dimen/text_normal"
-                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:drawablePadding="@dimen/image_padding"
-                android:layout_gravity="center_vertical"/>
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="0岁"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="1px"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="基本资料"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_base_info"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/header_bar_height"
-            android:textColor="@color/text_color_gray"
-            android:textSize="@dimen/text_normal_down"
-            android:text=""/>
-    </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1px"
             android:background="@color/white"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="持有证书"
-                android:layout_gravity="center_vertical"
-                android:textSize="@dimen/text_normal"
-                android:textColor="@color/black"/>
+                android:text="基本资料"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
+                android:id="@+id/tv_base_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_auth_info"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/header_bar_height"
+                android:text=""
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down"
+                android:textSize="@dimen/text_normal_down" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1px"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="持有证书"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_auth_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/header_bar_height"
                 android:lineSpacingExtra="3dp"
-                android:text=""/>
+                android:text=""
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1px"
             android:background="@color/white"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="认证授课项目"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/text_normal"
-                android:textColor="@color/black"/>
+                android:text="认证授课项目"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
+                android:id="@+id/tv_auth_info_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_auth_info_more"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text=""
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down"
-                android:text=""/>
+                android:textSize="@dimen/text_normal_down" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1px"
             android:background="@color/white"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="授课项目"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/text_normal"
-                android:textColor="@color/black"/>
+                android:text="授课项目"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
+                android:id="@+id/tv_classes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_classes"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/header_bar_height"
+                android:text=""
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal_down"
-                android:text=""/>
+                android:textSize="@dimen/text_normal_down" />
         </LinearLayout>
 
 
         <TextView
-            android:textColor="@color/common_header_bg"
-            android:textSize="@dimen/text_larger"
-            android:layout_marginTop="@dimen/header_bar_height"
-            android:padding="@dimen/activity_horizontal_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="以上信息已通过SMARGTIF平台认证"/>
+            android:layout_marginTop="@dimen/header_bar_height"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="以上信息已通过SMARGTIF平台认证"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_larger" />
 
 
     </LinearLayout>

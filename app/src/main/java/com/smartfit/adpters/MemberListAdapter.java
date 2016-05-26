@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,7 +21,6 @@ import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MemeberInfo;
 import com.smartfit.utils.Options;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.List;
 
@@ -130,7 +130,7 @@ public class MemberListAdapter extends BaseAdapter {
      */
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_name)
         TextView tvName;
         @Bind(R.id.tv_phone)

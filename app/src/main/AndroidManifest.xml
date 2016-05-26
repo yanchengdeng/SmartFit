@@ -316,7 +316,18 @@
             android:name=".activities.PayActivity"
             android:label="@string/title_activity_pay"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityTheme.NoActionBar" />
+            android:launchMode="singleTop"
+            android:theme="@style/ActivityTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wx081f8efdfee69ab2"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".activities.OrderPrivateEducationClassActivity"
             android:screenOrientation="portrait"

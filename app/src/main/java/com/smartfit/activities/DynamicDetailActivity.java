@@ -29,7 +29,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -60,7 +59,7 @@ public class DynamicDetailActivity extends BaseActivity {
     
     private DynamicInfo dynamicInfo;
 
-    SelectableRoundedImageView ivIcon;
+    ImageView ivIcon;
     TextView tvName;
     TextView tvDynamicTittle;
     ImageView ivPhoto;
@@ -168,7 +167,7 @@ public class DynamicDetailActivity extends BaseActivity {
         tvTittle.setText("动态详情");
         View header  = LayoutInflater.from(this).inflate(R.layout.adapter_dynamic_view, null);
         tvName = (TextView) header.findViewById(R.id.tv_name);
-        ivIcon = (SelectableRoundedImageView) header.findViewById(R.id.iv_icon);
+        ivIcon = (ImageView) header.findViewById(R.id.iv_icon);
         tvDynamicTittle = (TextView) header.findViewById(R.id.tv_dynamic_tittle);
         ivPhoto = (ImageView) header.findViewById(R.id.iv_photo);
         tvMessage = (TextView) header.findViewById(R.id.tv_message);

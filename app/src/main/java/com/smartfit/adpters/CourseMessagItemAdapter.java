@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -27,7 +28,6 @@ import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -333,7 +333,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
 
     static class ViewHolderWithButton {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_date)
         TextView tvDate;
         @Bind(R.id.tv_name)
@@ -362,7 +362,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
 
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        SelectableRoundedImageView ivIcon;
+        ImageView ivIcon;
         @Bind(R.id.tv_date)
         TextView tvDate;
         @Bind(R.id.tv_name)

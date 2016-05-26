@@ -145,6 +145,7 @@ public class Constants {
     public static final String ORDER_ORDEREVENT = "/order/orderEvent";
     public static final String PAY_PAYBYEVENT = "/pay/payByEvent";
     public static final String PAY_PAYAEROBICBYEVENT = "/pay/payAerobicByEvent";
+    public static final String PAY_WEIXINPREPAY = "/pay/weixinPrePay";
 
 
     //活动
@@ -185,25 +186,25 @@ public class Constants {
     public static class WXPay {
         //appid
         //请同时修改  androidmanifest.xml里面，.PayActivityd里的属性<data android:scheme="wx275d8ba3c5fccaf5"/>为新设置的appid
-        public static final String APP_ID = "wxcc98b5cd5a985e3f";
+        public static final String APP_ID = "wx081f8efdfee69ab2";
         //商户号
-        public static final String MCH_ID = "1306645401";
+        public static final String MCH_ID = "1342800901";
         //  API密钥，在商户平台设置
-        public static final String API_KEY = "70FB3464792B4C33B89B1AB11548C4E2";
+        public static final String API_KEY = "28d5cd62e3b772cb8cf4c32f84108b45";
 
 
     }
 
     public static class Net {
         //正式上线地址
-       public static final String URL = "http://139.196.228.98:7098";
+//       public static final String URL = "http://139.196.228.98:7098";
 
 
         //发布测试的接口
 //        public static final String URL = "http://139.196.228.98:8098";
 
         //内部测试接口
-//        public static final String URL = "http://123.57.164.115:8098";
+        public static final String URL = "http://123.57.164.115:8098";
 
         //支付回调
         public static final String ALIPAY_CALLBACK = Net.URL + "/pay/aliCallback";

@@ -6,27 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.google.gson.JsonObject;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MesageInfo;
-import com.smartfit.commons.Constants;
-import com.smartfit.utils.NetUtil;
-import com.smartfit.utils.Options;
-import com.smartfit.utils.PostRequest;
-import com.smartfit.views.SelectableRoundedImageView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

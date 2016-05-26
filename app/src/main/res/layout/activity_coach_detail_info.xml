@@ -19,18 +19,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/header_bar_height"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/header_bar_height">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:background="@color/white"
-                android:paddingTop="@dimen/image_padding_big"
-                android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/image_padding_big"
-                android:paddingRight="@dimen/image_padding_big">
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/image_padding_big"
+                android:paddingTop="@dimen/image_padding_big">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                     android:textSize="@dimen/text_normal" />
 
 
-                <com.smartfit.views.SelectableRoundedImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_headerr"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -49,13 +49,8 @@
                     android:layout_centerVertical="true"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_pay_mr"
-                    app:sriv_border_color="@color/white"
-                    app:sriv_border_width="2dip"
-                    app:sriv_left_bottom_corner_radius="0dip"
-                    app:sriv_left_top_corner_radius="0dip"
-                    app:sriv_oval="true"
-                    app:sriv_right_bottom_corner_radius="0dip"
-                    app:sriv_right_top_corner_radius="0dip" />
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="2dip" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -77,9 +72,9 @@
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:text="@string/user_name"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal" />
@@ -104,9 +99,9 @@
                     android:id="@+id/tv_sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:text="男"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal" />
@@ -131,9 +126,9 @@
                     android:id="@+id/tv_motto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:text="@string/no_sign"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal" />
@@ -185,9 +180,9 @@
                     android:id="@+id/tv_update_pass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/update"
                     android:textColor="@color/text_color_gray"
@@ -213,9 +208,9 @@
                     android:id="@+id/tv_already_auth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/already_auth"
                     android:textColor="@color/text_color_blue"
@@ -241,9 +236,9 @@
                     android:id="@+id/tv_edit_brief"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/not_edit"
                     android:textColor="@color/text_color_gray"
@@ -270,9 +265,9 @@
                     android:id="@+id/tv_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/not_complate"
                     android:textColor="@color/text_color_gray"
@@ -298,9 +293,9 @@
                     android:id="@+id/tv_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/not_complate"
                     android:textColor="@color/text_color_gray"
@@ -326,9 +321,9 @@
                     android:id="@+id/tv_teached_classes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:gravity="right"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/not_complate"
                     android:textColor="@color/text_color_gray"

@@ -30,7 +30,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.HorizontalListView;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,7 +67,7 @@ public class ReopenClassActivity extends BaseActivity {
     @Bind(R.id.rl_order_time)
     RelativeLayout rlOrderTime;
     @Bind(R.id.iv_icon)
-    SelectableRoundedImageView ivIcon;
+    ImageView ivIcon;
     @Bind(R.id.rl_icon_ui)
     RelativeLayout rlIconUi;
     @Bind(R.id.tv_class_tittle)

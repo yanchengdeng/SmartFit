@@ -20,15 +20,12 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content">
 
-        <com.smartfit.views.SelectableRoundedImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_header"
             android:layout_width="@dimen/icon_normal_size"
             android:layout_height="@dimen/icon_normal_size"
-            app:sriv_left_top_corner_radius="4dip"
-            app:sriv_right_top_corner_radius="4dip"
-            app:sriv_left_bottom_corner_radius="4dip"
-            app:sriv_right_bottom_corner_radius="4dip"
-            app:sriv_oval="false"
+            app:riv_corner_radius="4dip"
+            app:riv_oval="false"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg_pic" />
 

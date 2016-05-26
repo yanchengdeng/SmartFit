@@ -31,7 +31,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
-import com.smartfit.views.SelectableRoundedImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -146,7 +145,7 @@ public class OtherCustomeMainActivity extends BaseActivity {
 
     private void fillData(UserInfo userInfo) {
         this.userInfo = userInfo;
-        SelectableRoundedImageView ivHeader = (SelectableRoundedImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
+        ImageView ivHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
         TextView tvNickname = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
