@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/res/values-ru-rRU/ease_strings.xml -->
+    <!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/res/values-ru-rRU/ease_strings.xml -->
     <eat-comment/>
     <string name="Application_and_notify">Заявки и уведомления</string>
     <string name="Current_version">Предыдущая версия</string>

@@ -21,4 +21,4 @@
             android:transcriptMode="normal" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</RelativeLayout><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/res/layout/ease_chat_message_list.xml --><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/build/intermediates/bundles/debug/res/layout/ease_chat_message_list.xml -->
+</RelativeLayout><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/res/layout/ease_chat_message_list.xml --><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/build/intermediates/bundles/debug/res/layout/ease_chat_message_list.xml -->

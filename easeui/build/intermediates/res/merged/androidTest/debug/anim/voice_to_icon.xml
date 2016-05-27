@@ -10,4 +10,4 @@
     <item
         android:drawable="@drawable/ease_chatto_voice_playing_f3"
         android:duration="200" />
-</animation-list><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/res/anim/voice_to_icon.xml --><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/build/intermediates/bundles/debug/res/anim/voice_to_icon.xml -->
+</animation-list><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/res/anim/voice_to_icon.xml --><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/build/intermediates/bundles/debug/res/anim/voice_to_icon.xml -->

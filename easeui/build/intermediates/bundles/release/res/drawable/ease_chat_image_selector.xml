@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/ease_chat_image_pressed" android:state_selected="true"/>
     <item android:drawable="@drawable/ease_chat_image_normal"/>
 
-</selector><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/res/drawable/ease_chat_image_selector.xml -->
+</selector><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/res/drawable/ease_chat_image_selector.xml -->

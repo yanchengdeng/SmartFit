@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.FinishRechage;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.MessageEvent.UpdateCustomClassInfo;
@@ -46,6 +47,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.StringReader;
@@ -62,7 +64,7 @@ import butterknife.ButterKnife;
 /**
  * 支付页
  */
-public class PayActivity extends BaseActivity  {
+public class PayActivity extends BaseActivity {
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -181,9 +183,18 @@ public class PayActivity extends BaseActivity  {
         setContentView(R.layout.activity_pay);
         ButterKnife.bind(this);
         eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
     }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishRechage) {
+            finish();
+        }
+    }
+
 
     UserInfoDetail userInfo;
 
@@ -288,6 +299,7 @@ public class PayActivity extends BaseActivity  {
             classRoomId = getIntent().getStringExtra("classroom");
         }
         tvPayMoney.setText(payMoney + "元");
+        Constants.PAGE_INDEX_FROM = pageIndex;
         if (pageIndex != 7) {
             getUseFullEvent();
         }
@@ -558,7 +570,7 @@ public class PayActivity extends BaseActivity  {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
-                WXPayAppId wxPayAppId = JsonUtils.objectFromJson(response,WXPayAppId.class);
+                WXPayAppId wxPayAppId = JsonUtils.objectFromJson(response, WXPayAppId.class);
                 weixinPay(wxPayAppId);
             }
         }, new Response.ErrorListener() {
@@ -579,25 +591,27 @@ public class PayActivity extends BaseActivity  {
 
     /**
      * 调用微信支付
+     *
      * @param wxPayAppId
      */
     private void weixinPay(WXPayAppId wxPayAppId) {
+        Constants.IS_PASS_FROM_ORDER = true;
         api = WXAPIFactory.createWXAPI(this, Constants.WXPay.APP_ID);
         api.registerApp(Constants.WXPay.APP_ID);
-        if(wxPayAppId!= null ){
+        if (wxPayAppId != null) {
             PayReq req = new PayReq();
-            req.appId			= Constants.WXPay.APP_ID;
-            req.partnerId		= wxPayAppId.getPartnerid();
-            req.prepayId		= wxPayAppId.getPrepayid();
-            req.nonceStr		= wxPayAppId.getNoncestr();
-            req.timeStamp		= wxPayAppId.getTimestamp();
-            req.packageValue	= "Sign=WXPay";
-            req.sign			= wxPayAppId.getSign();
-            req.extData			= "SmartFit"; // optional
+            req.appId = Constants.WXPay.APP_ID;
+            req.partnerId = wxPayAppId.getPartnerid();
+            req.prepayId = wxPayAppId.getPrepayid();
+            req.nonceStr = wxPayAppId.getNoncestr();
+            req.timeStamp = wxPayAppId.getTimestamp();
+            req.packageValue = "Sign=WXPay";
+            req.sign = wxPayAppId.getSign();
+            req.extData = "SmartFit"; // optional
             mSVProgressHUD.showInfoWithStatus("正常调起支付", SVProgressHUD.SVProgressHUDMaskType.Clear);
             // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
             api.sendReq(req);
-        }else{
+        } else {
             mSVProgressHUD.showInfoWithStatus(getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
             mSVProgressHUD.dismiss();
         }

@@ -20,10 +20,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.FinishRechage;
 import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.beans.RechargeInfo;
 import com.smartfit.beans.UserInfoDetail;
+import com.smartfit.beans.WXPayAppId;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.AliPayUtiils;
 import com.smartfit.utils.JsonUtils;
@@ -41,6 +43,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.StringReader;
@@ -142,7 +145,7 @@ public class ReChargeActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
 
-                RechargeInfo rechargeInfo = JsonUtils.objectFromJson(response,RechargeInfo.class);
+                RechargeInfo rechargeInfo = JsonUtils.objectFromJson(response, RechargeInfo.class);
                 orderId = rechargeInfo.getOrderCode();
                 goPay();
 
@@ -164,10 +167,17 @@ public class ReChargeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_re_charge);
         eventBus = EventBus.getDefault();
-
+        eventBus.register(this);
         ButterKnife.bind(this);
         initView();
         addLisener();
+    }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishRechage) {
+            finish();
+        }
     }
 
 
@@ -248,7 +258,7 @@ public class ReChargeActivity extends BaseActivity {
     private void goPay() {
         if (payStyle == 1) {
             //微信支付
-            weixinPay();
+            wxPrePay();
 
         } else if (payStyle == 2) {
             //支付宝支付
@@ -277,7 +287,7 @@ public class ReChargeActivity extends BaseActivity {
                         eventBus.post(new UpdateWalletInfo());
                         finish();
                     }
-                },1000);
+                }, 1000);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -290,66 +300,64 @@ public class ReChargeActivity extends BaseActivity {
     }
 
 
-    private IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
-    private Map<String, String> resultunifiedorder;
-    private PayReq req;
-    private StringBuffer sb;
-
-    /***
-     * 微信支付
+    /**
+     * 服务端签名  微信支付
      */
-    private void weixinPay() {
-        req = new PayReq();
-        sb = new StringBuffer();
-        msgApi.registerApp(Constants.WXPay.APP_ID);
-        GetPrepayIdTask getPrepayId = new GetPrepayIdTask();
-        getPrepayId.execute();
+    private void wxPrePay() {
+        Constants.IS_PASS_FROM_ORDER = false;
+        btnPay.setEnabled(false);
+        mSVProgressHUD.showWithStatus("获取订单信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> map = new HashMap<>();
+        map.put("orderCode", orderId);
+        PostRequest request = new PostRequest(Constants.PAY_WEIXINPREPAY, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                WXPayAppId wxPayAppId = JsonUtils.objectFromJson(response, WXPayAppId.class);
+                weixinPay(wxPayAppId);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                btnPay.setEnabled(true);
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ReChargeActivity.this);
+        mQueue.add(request);
 
     }
 
 
-    private class GetPrepayIdTask extends AsyncTask<Void, Void, Map<String, String>> {
+    private IWXAPI api;
 
-        @Override
-        protected void onPreExecute() {
-            mSVProgressHUD.showWithStatus("正在充值", SVProgressHUD.SVProgressHUDMaskType.Clear);
-        }
-
-        @Override
-        protected void onPostExecute(Map<String, String> result) {
+    /**
+     * 调用微信支付
+     *
+     * @param wxPayAppId
+     */
+    private void weixinPay(WXPayAppId wxPayAppId) {
+        api = WXAPIFactory.createWXAPI(this, Constants.WXPay.APP_ID);
+        api.registerApp(Constants.WXPay.APP_ID);
+        if (wxPayAppId != null) {
+            PayReq req = new PayReq();
+            req.appId = Constants.WXPay.APP_ID;
+            req.partnerId = wxPayAppId.getPartnerid();
+            req.prepayId = wxPayAppId.getPrepayid();
+            req.nonceStr = wxPayAppId.getNoncestr();
+            req.timeStamp = wxPayAppId.getTimestamp();
+            req.packageValue = "Sign=WXPay";
+            req.sign = wxPayAppId.getSign();
+            req.extData = "SmartFit"; // optional
+            mSVProgressHUD.setText("正常调起支付");
+            // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+            mSVProgressHUD.showInfoWithStatus("正常调起支付", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            api.sendReq(req);
+        } else {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
             mSVProgressHUD.dismiss();
-            sb.append("prepay_id\n" + result.get("prepay_id") + "\n\n");
-            Log.w("dyc", sb.toString());
-            resultunifiedorder = result;
-            genPayReq();
-            sendPayReq();
-        }
-
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            mSVProgressHUD.dismiss();
-        }
-
-
-        @Override
-        protected Map<String, String> doInBackground(Void... params) {
-
-            String url = String.format("https://api.mch.weixin.qq.com/pay/unifiedorder");
-            String entity = null;
-            try {
-                entity = new String(genProductArgs().toString().getBytes(), "ISO8859-1");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Log.e("dyc", entity);
-            byte[] buf = Util.httpPost(url, entity);
-            String content = new String(buf);
-            Log.e("dyc", content);
-            Map<String, String> xml = decodeXml(content);
-
-            return xml;
         }
     }
 
@@ -364,173 +372,10 @@ public class ReChargeActivity extends BaseActivity {
     }
 
 
-    public Map<String, String> decodeXml(String content) {
-
-        try {
-            Map<String, String> xml = new HashMap<String, String>();
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setInput(new StringReader(content));
-            int event = parser.getEventType();
-            while (event != XmlPullParser.END_DOCUMENT) {
-
-                String nodeName = parser.getName();
-                switch (event) {
-                    case XmlPullParser.START_DOCUMENT:
-
-                        break;
-                    case XmlPullParser.START_TAG:
-
-                        if ("xml".equals(nodeName) == false) {
-                            //实例化student对象
-                            xml.put(nodeName, parser.nextText());
-                        }
-                        break;
-                    case XmlPullParser.END_TAG:
-                        break;
-                }
-                event = parser.next();
-            }
-
-            return xml;
-        } catch (Exception e) {
-            Log.e("orion", e.toString());
-        }
-        return null;
-
-    }
-
-
-    private String genNonceStr() {
-        Random random = new Random();
-        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
-    }
-
-    private long genTimeStamp() {
-        return System.currentTimeMillis() / 1000;
-    }
-
-
     private String genOutTradNo() {
         Random random = new Random();
 //        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
         return orderId;
-    }
-
-
-    //
-    private String genProductArgs() {
-        StringBuffer xml = new StringBuffer();
-
-        try {
-            String nonceStr = genNonceStr();
-
-
-            xml.append("</xml>");
-            List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
-            packageParams.add(new BasicNameValuePair("appid", Constants.WXPay.APP_ID));
-            packageParams.add(new BasicNameValuePair("body", "smartFit"));//注：如果商品为中文时，需要转码 否则会报签名失败paySuccess.getTitle()
-            packageParams.add(new BasicNameValuePair("mch_id", Constants.WXPay.MCH_ID));
-            packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
-            packageParams.add(new BasicNameValuePair("notify_url", Constants.Net.WX_PAY_CALLBACK));
-            packageParams.add(new BasicNameValuePair("out_trade_no", genOutTradNo()));
-            packageParams.add(new BasicNameValuePair("spbill_create_ip", "127.0.0.1"));
-            packageParams.add(new BasicNameValuePair("total_fee",String.valueOf(1)));//支付单位是分 String.valueOf((int)(payMoney*100)))
-            packageParams.add(new BasicNameValuePair("trade_type", "APP"));
-            String sign = genPackageSign(packageParams);
-            packageParams.add(new BasicNameValuePair("sign", sign));
-            String xmlstring = toXml(packageParams);
-
-            return xmlstring;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-
-    /*****
-     * 生成订单
-     */
-    private void genPayReq() {
-
-        req.appId = Constants.WXPay.APP_ID;
-        req.partnerId = Constants.WXPay.MCH_ID;
-        req.prepayId = resultunifiedorder.get("prepay_id");
-        req.packageValue = "Sign=WXPay";
-        req.nonceStr = genNonceStr();
-        req.timeStamp = String.valueOf(genTimeStamp());
-
-
-        List<NameValuePair> signParams = new LinkedList<NameValuePair>();
-        signParams.add(new BasicNameValuePair("appid", req.appId));
-        signParams.add(new BasicNameValuePair("noncestr", req.nonceStr));
-        signParams.add(new BasicNameValuePair("package", req.packageValue));
-        signParams.add(new BasicNameValuePair("partnerid", req.partnerId));
-        signParams.add(new BasicNameValuePair("prepayid", req.prepayId));
-        signParams.add(new BasicNameValuePair("timestamp", req.timeStamp));
-        req.sign = genAppSign(signParams);
-        sb.append("sign\n" + req.sign + "\n\n");
-        LogUtil.w("dyc", sb.toString());
-        LogUtil.e("dyc", signParams.toString());
-    }
-
-    /*****
-     * 发送订单
-     */
-    private void sendPayReq() {
-        msgApi.registerApp(Constants.WXPay.APP_ID);
-        msgApi.sendReq(req);
-    }
-
-    /**
-     * 生成签名
-     */
-
-    private String genPackageSign(List<NameValuePair> params) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < params.size(); i++) {
-            sb.append(params.get(i).getName());
-            sb.append('=');
-            sb.append(params.get(i).getValue());
-            sb.append('&');
-        }
-        sb.append("key=");
-        sb.append(Constants.WXPay.API_KEY);
-        String packageSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
-        Log.e("orion", packageSign);
-        return packageSign;
-    }
-
-    private String genAppSign(List<NameValuePair> params) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < params.size(); i++) {
-            sb.append(params.get(i).getName());
-            sb.append('=');
-            sb.append(params.get(i).getValue());
-            sb.append('&');
-        }
-        sb.append("key=");
-        sb.append(Constants.WXPay.API_KEY);
-
-        this.sb.append("sign str\n" + sb.toString() + "\n\n");
-        String appSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
-        Log.e("orion", appSign);
-        return appSign;
-    }
-
-    private String toXml(List<NameValuePair> params) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<xml>");
-        for (int i = 0; i < params.size(); i++) {
-            sb.append("<" + params.get(i).getName() + ">");
-            sb.append(params.get(i).getValue());
-            sb.append("</" + params.get(i).getName() + ">");
-        }
-        sb.append("</xml>");
-
-        Log.e("orion", sb.toString());
-        return sb.toString();
     }
 
 

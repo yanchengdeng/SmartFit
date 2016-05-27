@@ -26,6 +26,8 @@ public class Constants {
     public static final String PAGE_INDEX = "page_index";
 
 
+
+
     public static final String CITY_CODE = "city_code";
     public static final String CITY_LONGIT = "city_longit";
     public static final String CITY_LAT = "city_lat";
@@ -58,6 +60,8 @@ public class Constants {
 
     public static final String CLINET_ID = "client_id";
 
+    public static  boolean IS_PASS_FROM_ORDER = true;//购买    、充值 false
+    public static int PAGE_INDEX_FROM = 1;// 1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定
 
     /**
      * 接口域名方法
@@ -187,12 +191,6 @@ public class Constants {
         //appid
         //请同时修改  androidmanifest.xml里面，.PayActivityd里的属性<data android:scheme="wx275d8ba3c5fccaf5"/>为新设置的appid
         public static final String APP_ID = "wx081f8efdfee69ab2";
-        //商户号
-        public static final String MCH_ID = "1342800901";
-        //  API密钥，在商户平台设置
-        public static final String API_KEY = "28d5cd62e3b772cb8cf4c32f84108b45";
-
-
     }
 
     public static class Net {

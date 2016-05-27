@@ -39,4 +39,4 @@
         android:src="@drawable/ease_search_clear"
         android:visibility="invisible" />
 
-</RelativeLayout><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/res/layout/ease_search_bar_with_padding.xml --><!-- From: file:/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/easeui/build/intermediates/bundles/debug/res/layout/ease_search_bar_with_padding.xml -->
+</RelativeLayout><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/res/layout/ease_search_bar_with_padding.xml --><!-- From: file:/C:/Users/Administrator/AndroidStudioProjects/SmartFit/easeui/build/intermediates/bundles/debug/res/layout/ease_search_bar_with_padding.xml -->
