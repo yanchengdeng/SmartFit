@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/activity_horizontal_margin">
 
     <RelativeLayout
@@ -12,13 +12,13 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_icon"
-            android:scaleType="centerCrop"
             android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
             android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
             android:src="@mipmap/bg_pic"
             app:riv_corner_radius="4dip"
-            app:riv_oval="false"
-            android:layout_height="@dimen/icon_normal_size" />
+            app:riv_oval="false" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/image_padding_big"
         android:layout_marginRight="@dimen/image_padding_big"
-        android:layout_toLeftOf="@+id/ch_select"
+        android:layout_toLeftOf="@+id/ll_price_ui"
         android:layout_toRightOf="@+id/rl_icon_ui"
         android:orientation="vertical">
 
@@ -43,10 +43,10 @@
             android:id="@+id/tv_coach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_woman"
             android:singleLine="true"
             android:text="教练  "
-            android:drawableRight="@mipmap/icon_woman"
-            android:drawablePadding="@dimen/image_padding"
             android:textColor="@color/black"
             android:textSize="@dimen/text_normal_down"
             android:textStyle="bold" />
@@ -57,9 +57,9 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="有空"
-            android:visibility="invisible"
             android:textColor="@color/text_color_gray"
-            android:textSize="@dimen/text_normal_down" />
+            android:textSize="@dimen/text_normal_down"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -93,22 +93,55 @@
     </LinearLayout>
 
 
-    <CheckBox
-        android:id="@+id/ch_select"
+    <LinearLayout
+        android:id="@+id/ll_price_ui"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@null"
-        android:button="@null"
-        android:drawablePadding="@dimen/image_padding"
-        android:drawableRight="@drawable/coach_selected_checked"
-        android:gravity="center"
-        android:focusable="false"
-        android:clickable="false"
-        android:text="0元/小时"
-        android:textColor="@color/common_header_bg"
-        android:textSize="@dimen/text_normal_down" />
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_coach_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="教练课时费:0元/时"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="场地使用费:49元/时"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/ch_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:clickable="false"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@drawable/coach_selected_checked"
+            android:focusable="false"
+            android:gravity="center"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal_down" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

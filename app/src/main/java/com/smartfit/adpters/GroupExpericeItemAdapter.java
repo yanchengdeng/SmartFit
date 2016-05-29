@@ -35,7 +35,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             , List<ClassInfo> datas) {
         this.context = context;
         this.datas = datas;
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
 
     }
 

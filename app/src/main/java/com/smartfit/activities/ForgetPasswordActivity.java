@@ -138,6 +138,7 @@ public class ForgetPasswordActivity extends BaseActivity {
             @Override
             public void onBtnClick() {
                 dialog.dismiss();
+                finish();
             }
         });
     }

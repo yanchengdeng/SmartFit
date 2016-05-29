@@ -31,6 +31,7 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,9 +108,13 @@ public class CustomeMainActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                UserInfoDetail userInfoDetail =  Util.getUserInfo(CustomeMainActivity.this);
                 if (null != userInfo) {
+                    userInfoDetail.setBalance(userInfo.getBalance());
+                    Util.saveUserInfo(userInfoDetail);
                     fillData(userInfo);
                 }
+
 
                 mSVProgressHUD.dismiss();
             }

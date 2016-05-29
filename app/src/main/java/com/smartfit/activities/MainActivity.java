@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getInstance().getString(Constants.UID, ""))) {
             getUserInfo();
-            getFriendsInfo();
+
         }
 
         addLisener();
@@ -321,6 +321,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                             SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
                         }
                         LoginHX(userInfoDetail.getUid());
+                        getFriendsInfo();
                         String client = SharedPreferencesUtils.getInstance().getString(Constants.CLINET_ID, "");
                         if (!TextUtils.isEmpty(client) && NetUtil.isLogin(MainActivity.this)) {
                             bindClient(client);

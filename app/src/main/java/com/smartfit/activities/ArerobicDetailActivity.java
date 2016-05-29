@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,16 +22,23 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,19 +93,39 @@ public class ArerobicDetailActivity extends BaseActivity {
     @Bind(R.id.scrollView)
     ScrollView scrollView;
     private String courseId;
+    private EventBus eventBus;
+
+    private ClassInfoDetail detail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arerobic_detail);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
+    }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof UpdateAreoClassDetail) {
+            btnOrder.setVisibility(View.GONE);
+            llScanBar.setVisibility(View.VISIBLE);
+            llViewScanCode.setVisibility(View.GONE);
+            tvScanCodeInfo.setVisibility(View.VISIBLE);
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvSaveToPhone.setText(getString(R.string.copy_link));
+        }
+
+    /* Do something */
     }
 
     private void initView() {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
         courseId = getIntent().getStringExtra(Constants.PASS_STRING);
+        rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
     }
 
@@ -126,9 +154,11 @@ public class ArerobicDetailActivity extends BaseActivity {
         mQueue.add(request);
 
     }
-
+    String codeBar;
 
     private void fillData(ClassInfoDetail detail) {
+        this.detail = detail;
+        this.codeBar = detail.getQrcodeUrl();
         /**
          * 订单状态（
          * 1我报名但未付款，
@@ -140,14 +170,17 @@ public class ArerobicDetailActivity extends BaseActivity {
          * 7课程已结束未评论
          * 8已评论）
          */
-
+        btnOrder.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(detail.getOrderStatus())) {
             if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
+
+            if (Integer.parseInt(detail.getOrderStatus()) == 1) {
+                btnOrder.setVisibility(View.VISIBLE);
+            }
         }
 
-        btnOrder.setVisibility(View.GONE);
 
         if (detail.getOrderStatus().equals("3")) {
             llScanBar.setVisibility(View.VISIBLE);
@@ -158,7 +191,7 @@ public class ArerobicDetailActivity extends BaseActivity {
             } else {
                 llViewScanCode.setVisibility(View.GONE);
                 tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：http://123.57.164.115:8098/sys/upload/qrCodeImg?courseId=%1$s&uid=%2$s", new Object[]{detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
         }
@@ -185,7 +218,6 @@ public class ArerobicDetailActivity extends BaseActivity {
         }
 
 
-
         if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
@@ -202,7 +234,7 @@ public class ArerobicDetailActivity extends BaseActivity {
             public void run() {
                 scrollView.setVisibility(View.VISIBLE);
             }
-        }, 1000);
+        }, 500);
     }
 
     private void addLisener() {
@@ -210,6 +242,65 @@ public class ArerobicDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (detail != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 4);
+                    bundle.putString(Constants.COURSE_ID, detail.getCourseId());
+                    bundle.putString(Constants.COURSE_MONEY, detail.getPrice());
+                    bundle.putString("start_time", detail.getStartTime());
+                    bundle.putString("end_time", detail.getEndTime());
+                    bundle.putString("classroom",detail.getClassroomId());
+                    bundle.putString(Constants.COURSE_TYPE,"3");
+                    bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
+                    openActivity(PayActivity.class, bundle);
+                } else {
+                    mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                }
+            }
+        });
+
+        //保存手机
+        tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tvSaveToPhone.getText().equals(getString(R.string.copy_link))) {
+                    Util.copyToClob(tvScanCodeInfo.getText().toString(), ArerobicDetailActivity.this);
+                    mSVProgressHUD.showSuccessWithStatus("复制成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else if (!TextUtils.isEmpty(codeBar)) {
+                    mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            mSVProgressHUD.dismiss();
+                            Util.saveImageToPhoto(ArerobicDetailActivity.this, loadedImage);
+                            mSVProgressHUD.showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+                    });
+                }
             }
         });
     }

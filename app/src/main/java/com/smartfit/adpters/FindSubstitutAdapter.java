@@ -46,7 +46,7 @@ public class FindSubstitutAdapter extends BaseAdapter {
     public FindSubstitutAdapter(Context context, List<SustituteCoach> datas, String courseid) {
         this.datas = datas;
         this.context = context;
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
         this.courseid = courseid;
     }
 

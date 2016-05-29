@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.activities.CoachInfoActivity;
@@ -30,17 +31,18 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/3/4.
  * 私教  数据列表
  */
-public class PrivateEducationAdapter extends BaseAdapter  {
+public class PrivateEducationAdapter extends BaseAdapter {
     private Context context;
     private List<PrivateEducationClass> datas;
     LinearLayout.LayoutParams params;
 
     private boolean isDissmis = true;
+
     public PrivateEducationAdapter(Context context
             , List<PrivateEducationClass> datas) {
         this.context = context;
         this.datas = datas;
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
     }
 
 
@@ -60,7 +62,7 @@ public class PrivateEducationAdapter extends BaseAdapter  {
     }
 
     @Override
-    public View getView( int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.adapter_private_education_item, null);
@@ -72,47 +74,46 @@ public class PrivateEducationAdapter extends BaseAdapter  {
 
         viewHolder.ratingBar.setLayoutParams(params);
 
-         final PrivateEducationClass item = datas.get(position);
+        final PrivateEducationClass item = datas.get(position);
         if (!TextUtils.isEmpty(item.getNickName())) {
-            viewHolder.tvCoach.setText("教练 "+item.getNickName());
+            viewHolder.tvCoach.setText("教练 " + item.getNickName());
         }
 
         if (!TextUtils.isEmpty(item.getSex())) {
-            if (item.getSex().equals(Constants.SEX_WOMEN)){
-                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_woman),null);
-            }else{
-                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null,null,context.getResources().getDrawable(R.mipmap.icon_man),null);
+            if (item.getSex().equals(Constants.SEX_WOMEN)) {
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_woman), null);
+            } else {
+                viewHolder.tvCoach.setCompoundDrawablesWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.mipmap.icon_man), null);
             }
         }
         viewHolder.chSelect.setChecked(item.isCheck());
-        if(isDissmis){
+        if (isDissmis) {
             viewHolder.chSelect.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             viewHolder.chSelect.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(item.getPrice())) {
-            viewHolder.chSelect.setText(item.getPrice()+"元/小时");
+            viewHolder.tvCoachPrice.setText(String.format("教练课时费:%s元/时",item.getPrice()));
         }
 
-       viewHolder.tvTime.setText("暂无时间 /有空");
+        viewHolder.tvTime.setText("暂无时间 /有空");
 
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getUid());
-                        ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class,bundle);
+                bundle.putString(Constants.PASS_STRING, item.getUid());
+                ((MainBusinessActivity) context).openActivity(CoachInfoActivity.class, bundle);
             }
         });
         if (!TextUtils.isEmpty(item.getStars())) {
             viewHolder.ratingBar.setRating(Float.parseFloat(item.getStars()));
             viewHolder.tvNum.setText(item.getStars());
         }
-        ImageLoader.getInstance().displayImage(item.getUserPicUrl(),viewHolder.ivIcon, Options.getListOptions());
+        ImageLoader.getInstance().displayImage(item.getUserPicUrl(), viewHolder.ivIcon, Options.getListOptions());
         return convertView;
     }
-
 
 
     public void setData(List<PrivateEducationClass> datas) {
@@ -131,9 +132,11 @@ public class PrivateEducationAdapter extends BaseAdapter  {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    public static class ViewHolder {
+    static class ViewHolder {
         @Bind(R.id.iv_icon)
-        ImageView ivIcon;
+        RoundedImageView ivIcon;
+        @Bind(R.id.rl_icon_ui)
+        RelativeLayout rlIconUi;
         @Bind(R.id.tv_coach)
         TextView tvCoach;
         @Bind(R.id.tv_time)
@@ -142,8 +145,14 @@ public class PrivateEducationAdapter extends BaseAdapter  {
         RatingBar ratingBar;
         @Bind(R.id.tv_num)
         TextView tvNum;
+        @Bind(R.id.ll_context_ui)
+        LinearLayout llContextUi;
+        @Bind(R.id.tv_coach_price)
+        TextView tvCoachPrice;
         @Bind(R.id.ch_select)
-        public CheckBox chSelect;
+        CheckBox chSelect;
+        @Bind(R.id.ll_price_ui)
+        LinearLayout llPriceUi;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

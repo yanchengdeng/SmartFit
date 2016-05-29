@@ -36,7 +36,7 @@ public class PrivateEducationOrderAdapter extends BaseAdapter {
             , List<PrivateEducationClass> datas) {
         this.context = context;
         this.datas = datas;
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
     }
 
 

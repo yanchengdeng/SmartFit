@@ -96,12 +96,12 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
         if (!TextUtils.isEmpty(userInfo)) {
             UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
-            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getListOptions());
+            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getHeaderOptionsCircle());
             if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
                 tvName.setText(userInfoDetail.getNickName());
             }

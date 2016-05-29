@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smartfit"
-    android:versionCode="2"
-    android:versionName="1.1"
     >
 
     <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
@@ -258,7 +256,7 @@
         <!-- 添加Umeng 统计 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56d69fea67e58e4d270012e4" />
+            android:value="57455f8767e58e19e2001f71" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
