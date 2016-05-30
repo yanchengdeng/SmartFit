@@ -51,4 +51,16 @@ public class MessageType {
      * 课程代课申请--接受后发给发起教练  10
      */
     public static String MESSAGE_TYPE_COURSE_SUBSITUTE_ACCEPT = "10";
+    /**
+     * 用户参加小班课消息通知教练  11
+     */
+    public static String MESSAGE_TYPE_SMALL_CLASS_NOTICE_COACH = "11";
+    /**
+     * 用户取消了小班课和私教课通知教练  12
+     */
+    public static String MESSAGE_TYPE_COURSE_CANCLE_CLASS_NOTCI_COACH = "12";
+    /**
+     * 教练取消课程--通知参与用户  13
+     */
+    public static String MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER = "13";
 }

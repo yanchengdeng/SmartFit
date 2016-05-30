@@ -18,6 +18,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
@@ -46,10 +47,13 @@ import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
 import com.umeng.socialize.UMShareAPI;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -373,7 +377,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
 
-            }else if (detail.getOrderStatus().equals("4")) {
+            } else if (detail.getOrderStatus().equals("4")) {
                 //订单详情页   预约成功
                 btnOrder.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
@@ -441,12 +445,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             codeBar = detail.getQrcodeUrl();
         }
         if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-            if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
-                tvSaveToPhone.setVisibility(View.GONE);
-            }
-        }
 
-        if (detail.getOrderStatus().equals("3")) {
             if (DateUtils.isQeWorked(detail.getStartTime())) {
                 llViewScanCode.setVisibility(View.VISIBLE);
                 tvScanCodeInfo.setVisibility(View.GONE);
@@ -454,12 +453,11 @@ public class GroupClassDetailActivity extends BaseActivity {
             } else {
                 llViewScanCode.setVisibility(View.GONE);
                 tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
+
         }
-
-
         scrollView.fullScroll(ScrollView.FOCUS_UP);
 
         new Handler().postDelayed(new Runnable() {
@@ -551,7 +549,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
-                    bundle.putString(Constants.COURSE_TYPE,"0");
+                    bundle.putString(Constants.COURSE_TYPE, "0");
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
@@ -603,7 +601,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (tvSaveToPhone.getText().equals(getString(R.string.copy_link))) {
-                    Util.copyToClob(tvScanCodeInfo.getText().toString(),GroupClassDetailActivity.this);
+                    Util.copyToClob(tvScanCodeInfo.getText().toString(), GroupClassDetailActivity.this);
                     mSVProgressHUD.showSuccessWithStatus("复制成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 } else if (!TextUtils.isEmpty(codeBar)) {
                     mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);

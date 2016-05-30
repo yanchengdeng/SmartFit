@@ -114,7 +114,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
                     viewHolder.tvTittle.setText(String.format(context.getString(R.string.accept_your_course), new Object[]{item.getMessageContent().getInvitedUserName(), item.getMessageContent().getCourseName()}));
                 }
-            }else if(item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_INVITE)){
+            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_INVITE)) {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
                     viewHolder.tvTittle.setText("邀请您加入课程");
                 }
@@ -164,14 +164,14 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             viewHolder.btnAggren.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getId(),position,item.getMessageContent().getCourseId(), 1);
+                    aggree(item.getId(), position, item.getMessageContent().getCourseId(), 1);
                 }
             });
 
             viewHolder.btnRefuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getId(),position,item.getMessageContent().getCourseId(), 2);
+                    aggree(item.getId(), position, item.getMessageContent().getCourseId(), 2);
                 }
             });
 
@@ -211,6 +211,11 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             } else if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_SUBSITUTE_ACCEPT)) {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
                     viewHolderInfo.tvTittle.setText(String.format(context.getString(R.string.accept_your_course), new Object[]{item.getMessageContent().getInvitedUserName(), item.getMessageContent().getCourseName()}));
+                }
+            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_SMALL_CLASS_NOTICE_COACH) || item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_CANCLE_CLASS_NOTCI_COACH) || item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER)) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle()) && !TextUtils.isEmpty(item.getMessageContent().getContent())) {
+                    viewHolderInfo.tvName.setText(item.getMessageContent().getTitle());
+                    viewHolderInfo.tvTittle.setText(item.getMessageContent().getContent());
                 }
             } else {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
@@ -252,13 +257,13 @@ public class CourseMessagItemAdapter extends BaseAdapter {
 
             } else if (item.getMessageContent().getCourseType().equals("2")) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getMessageContent().getCourseId());
-                        ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class,bundle);
+                bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
+                ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class, bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("3")) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getMessageContent().getCourseId());
-                ((BaseActivity) context).openActivity(ArerobicDetailActivity.class,bundle);
+                bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
+                ((BaseActivity) context).openActivity(ArerobicDetailActivity.class, bundle);
             }
         }
 
@@ -270,7 +275,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
      * @param courseId
      * @param flag     1  同意  2  拒绝
      */
-    private void aggree(final String messageId, final int posiotn,String courseId, final int flag) {
+    private void aggree(final String messageId, final int posiotn, String courseId, final int flag) {
         Map<String, String> maps = new HashMap<>();
         maps.put("courseId", courseId);
         String host;
@@ -289,7 +294,7 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                     ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("已拒绝", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
 
-                ignoreFriends(messageId,posiotn);
+                ignoreFriends(messageId, posiotn);
             }
         }, new Response.ErrorListener() {
             @Override

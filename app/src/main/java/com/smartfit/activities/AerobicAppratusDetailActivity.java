@@ -180,7 +180,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (Integer.parseInt(detail.getState()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
-            if (detail.getState().equals("3")) {
                 if (DateUtils.isQeWorked(detail.getStartTime())) {
                     llViewScanCode.setVisibility(View.VISIBLE);
                     tvScanCodeInfo.setVisibility(View.GONE);
@@ -190,7 +189,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     tvScanCodeInfo.setVisibility(View.VISIBLE);
                     tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                     tvSaveToPhone.setText(getString(R.string.copy_link));
-                }
             }
         }
 
@@ -201,11 +199,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-            llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-        }
 
 
         if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {

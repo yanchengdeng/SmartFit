@@ -115,7 +115,7 @@ public class ArerobicDetailActivity extends BaseActivity {
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
-            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));
         }
 
@@ -154,6 +154,7 @@ public class ArerobicDetailActivity extends BaseActivity {
         mQueue.add(request);
 
     }
+
     String codeBar;
 
     private void fillData(ClassInfoDetail detail) {
@@ -172,17 +173,10 @@ public class ArerobicDetailActivity extends BaseActivity {
          */
         btnOrder.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-            if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
-                tvSaveToPhone.setVisibility(View.GONE);
-            }
 
             if (Integer.parseInt(detail.getOrderStatus()) == 1) {
                 btnOrder.setVisibility(View.VISIBLE);
             }
-        }
-
-
-        if (detail.getOrderStatus().equals("3")) {
             llScanBar.setVisibility(View.VISIBLE);
             if (DateUtils.isQeWorked(detail.getStartTime())) {
                 llViewScanCode.setVisibility(View.VISIBLE);
@@ -191,9 +185,23 @@ public class ArerobicDetailActivity extends BaseActivity {
             } else {
                 llViewScanCode.setVisibility(View.GONE);
                 tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
         }
 
 
@@ -255,8 +263,8 @@ public class ArerobicDetailActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_MONEY, detail.getPrice());
                     bundle.putString("start_time", detail.getStartTime());
                     bundle.putString("end_time", detail.getEndTime());
-                    bundle.putString("classroom",detail.getClassroomId());
-                    bundle.putString(Constants.COURSE_TYPE,"3");
+                    bundle.putString("classroom", detail.getClassroomId());
+                    bundle.putString(Constants.COURSE_TYPE, "3");
                     bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
                     openActivity(PayActivity.class, bundle);
                 } else {
