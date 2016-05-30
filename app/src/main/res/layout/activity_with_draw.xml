@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_horizontal_margin"
-                android:text="150元"
+                android:text="0元"
                 android:textColor="@color/text_color_blue"
                 android:textSize="@dimen/text_larger" />
 

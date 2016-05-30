@@ -94,6 +94,14 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder.tvPrice.setText(item.getPrice() + "元");
         }
 
+        if (!TextUtils.isEmpty(item.getCourseType())) {
+            if (item.getCourseType().equals("1")){
+                viewHolder.tvPriceInfo.setVisibility(View.GONE);
+            }else{
+                viewHolder.tvPriceInfo.setVisibility(View.VISIBLE);
+            }
+        }
+
         ImageLoader.getInstance().displayImage(item.getClassUrl(), viewHolder.ivIcon, Options.getListOptions());
 
         viewHolder.ratingBar.setLayoutParams(params);
