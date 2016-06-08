@@ -549,7 +549,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                     bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
-                    bundle.putString(Constants.COURSE_TYPE, "0");
+                    bundle.putString(Constants.COURSE_TYPE, type);
                     openActivity(PayActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
