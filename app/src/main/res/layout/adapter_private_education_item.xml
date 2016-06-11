@@ -121,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="场地使用费:49元/时"
+                android:visibility="gone"
                 android:textColor="@color/common_header_bg"
                 android:textSize="@dimen/text_small"
                 android:textStyle="bold" />

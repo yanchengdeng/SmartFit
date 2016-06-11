@@ -21,7 +21,7 @@ public class Constants {
 
     public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
-     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定
+     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定   8 淋浴支付
      */
     public static final String PAGE_INDEX = "page_index";
 
@@ -61,7 +61,7 @@ public class Constants {
     public static final String CLINET_ID = "client_id";
 
     public static  boolean IS_PASS_FROM_ORDER = true;//购买    、充值 false
-    public static int PAGE_INDEX_FROM = 1;// 1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定
+    public static int PAGE_INDEX_FROM = 1;// 1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定  8 .淋浴充值
 
     /**
      * 接口域名方法
@@ -159,6 +159,15 @@ public class Constants {
     public static final String DYNAMIC_ADDDYNAMIC = "/dynamic/addDynamic";
     public static final String DYNAMIC_GOOD = "/dynamic/good";
 
+    //淋浴
+    public static final String TBEVENTRECORD_GETSHOWERRECORD = "/tbEventRecord/getShowerRecord";
+    public static final String ORDER_ORDERSHOWER = "/order/orderShower";
+
+    //实体卡
+    public static final String EVENT_CARDBINDEVENT = "/event/cardBindEvent";
+    public static final String EVENT_CARDCHECK = "/event/cardCheck";
+    public static final String PAY_CARDPAY = "/pay/cardPay";
+
 
     //消息
     public static final String MESSAGE_DEL = "/message/del";
@@ -195,11 +204,11 @@ public class Constants {
 
     public static class Net {
         //正式上线地址
-       public static final String URL = "http://139.196.228.98:7098";
+//       public static final String URL = "http://139.196.228.98:7098";
 
 
         //发布测试的接口
-//        public static final String URL = "http://139.196.228.98:8098";
+        public static final String URL = "http://139.196.228.98:8098";
 
         //内部测试接口
 //        public static final String URL = "http://123.57.164.115:8098";

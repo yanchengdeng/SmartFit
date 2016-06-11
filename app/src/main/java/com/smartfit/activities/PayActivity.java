@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -104,9 +105,21 @@ public class PayActivity extends BaseActivity {
     ImageView ivAlipay;
     @Bind(R.id.tv_alipay)
     TextView tvAlipay;
+    @Bind(R.id.tv_card_bind_tips)
+    TextView tvCardBindTips;
+    @Bind(R.id.tv_card_code)
+    TextView tvCardCode;
+    @Bind(R.id.et_card_code)
+    EditText etCardCode;
+    @Bind(R.id.tv_vertify_card_code)
+    TextView tvVertifyCardCode;
+    @Bind(R.id.rl_card_code_ui)
+    RelativeLayout rlCardCodeUi;
+    @Bind(R.id.tv_card_code_pay_tips)
+    TextView tvCardCodePayTips;
 
 
-    private int payStyle = 0;// 1  微信   2 支付宝 3.优惠券
+    private int payStyle = 0;//0 本地余额支付 1  微信   2 支付宝 3.优惠券  4 实体卡支付
 
     private String orderID;//订单 id
 
@@ -116,7 +129,7 @@ public class PayActivity extends BaseActivity {
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费
      */
     private int pageIndex = 1;
 
@@ -136,6 +149,8 @@ public class PayActivity extends BaseActivity {
 
     private List<EventUserful> userfulEventes = new ArrayList<>();
     private String classRoomId;
+
+    private String cardCode;
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -300,11 +315,22 @@ public class PayActivity extends BaseActivity {
         }
         tvPayMoney.setText(payMoney + "元");
         Constants.PAGE_INDEX_FROM = pageIndex;
-        if (pageIndex != 7) {
+        if (pageIndex != 7 && pageIndex != 8) {
             getUseFullEvent();
+
         }
 
+        if (!TextUtils.isEmpty(couserType) && Integer.parseInt(couserType)<5  && pageIndex<5) {
+            showCardPay();
+        }
         getLeftMoney();
+
+    }
+
+    private void showCardPay() {
+        tvCardBindTips.setVisibility(View.VISIBLE);
+        rlCardCodeUi.setVisibility(View.VISIBLE);
+        tvCardCodePayTips.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -443,6 +469,63 @@ public class PayActivity extends BaseActivity {
         });
 
 
+        /***
+         * 验证实体卡
+         */
+        tvVertifyCardCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vertyfiyCode(etCardCode.getEditableText().toString());
+            }
+        });
+    }
+
+    /**
+     * 验证实体卡
+     *
+     * @param code
+     */
+    private void vertyfiyCode(final String code) {
+        if (TextUtils.isEmpty(code)) {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.card_tips), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
+
+        if (code.length() != 13) {
+            mSVProgressHUD.showInfoWithStatus(getString(R.string.card_lenght_tips), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            return;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("cardSNNumber", code);
+        map.put("cardType", couserType);
+        mSVProgressHUD.showWithStatus(getString(R.string.vertify_ing), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        PostRequest request = new PostRequest(Constants.EVENT_CARDCHECK, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                cardCode = code;
+                tvVertifyCardCode.setText(String.format("抵扣%s元", payMoney));
+                tvVertifyCardCode.setBackground(null);
+                tvVertifyCardCode.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_pt_check_on), null);
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("已验证,可直接使用", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                payStyle = 4;
+                ivWxSelected.setVisibility(View.GONE);
+                ivYeSelected.setVisibility(View.GONE);
+                ivAlipaySelected.setVisibility(View.GONE);
+                reInitUserEvent();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
     }
 
 
@@ -513,6 +596,9 @@ public class PayActivity extends BaseActivity {
                     getOrderCorse();
                 } else if (pageIndex == 7) {
                     getEventOrder();
+                } else if (pageIndex == 8) {
+                    orderID = orderCode;
+                    goPay();
                 } else {
                     if (TextUtils.isEmpty(orderCode)) {
                         getOrderCorse();
@@ -555,7 +641,35 @@ public class PayActivity extends BaseActivity {
                     payUserCouponWithEventUserId();
                 }
             }
+        }else if (payStyle==4){
+            payCardPay();
         }
+    }
+
+    private void payCardPay() {
+        mSVProgressHUD.showWithStatus("支付中...", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> map = new HashMap<>();
+        map.put("orderCode", orderID);
+        map.put("cardSNNumber",cardCode);
+        PostRequest request = new PostRequest(Constants.PAY_CARDPAY, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                mSVProgressHUD.dismiss();
+                dealAfterPay();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PayActivity.this);
+        mQueue.add(request);
     }
 
     /**

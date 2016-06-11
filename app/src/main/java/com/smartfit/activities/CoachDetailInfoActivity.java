@@ -156,12 +156,10 @@ public class CoachDetailInfoActivity extends BaseActivity {
             tvName.setText(userInfoDetail.getNickName());
         }
 
-        if (!TextUtils.isEmpty(userInfoDetail.getSex())) {
-            if (userInfoDetail.getSex().equals(Constants.SEX_WOMEN)) {
-                tvSex.setText("女");
-            } else {
-                tvSex.setText("男");
-            }
+        if (!TextUtils.isEmpty(userInfoDetail.getSex()) && userInfoDetail.getSex().equals(Constants.SEX_WOMEN)) {
+            tvSex.setText("女");
+        } else {
+            tvSex.setText("男");
         }
 
         if (!TextUtils.isEmpty(userInfoDetail.getSignature())) {

@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.BindCard;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.adpters.TicketGiftAdapter;
@@ -21,6 +22,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +54,7 @@ public class MyTickeFragment extends BaseFragment {
     private  boolean isLoaded;//是否加载完毕
     private boolean isPre;//是否初始化好
 
+    private EventBus eventBus;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,14 +68,25 @@ public class MyTickeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getArguments() != null)
             type = getArguments().getString("type");
-        View view = inflater.inflate(R.layout.activity_my_ticket_gift, null);
+        View view = inflater.inflate(R.layout.fragment_my_ticket_gift, null);
         ButterKnife.bind(this, view);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         isPre = true;
         intView();
         lazyLoad();
         return view;
     }
 
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof BindCard) {
+            datas.clear();
+            isPre = true;
+            isLoaded = false;//是否加载完毕
+            lazyLoad();
+        }
+    }
 
     private void intView() {
         adapter = new TicketGiftAdapter(getActivity(), datas);

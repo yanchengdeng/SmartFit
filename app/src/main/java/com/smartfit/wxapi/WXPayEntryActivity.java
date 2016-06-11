@@ -1,7 +1,6 @@
 package com.smartfit.wxapi;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -121,6 +120,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         } else if (pageIndex == 6) {
             eventBus.post(new UpdateCustomClassInfo());
         } else if (pageIndex == 7) {
+            finish();
+        }else if(pageIndex==8){
             finish();
         }
         new Handler().postDelayed(new Runnable() {

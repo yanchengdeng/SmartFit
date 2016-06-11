@@ -6,4 +6,15 @@ package com.smartfit.MessageEvent;
  *
  */
 public class UpdatePrivateClassDetail {
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    private String courseId;
+
 }

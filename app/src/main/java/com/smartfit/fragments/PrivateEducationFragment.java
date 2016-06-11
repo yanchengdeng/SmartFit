@@ -35,6 +35,7 @@ import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.IdleClassInfo;
 import com.smartfit.beans.IdleClassListInfo;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.beans.WorkPointAddress;
@@ -42,6 +43,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -50,6 +52,7 @@ import com.smartfit.views.HorizontalListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +135,7 @@ public class PrivateEducationFragment extends Fragment {
                 tvAddress.setText(addresses.get(0).getVenueName());
                 venueId = addresses.get(0).getVenueId();
                 startTime = "9:00";
-                endTime =  "10:00";
+                endTime = "10:00";
                 loadData();
             } else {
                 getVenueList();
@@ -167,14 +170,14 @@ public class PrivateEducationFragment extends Fragment {
                 if (selectPricates.size() == 0) {
                     ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择教练");
                 } else {
-                    if (idleClass!=null) {
+                    if (idleClass != null) {
                         Bundle bundle = new Bundle();
                         bundle.putParcelableArrayList(Constants.PASS_OBJECT, selectPricates);
                         bundle.putSerializable(Constants.PASS_IDLE_CLASS_INFO, idleClass);
-                        bundle.putString("start",selectDate + " " +startTime);
-                        bundle.putString("end",selectDate + " "+endTime);
+                        bundle.putString("start", selectDate + " " + startTime);
+                        bundle.putString("end", selectDate + " " + endTime);
                         ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
-                    }else{
+                    } else {
                         ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("暂无空闲场馆");
                     }
                 }
@@ -198,23 +201,45 @@ public class PrivateEducationFragment extends Fragment {
         return selectPricates;
     }
 
-    IdleClassListInfo  idleClass;
+    IdleClassListInfo idleClass;
+
+    private String priceDisce[];
+
     /**
      * 获取空闲教室
      */
     private void getIdleCoachList() {
 
         Map<String, String> data = new HashMap<>();
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +endTime)));
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
         data.put("venueId", venueId);
         data.put("classroomType", "2");
         PostRequest request = new PostRequest(Constants.CLASSIF_LISTTHEVENUEIDLECLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response,IdleClassListInfo.class);
-                if (idleClassListInfo != null && idleClassListInfo.getClassroomList().size()>0){
+                IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response, IdleClassListInfo.class);
+                if (idleClassListInfo != null && idleClassListInfo.getClassroomList().size() > 0) {
                     idleClass = idleClassListInfo;
+                    List<Float> prices = new ArrayList<>();
+                    for (IdleClassInfo item : idleClassListInfo.getClassroomList()) {
+                        prices.add(Float.parseFloat(item.getClassroomPrice()));
+                    }
+
+                    for (PrivateEducationClass item : datas) {
+
+                        //只有一个价格  显示    教练费用为250/小时
+                        if (Collections.max(prices).equals(Collections.min(prices))) {
+                            Float price = Float.parseFloat(item.getPrice()) +Collections.max(prices);
+                            item.setShowPriceInfo(String.format("%s/小时", new Object[]{String.valueOf(price)}));
+                        } else {
+                            Float priceLow = Float.parseFloat(item.getPrice()) + Collections.min(prices);
+                            Float priceHight = Float.parseFloat(item.getPrice()) + Collections.max(prices);
+                            LogUtil.w("dyc","低："+priceLow+"  高："+priceHight);
+                            item.setShowPriceInfo(String.format("%1$s-%2$s/小时", new Object[]{String.valueOf(priceLow), String.valueOf(priceHight)}));
+                        }
+                    }
+                    adapter.setData(datas);
                 }
             }
         }, new Response.ErrorListener() {
@@ -229,20 +254,22 @@ public class PrivateEducationFragment extends Fragment {
         ((BaseActivity) getActivity()).mQueue.add(request);
     }
 
-
+    /**
+     * 获取场地空闲教练
+     */
     private void loadData() {
 
 
-        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)){
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)) {
 
-            ((BaseActivity)getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("请选择预约时间", SVProgressHUD.SVProgressHUDMaskType.Clear);
             return;
         }
 
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> data = new HashMap<>();
-        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions( selectDate + " " +startTime)));
-        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions( selectDate + " " +endTime)));
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
         if (!TextUtils.isEmpty(startPrice)) {
             data.put("startPrice", startPrice);
             data.put("endPrice", endPrice);
@@ -259,7 +286,6 @@ public class PrivateEducationFragment extends Fragment {
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
                 if (privateEducationClasses != null && privateEducationClasses.size() > 0) {
                     datas = privateEducationClasses;
-                    adapter.setData(privateEducationClasses);
                     listView.setVisibility(View.VISIBLE);
                     noData.setVisibility(View.INVISIBLE);
                     llListViewCover.setVisibility(View.GONE);
@@ -401,8 +427,8 @@ public class PrivateEducationFragment extends Fragment {
         if (requestCode == REQUEST_CODE_ORDER_TIME && resultCode == OrderReserveActivity.SELECT_VALUE_OVER) {
             if (!TextUtils.isEmpty(data.getExtras().getString("time_before")) && !TextUtils.isEmpty(data.getExtras().getString("time_after"))) {
                 tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
-                startTime =  data.getExtras().getString("time_before");
-                endTime =  data.getExtras().getString("time_after");
+                startTime = data.getExtras().getString("time_before");
+                endTime = data.getExtras().getString("time_after");
                 loadData();
             }
 

@@ -128,7 +128,9 @@ public class MyClassesOverFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.USER_CONTACTCOURSELIST, datas, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                if (getActivity()!=null){
+                    ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                }
                 MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
                     myAddClassArrayList.addAll(subClasses.getListData());

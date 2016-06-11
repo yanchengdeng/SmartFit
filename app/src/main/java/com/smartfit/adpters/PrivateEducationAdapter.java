@@ -93,8 +93,8 @@ public class PrivateEducationAdapter extends BaseAdapter {
             viewHolder.chSelect.setVisibility(View.GONE);
         }
 
-        if (!TextUtils.isEmpty(item.getPrice())) {
-            viewHolder.tvCoachPrice.setText(String.format("教练课时费:%s元/时",item.getPrice()));
+        if (!TextUtils.isEmpty(item.getShowPriceInfo())) {
+            viewHolder.tvCoachPrice.setText(item.getShowPriceInfo());
         }
 
         viewHolder.tvTime.setText("暂无时间 /有空");

@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.BindCardActivity">
+
+    <include layout="@layout/common_header_view" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light">
+
+        <LinearLayout
+            android:id="@+id/ll_code_ui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/header_bar_height"
+            android:background="@color/white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="验证码："
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <EditText
+                android:id="@+id/et_card_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/card_tips"
+                android:inputType="phone"
+                android:maxLength="13"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_code_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_code_ui"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="@string/user_card_tips"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal" />
+
+        <Button
+            android:id="@+id/btn_bind"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tv_code_tips"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="@drawable/bg_dialog_selector_red"
+            android:gravity="center"
+            android:text="@string/bind_card_now"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+
+    </RelativeLayout>
+
+</LinearLayout>

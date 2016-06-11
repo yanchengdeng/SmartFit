@@ -35,10 +35,14 @@ import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.LingyunListInfo;
+import com.smartfit.beans.LinyuCourseInfo;
+import com.smartfit.beans.LinyuRecord;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -52,6 +56,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -543,17 +548,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classInfoDetail != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
-                    bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
-                    bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
-                    bundle.putString(Constants.COURSE_TYPE, type);
-                    openActivity(PayActivity.class, bundle);
-                } else {
-                    mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-                }
+                checkLinyuRechagerInfo();
+
             }
         });
 
@@ -634,6 +630,79 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 检查淋浴欠费情况
+     */
+    private void checkLinyuRechagerInfo() {
+        PostRequest request = new PostRequest(Constants.TBEVENTRECORD_GETSHOWERRECORD, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
+                if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
+                    createLinyuOrder(lingyunListInfo.getListData());
+                }else{
+                    if (classInfoDetail != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
+                        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
+                        bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
+                        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+                        bundle.putString(Constants.COURSE_TYPE, type);
+                        openActivity(PayActivity.class, bundle);
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                    }
+                }
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+
+    }
+
+
+    /**
+     * 生成淋浴订单
+     *
+     * @param listData
+     */
+    private void createLinyuOrder(final List<LinyuRecord> listData) {
+        StringBuilder sbID =new StringBuilder();
+        for (LinyuRecord item:listData){
+            sbID.append(item.getRecordId()).append("|");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("recordIdStr", sbID.toString());
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
+                if (linyuCourseInfo!=null){
+                    Util.showLinyuRechagerDialog(GroupClassDetailActivity.this, linyuCourseInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+
     }
 
     private void submintScore(float rating, String comments) {

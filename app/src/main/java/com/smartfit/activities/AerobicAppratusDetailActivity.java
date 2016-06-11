@@ -27,10 +27,14 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.AreaDetailInfo;
+import com.smartfit.beans.LingyunListInfo;
+import com.smartfit.beans.LinyuCourseInfo;
+import com.smartfit.beans.LinyuRecord;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -41,6 +45,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -252,20 +257,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classInfoDetail != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 4);
-                    bundle.putString(Constants.COURSE_ID, classInfoDetail.getId());
-                    bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getClassroomPrice());
-                    bundle.putString("start_time", startTime);
-                    bundle.putString("end_time", endTime);
-                    bundle.putString("classroom",classInfoDetail.getId());
-                    bundle.putString(Constants.COURSE_TYPE,"3");
-                    bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
-                    openActivity(PayActivity.class, bundle);
-                } else {
-                    mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-                }
+                getShowerRecord();
+
             }
         });
 
@@ -308,6 +301,82 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * 获取淋浴欠费接口
+     */
+    private void getShowerRecord() {
+        PostRequest request = new PostRequest(Constants.TBEVENTRECORD_GETSHOWERRECORD, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
+                if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
+                    createLinyuOrder(lingyunListInfo.getListData());
+                }else{
+                    if (classInfoDetail != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Constants.PAGE_INDEX, 4);
+                        bundle.putString(Constants.COURSE_ID, classInfoDetail.getId());
+                        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getClassroomPrice());
+                        bundle.putString("start_time", startTime);
+                        bundle.putString("end_time", endTime);
+                        bundle.putString("classroom",classInfoDetail.getId());
+                        bundle.putString(Constants.COURSE_TYPE,"3");
+                        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
+                        openActivity(PayActivity.class, bundle);
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                    }
+                }
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+
+    }
+
+    /**
+     * 生成淋浴订单
+     *
+     * @param listData
+     */
+    private void createLinyuOrder(final List<LinyuRecord> listData) {
+        StringBuilder sbID =new StringBuilder();
+        for (LinyuRecord item:listData){
+            sbID.append(item.getRecordId()).append("|");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("recordIdStr", sbID.toString());
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
+                if (linyuCourseInfo!=null){
+                    Util.showLinyuRechagerDialog(AerobicAppratusDetailActivity.this, linyuCourseInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+
+    }
+
 
     private class TestNomalAdapter extends StaticPagerAdapter {
 

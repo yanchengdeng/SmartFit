@@ -65,6 +65,7 @@ public class ChangeRoomAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getClassroomPrice())) {
             viewHolder.tvPrice.setText(item.getClassroomPrice() + "/小时");
         }
+        viewHolder.tvPrice.setVisibility(View.INVISIBLE);
         return convertView;
     }
 

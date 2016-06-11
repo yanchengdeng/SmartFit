@@ -1,22 +1,30 @@
 package com.smartfit.utils;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MessageActivity;
+import com.smartfit.activities.PayActivity;
 import com.smartfit.beans.AttentionBean;
 import com.smartfit.beans.CityBean;
+import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.SelectedSort;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
@@ -353,7 +361,8 @@ public class Util {
     /**
      * 需要权限:android.permission.GET_TASKS
      * 是否是当前app
-     *是否在消息列表页
+     * 是否在消息列表页
+     *
      * @param context
      * @return
      */
@@ -375,18 +384,56 @@ public class Util {
         return false;
     }
 
-    public static AttentionBean getFriendsInfoByUserid(String userid){
-       String jsoninfo =  SharedPreferencesUtils.getInstance().getString(Constants.LOCAL_FRIENDS_LIST,"");
+    public static AttentionBean getFriendsInfoByUserid(String userid) {
+        String jsoninfo = SharedPreferencesUtils.getInstance().getString(Constants.LOCAL_FRIENDS_LIST, "");
         if (!TextUtils.isEmpty(jsoninfo)) {
-            List<AttentionBean>  attentionBeans = JsonUtils.listFromJson(jsoninfo,AttentionBean.class);
-            if (attentionBeans!= null && attentionBeans.size()>0){
-                for (AttentionBean item:attentionBeans){
-                    if (("user_"+item.getUid()).equals(userid)){
+            List<AttentionBean> attentionBeans = JsonUtils.listFromJson(jsoninfo, AttentionBean.class);
+            if (attentionBeans != null && attentionBeans.size() > 0) {
+                for (AttentionBean item : attentionBeans) {
+                    if (("user_" + item.getUid()).equals(userid)) {
                         return item;
                     }
                 }
             }
         }
         return null;
+    }
+
+    /**
+     * 弹出欠费对话框
+     *
+     * @param mContext
+     * @param linyuCourseInfo
+     */
+    public static void showLinyuRechagerDialog(final Context mContext, final LinyuCourseInfo linyuCourseInfo) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_linyu_recharge_info);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_rechager_tips);
+
+
+        tvTittle.setText(String.format("您还有一个淋浴订单（金额：%s元）未支付，请您先支付。", linyuCourseInfo.getOrderPrice()));
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.PAGE_INDEX, 8);// 8   淋浴付费
+                bundle.putString(Constants.COURSE_MONEY, linyuCourseInfo.getOrderPrice());
+                bundle.putString(Constants.COURSE_ORDER_CODE, linyuCourseInfo.getOrderCode());
+                bundle.putString(Constants.COURSE_TYPE,"5");//模拟一个 不是四个课程范围内的  类型，方便支付显示
+                ((BaseActivity) mContext).openActivity(PayActivity.class, bundle);
+                dialog.dismiss();
+
+            }
+        });
     }
 }

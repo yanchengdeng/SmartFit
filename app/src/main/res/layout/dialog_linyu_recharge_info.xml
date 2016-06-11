@@ -15,9 +15,25 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
-        android:text="修改性别"
+        android:text="提示"
         android:textColor="@color/text_color_black"
         android:textSize="@dimen/text_normal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_gray" />
+
+    <TextView
+        android:id="@+id/tv_rechager_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:padding="@dimen/image_padding"
+        android:text="@string/linyu_rechager_tips"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal_down" />
 
     <View
         android:layout_width="match_parent"
@@ -37,15 +53,14 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="男"
-            android:textColor="@color/blue_light"
+            android:text="以后再说"
+            android:textColor="@color/text_color_black"
             android:textSize="@dimen/text_normal" />
-
         <View
             android:layout_width="1px"
             android:layout_height="match_parent"
-            android:background="@color/text_color_gray" />
-
+            android:background="@color/text_color_gray"
+           />
 
         <TextView
             android:id="@+id/commit_action"
@@ -55,7 +70,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="女"
+            android:text="马上充值"
             android:textColor="@color/blue_light"
             android:textSize="@dimen/text_normal" />
     </LinearLayout>

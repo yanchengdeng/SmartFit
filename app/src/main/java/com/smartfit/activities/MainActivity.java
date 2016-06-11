@@ -45,6 +45,9 @@ import com.smartfit.MessageEvent.HxMessageList;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.beans.AttentionBean;
+import com.smartfit.beans.LingyunListInfo;
+import com.smartfit.beans.LinyuCourseInfo;
+import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.AppManager;
@@ -145,8 +148,73 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
 
+        if (NetUtil.isLogin(this)) {
+            getShowerRecord();
+        }
+
 
     }
+
+    /**
+     * 获取淋浴欠费接口
+     */
+    private void getShowerRecord() {
+        PostRequest request = new PostRequest(Constants.TBEVENTRECORD_GETSHOWERRECORD, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
+                if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
+                    createLinyuOrder(lingyunListInfo.getListData());
+                }
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
+
+    }
+
+    /**
+     * 生成淋浴订单
+     *
+     * @param listData
+     */
+    private void createLinyuOrder(final List<LinyuRecord> listData) {
+        StringBuilder sbID =new StringBuilder();
+        for (LinyuRecord item:listData){
+            sbID.append(item.getRecordId()).append("|");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("recordIdStr", sbID.toString());
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
+                if (linyuCourseInfo!=null){
+                    Util.showLinyuRechagerDialog(MainActivity.this, linyuCourseInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
+
+    }
+
 
     EMMessageListener msgListener = new EMMessageListener() {
 
@@ -154,38 +222,38 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         public void onMessageReceived(List<EMMessage> messages) {
             //收到消息
 
-            LogUtil.w("dyc","收到消息1"+messages.get(0).getBody().toString());
+            LogUtil.w("dyc", "收到消息1" + messages.get(0).getBody().toString());
 
-          LogUtil.w("dyc", "--ss---" +Util.isInMessageList(MainActivity.this));
-            if (Util.isInMessageList(MainActivity.this)){
+            LogUtil.w("dyc", "--ss---" + Util.isInMessageList(MainActivity.this));
+            if (Util.isInMessageList(MainActivity.this)) {
                 eventBus.post(new HxMessageList(messages));
-            }else{
-                showNotificaiton(MainActivity.this,messages.get(0).getBody().toString().split(":")[1].replace("\"",""));
+            } else {
+                showNotificaiton(MainActivity.this, messages.get(0).getBody().toString().split(":")[1].replace("\"", ""));
             }
         }
 
         @Override
         public void onCmdMessageReceived(List<EMMessage> messages) {
             //收到透传消息
-            LogUtil.w("dyc","收到消息2"+messages.get(0).getBody().toString());
+            LogUtil.w("dyc", "收到消息2" + messages.get(0).getBody().toString());
         }
 
         @Override
         public void onMessageReadAckReceived(List<EMMessage> messages) {
             //收到已读回执
-            LogUtil.w("dyc","收到消息3"+messages.get(0).getBody().toString());
+            LogUtil.w("dyc", "收到消息3" + messages.get(0).getBody().toString());
         }
 
         @Override
         public void onMessageDeliveryAckReceived(List<EMMessage> message) {
             //收到已送达回执
-            LogUtil.w("dyc","收到消息4"+message.get(0).getBody().toString());
+            LogUtil.w("dyc", "收到消息4" + message.get(0).getBody().toString());
         }
 
         @Override
         public void onMessageChanged(EMMessage message, Object change) {
             //消息状态变动
-            LogUtil.w("dyc","收到消息5"+message.getBody().toString());
+            LogUtil.w("dyc", "收到消息5" + message.getBody().toString());
         }
     };
 
@@ -246,8 +314,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         SharedPreferencesUtils.getInstance().remove(Constants.PASSWORD);
 
                         EMClient.getInstance().logout(true);
-                            NormalDialogOneBtn();
-                        }
+                        NormalDialogOneBtn();
+                    }
                 }
             });
         }
@@ -256,9 +324,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     private void NormalDialogOneBtn() {
 
         final NormalDialog dialog = new NormalDialog(SmartAppliction.getInstance());
-        if (dialog.isShowing()){
+        if (dialog.isShowing()) {
 
-        }else {
+        } else {
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             dialog.content("您的账号已在其他设备登陆")//
                     .btnNum(1)
@@ -285,7 +353,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                 mSVProgressHUD.dismiss();
                 List<AttentionBean> beans = JsonUtils.listFromJson(response.getAsJsonArray("list"), AttentionBean.class);
                 if (beans != null && beans.size() > 0) {
-                    SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST,JsonUtils.toJson(beans));
+                    SharedPreferencesUtils.getInstance().putString(Constants.LOCAL_FRIENDS_LIST, JsonUtils.toJson(beans));
 
                 }
             }
@@ -453,8 +521,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         );
 
         //自订课程
-        cardSmartFit.setOnClickListener(new View.OnClickListener()
-                                        {
+        cardSmartFit.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 //TODO 计入  活动

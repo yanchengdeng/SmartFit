@@ -129,9 +129,9 @@ public class CustomDetailInfoActivity extends BaseActivity {
 
 
         if (!TextUtils.isEmpty(userInfoDetail.getSex()) && userInfoDetail.getSex().equals(Constants.SEX_MAN)) {
-            tvSex.setText("女");
-        } else {
             tvSex.setText("男");
+        } else {
+            tvSex.setText("女");
         }
 
         if (!TextUtils.isEmpty(userInfoDetail.getSignature())) {

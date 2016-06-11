@@ -18,6 +18,16 @@ public class PrivateEducationClass implements Parcelable {
     private String stars;//0,
     private String coachDesc;//null,
     private String sex;//1
+    private String showPriceInfo;//显示价格说明
+    private String showPrice;//需要显示的价格
+
+    public String getShowPrice() {
+        return showPrice;
+    }
+
+    public void setShowPrice(String showPrice) {
+        this.showPrice = showPrice;
+    }
 
     public String getCoachId() {
         return coachId;
@@ -94,6 +104,15 @@ public class PrivateEducationClass implements Parcelable {
         this.isCheck = isCheck;
     }
 
+    public String getShowPriceInfo() {
+        return showPriceInfo;
+    }
+
+    public void setShowPriceInfo(String showPriceInfo) {
+        this.showPriceInfo = showPriceInfo;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -109,6 +128,8 @@ public class PrivateEducationClass implements Parcelable {
         dest.writeString(this.stars);
         dest.writeString(this.coachDesc);
         dest.writeString(this.sex);
+        dest.writeString(this.showPriceInfo);
+        dest.writeString(this.showPrice);
         dest.writeByte(isCheck ? (byte) 1 : (byte) 0);
     }
 
@@ -124,6 +145,8 @@ public class PrivateEducationClass implements Parcelable {
         this.stars = in.readString();
         this.coachDesc = in.readString();
         this.sex = in.readString();
+        this.showPriceInfo = in.readString();
+        this.showPrice = in.readString();
         this.isCheck = in.readByte() != 0;
     }
 

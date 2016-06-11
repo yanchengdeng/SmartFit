@@ -22,13 +22,18 @@ import com.smartfit.R;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CustomeDate;
+import com.smartfit.beans.LingyunListInfo;
+import com.smartfit.beans.LinyuCourseInfo;
+import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.ReopenClassInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.Util;
 import com.smartfit.views.HorizontalListView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -176,7 +181,7 @@ public class ReopenClassActivity extends BaseActivity {
            tvPrice.setText(detail.getPrice() + "元");
         }
 
-        ImageLoader.getInstance().displayImage(detail.getVenueUrl(),ivIcon, Options.getListOptions());
+        ImageLoader.getInstance().displayImage(detail.getVenueUrl(), ivIcon, Options.getListOptions());
         LinearLayout.LayoutParams  params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
        ratingBar.setLayoutParams(params);
     }
@@ -265,6 +270,9 @@ public class ReopenClassActivity extends BaseActivity {
 
     }
 
+
+
+
     @OnClick({R.id.iv_back, R.id.rl_order_time, R.id.tv_reopen})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -274,8 +282,72 @@ public class ReopenClassActivity extends BaseActivity {
             case R.id.rl_order_time:
                 break;
             case R.id.tv_reopen:
-                doReopenClass();
+                getShowerRecord();
+
                 break;
         }
     }
+
+    /**
+     * 获取淋浴欠费接口
+     */
+    private void getShowerRecord() {
+        PostRequest request = new PostRequest(Constants.TBEVENTRECORD_GETSHOWERRECORD, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
+                if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
+                    createLinyuOrder(lingyunListInfo.getListData());
+                }else{
+                    doReopenClass();
+                }
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ReopenClassActivity.this);
+        mQueue.add(request);
+
+    }
+
+    /**
+     * 生成淋浴订单
+     *
+     * @param listData
+     */
+    private void createLinyuOrder(final List<LinyuRecord> listData) {
+        StringBuilder sbID =new StringBuilder();
+        for (LinyuRecord item:listData){
+            sbID.append(item.getRecordId()).append("|");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("recordIdStr", sbID.toString());
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
+                if (linyuCourseInfo!=null){
+                    Util.showLinyuRechagerDialog(ReopenClassActivity.this, linyuCourseInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ReopenClassActivity.this);
+        mQueue.add(request);
+
+    }
+
 }

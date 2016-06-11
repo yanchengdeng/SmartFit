@@ -81,8 +81,8 @@ public class PrivateEducationOrderAdapter extends BaseAdapter {
             }
         }
 
-        if (!TextUtils.isEmpty(item.getPrice())) {
-            viewHolder.chSelect.setText(item.getPrice() + "元/小时");
+        if (!TextUtils.isEmpty(item.getShowPrice())) {
+            viewHolder.chSelect.setText(item.getShowPrice() + "元/小时");
         }
 
         if (!TextUtils.isEmpty(item.getStars())) {

@@ -48,6 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding_big"
             android:text="优惠信息"
+            android:singleLine="true"
+            android:maxLength="15"
+            android:ellipsize="end"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
 

@@ -1,11 +1,13 @@
 package com.smartfit.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -13,19 +15,27 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.MessageEvent.UpdateRoom;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
+import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.IdleClassListInfo;
+import com.smartfit.beans.LingyunListInfo;
+import com.smartfit.beans.LinyuCourseInfo;
+import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 
@@ -34,6 +44,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -72,12 +84,28 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     Button btnOrder;
     @Bind(R.id.tv_waiting_accept)
     TextView tvWaitingAccept;
+    @Bind(R.id.tv_class_name)
+    TextView tvClassName;
+    @Bind(R.id.iv_scan_bar)
+    ImageView ivScanBar;
+    @Bind(R.id.ll_view_scan_code)
+    LinearLayout llViewScanCode;
+    @Bind(R.id.tv_scan_code_info)
+    TextView tvScanCodeInfo;
+    @Bind(R.id.tv_save_to_phone)
+    TextView tvSaveToPhone;
+    @Bind(R.id.tv_share_friends)
+    TextView tvShareFriends;
+    @Bind(R.id.ll_scan_bar)
+    LinearLayout llScanBar;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private IdleClassListInfo idleClassListInfo;
     private String startTime, endTime;
 
     private EventBus eventBus;
+
+    private String courseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,21 +115,21 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         eventBus.register(this);
         ButterKnife.bind(this);
         initView();
+        addLisener();
     }
 
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
         privateEducationClasses = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
         idleClassListInfo = (IdleClassListInfo) getIntent().getSerializableExtra(Constants.PASS_IDLE_CLASS_INFO);
-        adapter = new PrivateEducationOrderAdapter(this, privateEducationClasses);
-        listView.setAdapter(adapter);
+
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
 
         tvClassTime.setText(startTime + " ~ " + DateUtils.getDataType(endTime));
         ImageLoader.getInstance().displayImage(idleClassListInfo.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
         if (!TextUtils.isEmpty(idleClassListInfo.getLat()) && !TextUtils.isEmpty(idleClassListInfo.getLongit())) {
-            tvSpaceInfo.setText(Util.getDistance(idleClassListInfo.getLat(),idleClassListInfo.getLongit()));
+            tvSpaceInfo.setText(Util.getDistance(idleClassListInfo.getLat(), idleClassListInfo.getLongit()));
         }
         if (!TextUtils.isEmpty(idleClassListInfo.getVenueName())) {
             tvSpaceName.setText(idleClassListInfo.getVenueName());
@@ -113,7 +141,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, privateEducationClasses.get(position).getUid());
-                openActivity(OtherCustomeMainActivity.class,bundle);
+                openActivity(OtherCustomeMainActivity.class, bundle);
             }
         });
     }
@@ -123,10 +151,97 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         if (event instanceof UpdateRoom) {
             initRoom(((UpdateRoom) event).getPositon());
         }
-        if (event instanceof UpdatePrivateClassDetail){
+        if (event instanceof UpdatePrivateClassDetail) {
             btnOrder.setVisibility(View.INVISIBLE);
             tvWaitingAccept.setVisibility(View.VISIBLE);
+            getCourseCode();
         }
+    }
+
+    private String codeBar;
+
+    private void getCourseCode() {
+        if (!TextUtils.isEmpty(courseId)) {
+            Map<String, String> data = new HashMap<>();
+            data.put("courseId", courseId);
+            data.put("courseType", "2");
+            PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
+                @Override
+                public void onResponse(JsonObject response) {
+                    ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
+                    if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                        llScanBar.setVisibility(View.VISIBLE);
+                        ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                        codeBar = detail.getQrcodeUrl();
+                    }
+                    if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+
+                        if (DateUtils.isQeWorked(detail.getStartTime())) {
+                            llViewScanCode.setVisibility(View.VISIBLE);
+                            tvScanCodeInfo.setVisibility(View.GONE);
+                            tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                        } else {
+                            llViewScanCode.setVisibility(View.GONE);
+                            tvScanCodeInfo.setVisibility(View.VISIBLE);
+                            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                            tvSaveToPhone.setText(getString(R.string.copy_link));
+                        }
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mSVProgressHUD.dismiss();
+
+                }
+            });
+            request.setTag(new Object());
+            request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+            mQueue.add(request);
+        }
+
+    }
+
+    private void addLisener() {
+        //保存手机
+        tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tvSaveToPhone.getText().equals(getString(R.string.copy_link))) {
+                    Util.copyToClob(tvScanCodeInfo.getText().toString(), OrderPrivateEducationClassActivity.this);
+                    mSVProgressHUD.showSuccessWithStatus("复制成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else if (!TextUtils.isEmpty(codeBar)) {
+                    mSVProgressHUD.showWithStatus(getString(R.string.save_ing), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    ImageLoader.getInstance().loadImage(codeBar, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            mSVProgressHUD.dismiss();
+                            Util.saveImageToPhoto(OrderPrivateEducationClassActivity.this, loadedImage);
+                            mSVProgressHUD.showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                            mSVProgressHUD.dismiss();
+                            mSVProgressHUD.showInfoWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void initRoom(int positon) {
@@ -136,7 +251,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             tvRoomName.setText(idleClassListInfo.getClassroomList().get(positon).getClassroomName());
         }
 
-        tvRoomTime.setText(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice() + "/小时");
+
+//        tvRoomTime.setText(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice() + "/小时");
         countPrice(positon);
     }
 
@@ -158,11 +274,22 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         if (!TextUtils.isEmpty(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())) {
             monney += Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice());
         }
-        tvClassPrice.setText(String.format("%.2f",monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
+
+
+        for (PrivateEducationClass item : privateEducationClasses) {
+            item.setShowPrice(String.valueOf(Float.parseFloat(item.getPrice()) + Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())));
+
+        }
+
+        adapter = new PrivateEducationOrderAdapter(this, privateEducationClasses);
+        listView.setAdapter(adapter);
+
+
+        tvClassPrice.setText(String.format("%.2f", monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
     }
 
 
-    @OnClick({R.id.tv_room_time, R.id.btn_order,R.id.iv_back})
+    @OnClick({R.id.tv_room_time, R.id.btn_order, R.id.iv_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_room_time:
@@ -171,13 +298,77 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 openActivity(SelectVenueRoomsActivity.class, bundle);
                 break;
             case R.id.btn_order:
-                orderPrivateClass();
+                getShowerRecord();
+
                 break;
             case R.id.iv_back:
                 finish();
                 break;
         }
     }
+
+    /**
+     * 获取淋浴欠费接口
+     */
+    private void getShowerRecord() {
+        PostRequest request = new PostRequest(Constants.TBEVENTRECORD_GETSHOWERRECORD, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
+                if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
+                    createLinyuOrder(lingyunListInfo.getListData());
+                } else {
+                    orderPrivateClass();
+                }
+
+                mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+
+    }
+
+    /**
+     * 生成淋浴订单
+     *
+     * @param listData
+     */
+    private void createLinyuOrder(final List<LinyuRecord> listData) {
+        StringBuilder sbID = new StringBuilder();
+        for (LinyuRecord item : listData) {
+            sbID.append(item.getRecordId()).append("|");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("recordIdStr", sbID.toString());
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc==", response.toString());
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response, LinyuCourseInfo.class);
+                if (linyuCourseInfo != null) {
+                    Util.showLinyuRechagerDialog(OrderPrivateEducationClassActivity.this, linyuCourseInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+
+    }
+
 
     /**
      * 预约私教课
@@ -205,11 +396,12 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 PrivateClassOrderInfo privateClassOrderInfo = JsonUtils.objectFromJson(response.toString(), PrivateClassOrderInfo.class);
                 if (privateClassOrderInfo != null) {
+                    courseId = privateClassOrderInfo.getCourseId();
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PAGE_INDEX, 3);
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
-                    bundle.putString(Constants.COURSE_TYPE,"2");
+                    bundle.putString(Constants.COURSE_TYPE, "2");
                     openActivity(PayActivity.class, bundle);
                 }
             }

@@ -12,8 +12,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:background="@color/gray_light"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_light">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,6 +68,85 @@
                 android:divider="@color/line_gray"
                 android:dividerHeight="1px" />
 
+
+            <TextView
+                android:id="@+id/tv_card_bind_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingBottom="@dimen/image_padding_big"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/image_padding_big"
+                android:text="实体卡支付"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <RelativeLayout
+                android:id="@+id/rl_card_code_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                android:paddingTop="@dimen/image_padding_big"
+                android:visibility="gone"
+                android:paddingBottom="@dimen/image_padding_big"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_card_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="验证码:"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_normal" />
+
+                <EditText
+                    android:id="@+id/et_card_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/image_padding_big"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tv_card_code"
+                    android:layout_toLeftOf="@+id/tv_vertify_card_code"
+                    android:background="@null"
+                    android:hint="@string/please_input_card_code"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:id="@+id/tv_vertify_card_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="@dimen/image_padding"
+                    android:paddingTop="@dimen/image_padding"
+                    android:paddingLeft="@dimen/image_padding_big"
+                    android:paddingRight="@dimen/image_padding_big"
+                    android:background="@drawable/bg_dialog_selector_red_empty"
+                    android:text="@string/vertify"
+                    android:textColor="@color/common_header_bg"
+                    android:textSize="@dimen/text_normal" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_card_code_pay_tips"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:text="@string/card_pay_tips"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/image_padding"
+                android:layout_marginTop="@dimen/image_padding"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal_down" />
 
             <TextView
                 android:layout_width="wrap_content"
