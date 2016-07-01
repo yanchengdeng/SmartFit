@@ -2,7 +2,7 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,16 +12,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.CityBean;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -31,12 +35,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class SplashActivity extends FragmentActivity {
 
 
-    private Button btnHome;
-    private CirclePageIndicator indicator;
-    private ViewPager pager;
+    @Bind(R.id.iv_ad_bg)
+    ImageView ivAdBg;
+    @Bind(R.id.guide_ui)
+    RelativeLayout guideUi;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.indicator)
+    CirclePageIndicator indicator;
+    @Bind(R.id.btnHome)
+    Button btnHome;
+    @Bind(R.id.tv_second_jump)
+    TextView tvSecondJump;
+
+
+    private CountDownTimer countDownTimer;
+
     private GalleryPagerAdapter adapter;
     private int[] images = {
             R.mipmap.login_bg,
@@ -49,6 +69,20 @@ public class SplashActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
+        countDownTimer = new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                LogUtil.w("dyc", millisUntilFinished + "");
+                tvSecondJump.setText(String.format("%s跳过", String.valueOf(millisUntilFinished / 1000)));
+            }
+
+            @Override
+            public void onFinish() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        };
         AppManager.getAppManager().addActivity(this);
         boolean firstTimeUse = SharedPreferencesUtils.getInstance().getBoolean(Constants.FRIST_OPEN_APP, true);
         //TODO   后期可添加闪屏图
@@ -62,12 +96,33 @@ public class SplashActivity extends FragmentActivity {
     private void initLaunchLogo() {
         View guideImage = findViewById(R.id.guide_ui);
         guideImage.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
+        getLauchPic();
+
+    }
+
+    /**
+     * 获取启动图片
+     */
+    private void getLauchPic() {
+        PostRequest request = new PostRequest(Constants.AD_ADSNAP, new Response.Listener<JsonObject>() {
             @Override
-            public void run() {
+            public void onResponse(JsonObject response) {
+                //TODO   代替换
+                String ads = "http://f1.bj.anqu.com/orgin/NDNiNQ==/allimg/120607/29-12060G60516.jpg";
+                ImageLoader.getInstance().displayImage(ads, ivAdBg);
                 requestCityList();
+
             }
-        },100);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                countDownTimer.start();
+            }
+        });
+        request.headers = NetUtil.getRequestBody(SplashActivity.this);
+        GetSingleRequestUtils.getInstance(this).getRequestQueue().add(request);
+
+
     }
 
     private void initGuideGallery() {
@@ -113,7 +168,7 @@ public class SplashActivity extends FragmentActivity {
     }
 
 
-    private void requestCityList(){
+    private void requestCityList() {
         Map<String, String> data = new HashMap<>();
         PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
             @Override
@@ -121,15 +176,13 @@ public class SplashActivity extends FragmentActivity {
                 List<CityBean> cityBeans = JsonUtils.listFromJson(response.getAsJsonArray("list"), CityBean.class);
                 if (cityBeans != null && cityBeans.size() > 0) {
                     SharedPreferencesUtils.getInstance().putString(Constants.CITY_LIST_INOF, JsonUtils.toJson(cityBeans));
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
                 }
+                countDownTimer.start();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
+                countDownTimer.start();
             }
         });
         request.headers = NetUtil.getRequestBody(SplashActivity.this);
@@ -163,4 +216,11 @@ public class SplashActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
 }
