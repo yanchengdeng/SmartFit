@@ -29,6 +29,16 @@ public class EventActivity {
     private String[] pics;//[
     private String expiration;//null
 
+    public String getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(String expiredTime) {
+        this.expiredTime = expiredTime;
+    }
+
+    private String expiredTime;
+
     public String getId() {
         return id;
     }

@@ -20,7 +20,6 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +82,7 @@ public class ActivityListActivity extends BaseActivity {
     private void getData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("pageSize", "1000");
+        maps.put("queryType","1");
         PostRequest request = new PostRequest(Constants.EVENT_LISTEVENTS, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
