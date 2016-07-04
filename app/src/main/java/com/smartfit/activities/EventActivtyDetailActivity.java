@@ -139,7 +139,8 @@ public class EventActivtyDetailActivity extends BaseActivity {
         if (null != eventDetailInfo.getPics() && eventDetailInfo.getPics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
-            rollViewPager.setVisibility(View.GONE);
+            eventDetailInfo.setPics(new String[]{""});
+            rollViewPager.setVisibility(View.VISIBLE);
         }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
