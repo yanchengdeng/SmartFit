@@ -176,6 +176,11 @@ public class Constants {
     public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstituteCoach";
     public static final String CLASSIF_INVITEFRIENDS = "/ClassIf/inviteFriends";
 
+    public static final String USER_SHAREFRIENDLIST = "/User/shareFriendList";
+    public static final String SMS_SMSSend = "/SMS/SMSSend";
+    public static final String EVENT_SHAREEVENTUSER = "/event/shareEventUser";
+
+
     public static final int SIZE = 20;
     public static final String SEX_MAN = "0";
     public static final String SEX_WOMEN = "1";
@@ -200,6 +205,7 @@ public class Constants {
         //appid
         //请同时修改  androidmanifest.xml里面，.PayActivityd里的属性<data android:scheme="wx275d8ba3c5fccaf5"/>为新设置的appid
         public static final String APP_ID = "wx081f8efdfee69ab2";
+        public static final String APP_SECRET = "";
     }
 
     public static class Net {

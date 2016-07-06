@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
+
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_pic"
+            app:riv_oval="false"
+            app:riv_corner_radius="4dip" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_context_ui"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/image_padding_big"
+        android:layout_marginRight="@dimen/image_padding_big"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_coach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/image_padding"
+            android:drawableRight="@mipmap/icon_woman"
+            android:singleLine="true"
+            android:text="齐天大圣"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/image_padding_big"
+            android:singleLine="true"
+            android:text="11:00-13:00AM/有空"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/ch_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_gravity="center_vertical"
+        android:button="@null"
+        android:clickable="false"
+        android:drawablePadding="@dimen/image_padding"
+        android:layout_marginRight="@dimen/image_padding_big"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:drawableRight="@drawable/coach_selected_checked"
+        android:focusable="false"
+        android:gravity="center"
+        android:textColor="@color/common_header_bg"
+        android:textSize="@dimen/text_normal_down" />
+
+
+</RelativeLayout>
