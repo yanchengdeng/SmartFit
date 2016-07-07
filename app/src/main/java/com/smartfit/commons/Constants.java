@@ -21,7 +21,7 @@ public class Constants {
 
     public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
-     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定   8 淋浴支付
+     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定   8 淋浴支付  9 包月  10  包季度
      */
     public static final String PAGE_INDEX = "page_index";
 
@@ -184,6 +184,7 @@ public class Constants {
     public static final String USER_SHAREFRIENDLIST = "/User/shareFriendList";
     public static final String SMS_SMSSend = "/SMS/SMSSend";
     public static final String EVENT_SHAREEVENTUSER = "/event/shareEventUser";
+    public static final String ORDER_ORDERMONTHSELL = "/order/orderMonthSell";
 
 
     public static final int SIZE = 20;

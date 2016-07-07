@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.SelectCardToBuyActivity">
+
+    <include layout="@layout/common_header_view" />
+
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/image_padding_big" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_card_code_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingBottom="@dimen/image_padding_big"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/image_padding_big"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_card_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="串号:"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
+
+        <EditText
+            android:id="@+id/et_card_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/tv_vertify_card_code"
+            android:layout_toRightOf="@+id/tv_card_code"
+            android:background="@null"
+            android:hint="@string/please_input_card_code"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/tv_vertify_card_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_dialog_selector_red_empty"
+            android:paddingBottom="@dimen/image_padding"
+            android:paddingLeft="@dimen/image_padding_big"
+            android:paddingRight="@dimen/image_padding_big"
+            android:paddingTop="@dimen/image_padding"
+            android:text="@string/vertify"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_card_code_pay_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/card_pay_tips"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textColor="@color/common_header_bg"
+        android:textSize="@dimen/text_normal_down" />
+
+
+</LinearLayout>

@@ -17,7 +17,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
-import com.smartfit.beans.EventDetailInfo;
 import com.smartfit.beans.NewMonthServerInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateStyle;
@@ -127,6 +126,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+
     private void fillData() {
 
         if (!TextUtils.isEmpty(newMonthServerInfo.getNickName())) {
@@ -168,6 +168,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
 
     @OnClick({R.id.iv_back, R.id.rl_selectd_num_ui, R.id.ll_select_season_server, R.id.ll_select_half_year_server, R.id.btn_order})
     public void onClick(View view) {
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
@@ -176,20 +177,39 @@ public class EventActivityNewVersionActivity extends BaseActivity {
                 openActivity(SelectMouthActivity.class, REQUST_CODE_MOUTH);
                 break;
             case R.id.ll_select_season_server:
+                if (newMonthServerInfo != null && newMonthServerInfo.getNewestMonthEvents().size()==2) {
+                    bundle.putInt(Constants.PAGE_INDEX, 10);
+                    bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo.getNewestMonthEvents().get(0));
+                    openActivity(ConfimPayNoramlActivity.class, bundle);
+                }
                 break;
             case R.id.ll_select_half_year_server:
+                if (newMonthServerInfo != null && newMonthServerInfo.getNewestMonthEvents().size()==2) {
+                    bundle.putInt(Constants.PAGE_INDEX, 11);
+                    bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo.getNewestMonthEvents().get(1));
+                    openActivity(ConfimPayNoramlActivity.class, bundle);
+                }
                 break;
             case R.id.btn_order:
+                //目前购买包月
+                if (newMonthServerInfo != null) {
+                    bundle.putInt(Constants.PAGE_INDEX,9);
+                    bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo);
+                    bundle.putInt(Constants.PASS_STRING, mouth);
+                    openActivity(ConfirmPayActivity.class, bundle);
+                }
                 break;
         }
     }
+
+    int mouth = 1;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUST_CODE_MOUTH && resultCode == RESULT_OK) {
             if (data.getIntExtra(Constants.PASS_STRING, 0) != 0) {
-                int mouth = data.getIntExtra(Constants.PASS_STRING, 0);
+                mouth = data.getIntExtra(Constants.PASS_STRING, 0);
                 tvSelectNum.setText(String.format("数量*%d", mouth));
                 tvCountMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * mouth));
             }

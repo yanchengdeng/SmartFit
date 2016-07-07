@@ -57,6 +57,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/image_padding_big"
                 android:text="优惠券"
+                android:visibility="gone"
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal" />
 

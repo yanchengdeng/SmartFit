@@ -13,6 +13,7 @@ public class UseableEventInfo implements Parcelable {
     private String eventTitle;
     private String eventDetail;
     private String eventEndTime;
+    private boolean isCheck;
 
     public String getId() {
         return id;
@@ -46,6 +47,14 @@ public class UseableEventInfo implements Parcelable {
         this.eventEndTime = eventEndTime;
     }
 
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
 
     @Override
     public int describeContents() {
@@ -58,6 +67,7 @@ public class UseableEventInfo implements Parcelable {
         dest.writeString(this.eventTitle);
         dest.writeString(this.eventDetail);
         dest.writeString(this.eventEndTime);
+        dest.writeByte(isCheck ? (byte) 1 : (byte) 0);
     }
 
     public UseableEventInfo() {
@@ -68,6 +78,7 @@ public class UseableEventInfo implements Parcelable {
         this.eventTitle = in.readString();
         this.eventDetail = in.readString();
         this.eventEndTime = in.readString();
+        this.isCheck = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<UseableEventInfo> CREATOR = new Parcelable.Creator<UseableEventInfo>() {

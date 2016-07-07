@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/image_padding_big"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    android:paddingBottom="@dimen/image_padding_big"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/image_padding_big"
+    android:visibility="visible">
+
+    <TextView
+        android:id="@+id/tv_card_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="串号:"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/et_card_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/image_padding_big"
+        android:layout_toLeftOf="@+id/tv_vertify_card_code"
+        android:layout_toRightOf="@+id/tv_card_code"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <ImageView
+        android:id="@+id/tv_vertify_card_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/image_padding"
+        android:src="@mipmap/icon_pt_check_on" />
+
+
+</RelativeLayout>
+

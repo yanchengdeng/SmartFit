@@ -426,16 +426,16 @@
     <string name="errcode_deny">发送被拒绝</string>
     <string name="errcode_unknown">发送返回</string>
     <string name="title_activity_bind_card">BindCardActivity</string>
-    <string name="card_tips">请输入实体卡验证码</string>
+    <string name="card_tips">请输入健身实体卡串号</string>
     <string name="user_card_tips">实体卡一经使用即失效，若产生退课，实体卡将退到账户礼券中</string>
     <string name="bind_card_now">立即绑定</string>
     <string name="bind_card">绑定实体卡</string>
-    <string name="card_lenght_tips">请输入正确的实体卡</string>
+    <string name="card_lenght_tips">请输入健身实体卡串号</string>
     <string name="linyu_rechager_tips">您的余额不足，为了愉快体验我们的优质服务，请保留少量余额~~</string>
     <string name="bind_card_ing">绑定中...</string>
     <string name="please_input_card_code">请输入实体卡验证码</string>
     <string name="vertify">验证</string>
-    <string name="card_pay_tips">实体卡一经使用即失效，若产生退课，实体卡将退到账户礼包中</string>
+    <string name="card_pay_tips">实体卡一经使用即失效，若产生退课，实体卡将退到账户券包中</string>
     <string name="vertify_ing">验证中...</string>
     <string name="vertity_success">抵扣0元</string>
     <string name="tick_gift_share">券分享</string>
@@ -451,5 +451,8 @@
     <string name="title_activity_select_mouth">SelectMouthActivity</string>
     <string name="you_hava_not_mouth_server">您还不是SMARTFIT包月用户</string>
     <string name="open_mouth_server">开通包月</string>
+    <string name="title_activity_select_ticket_to_buy">SelectTicketToBuyActivity</string>
+    <string name="title_activity_select_card_to_buy">SelectCardToBuyActivity</string>
+    <string name="title_activity_confim_pay_noraml">ConfimPayNoramlActivity</string>
 
 </resources>

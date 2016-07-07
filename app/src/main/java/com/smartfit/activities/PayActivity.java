@@ -129,7 +129,7 @@ public class PayActivity extends BaseActivity {
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付
      */
     private int pageIndex = 1;
 
@@ -315,14 +315,15 @@ public class PayActivity extends BaseActivity {
         }
         tvPayMoney.setText(payMoney + "元");
         Constants.PAGE_INDEX_FROM = pageIndex;
-        if (pageIndex != 7 && pageIndex != 8) {
+        // TODO 卷和 实体卡 影藏
+       /* if (pageIndex != 7 && pageIndex != 8) {
             getUseFullEvent();
 
         }
 
         if (!TextUtils.isEmpty(couserType) && Integer.parseInt(couserType)<5  && pageIndex<5) {
             showCardPay();
-        }
+        }*/
         getLeftMoney();
 
     }
@@ -594,12 +595,15 @@ public class PayActivity extends BaseActivity {
                     getOrderCorse();
                 } else if (pageIndex == 6) {
                     getOrderCorse();
-                } else if (pageIndex == 7) {
+                } else if (pageIndex == 7 ||pageIndex== 10) {
                     getEventOrder();
                 } else if (pageIndex == 8) {
                     orderID = orderCode;
                     goPay();
-                } else {
+                } else if(pageIndex == 9){
+                    orderID = orderCode;
+                    goPay();
+                }else {
                     if (TextUtils.isEmpty(orderCode)) {
                         getOrderCorse();
                     } else {

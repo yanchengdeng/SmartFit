@@ -3,7 +3,7 @@ package com.smartfit.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 作者： 邓言诚 创建于： 2016/7/4 21;//04.
@@ -16,8 +16,8 @@ public class NewMonthServerInfo implements Parcelable {
     private String userPicUrl;//http;////139.196.228.98;//7097/uploadimgs/picture/2016/5/25/1464163192037/1464163192.jpg,
     private String monthExpiredTime;//0,
     private String defaultMonthPrice;//139,
-    private List<NewMouthServerEvent> newestMonthEvents;
-    private List<UseableEventInfo> eventListDTOs;
+    private ArrayList<NewMouthServerEvent> newestMonthEvents;
+    private ArrayList<UseableEventInfo> eventListDTOs;
 
     public String getUid() {
         return uid;
@@ -67,19 +67,19 @@ public class NewMonthServerInfo implements Parcelable {
         this.defaultMonthPrice = defaultMonthPrice;
     }
 
-    public List<NewMouthServerEvent> getNewestMonthEvents() {
+    public ArrayList<NewMouthServerEvent> getNewestMonthEvents() {
         return newestMonthEvents;
     }
 
-    public void setNewestMonthEvents(List<NewMouthServerEvent> newestMonthEvents) {
+    public void setNewestMonthEvents(ArrayList<NewMouthServerEvent> newestMonthEvents) {
         this.newestMonthEvents = newestMonthEvents;
     }
 
-    public List<UseableEventInfo> getEventListDTOs() {
+    public ArrayList<UseableEventInfo> getEventListDTOs() {
         return eventListDTOs;
     }
 
-    public void setEventListDTOs(List<UseableEventInfo> eventListDTOs) {
+    public void setEventListDTOs(ArrayList<UseableEventInfo> eventListDTOs) {
         this.eventListDTOs = eventListDTOs;
     }
 

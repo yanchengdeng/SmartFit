@@ -600,6 +600,18 @@
         </activity>
         <activity android:name=".activities.ConfirmPayActivity" >
         </activity>
+        <activity
+            android:name=".activities.SelectTicketToBuyActivity"
+            android:label="@string/title_activity_select_ticket_to_buy" >
+        </activity>
+        <activity
+            android:name=".activities.SelectCardToBuyActivity"
+            android:label="@string/title_activity_select_card_to_buy" >
+        </activity>
+        <activity
+            android:name=".activities.ConfimPayNoramlActivity"
+            android:label="@string/title_activity_confim_pay_noraml" >
+        </activity>
     </application>
 
 </manifest>

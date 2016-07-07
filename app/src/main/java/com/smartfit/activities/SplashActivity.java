@@ -28,7 +28,6 @@ import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -82,7 +81,7 @@ public class SplashActivity extends FragmentActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (i < secons.length)
-                    tvSecondJump.setText(String.format("%s跳过", String.valueOf(secons[i])));
+                    tvSecondJump.setText(String.format("%s 跳过", String.valueOf(secons[i])));
                 i++;
             }
 

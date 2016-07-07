@@ -81,14 +81,10 @@ public class SelectMouthActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_function:
-                if (selected != 0) {
                     Intent intent = new Intent(SelectMouthActivity.this, EventActivityNewVersionActivity.class);
                     intent.putExtra(Constants.PASS_STRING, selected+1);
                     setResult(RESULT_OK, intent);
                     finish();
-                }else{
-                    finish();
-                }
                 break;
         }
     }
