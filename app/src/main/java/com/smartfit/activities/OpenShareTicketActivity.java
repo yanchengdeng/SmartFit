@@ -153,6 +153,7 @@ public class OpenShareTicketActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.SMS_SMSSend, msp, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                mSVProgressHUD.showSuccessWithStatus("已发送，注意查收", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 countDownTimer = new CountDownTimer(60 * 1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -172,6 +173,7 @@ public class OpenShareTicketActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+              mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

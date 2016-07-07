@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by yanchengdneng on 2016/4/1.
- * <p/>
+ * <p>
  * 用户信息    更具uid 获取
  */
 public class UserInfo {
@@ -24,6 +24,25 @@ public class UserInfo {
     private String coachInfo;//null,
     private String courseCount;//null,
     private String[] coachDynamicPics;//
+
+    private String monthExpiredTime;//:1483725739,
+    private String ticketNum;//2,
+
+    public String getMonthExpiredTime() {
+        return monthExpiredTime;
+    }
+
+    public void setMonthExpiredTime(String monthExpiredTime) {
+        this.monthExpiredTime = monthExpiredTime;
+    }
+
+    public String getTicketNum() {
+        return ticketNum;
+    }
+
+    public void setTicketNum(String ticketNum) {
+        this.ticketNum = ticketNum;
+    }
 
     public String getCoachRealName() {
         return coachRealName;
@@ -61,11 +80,11 @@ public class UserInfo {
         this.coachId = coachId;
     }
 
-    private String   coachId;
+    private String coachId;
 
-   private String  certificates;//陌路,陌路,
-    private String        coachClassDesc;//null,
-    private String       authenCoachClassDesc;//null,
+    private String certificates;//陌路,陌路,
+    private String coachClassDesc;//null,
+    private String authenCoachClassDesc;//null,
 
     public String getResumeContent() {
         return resumeContent;
@@ -101,8 +120,8 @@ public class UserInfo {
         this.authenCoachClassDesc = authenCoachClassDesc;
     }
 
-    private String   hight;//175,
-           private String  weight;//75,
+    private String hight;//175,
+    private String weight;//75,
 
     public String getHight() {
         return hight;
@@ -238,11 +257,11 @@ public class UserInfo {
         this.balance = balance;
     }
 
-    public  ArrayList<CommentInfo> getCommonList() {
+    public ArrayList<CommentInfo> getCommonList() {
         return commonList;
     }
 
-    public void setCommonList( ArrayList<CommentInfo> commonList) {
+    public void setCommonList(ArrayList<CommentInfo> commonList) {
         this.commonList = commonList;
     }
 

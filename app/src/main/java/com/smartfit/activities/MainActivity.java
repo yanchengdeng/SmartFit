@@ -188,18 +188,18 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
      * @param listData
      */
     private void createLinyuOrder(final List<LinyuRecord> listData) {
-        StringBuilder sbID =new StringBuilder();
-        for (LinyuRecord item:listData){
+        StringBuilder sbID = new StringBuilder();
+        for (LinyuRecord item : listData) {
             sbID.append(item.getRecordId()).append("|");
         }
         Map<String, String> map = new HashMap<>();
         map.put("recordIdStr", sbID.toString());
-        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc==", response.toString());
-                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
-                if (linyuCourseInfo!=null){
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response, LinyuCourseInfo.class);
+                if (linyuCourseInfo != null) {
                     Util.showLinyuRechagerDialog(MainActivity.this, linyuCourseInfo);
                 }
             }
@@ -524,7 +524,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         cardSmartFit.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                //TODO 计入  活动
+                                                //TODO  活动
                                                 if (NetUtil.isLogin(getApplicationContext())) {
 //                                                    openActivity(CustomeClassActivity.class);
                                                     openActivity(ActivityListActivity.class);

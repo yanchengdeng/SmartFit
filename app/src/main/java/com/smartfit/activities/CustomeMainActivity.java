@@ -25,6 +25,7 @@ import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -49,8 +50,7 @@ public class CustomeMainActivity extends BaseActivity {
 
     private ImageView imageViewHeader;
 
-    private TextView tvName, tvSigneture;
-
+    private TextView tvName, tvSigneture, tvMouthSeaver;
 
 
     @Override
@@ -84,6 +84,7 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView.setHeaderLayoutParams(localObject);
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -99,6 +100,9 @@ public class CustomeMainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 获取个人用户信息
+     */
     private void getCustomeInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> maps = new HashMap<>();
@@ -108,7 +112,7 @@ public class CustomeMainActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
-                UserInfoDetail userInfoDetail =  Util.getUserInfo(CustomeMainActivity.this);
+                UserInfoDetail userInfoDetail = Util.getUserInfo(CustomeMainActivity.this);
                 if (null != userInfo) {
                     userInfoDetail.setBalance(userInfo.getBalance());
                     Util.saveUserInfo(userInfoDetail);
@@ -145,7 +149,7 @@ public class CustomeMainActivity extends BaseActivity {
             }
         } else if (event instanceof LoginSuccess) {
             finish();
-        }else if(event instanceof LoginOut){
+        } else if (event instanceof LoginOut) {
             finish();
         }
     }
@@ -158,7 +162,6 @@ public class CustomeMainActivity extends BaseActivity {
      * @param userInfo
      */
     private void fillData(UserInfo userInfo) {
-
         ImageView ivHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivHeader, Options.getHeaderOptions());
         TextView tvNickname = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
@@ -168,8 +171,17 @@ public class CustomeMainActivity extends BaseActivity {
         TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
         if (!TextUtils.isEmpty(userInfo.getIsVip()) && userInfo.getIsVip().equals("1")) {
             tvVip.setVisibility(View.VISIBLE);
+            tvMouthSeaver.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_wo_baoyue));
+            tvMouthSeaver.setTextColor(getResources().getColor(R.color.common_header_bg));
+            if (!TextUtils.isEmpty(userInfo.getMonthExpiredTime())) {
+                long time = Long.parseLong(userInfo.getMonthExpiredTime()) - System.currentTimeMillis() / 1000;
+                int day = (int) (time / (60 * 60 * 24));
+                tvMouthSeaver.setText(String.format("剩余：%d天", day));
+            }
         } else {
             tvVip.setVisibility(View.INVISIBLE);
+            tvMouthSeaver.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_wo_nobaoyue));
+            tvMouthSeaver.setTextColor(getResources().getColor(R.color.text_color_black));
         }
 
         TextView tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
@@ -190,6 +202,11 @@ public class CustomeMainActivity extends BaseActivity {
         TextView tvFriends = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_friends_num);
         if (!TextUtils.isEmpty(userInfo.getFriendCount())) {
             tvFriends.setText(userInfo.getFriendCount());
+        }
+
+        TextView tvTicketNum = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_ticket);
+        if (!TextUtils.isEmpty(userInfo.getTicketNum())) {
+            tvTicketNum.setText(userInfo.getTicketNum());
         }
 
 
@@ -241,6 +258,7 @@ public class CustomeMainActivity extends BaseActivity {
         imageViewHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
+        tvMouthSeaver = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_mouth_server);
 
     }
 
@@ -257,16 +275,24 @@ public class CustomeMainActivity extends BaseActivity {
         scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(MyTicketGiftActivity.class);
+//                openActivity(MyTicketGiftActivity.class);
             }
         });
 
 
-        //个人详情
-        scrollView.getPullRootView().findViewById(R.id.tv_motto).setOnClickListener(new View.OnClickListener() {
+        //头像 个人详情
+        imageViewHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openActivity(CustomDetailInfoActivity.class);
+            }
+        });
+
+        //  购买包月
+        scrollView.getPullRootView().findViewById(R.id.ll_custome_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(EventActivityNewVersionActivity.class);
             }
         });
         //关注
@@ -300,6 +326,14 @@ public class CustomeMainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(WalletActivity.class);
+            }
+        });
+
+        // 卷包
+        scrollView.getPullRootView().findViewById(R.id.rl_my_ticket).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyTicketGiftActivity.class);
             }
         });
 

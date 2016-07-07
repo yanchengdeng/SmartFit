@@ -3,9 +3,11 @@ package com.smartfit.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -21,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.CityBean;
+import com.smartfit.beans.FlashPageInfo;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.GetSingleRequestUtils;
@@ -37,6 +40,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SplashActivity extends FragmentActivity {
 
@@ -65,6 +69,10 @@ public class SplashActivity extends FragmentActivity {
             R.mipmap.login_bg
     };
 
+    private int i = 0;
+
+    Integer[] secons = new Integer[]{2, 1, 0};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +81,9 @@ public class SplashActivity extends FragmentActivity {
         countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                LogUtil.w("dyc", millisUntilFinished + "");
-                tvSecondJump.setText(String.format("%s跳过", String.valueOf(millisUntilFinished / 1000)));
+                if (i < secons.length)
+                    tvSecondJump.setText(String.format("%s跳过", String.valueOf(secons[i])));
+                i++;
             }
 
             @Override
@@ -91,6 +100,8 @@ public class SplashActivity extends FragmentActivity {
         } else {
             initLaunchLogo();
         }
+
+
     }
 
     private void initLaunchLogo() {
@@ -100,6 +111,8 @@ public class SplashActivity extends FragmentActivity {
 
     }
 
+    List<FlashPageInfo> flashPageInfo;
+
     /**
      * 获取启动图片
      */
@@ -107,9 +120,12 @@ public class SplashActivity extends FragmentActivity {
         PostRequest request = new PostRequest(Constants.AD_ADSNAP, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                //TODO   代替换
-                String ads = "http://f1.bj.anqu.com/orgin/NDNiNQ==/allimg/120607/29-12060G60516.jpg";
-                ImageLoader.getInstance().displayImage(ads, ivAdBg);
+                flashPageInfo = JsonUtils.listFromJson(response.getAsJsonArray("list"), FlashPageInfo.class);
+                if (flashPageInfo != null && flashPageInfo.size() > 0 && flashPageInfo.get(0).getPics().length > 0) {
+                    ImageLoader.getInstance().displayImage(flashPageInfo.get(0).getPics()[0], ivAdBg);
+                }
+
+
                 requestCityList();
 
             }
@@ -163,6 +179,7 @@ public class SplashActivity extends FragmentActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
@@ -177,17 +194,54 @@ public class SplashActivity extends FragmentActivity {
                 if (cityBeans != null && cityBeans.size() > 0) {
                     SharedPreferencesUtils.getInstance().putString(Constants.CITY_LIST_INOF, JsonUtils.toJson(cityBeans));
                 }
-                countDownTimer.start();
+                startAdCountDown();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                countDownTimer.start();
+                startAdCountDown();
             }
         });
         request.headers = NetUtil.getRequestBody(SplashActivity.this);
         GetSingleRequestUtils.getInstance(SplashActivity.this).getRequestQueue().add(request);
     }
+
+
+    private void startAdCountDown() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                countDownTimer.start();
+            }
+        }, 500);
+    }
+
+    @OnClick({R.id.iv_ad_bg, R.id.tv_second_jump})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_ad_bg:
+                if (flashPageInfo != null && flashPageInfo.size() > 0 && !TextUtils.isEmpty(flashPageInfo.get(0).getLink())) {
+                    if (countDownTimer != null) {
+                        countDownTimer.cancel();
+                    }
+                    Intent intent = new Intent(SplashActivity.this, AdActivity.class);
+                    intent.putExtra(Constants.PASS_STRING, flashPageInfo.get(0).getLink());
+                    intent.putExtra("name", flashPageInfo.get(0).getAdName());
+                    startActivity(intent);
+                    finish();
+                }
+                break;
+            case R.id.tv_second_jump:
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+                break;
+        }
+    }
+
 
     public class GalleryPagerAdapter extends PagerAdapter {
 

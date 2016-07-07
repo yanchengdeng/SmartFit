@@ -426,16 +426,16 @@
     <string name="errcode_deny">发送被拒绝</string>
     <string name="errcode_unknown">发送返回</string>
     <string name="title_activity_bind_card">BindCardActivity</string>
-    <string name="card_tips">请输入健身实体卡串号</string>
-    <string name="user_card_tips">健身实体卡一经使用即失效，若产生退课，健身实体卡将退到账户礼券中</string>
-    <string name="bind_card_now">立即添加</string>
-    <string name="bind_card">添加健身实体卡</string>
-    <string name="card_lenght_tips">请输入健身实体卡卡号</string>
+    <string name="card_tips">请输入实体卡验证码</string>
+    <string name="user_card_tips">实体卡一经使用即失效，若产生退课，实体卡将退到账户礼券中</string>
+    <string name="bind_card_now">立即绑定</string>
+    <string name="bind_card">绑定实体卡</string>
+    <string name="card_lenght_tips">请输入正确的实体卡</string>
     <string name="linyu_rechager_tips">您的余额不足，为了愉快体验我们的优质服务，请保留少量余额~~</string>
     <string name="bind_card_ing">绑定中...</string>
-    <string name="please_input_card_code">请输入健身实体卡验证码</string>
+    <string name="please_input_card_code">请输入实体卡验证码</string>
     <string name="vertify">验证</string>
-    <string name="card_pay_tips">健身实体卡一经使用即失效，若产生退课，健身实体卡将退到账户礼包中</string>
+    <string name="card_pay_tips">实体卡一经使用即失效，若产生退课，实体卡将退到账户礼包中</string>
     <string name="vertify_ing">验证中...</string>
     <string name="vertity_success">抵扣0元</string>
     <string name="tick_gift_share">券分享</string>
@@ -444,5 +444,12 @@
     <string name="title_activity_open_share_ticket">OpenShareTicketActivity</string>
     <string name="share_ticket_tips">您现在可以将健身券分享给好友啦，好友在SAMART FIT APP或微信公众账号确认收到健身券就赠送给好友了，如果好友在24小时内没有确认，健身券将返回到你的账户。</string>
     <string name="share_ticket_message">系统已向您的注册手机[%s]发送验证短信，请输入短信验证码：</string>
+    <string name="buy_month_server">购买包月服务</string>
+    <string name="buy_month">购买包月</string>
+    <string name="member_serive_work_after_buy">会员服务购买后立即生效</string>
+    <string name="submit_for_pay">提交支付</string>
+    <string name="title_activity_select_mouth">SelectMouthActivity</string>
+    <string name="you_hava_not_mouth_server">您还不是SMARTFIT包月用户</string>
+    <string name="open_mouth_server">开通包月</string>
 
 </resources>

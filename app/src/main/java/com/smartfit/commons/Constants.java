@@ -179,6 +179,7 @@ public class Constants {
 
     //v.1.0.3
     public static final String AD_ADSNAP = "/ad/adSnap";
+    public static final String EVENT_GETMONTHSELLBOARD = "/event/getMonthSellBoard";
 
     public static final String USER_SHAREFRIENDLIST = "/User/shareFriendList";
     public static final String SMS_SMSSend = "/SMS/SMSSend";

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -21,7 +20,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="30dp"
-        android:src="@mipmap/icon_gift" />
+        android:src="@mipmap/icon_gift"
+        android:visibility="gone" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -32,59 +32,77 @@
         android:layout_marginTop="60dp"
         android:layout_toRightOf="@+id/iv_setting"
         android:scaleType="centerCrop"
-        android:src="@mipmap/icon_pay_mr"
-       />
+        android:src="@mipmap/icon_pay_mr" />
 
     <TextView
         android:id="@+id/tv_vip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="-20dp"
-        android:background="@mipmap/bg_vip"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:visibility="invisible"
+        android:layout_marginTop="60dp"
         android:layout_toRightOf="@+id/iv_header"
-        android:text="会员"/>
+        android:background="@mipmap/bg_vip"
+        android:gravity="center"
+        android:text="会员"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small"
+        android:visibility="invisible" />
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_custome_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_alignParentRight="true"
-        >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/image_padding_big">
 
-        <TextView
-            android:id="@+id/tv_name"
+        <LinearLayout
+            android:id="@+id/ll_custome_ui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/image_padding"
-            android:text=""
-            android:textColor="@color/common_header_bg"
-            android:textSize="@dimen/text_larger" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_motto"
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_larger" />
+
+
+            <TextView
+                android:id="@+id/tv_mouth_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:background="@drawable/icon_wo_nobaoyue"
+                android:gravity="center_vertical|right"
+                android:text="@string/open_mouth_server"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:id="@+id/tv_motto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_mouth_server"
+                android:layout_marginTop="@dimen/image_padding"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@string/no_sign"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal" />
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_name"
-            android:layout_marginTop="@dimen/image_padding"
-            android:singleLine="true"
-            android:text="@string/no_sign"
-            android:gravity="center_vertical"
-            android:drawableRight="@mipmap/icon_next_w"
-            android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_normal" />
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_next_w" />
 
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>
