@@ -180,6 +180,11 @@ public class Constants {
     //v.1.0.3
     public static final String AD_ADSNAP = "/ad/adSnap";
 
+    public static final String USER_SHAREFRIENDLIST = "/User/shareFriendList";
+    public static final String SMS_SMSSend = "/SMS/SMSSend";
+    public static final String EVENT_SHAREEVENTUSER = "/event/shareEventUser";
+
+
     public static final int SIZE = 20;
     public static final String SEX_MAN = "0";
     public static final String SEX_WOMEN = "1";

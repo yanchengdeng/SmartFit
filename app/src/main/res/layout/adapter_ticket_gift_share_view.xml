@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_dyq"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/eaquel_ticket"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_larger" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/header_bar_height"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_class_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:text="xxxx课程"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_class_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:ellipsize="end"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:text="优惠信息"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:id="@+id/tv_class_outdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/image_padding"
+                android:text="2016-09-03失效"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal"
+                android:visibility="gone" />
+
+        </LinearLayout>
+        <CheckBox
+            android:id="@+id/ch_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:button="@null"
+            android:clickable="false"
+            android:drawablePadding="@dimen/image_padding"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:drawableRight="@drawable/coach_selected_checked"
+            android:focusable="false"
+            android:gravity="center"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal_down" />
+    </LinearLayout>
+
+</LinearLayout>

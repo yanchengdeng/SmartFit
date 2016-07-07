@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 
+import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 
 import java.util.HashMap;
@@ -55,6 +56,7 @@ public class NetUtil {
 
     /***
      * 是否登录
+     *
      * @param context
      * @return
      */
@@ -64,9 +66,24 @@ public class NetUtil {
             return false;
         }
 
-        if(uid.equals("0")){
+        if (uid.equals("0")) {
             return false;
         }
         return true;
+    }
+
+    public static String getPhone() {
+        String useString = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(useString)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(useString, UserInfoDetail.class);
+            if (userInfoDetail != null) {
+                if (!TextUtils.isEmpty(userInfoDetail.getMobile())) {
+                    return userInfoDetail.getMobile();
+
+                }
+            }
+        }
+
+        return "";
     }
 }

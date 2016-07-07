@@ -28,7 +28,7 @@ public class MyTicketGiftActivity extends BaseActivity {
     @Bind(R.id.tv_tittle)
     TextView tvTittle;
     @Bind(R.id.tv_function)
-    TextView tvFunction;
+  public   TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.viewpagertab)
@@ -53,7 +53,7 @@ public class MyTicketGiftActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.tick_gift));
-
+        tvFunction.setText(getString(R.string.tick_gift_share));
     }
 
 
@@ -68,7 +68,7 @@ public class MyTicketGiftActivity extends BaseActivity {
         mf.setArguments(useable);
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("可用", MyTickeFragment.class, useable)
+                .add("未使用", MyTickeFragment.class, useable)
                 .add("已使用", MyTickeFragment.class, userover)
                 .create());
 
@@ -93,6 +93,13 @@ public class MyTicketGiftActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(BindCardActivity.class);
+            }
+        });
+
+        tvFunction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyTicketGiftShareActivity.class);
             }
         });
     }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="@drawable/bg_dialog_selector_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:scrollbars="none">
+
+    <TextView
+        android:id="@+id/tv_tittle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/share_ticket_message"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/image_padding_big"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_normal"
+            android:id="@+id/et_code"
+            android:inputType="phone"
+            android:padding="@dimen/image_padding_big"
+            android:background="@drawable/bg_dialog_selector_gray_empty"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:id="@+id/et_code_count_down"
+            android:text="重获验证码(60s)"
+            android:textSize="@dimen/text_normal_down"
+            android:padding="@dimen/image_padding_big"
+            android:background="@drawable/bg_dialog_selector_gray_empty"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/image_padding"
+        android:background="@color/line_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancel_action"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="取消"
+            android:textColor="@color/common_header_bg"
+            android:textSize="@dimen/text_normal" />
+
+
+
+
+        <TextView
+            android:id="@+id/commit_action"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1px"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/bg_dialog_selector_red"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="确认分享"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+    </LinearLayout>
+
+
+</LinearLayout>

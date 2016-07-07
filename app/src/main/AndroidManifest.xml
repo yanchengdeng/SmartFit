@@ -578,6 +578,18 @@
             android:name=".activities.BindCardActivity"
             android:label="@string/title_activity_bind_card" >
         </activity>
+        <activity
+            android:name=".activities.MyTicketGiftShareActivity"
+            android:label="@string/title_activity_my_ticket_gift_share" >
+        </activity>
+        <activity
+            android:name=".activities.SelectShareFriendsActivity"
+            android:label="@string/title_activity_select_share_friends" >
+        </activity>
+        <activity
+            android:name=".activities.OpenShareTicketActivity"
+            android:label="@string/title_activity_open_share_ticket" >
+        </activity>
     </application>
 
 </manifest>

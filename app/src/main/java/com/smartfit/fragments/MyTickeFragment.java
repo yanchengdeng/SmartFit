@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.BindCard;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.MyTicketGiftActivity;
 import com.smartfit.adpters.TicketGiftAdapter;
 import com.smartfit.beans.TicketInfo;
 import com.smartfit.beans.TicketListInfo;
@@ -51,7 +52,7 @@ public class MyTickeFragment extends BaseFragment {
 
     private String type;
 
-    private  boolean isLoaded;//是否加载完毕
+    private boolean isLoaded;//是否加载完毕
     private boolean isPre;//是否初始化好
 
     private EventBus eventBus;
@@ -95,7 +96,7 @@ public class MyTickeFragment extends BaseFragment {
 
     private void loadData() {
 
-        ((BaseActivity)getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> maps = new HashMap<>();
         maps.put("pageNo", String.valueOf(page));
         maps.put("pageSize", "100");
@@ -103,9 +104,13 @@ public class MyTickeFragment extends BaseFragment {
         PostRequest request = new PostRequest(Constants.EVENT_LISTUSEREVENT, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+
                 isLoaded = true;
                 TicketListInfo ticketInfos = JsonUtils.objectFromJson(response, TicketListInfo.class);
                 if (ticketInfos.getListData() != null && ticketInfos.getListData().size() > 0) {
+                    if (type.equals("1")) {
+                        ((MyTicketGiftActivity) getActivity()).tvFunction.setVisibility(View.VISIBLE);
+                    }
                     datas.addAll(ticketInfos.getListData());
                     adapter.setData(datas);
                     listView.setVisibility(View.VISIBLE);
@@ -152,7 +157,7 @@ public class MyTickeFragment extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
-        if (!isLoaded && isVisible && isPre){
+        if (!isLoaded && isVisible && isPre) {
             loadData();
         }
 
