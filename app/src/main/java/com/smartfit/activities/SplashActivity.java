@@ -121,10 +121,11 @@ public class SplashActivity extends FragmentActivity {
             public void onResponse(JsonObject response) {
                 flashPageInfo = JsonUtils.listFromJson(response.getAsJsonArray("list"), FlashPageInfo.class);
                 if (flashPageInfo != null && flashPageInfo.size() > 0 && flashPageInfo.get(0).getPics().length > 0) {
-                    ImageLoader.getInstance().displayImage(flashPageInfo.get(0).getPics()[0], ivAdBg);
+                    if (Long.parseLong(flashPageInfo.get(0).getAdEndTime()) < (System.currentTimeMillis() / 1000))
+                    {
+                        ImageLoader.getInstance().displayImage(flashPageInfo.get(0).getPics()[0], ivAdBg);
+                    }
                 }
-
-
                 requestCityList();
 
             }

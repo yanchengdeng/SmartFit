@@ -35,13 +35,13 @@
     <string name="private_education">私教课</string>
     <string name="aerobic_apparatus">有氧器械</string>
 
-    <string name="monday">MON</string>
-    <string name="tuesday">TUE</string>
-    <string name="wednesday">WED</string>
-    <string name="thursday">THU</string>
-    <string name="friday">FRI</string>
-    <string name="saturday">SAT</string>
-    <string name="sunday">SUN</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
 
     <string name="order_experise_time">预约锻炼时间</string>
     <string name="sure">确认</string>

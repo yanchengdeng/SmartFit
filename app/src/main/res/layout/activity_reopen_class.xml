@@ -13,7 +13,7 @@
 
     <com.smartfit.views.HorizontalListView
         android:id="@+id/listview_date"
-        widget:dividerWidth="1dp"
+        widget:dividerWidth="0dp"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:divider="@color/white" />

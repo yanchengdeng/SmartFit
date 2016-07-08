@@ -32,6 +32,7 @@ import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
+import com.smartfit.adpters.ChooseCoachTypeAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomeDate;
@@ -73,6 +74,11 @@ public class PrivateEducationFragment extends Fragment {
      * 条件筛选框
      **/
     ConditionSelectPop conditionSelectPop;
+    /**
+     * 类型筛选匡
+     */
+
+    SelectCoachTypePop selectCoachTypePop;
     @Bind(R.id.ck_more_address)
     CheckBox ckMoreAddress;
     @Bind(R.id.tv_address)
@@ -97,6 +103,8 @@ public class PrivateEducationFragment extends Fragment {
     ImageView ivCoverBg;
     @Bind(R.id.ll_list_view_cover)
     LinearLayout llListViewCover;
+    @Bind(R.id.ck_more_type)
+    CheckBox ckMoreType;
 
 
     private int REQUEST_CODE_ORDER_TIME = 0x112;
@@ -107,6 +115,7 @@ public class PrivateEducationFragment extends Fragment {
     private PrivateEducationAdapter adapter;
     private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
     private List<WorkPointAddress> addresses;
+    private List<String> types = new ArrayList<>();
     private String venueId = "0";
     private String sex, startTime, endTime, startPrice, endPrice;
 
@@ -118,6 +127,8 @@ public class PrivateEducationFragment extends Fragment {
         initDateSelect();
         initListView();
         addLisener();
+        types.add("约教练");
+        types.add("约课程");
         return view;
     }
 
@@ -230,12 +241,12 @@ public class PrivateEducationFragment extends Fragment {
 
                         //只有一个价格  显示    教练费用为250/小时
                         if (Collections.max(prices).equals(Collections.min(prices))) {
-                            Float price = Float.parseFloat(item.getPrice()) +Collections.max(prices);
+                            Float price = Float.parseFloat(item.getPrice()) + Collections.max(prices);
                             item.setShowPriceInfo(String.format("%s/小时", new Object[]{String.valueOf(price)}));
                         } else {
                             Float priceLow = Float.parseFloat(item.getPrice()) + Collections.min(prices);
                             Float priceHight = Float.parseFloat(item.getPrice()) + Collections.max(prices);
-                            LogUtil.w("dyc","低："+priceLow+"  高："+priceHight);
+                            LogUtil.w("dyc", "低：" + priceLow + "  高：" + priceHight);
                             item.setShowPriceInfo(String.format("%1$s-%2$s/小时", new Object[]{String.valueOf(priceLow), String.valueOf(priceHight)}));
                         }
                     }
@@ -340,6 +351,9 @@ public class PrivateEducationFragment extends Fragment {
 
 
     private void addLisener() {
+        /**
+         * 场馆选择
+         */
         ckMoreAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -366,6 +380,9 @@ public class PrivateEducationFragment extends Fragment {
             }
         });
 
+        /**
+         * 筛选条件
+         */
         ckMoreSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -379,6 +396,26 @@ public class PrivateEducationFragment extends Fragment {
                     }
                 } else {
                     showOrderPop();
+                }
+            }
+        });
+
+        /**
+         * 选择教练类型
+         */
+        ckMoreType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=selectCoachTypePop){
+                    if (selectCoachTypePop.isShowing()){
+                        selectCoachTypePop.dismiss();
+                        ivCoverBg.setVisibility(View.GONE);
+                    }else{
+                        selectCoachTypePop.show();
+                        ivCoverBg.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    showPrivateCoachType();
                 }
             }
         });
@@ -469,6 +506,39 @@ public class PrivateEducationFragment extends Fragment {
     }
 
 
+    /**
+     * 弹出选择私教课类型
+     */
+    private void showPrivateCoachType() {
+        selectCoachTypePop = new SelectCoachTypePop(getActivity());
+        ivCoverBg.setVisibility(View.VISIBLE);
+        selectCoachTypePop
+                .anchorView(rlConditionHead)
+                .offset(0, -15)
+                .gravity(Gravity.BOTTOM)
+//                .showAnim(new BounceBottomEnter())
+//                .dismissAnim(new SlideBottomExit())
+                .dimEnabled(false)
+                .show();
+
+        selectCoachTypePop.setCanceledOnTouchOutside(true);
+
+        selectCoachTypePop.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                selectCoachTypePop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+        selectCoachTypePop.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                selectCoachTypePop.dismiss();
+                ivCoverBg.setVisibility(View.GONE);
+            }
+        });
+    }
+
     /******
      * 弹出排序框
      */
@@ -551,6 +621,52 @@ public class PrivateEducationFragment extends Fragment {
                     venueId = addresses.get(position).getVenueId();
                     ivCoverBg.setVisibility(View.GONE);
                     loadData();
+                }
+            });
+        }
+    }
+
+
+    private class SelectCoachTypePop extends BasePopup<SelectCoachTypePop> {
+
+
+        private ListView listView;
+
+        private ImageView ivArrow;
+
+        public SelectCoachTypePop(Context context) {
+            super(context);
+        }
+
+
+        @Override
+        public View onCreatePopupView() {
+            View inflate = View.inflate(mContext, R.layout.popup_custom, null);
+            listView = (ListView) inflate.findViewById(R.id.listView);
+            ivArrow = (ImageView) inflate.findViewById(R.id.iv_more_address_arrow);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.LEFT;
+            params.leftMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
+            ivArrow.setLayoutParams(params);
+            listView.setAdapter(new ChooseCoachTypeAdapter(getActivity(), types));
+            return inflate;
+        }
+
+        @Override
+        public void onBackPressed() {
+            ivCoverBg.setVisibility(View.GONE);
+            super.onBackPressed();
+        }
+
+        @Override
+        public void setUiBeforShow() {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   LogUtil.w("dyc", types.get(position));
+                    selectCoachTypePop.dismiss();
+                    ivCoverBg.setVisibility(View.GONE);
+//                    loadData();
                 }
             });
         }

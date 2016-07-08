@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,13 +80,6 @@ public class ConfirmPayActivity extends BaseActivity {
 
     private int numTicket;//选择优惠劵数
 
-    /****
-     * 页面跳转 index
-     * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付
-     */
-    private int pageIndex = 1;
-
 
     private StringBuffer eventUserIds, cardSNNumbers;
 
@@ -106,13 +101,13 @@ public class ConfirmPayActivity extends BaseActivity {
         tvName.setText(String.format("%d个包月服务", num));
         tvMoney.setText("￥" + String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num));
         ivHeader.setImageResource(R.mipmap.icon_yueka);
-        pageIndex = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
         if (num == 1) {
             if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
                 tvUserTicketUsable.setText(String.format("%d张可用", newMonthServerInfo.getEventListDTOs().size()));
                 tvTicketValue.setText(String.format("-￥%s", newMonthServerInfo.getDefaultMonthPrice()));
                 tvPayMoney.setText(String.format("￥0"));
+                ticketInfos = newMonthServerInfo.getEventListDTOs();
             }
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
@@ -148,8 +143,10 @@ public class ConfirmPayActivity extends BaseActivity {
         }
     }
 
+    int count;
+
     private void countLeftMoney(ArrayList<UseableEventInfo> ticketInfos, ArrayList<String> cardNums) {
-        int count = ((ticketInfos != null && ticketInfos.size() > 0) ? ticketInfos.size() : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
+        count = ((ticketInfos != null && ticketInfos.size() > 0) ? ticketInfos.size() : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
 
         if (count > 0) {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
@@ -183,11 +180,11 @@ public class ConfirmPayActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn_pay:
+                //全部抵用，不用支付
                 doOrderMouthBill();
                 break;
         }
     }
-
 
 
     /**
@@ -206,11 +203,11 @@ public class ConfirmPayActivity extends BaseActivity {
         }
 
         if (cardNums != null && cardNums.size() > 0) {
-            eventUserIds = new StringBuffer();
+            cardSNNumbers = new StringBuffer();
             for (String card : cardNums) {
-                eventUserIds.append(card).append("|");
+                cardSNNumbers.append(card).append("|");
             }
-            maps.put("cardSNNumbers", eventUserIds.toString());//卡号
+            maps.put("cardSNNumbers", cardSNNumbers.toString());//卡号
         }
 
         PostRequest request = new PostRequest(Constants.ORDER_ORDERMONTHSELL, maps, new Response.Listener<JsonObject>() {
@@ -219,12 +216,22 @@ public class ConfirmPayActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 MouthBillInfo billInfo = JsonUtils.objectFromJson(response, MouthBillInfo.class);
                 if (billInfo != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 9);// 7  包月支付
+                    if (Float.parseFloat(billInfo.getOrderPrice()) == 0.0) {
+                        mSVProgressHUD.showSuccessWithStatus("已支付完成", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                              finish();
+                            }
+                        },1500);
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Constants.PAGE_INDEX, 9);// 7  包月支付
 //                    bundle.putString(Constants.COURSE_ID, billInfo.getId());
-                    bundle.putString(Constants.COURSE_MONEY, billInfo.getOrderPrice());
-                    bundle.putString(Constants.COURSE_ORDER_CODE, billInfo.getOrderCode());
-                    openActivity(PayActivity.class, bundle);
+                        bundle.putString(Constants.COURSE_MONEY, billInfo.getOrderPrice());
+                        bundle.putString(Constants.COURSE_ORDER_CODE, billInfo.getOrderCode());
+                        openActivity(PayActivity.class, bundle);
+                    }
                 }
             }
         }, new Response.ErrorListener() {

@@ -2,6 +2,7 @@ package com.smartfit.wxapi;
 
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -24,6 +25,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         if (baseResp.getType()== ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
             if (baseResp.errCode== BaseResp.ErrCode.ERR_OK){
                 finish();
+            }else{
+                Toast.makeText(WXEntryActivity.this,"已取消分享",Toast.LENGTH_SHORT).show();
             }
         }
     }

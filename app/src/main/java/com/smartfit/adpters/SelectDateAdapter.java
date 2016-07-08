@@ -1,13 +1,10 @@
 package com.smartfit.adpters;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +12,6 @@ import com.smartfit.R;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
-import com.smartfit.utils.LogUtil;
 
 import java.util.List;
 
@@ -67,13 +63,12 @@ public class SelectDateAdapter extends BaseAdapter {
         CustomeDate item = customeDateList.get(position);
         viewHolder.tvDate.setText(item.getDate());
         viewHolder.tvWeek.setText(DateUtils.getDayOFWeek(context, item.getWeekday()));
-        viewHolder.ivDate.setImageResource(DateUtils.getIconOfWeek(item.getWeekday()));
         viewHolder.llWeek.setLayoutParams(params);
 
         if (currentPop == position) {
             viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.white));
             viewHolder.tvWeek.setTextColor(context.getResources().getColor(R.color.white));
-            viewHolder.ivDate.setImageResource(DateUtils.getSelectIconOfWeek(item.getWeekday()));
+            viewHolder.llWeek.setBackgroundColor(context.getResources().getColor(R.color.transparent_half));
         }
 
         return convertView;
@@ -85,17 +80,10 @@ public class SelectDateAdapter extends BaseAdapter {
 
     }
 
-    /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_select_date.xml'
-     * for easy to all layout elements.
-     *
-     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
-     */
+
     static class ViewHolder {
         @Bind(R.id.tv_week)
         TextView tvWeek;
-        @Bind(R.id.iv_date)
-        ImageView ivDate;
         @Bind(R.id.tv_date)
         TextView tvDate;
         @Bind(R.id.ll_week)

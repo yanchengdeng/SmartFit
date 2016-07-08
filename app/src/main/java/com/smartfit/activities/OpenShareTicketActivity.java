@@ -19,8 +19,10 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
+import com.smartfit.beans.ShareInfo;
 import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
@@ -173,7 +175,7 @@ public class OpenShareTicketActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());
@@ -231,24 +233,8 @@ public class OpenShareTicketActivity extends BaseActivity {
                     mSVProgressHUD.showInfoWithStatus("验证码为空");
                     return;
                 } else {
-                    if (TextUtils.isEmpty(uid)) {
-                        WXWebpageObject webpage = new WXWebpageObject();
-                        webpage.webpageUrl = "http://www.baidu.com";
-                        WXMediaMessage msg = new WXMediaMessage(webpage);
-                        msg.title = "eVery Long Very Long Very Long";
-                        msg.description = "Wioy Long Very Long";
-                        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_logo);
-                        msg.thumbData = Util.bmpToByteArray(thumb, true);
 
-                        SendMessageToWX.Req req = new SendMessageToWX.Req();
-                        req.transaction = buildTransaction("webpage");
-                        req.message = msg;
-                        req.scene = SendMessageToWX.Req.WXSceneSession;
-                        req.openId = "";
-                        api.sendReq(req);
-                    } else {
-                        doShareTicket(uid, etContent.getEditableText().toString());
-                    }
+                    doShareTicket(uid, etContent.getEditableText().toString());
                 }
             }
         });
@@ -261,7 +247,7 @@ public class OpenShareTicketActivity extends BaseActivity {
      * @param uid
      * @param code
      */
-    private void doShareTicket(String uid, String code) {
+    private void doShareTicket(final String uid, String code) {
         Map<String, String> msp = new HashMap();
         msp.put("eventUserIds", ticketIds);
         msp.put("checkCode", code);
@@ -269,13 +255,20 @@ public class OpenShareTicketActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.EVENT_SHAREEVENTUSER, msp, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
+                ShareInfo shareInfo = JsonUtils.objectFromJson(response, ShareInfo.class);
+                if (shareInfo != null) {
+                    if (TextUtils.isEmpty(uid)) {
+                        shareToWX(shareInfo);
+                    } else {
+                        mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        }, 1500);
                     }
-                },1500);
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -288,6 +281,22 @@ public class OpenShareTicketActivity extends BaseActivity {
         request.headers = NetUtil.getRequestBody(OpenShareTicketActivity.this);
         mQueue.add(request);
 
+    }
+
+    private void shareToWX(ShareInfo shareInfo) {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getSharedUid();
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = shareInfo.getTitle();
+        msg.description = shareInfo.getContent();
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_logo);
+        msg.thumbData = Util.bmpToByteArray(thumb, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.openId = "";
+        api.sendReq(req);
     }
 
 }
