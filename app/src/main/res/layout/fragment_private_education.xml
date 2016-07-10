@@ -73,7 +73,7 @@
             android:checked="false"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_down"
-            android:text="约课程"
+            android:text="约教练"
             android:textSize="@dimen/text_normal_down" />
 
     </RelativeLayout>
@@ -146,7 +146,6 @@
                 android:divider="@color/transparent_half"
                 android:dividerHeight="1px"
                 android:listSelector="@android:color/transparent"
-                android:paddingBottom="60dp"
                 android:visibility="invisible" />
 
 
@@ -156,6 +155,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/private_class_color_bg"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView

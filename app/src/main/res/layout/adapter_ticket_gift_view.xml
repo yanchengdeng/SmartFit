@@ -62,10 +62,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding"
-            android:text="2016-09-03失效"
-            android:visibility="gone"
             android:textColor="@color/text_color_gray"
-            android:textSize="@dimen/text_normal" />
+            android:textSize="@dimen/text_normal_down" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="已使用"
+            android:gravity="right"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_normal_down" />
 
     </LinearLayout>
     </LinearLayout>

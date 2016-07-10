@@ -68,7 +68,7 @@ public class TicketGiftAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getEventEndTime())) {
-            viewHolder.tvClassOutdate.setText(String.format("%s过期", DateUtils.getData(item.getEventEndTime())));
+            viewHolder.tvClassOutdate.setText(String.format("过期时间:%s", DateUtils.getData(item.getEventEndTime())));
         }
 
         if (!TextUtils.isEmpty(item.getEventType())) {
@@ -78,6 +78,28 @@ public class TicketGiftAdapter extends BaseAdapter {
                 viewHolder.tvType.setText("买赠");
             }else if(item.getEventType().equals("1")){
                 viewHolder.tvType.setText("活动捆绑");
+            }
+        }
+
+        if (!TextUtils.isEmpty(item.getStatus())) {
+            if (item.getStatus().equals("0")){
+                viewHolder.tvStatus.setVisibility(View.INVISIBLE);
+            }else if(item.getStatus().equals("1")){
+                viewHolder.tvStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvStatus.setText("已使用");
+
+            }else if(item.getStatus().equals("2")){
+                viewHolder.tvStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvStatus.setText("使用中");
+
+            }else if(item.getStatus().equals("3")){
+                viewHolder.tvStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvStatus.setText("已分享未领取");
+
+            }else if(item.getStatus().equals("4")){
+                viewHolder.tvStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvStatus.setText("已分享已领取");
+
             }
         }
         return convertView;
@@ -104,6 +126,9 @@ public class TicketGiftAdapter extends BaseAdapter {
         TextView tvClassInfo;
         @Bind(R.id.tv_class_outdate)
         TextView tvClassOutdate;
+        @Bind(R.id.tv_status)
+        TextView tvStatus;
+
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

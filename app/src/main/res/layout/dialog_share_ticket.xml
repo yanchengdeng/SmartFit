@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:id="@+id/et_code_count_down"
-            android:text="重获验证码(60s)"
+            android:text="获取验证码"
             android:textSize="@dimen/text_normal_down"
             android:padding="@dimen/image_padding_big"
             android:background="@drawable/bg_dialog_selector_gray_empty"

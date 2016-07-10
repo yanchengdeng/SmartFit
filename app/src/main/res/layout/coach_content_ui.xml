@@ -74,6 +74,8 @@
         android:background="@color/white"
         android:lineSpacingExtra="@dimen/image_padding"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:text="暂无"
         android:textColor="@color/black"

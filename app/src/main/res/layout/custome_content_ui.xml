@@ -210,7 +210,7 @@
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_next_w_on"
             android:gravity="right"
-            android:text="0"
+            android:text="0张未使用"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>

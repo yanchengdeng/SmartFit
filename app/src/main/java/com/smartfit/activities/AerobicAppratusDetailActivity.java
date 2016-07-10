@@ -324,7 +324,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                         bundle.putString("classroom",classInfoDetail.getId());
                         bundle.putString(Constants.COURSE_TYPE,"3");
                         bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
-                        openActivity(PayActivity.class, bundle);
+                        openActivity(ConfirmOrderCourseActivity.class, bundle);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                     }

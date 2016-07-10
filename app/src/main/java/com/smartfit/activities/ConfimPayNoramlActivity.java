@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.NewMouthServerEvent;
 import com.smartfit.commons.Constants;
@@ -15,8 +16,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 确认支付
- * 除 包月外 ，其他支付 都当做一个商品来处理
+ * 确认支付  只针对 ：包季度  包半年
+ * 和课程一样当做一个商品来处理
+ * 但是不可使用优惠劵 和实体卡
  */
 public class ConfimPayNoramlActivity extends BaseActivity {
 
@@ -41,8 +43,6 @@ public class ConfimPayNoramlActivity extends BaseActivity {
     Button btnPay;
     private NewMouthServerEvent newMouthServerEvent;
 
-    private int pageIndex;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +66,11 @@ public class ConfimPayNoramlActivity extends BaseActivity {
             tvPayMoney.setText("￥" + newMouthServerEvent.getEventPrice());
         }
 
-
+        if (newMouthServerEvent.getPics() != null && newMouthServerEvent.getPics().length > 0) {
+            ImageLoader.getInstance().displayImage(newMouthServerEvent.getPics()[0], ivHeader);
+        } else {
+            ivHeader.setImageResource(R.mipmap.bg_pic);
+        }
     }
 
 

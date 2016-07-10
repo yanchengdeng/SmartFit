@@ -107,6 +107,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
     private String courseId;
 
+    private boolean isInclueAreaFee;//1.0.3 接口中的教练价格 已包含产地费  如果是 true 则不需要再加场地费用
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +127,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
+        isInclueAreaFee = getIntent().getBooleanExtra("is_inclue_area_fee",false);
 
         tvClassTime.setText(startTime + " ~ " + DateUtils.getDataType(endTime));
         ImageLoader.getInstance().displayImage(idleClassListInfo.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
@@ -271,14 +274,17 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())) {
+        if (!TextUtils.isEmpty(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice()) && !isInclueAreaFee) {
             monney += Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice());
         }
 
 
         for (PrivateEducationClass item : privateEducationClasses) {
-            item.setShowPrice(String.valueOf(Float.parseFloat(item.getPrice()) + Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())));
-
+            if (isInclueAreaFee){
+                item.setShowPrice(item.getPrice());
+            }else {
+                item.setShowPrice(String.valueOf(Float.parseFloat(item.getPrice()) + Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())));
+            }
         }
 
         adapter = new PrivateEducationOrderAdapter(this, privateEducationClasses);
@@ -402,7 +408,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
                     bundle.putString(Constants.COURSE_TYPE, "2");
-                    openActivity(PayActivity.class, bundle);
+                    openActivity(ConfirmOrderCourseActivity.class, bundle);
                 }
             }
         }, new Response.ErrorListener() {

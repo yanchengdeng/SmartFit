@@ -9,20 +9,33 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.gson.JsonObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MesageInfo;
+import com.smartfit.commons.Constants;
+import com.smartfit.commons.MessageType;
+import com.smartfit.utils.NetUtil;
+import com.smartfit.utils.Options;
+import com.smartfit.utils.PostRequest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
-*系统消息适配器
-*@author yanchengdeng
-*create at 2016/5/3 9:38
-*
-*/
+ * 系统消息适配器
+ *
+ * @author yanchengdeng
+ *         create at 2016/5/3 9:38
+ */
 public class SystemMesageAdatper extends BaseAdapter {
     private Context context;
     List<MesageInfo> messageLists;
@@ -59,14 +72,80 @@ public class SystemMesageAdatper extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         final MesageInfo item = messageLists.get(position);
-        if (!TextUtils.isEmpty(item.getMessageContent().getContent())) {
-            viewHolder.tvContent.setText(item.getMessageContent().getContent());
+
+        if (item.getType().equals(MessageType.MESSAGE_TYPE_SYTEM)) {
+            if (!TextUtils.isEmpty(item.getMessageContent().getContent())) {
+                viewHolder.tvContent.setText(item.getMessageContent().getContent());
+            }
+            if (!TextUtils.isEmpty(item.getTitle())) {
+                viewHolder.tvName.setText(item.getTitle());
+            }
+            viewHolder.tvAccepte.setVisibility(View.GONE);
+        } else if (item.getType().equals(MessageType.TICKE_GIFT_ACCEPTE)) {
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+
+            }
+            viewHolder.tvAccepte.setVisibility(View.GONE);
+        } else if (item.getType().equals(MessageType.TICKET_BACK_MESSAGE)) {
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
+            viewHolder.tvAccepte.setVisibility(View.GONE);
+        } else if (item.getType().equals(MessageType.TICKE_GIFT_GIVE)) {
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getSourseUserName())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getSourseUserName());
+                }
+                viewHolder.tvContent.setText("送你SMART FIT健身券啦");
+
+            }
+            ImageLoader.getInstance().displayImage(item.getMessageContent().getSourseUserPicUrl(), viewHolder.ivIcon, Options.getHeaderOptions());
+            viewHolder.tvAccepte.setVisibility(View.VISIBLE);
         }
 
-
-
+        viewHolder.tvAccepte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accepterTicket(item,position);
+            }
+        });
 
         return convertView;
+    }
+
+    private void accepterTicket(MesageInfo item, final int position) {
+            Map<String, String> map = new HashMap<>();
+            map.put("shareId", item.getMessageContent().getGoodsId());
+
+            PostRequest request = new PostRequest(Constants.EVENT_ACCEPTSHAREDEVENTUSER, map, new Response.Listener<JsonObject>() {
+                @Override
+                public void onResponse(JsonObject response) {
+                    messageLists.get(position).setType(MessageType.TICKE_GIFT_ACCEPTE);
+                    notifyDataSetChanged();
+
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+            });
+            request.setTag(new Object());
+            request.headers = NetUtil.getRequestBody(context);
+            ((BaseActivity) context).mQueue.add(request);
     }
 
 
@@ -82,6 +161,8 @@ public class SystemMesageAdatper extends BaseAdapter {
         TextView tvName;
         @Bind(R.id.tv_content)
         TextView tvContent;
+        @Bind(R.id.tv_accpet)
+        TextView tvAccepte;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

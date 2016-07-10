@@ -1,0 +1,124 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.smartfit.activities.SettingOrderCoachTimeActivity">
+
+    <include layout="@layout/common_header_view" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_coach_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_fee_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_fee"
+                android:text="课时费："
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0/小时"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_coach_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_coach_info"
+            android:layout_marginTop="1px"
+            android:background="@color/white"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="可预约时间"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_coach_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="9:00~10:00"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_order_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_coach_time"
+            android:layout_marginTop="1px"
+            android:background="@color/white"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="预约锻炼时间"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_order_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="9:00~10:00"
+                android:drawableRight="@mipmap/icon_next_w_on"
+                android:drawablePadding="@dimen/image_padding"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_order"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_dialog_selector_red"
+            android:text="立即预约"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/white"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

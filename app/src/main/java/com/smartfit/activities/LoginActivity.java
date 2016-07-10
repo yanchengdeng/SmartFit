@@ -23,6 +23,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.R;
 import com.smartfit.beans.AttentionBean;
+import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -32,6 +33,7 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.utils.Util;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -203,6 +205,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 }
                 getFriendsInfo();
+                getCustomeInfo();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -228,6 +231,36 @@ public class LoginActivity extends BaseActivity {
             }
         });
         request.setTag(TAG);
+        request.headers = NetUtil.getRequestBody(LoginActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 获取个人用户信息
+     */
+    private void getCustomeInfo() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        maps.put("isCoach", "0");
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                UserInfoDetail userInfoDetail = Util.getUserInfo(LoginActivity.this);
+                if (null != userInfo) {
+                    userInfoDetail.setBalance(userInfo.getBalance());
+                    Util.saveUserInfo(userInfoDetail);
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_VIP, userInfo.getIsVip());
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(LoginActivity.this);
         mQueue.add(request);
     }

@@ -86,4 +86,27 @@ public class NetUtil {
 
         return "";
     }
+
+
+    public static UserInfoDetail getUserInfo() {
+        String useString = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
+        if (!TextUtils.isEmpty(useString)) {
+            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(useString, UserInfoDetail.class);
+            if (userInfoDetail != null) {
+                return userInfoDetail;
+            }
+        }
+        return null;
+    }
+
+    public static boolean getISvip() {
+        String isVIP = SharedPreferencesUtils.getInstance().getString(Constants.IS_VIP,"");
+        if (isVIP.equals("0")){
+            return false;
+        }else{
+            return true;
+        }
+
+
+    }
 }

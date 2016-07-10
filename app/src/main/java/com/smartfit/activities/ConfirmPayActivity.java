@@ -76,9 +76,10 @@ public class ConfirmPayActivity extends BaseActivity {
     private int GET_CARD_CODE = 0x0011;
 
     private int num;//购买月卡时： 优惠劵  和 实体卡  总和 不超过 购买月卡 月数
+
     private NewMonthServerInfo newMonthServerInfo;
 
-    private int numTicket;//选择优惠劵数
+    private int numTicket,numCards;//选择优惠劵数、选择实体卡
 
 
     private StringBuffer eventUserIds, cardSNNumbers;
@@ -100,7 +101,7 @@ public class ConfirmPayActivity extends BaseActivity {
         newMonthServerInfo = getIntent().getParcelableExtra(Constants.PASS_OBJECT);
         tvName.setText(String.format("%d个包月服务", num));
         tvMoney.setText("￥" + String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num));
-        ivHeader.setImageResource(R.mipmap.icon_yueka);
+        ivHeader.setImageResource(R.drawable.icon_yueka);
         if (num == 1) {
             if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
@@ -108,6 +109,12 @@ public class ConfirmPayActivity extends BaseActivity {
                 tvTicketValue.setText(String.format("-￥%s", newMonthServerInfo.getDefaultMonthPrice()));
                 tvPayMoney.setText(String.format("￥0"));
                 ticketInfos = newMonthServerInfo.getEventListDTOs();
+            } else {
+                tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
+            }
+            if (newMonthServerInfo.getEventListDTOs()!=null && newMonthServerInfo.getEventListDTOs().size()>0)
+            {
+                numTicket = num;
             }
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
@@ -128,6 +135,12 @@ public class ConfirmPayActivity extends BaseActivity {
                     numTicket = ticketInfos.size();
                     tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
                     countLeftMoney(ticketInfos, cardNums);
+                }else{
+                    //不选择优惠券时
+                    ticketInfos = new ArrayList<>();
+                    numTicket = 0;
+                    tvTicketValue.setText("");
+                    tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
                 }
             }
 
@@ -136,6 +149,7 @@ public class ConfirmPayActivity extends BaseActivity {
             if (data.getExtras() != null) {
                 cardNums = data.getStringArrayListExtra(Constants.PASS_OBJECT);
                 if (cardNums != null && cardNums.size() > 0) {
+                    numCards = cardNums.size();
                     tvUserCard.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * cardNums.size())));
                     countLeftMoney(ticketInfos, cardNums);
                 }
@@ -162,18 +176,21 @@ public class ConfirmPayActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_user_ticket_ui:
-                if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(Constants.PASS_OBJECT, newMonthServerInfo.getEventListDTOs());
-                    openActivity(SelectTicketToBuyActivity.class, bundle, GET_TICKET_CODE);
-                } else {
-                    mSVProgressHUD.showInfoWithStatus("无可用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                }
+                //购买一个月  服务 ：如果有优惠劵默认选第一个张
+                    if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
+                          Bundle bundle = new Bundle();
+                          bundle.putParcelableArrayList(Constants.PASS_OBJECT, newMonthServerInfo.getEventListDTOs());
+                          bundle.putInt(Constants.PASS_STRING, num - numCards);
+                          openActivity(SelectTicketToBuyActivity.class, bundle, GET_TICKET_CODE);
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus("无可用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    }
                 break;
             case R.id.rl_select_card_ui:
                 if (num - numTicket > 0) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PASS_STRING, num - numTicket);
+                    bundle.putString(Constants.COURSE_TYPE,"0");
                     openActivity(SelectCardToBuyActivity.class, bundle, GET_CARD_CODE);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("已使用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -217,13 +234,8 @@ public class ConfirmPayActivity extends BaseActivity {
                 MouthBillInfo billInfo = JsonUtils.objectFromJson(response, MouthBillInfo.class);
                 if (billInfo != null) {
                     if (Float.parseFloat(billInfo.getOrderPrice()) == 0.0) {
-                        mSVProgressHUD.showSuccessWithStatus("已支付完成", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                              finish();
-                            }
-                        },1500);
+                        payOrder(billInfo.getOrderCode());
+
                     } else {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.PAGE_INDEX, 9);// 7  包月支付
@@ -238,6 +250,40 @@ public class ConfirmPayActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ConfirmPayActivity.this);
+        mQueue.add(request);
+    }
+
+
+    /***
+     * 本地余额支付订单
+     */
+    private void payOrder(String orderID) {
+
+        mSVProgressHUD.setText("正在支付");
+        Map<String, String> map = new HashMap<>();
+        map.put("orderCode", orderID);
+        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.PAY_BALANCEPAY, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("已支付完成", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 1500);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
             }
         });
         request.setTag(new Object());

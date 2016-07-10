@@ -63,4 +63,24 @@ public class MessageType {
      * 教练取消课程--通知参与用户  13
      */
     public static String MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER = "13";
+
+    /**
+     * 礼券赠送消息
+     */
+
+    public static String TICKE_GIFT_GIVE = "21";
+
+
+    /**
+     *领取
+     */
+
+    public static String TICKE_GIFT_ACCEPTE = "22";
+
+    /***
+     * 券退回
+     */
+    public static String TICKET_BACK_MESSAGE = "23";
+
+
 }

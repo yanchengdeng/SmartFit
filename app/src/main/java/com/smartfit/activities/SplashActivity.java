@@ -1,6 +1,7 @@
 package com.smartfit.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -21,13 +22,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.R;
-import com.smartfit.beans.CityBean;
 import com.smartfit.beans.FlashPageInfo;
+import com.smartfit.beans.MainAdInfo;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -68,10 +72,9 @@ public class SplashActivity extends FragmentActivity {
             R.mipmap.login_bg
     };
 
-    private int i = 0;
 
-    Integer[] secons = new Integer[]{2, 1, 0};
-
+    int secods[]= new int[]{2,1,0};
+    int index  =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +83,11 @@ public class SplashActivity extends FragmentActivity {
         countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if (i < secons.length)
-                    tvSecondJump.setText(String.format("%s 跳过", String.valueOf(secons[i])));
-                i++;
+                LogUtil.w("dyc","执行："+index);
+                if (index<secods.length) {
+                    tvSecondJump.setText(String.format("%s 跳过", String.valueOf(secods[index])));
+                }
+                index++;
             }
 
             @Override
@@ -106,7 +111,34 @@ public class SplashActivity extends FragmentActivity {
     private void initLaunchLogo() {
         View guideImage = findViewById(R.id.guide_ui);
         guideImage.setVisibility(View.VISIBLE);
+        getMainAd();
         getLauchPic();
+
+    }
+
+    /**
+     * 获取首页广告
+     */
+    private void getMainAd() {
+        Map<String, String> data = new HashMap<>();
+        data.put("platform", "2");
+        PostRequest request = new PostRequest(Constants.AD_ADFIRST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<MainAdInfo> mainAdInfos = JsonUtils.listFromJson(response.getAsJsonArray("list"), MainAdInfo.class);
+                if (mainAdInfos != null && mainAdInfos.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.MIAN_ADS, JsonUtils.toJson(mainAdInfos));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        request.headers = NetUtil.getRequestBody(SplashActivity.this);
+        GetSingleRequestUtils.getInstance(this).getRequestQueue().add(request);
+
 
     }
 
@@ -121,24 +153,72 @@ public class SplashActivity extends FragmentActivity {
             public void onResponse(JsonObject response) {
                 flashPageInfo = JsonUtils.listFromJson(response.getAsJsonArray("list"), FlashPageInfo.class);
                 if (flashPageInfo != null && flashPageInfo.size() > 0 && flashPageInfo.get(0).getPics().length > 0) {
-                    if (Long.parseLong(flashPageInfo.get(0).getAdEndTime()) < (System.currentTimeMillis() / 1000))
-                    {
-                        ImageLoader.getInstance().displayImage(flashPageInfo.get(0).getPics()[0], ivAdBg);
+                    if (Long.parseLong(flashPageInfo.get(0).getAdEndTime()) > (System.currentTimeMillis() / 1000)) {
+                        getImagetBitMpa(flashPageInfo.get(0).getPics()[0]);
+                    }else{
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        },2000);
                     }
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    },2000);
                 }
-                requestCityList();
+
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                countDownTimer.start();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }, 2000);
             }
         });
         request.headers = NetUtil.getRequestBody(SplashActivity.this);
         GetSingleRequestUtils.getInstance(this).getRequestQueue().add(request);
 
 
+    }
+
+    private void getImagetBitMpa(String url) {
+        ImageLoader.getInstance().loadImage(url, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                ivAdBg.setImageBitmap(loadedImage);
+                startAdCountDown();
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        });
     }
 
     private void initGuideGallery() {
@@ -149,7 +229,6 @@ public class SplashActivity extends FragmentActivity {
             public void onClick(View view) {
                 SharedPreferencesUtils.getInstance().putBoolean(Constants.FRIST_OPEN_APP, false);
 
-                requestCityList();
             }
         });
 
@@ -185,36 +264,16 @@ public class SplashActivity extends FragmentActivity {
     }
 
 
-    private void requestCityList() {
-        Map<String, String> data = new HashMap<>();
-        PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-                List<CityBean> cityBeans = JsonUtils.listFromJson(response.getAsJsonArray("list"), CityBean.class);
-                if (cityBeans != null && cityBeans.size() > 0) {
-                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_LIST_INOF, JsonUtils.toJson(cityBeans));
-                }
-                startAdCountDown();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                startAdCountDown();
-            }
-        });
-        request.headers = NetUtil.getRequestBody(SplashActivity.this);
-        GetSingleRequestUtils.getInstance(SplashActivity.this).getRequestQueue().add(request);
-    }
 
 
     private void startAdCountDown() {
+        tvSecondJump.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 countDownTimer.start();
             }
-        }, 500);
+        },1000);
     }
 
     @OnClick({R.id.iv_ad_bg, R.id.tv_second_jump})

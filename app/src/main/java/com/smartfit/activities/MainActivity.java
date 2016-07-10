@@ -40,19 +40,24 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.igexin.sdk.PushManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.HxMessageList;
 import com.smartfit.R;
 import com.smartfit.SmartAppliction;
 import com.smartfit.beans.AttentionBean;
+import com.smartfit.beans.CityBean;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
+import com.smartfit.beans.MainAdInfo;
+import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.MD5;
@@ -101,8 +106,16 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     TextView tvGoServer;
     @Bind(R.id.ll_activity_bind_up)
     LinearLayout llActivityBindUp;
+    @Bind(R.id.iv_ad_up)
+    ImageView ivAdUp;
+    @Bind(R.id.iv_ad_middle)
+    ImageView ivAdMiddle;
+    @Bind(R.id.iv_ad_bottom)
+    ImageView ivAdBottom;
 
     private EventBus eventBus;
+
+    private List<MainAdInfo> mainAdInfos;
 
 
     @Override
@@ -125,6 +138,30 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
 
         eventBus = EventBus.getDefault();
+        String mainAd = SharedPreferencesUtils.getInstance().getString(Constants.MIAN_ADS, "");
+        if (!TextUtils.isEmpty(mainAd)) {
+            mainAdInfos = JsonUtils.listFromJson(mainAd, MainAdInfo.class);
+            if (mainAdInfos.size() == 3) {
+                for (MainAdInfo item : mainAdInfos) {
+                    if (item.getAdposition().equals("1")) {
+                        if (item.getPics() != null && item.getPics().length > 0) {
+                            ImageLoader.getInstance().displayImage(item.getPics()[0], ivAdUp);
+                        }
+
+                    } else if (item.getAdposition().equals("2")) {
+                        if (item.getPics() != null && item.getPics().length > 0) {
+                            ImageLoader.getInstance().displayImage(item.getPics()[0], ivAdMiddle);
+                        }
+
+                    } else {
+                        if (item.getPics() != null && item.getPics().length > 0) {
+                            ImageLoader.getInstance().displayImage(item.getPics()[0], ivAdBottom);
+                        }
+
+                    }
+                }
+            }
+        }
 
 
         String nativeCity = SharedPreferencesUtils.getInstance().getString(Constants.CITY_NAME, "");
@@ -152,8 +189,32 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             getShowerRecord();
         }
 
-
+        requestCityList();
     }
+
+    /**
+     * 获取城市列表
+     */
+    private void requestCityList() {
+        Map<String, String> data = new HashMap<>();
+        PostRequest request = new PostRequest(Constants.GET_CITY_LIST, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                List<CityBean> cityBeans = JsonUtils.listFromJson(response.getAsJsonArray("list"), CityBean.class);
+                if (cityBeans != null && cityBeans.size() > 0) {
+                    SharedPreferencesUtils.getInstance().putString(Constants.CITY_LIST_INOF, JsonUtils.toJson(cityBeans));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        GetSingleRequestUtils.getInstance(MainActivity.this).getRequestQueue().add(request);
+    }
+
 
     /**
      * 获取淋浴欠费接口
@@ -387,6 +448,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
                         if (!TextUtils.isEmpty(userInfoDetail.getCoachId())) {
                             SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
+                        }else{
+                            getCustomeInfo();
                         }
                         LoginHX(userInfoDetail.getUid());
                         getFriendsInfo();
@@ -406,8 +469,43 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             request.headers = NetUtil.getRequestBody(MainActivity.this);
             mQueue.add(request);
         }
-
     }
+
+
+
+
+
+        /**
+         * 获取个人用户信息
+         */
+    private void getCustomeInfo() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        maps.put("isCoach", "0");
+        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                UserInfoDetail userInfoDetail = Util.getUserInfo(MainActivity.this);
+                if (null != userInfo) {
+                    userInfoDetail.setBalance(userInfo.getBalance());
+                    Util.saveUserInfo(userInfoDetail);
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_VIP, userInfo.getIsVip());
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        mQueue.add(request);
+    }
+
+
 
     private void bindClient(String client) {
 
@@ -481,7 +579,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
                 if (NetUtil.isLogin(getApplicationContext())) {
-                    openActivity(ActivityListActivity.class);
+                    openViewByType(1);
                 } else {
                     openActivity(LoginActivity.class);
                 }
@@ -527,7 +625,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                                                 //TODO  活动
                                                 if (NetUtil.isLogin(getApplicationContext())) {
 //                                                    openActivity(CustomeClassActivity.class);
-                                                    openActivity(ActivityListActivity.class);
+                                                    openViewByType(3);
                                                 } else {
                                                     openActivity(LoginActivity.class);
                                                 }
@@ -540,7 +638,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onClick(View v) {
                 if (NetUtil.isLogin(getApplicationContext())) {
-                    openActivity(ActivityListActivity.class);
+                    openViewByType(2);
                 } else {
                     openActivity(LoginActivity.class);
                 }
@@ -596,6 +694,42 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                 NormalDialogStyleTwo();
             }
         });
+    }
+
+    /**
+     * 根据广告位子   跳转到对应的类型  1  上栏  2  中栏   3 低栏
+     * @param adPosion
+     */
+    private void openViewByType(int adPosion) {
+        if (mainAdInfos!=null && mainAdInfos.size()>0){
+            MainAdInfo select = null;
+            for (MainAdInfo item:mainAdInfos){
+                if (item.getAdposition().equals(String.valueOf(adPosion))){
+                    select = item;
+                }
+            }
+            if (select!=null){
+                if (select.getAdType().equals("0")){
+                    //app 界面
+                    if (select.getApplink().equals("1")){
+                        //活动列表
+                        openActivity(ActivityListActivity.class);
+                    }else {
+                        openActivity(EventActivityNewVersionActivity.class);
+                    }
+                }else{
+                    //网页
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.PASS_STRING, select.getLink());
+                    bundle.putString("name", select.getAdName());
+                    openActivity(AdActivity.class,bundle);
+
+                }
+
+            }
+        }
+
+
     }
 
 

@@ -153,6 +153,7 @@ public class SmallClassFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
                 bundle.putString(Constants.COURSE_TYPE,"1");
+                bundle.putInt(Constants.PAGE_INDEX,2);
                 ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });

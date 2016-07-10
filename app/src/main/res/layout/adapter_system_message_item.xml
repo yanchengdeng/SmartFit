@@ -34,9 +34,22 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/image_padding"
         android:layout_toRightOf="@+id/iv_icon"
-        android:text="请求您加为健身伙伴"
         android:textColor="@color/text_color_gray"
         android:textSize="@dimen/text_normal_down" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_accpet"
+        android:text="领取"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal_down"
+        android:padding="@dimen/image_padding"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_dialog_selector_red"/>
 
 
 </RelativeLayout>

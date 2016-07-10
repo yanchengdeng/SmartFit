@@ -1,9 +1,12 @@
 package com.smartfit.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 作者： 邓言诚 创建于： 2016/5/20 15;//53.
  */
-public class EventUserful {
+public class EventUserful implements Parcelable {
 
     private String id;// 1339,
     private String userId;// 33,
@@ -17,6 +20,16 @@ public class EventUserful {
     private String eventTitle;// 包月卡,
     private String eventDetial;// 这是一个测试月卡,
     private String courseClassId;// null
+
+    public boolean isCheked() {
+        return isCheked;
+    }
+
+    public void setIsCheked(boolean isCheked) {
+        this.isCheked = isCheked;
+    }
+
+    private boolean isCheked;
 
     public boolean isCheck() {
         return isCheck;
@@ -123,4 +136,58 @@ public class EventUserful {
     public void setCourseClassId(String courseClassId) {
         this.courseClassId = courseClassId;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.userId);
+        dest.writeString(this.eventId);
+        dest.writeString(this.startTime);
+        dest.writeString(this.endTime);
+        dest.writeString(this.eventType);
+        dest.writeString(this.courseTypeCode);
+        dest.writeString(this.coachLevel);
+        dest.writeString(this.count);
+        dest.writeString(this.eventTitle);
+        dest.writeString(this.eventDetial);
+        dest.writeString(this.courseClassId);
+        dest.writeByte(isCheked ? (byte) 1 : (byte) 0);
+        dest.writeByte(isCheck ? (byte) 1 : (byte) 0);
+    }
+
+    public EventUserful() {
+    }
+
+    protected EventUserful(Parcel in) {
+        this.id = in.readString();
+        this.userId = in.readString();
+        this.eventId = in.readString();
+        this.startTime = in.readString();
+        this.endTime = in.readString();
+        this.eventType = in.readString();
+        this.courseTypeCode = in.readString();
+        this.coachLevel = in.readString();
+        this.count = in.readString();
+        this.eventTitle = in.readString();
+        this.eventDetial = in.readString();
+        this.courseClassId = in.readString();
+        this.isCheked = in.readByte() != 0;
+        this.isCheck = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<EventUserful> CREATOR = new Parcelable.Creator<EventUserful>() {
+        public EventUserful createFromParcel(Parcel source) {
+            return new EventUserful(source);
+        }
+
+        public EventUserful[] newArray(int size) {
+            return new EventUserful[size];
+        }
+    };
 }

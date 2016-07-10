@@ -76,7 +76,8 @@ public class SelectCardToBuyActivity extends BaseActivity {
         tvFunction.setText(getString(R.string.sure));
         adapter = new VertifyCardSuccessAdapter(this, vertifyCards);
         listview.setAdapter(adapter);
-        selectMaxNum = getIntent().getIntExtra(Constants.PASS_STRING,0);
+        selectMaxNum = getIntent().getIntExtra(Constants.PASS_STRING, 0);
+        couserType = getIntent().getStringExtra(Constants.COURSE_TYPE);
     }
 
     private void addLisener() {
@@ -91,10 +92,10 @@ public class SelectCardToBuyActivity extends BaseActivity {
         tvVertifyCardCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (vertifyCards.size()<selectMaxNum) {
+                if (vertifyCards.size() < selectMaxNum) {
                     vertyfiyCode(etCardCode.getEditableText().toString());
-                }else{
-                    mSVProgressHUD.showInfoWithStatus(String.format("最多只能选%s",selectMaxNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    mSVProgressHUD.showInfoWithStatus(String.format("最多只能选%s", selectMaxNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
             }
         });
@@ -104,8 +105,12 @@ public class SelectCardToBuyActivity extends BaseActivity {
             public void onClick(View v) {
                 if (vertifyCards.size() > 0) {
                     StringBuffer stringBuffer = new StringBuffer();
-                    for (String item : vertifyCards) {
-                        stringBuffer.append(item).append("|");
+                    for (int i = 0; i < vertifyCards.size(); i++) {
+                        if (i == vertifyCards.size() - 1) {
+                            stringBuffer.append(vertifyCards.get(i));
+                        } else {
+                            stringBuffer.append(vertifyCards.get(i)).append("|");
+                        }
                     }
                     Intent intent = new Intent(SelectCardToBuyActivity.this, ConfirmPayActivity.class);
                     intent.putStringArrayListExtra(Constants.PASS_OBJECT, vertifyCards);

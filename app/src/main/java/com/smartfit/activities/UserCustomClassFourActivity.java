@@ -245,7 +245,7 @@ public class UserCustomClassFourActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ID, customClassReleaseInfo.getId());
                     bundle.putString(Constants.COURSE_MONEY, String.format("%.2f", Float.parseFloat(customClassReleaseInfo.getTotalPrice())));
                     bundle.putString(Constants.COURSE_TYPE, "1");
-                    openActivity(PayActivity.class, bundle);
+                    openActivity(ConfirmOrderCourseActivity.class, bundle);
                 }
             }
         }, new Response.ErrorListener() {

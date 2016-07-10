@@ -28,7 +28,7 @@ public class MyTicketGiftActivity extends BaseActivity {
     @Bind(R.id.tv_tittle)
     TextView tvTittle;
     @Bind(R.id.tv_function)
-  public   TextView tvFunction;
+    public TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
     @Bind(R.id.viewpagertab)
@@ -37,7 +37,6 @@ public class MyTicketGiftActivity extends BaseActivity {
     ViewPager viewpager;
     @Bind(R.id.btn_bind_card)
     Button btnBindCard;
-
 
 
     @Override
@@ -55,8 +54,6 @@ public class MyTicketGiftActivity extends BaseActivity {
         tvTittle.setText(getString(R.string.tick_gift));
         tvFunction.setText(getString(R.string.tick_gift_share));
     }
-
-
 
 
     private void initFragments() {

@@ -33,6 +33,7 @@
             android:paddingLeft="@dimen/image_padding_big"
             android:paddingRight="@dimen/image_padding_big"
             android:text="3 跳过"
+            android:visibility="gone"
             android:textColor="@color/common_header_bg"
             android:textSize="@dimen/text_normal" />
 

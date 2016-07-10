@@ -18,11 +18,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.ShareTicketSuccess;
 import com.smartfit.R;
 import com.smartfit.beans.ShareInfo;
 import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
@@ -31,6 +33,9 @@ import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +75,8 @@ public class OpenShareTicketActivity extends BaseActivity {
 
     private int REQUSET_FRIENDS = 0x011;
 
+    private EventBus eventBus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +84,22 @@ public class OpenShareTicketActivity extends BaseActivity {
         setContentView(R.layout.activity_open_share_ticket);
         api = WXAPIFactory.createWXAPI(this, Constants.WXPay.APP_ID);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
+
+    }
+
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof ShareTicketSuccess){
+            if (((ShareTicketSuccess) event).isFinishNow()){
+                finish();
+            }
+
+        }
 
     }
 
@@ -89,9 +110,14 @@ public class OpenShareTicketActivity extends BaseActivity {
         StringBuffer stringBuffer = new StringBuffer();
 
         StringBuffer ticketsId = new StringBuffer();
-        for (TicketInfo item : ticketInfos) {
-            stringBuffer.append(item.getEventTitle()).append("\n");
-            ticketsId.append(item.getId()).append("|");
+        for (int i = 0;i<ticketInfos.size();i++ ) {
+            if (i==ticketInfos.size()-1){
+                ticketsId.append(ticketInfos.get(i).getId());
+            }else{
+                ticketsId.append(ticketInfos.get(i).getId()).append("|");
+            }
+            stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
+
         }
 
         ticketIds = ticketsId.toString();
@@ -119,8 +145,11 @@ public class OpenShareTicketActivity extends BaseActivity {
         tvShareWx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uid = "";
-                showShareDialog("");
+//                uid = "";
+//                showShareDialog("");
+                ShareInfo shareInfo = new ShareInfo();
+
+                shareToWX(shareInfo);
 
             }
         });
@@ -165,7 +194,7 @@ public class OpenShareTicketActivity extends BaseActivity {
 
                     @Override
                     public void onFinish() {
-                        tvCountDown.setText("重获验证码(60)");
+                        tvCountDown.setText("重取验证码");
                         tvCountDown.setClickable(true);
                     }
                 };
@@ -261,6 +290,7 @@ public class OpenShareTicketActivity extends BaseActivity {
                         shareToWX(shareInfo);
                     } else {
                         mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        eventBus.post(new ShareTicketSuccess());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -285,18 +315,19 @@ public class OpenShareTicketActivity extends BaseActivity {
 
     private void shareToWX(ShareInfo shareInfo) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getSharedUid();
+        webpage.webpageUrl = "http://smartfittest.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = shareInfo.getTitle();
-        msg.description = shareInfo.getContent();
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_logo);
+        msg.title = "好友送您SMART FIT健身大礼包啦";
+        msg.description = "中国好朋友强塞一个SMARTFIT健身礼包给你！一懒众衫小，还不快起跑！丢一张健身礼券给你，做我陪练好不好！";
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.push);
         msg.thumbData = Util.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneSession;
         req.openId = "";
-        api.sendReq(req);
+       boolean is =  api.sendReq(req);
+        LogUtil.w("dyc",is+".......");
     }
 
 }

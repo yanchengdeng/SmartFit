@@ -29,6 +29,7 @@ public class NewMouthServerEvent implements Parcelable {
     private String eventRelateds;//null,
     private String eventRelatedString;//null,
     private String newest2Events;//null,
+    private String pics[];
 
     public String getId() {
         return id;
@@ -190,6 +191,15 @@ public class NewMouthServerEvent implements Parcelable {
         this.newest2Events = newest2Events;
     }
 
+    public String[] getPics() {
+        return pics;
+    }
+
+    public void setPics(String[] pics) {
+        this.pics = pics;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -217,6 +227,7 @@ public class NewMouthServerEvent implements Parcelable {
         dest.writeString(this.eventRelateds);
         dest.writeString(this.eventRelatedString);
         dest.writeString(this.newest2Events);
+        dest.writeStringArray(this.pics);
     }
 
     public NewMouthServerEvent() {
@@ -243,6 +254,7 @@ public class NewMouthServerEvent implements Parcelable {
         this.eventRelateds = in.readString();
         this.eventRelatedString = in.readString();
         this.newest2Events = in.readString();
+        this.pics = in.createStringArray();
     }
 
     public static final Parcelable.Creator<NewMouthServerEvent> CREATOR = new Parcelable.Creator<NewMouthServerEvent>() {

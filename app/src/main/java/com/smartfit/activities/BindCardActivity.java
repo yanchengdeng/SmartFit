@@ -15,12 +15,14 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.BindCard;
+import com.smartfit.MessageEvent.ShareTicketSuccess;
 import com.smartfit.R;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,10 +60,18 @@ public class BindCardActivity extends BaseActivity {
         setContentView(R.layout.activity_bind_card);
         ButterKnife.bind(this);
         eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
     }
 
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof ShareTicketSuccess){
+            finish();
+        }
+    }
     private void initView() {
         tvTittle.setText(getString(R.string.bind_card));
 

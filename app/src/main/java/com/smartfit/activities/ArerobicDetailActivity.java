@@ -266,7 +266,7 @@ public class ArerobicDetailActivity extends BaseActivity {
                     bundle.putString("classroom", detail.getClassroomId());
                     bundle.putString(Constants.COURSE_TYPE, "3");
                     bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
-                    openActivity(PayActivity.class, bundle);
+                    openActivity(ConfirmOrderCourseActivity.class, bundle);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                 }

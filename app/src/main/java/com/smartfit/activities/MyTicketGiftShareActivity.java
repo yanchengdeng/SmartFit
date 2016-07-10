@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.ShareTicketSuccess;
 import com.smartfit.R;
 import com.smartfit.adpters.TicketGiftShareAdapter;
 import com.smartfit.beans.TicketInfo;
@@ -20,6 +21,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +55,8 @@ public class MyTicketGiftShareActivity extends BaseActivity {
 
     private int page = 1;
 
+    private EventBus eventBus;
+
     private TicketGiftShareAdapter adapter;
     private List<TicketInfo> datas = new ArrayList<TicketInfo>();
 
@@ -59,10 +65,21 @@ public class MyTicketGiftShareActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_ticket_gift_share);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         intView();
         getData();
         addLisener();
     }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof ShareTicketSuccess){
+            finish();
+        }
+    }
+
+
 
     private void intView() {
         tvTittle.setText(getString(R.string.tick_gift));

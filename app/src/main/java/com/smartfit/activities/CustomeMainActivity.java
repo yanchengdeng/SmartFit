@@ -19,13 +19,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.MessageEvent.LoginSuccess;
+import com.smartfit.MessageEvent.ShareTicketSuccess;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
-import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -116,6 +116,7 @@ public class CustomeMainActivity extends BaseActivity {
                 if (null != userInfo) {
                     userInfoDetail.setBalance(userInfo.getBalance());
                     Util.saveUserInfo(userInfoDetail);
+                    SharedPreferencesUtils.getInstance().putString(Constants.IS_VIP,userInfo.getIsVip());
                     fillData(userInfo);
                 }
 
@@ -151,6 +152,9 @@ public class CustomeMainActivity extends BaseActivity {
             finish();
         } else if (event instanceof LoginOut) {
             finish();
+        }
+        if (event instanceof ShareTicketSuccess){
+            getCustomeInfo();
         }
     }
 
@@ -206,7 +210,7 @@ public class CustomeMainActivity extends BaseActivity {
 
         TextView tvTicketNum = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_ticket);
         if (!TextUtils.isEmpty(userInfo.getTicketNum())) {
-            tvTicketNum.setText(userInfo.getTicketNum());
+            tvTicketNum.setText(userInfo.getTicketNum()+"张未使用");
         }
 
 

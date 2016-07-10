@@ -42,6 +42,9 @@ public class SelectTicketToBuyActivity extends BaseActivity {
     LoadMoreListView listView;
 
 
+    private int maxSelectNum;//最多可选择 优惠券数
+
+
     private TicketSelectToBuyAdapter adapter;
     private List<UseableEventInfo> datas = new ArrayList<UseableEventInfo>();
 
@@ -57,6 +60,7 @@ public class SelectTicketToBuyActivity extends BaseActivity {
     private void intView() {
         tvTittle.setText(getString(R.string.tick_gift));
         datas = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
+        maxSelectNum = getIntent().getIntExtra(Constants.PASS_STRING,1);
         adapter = new TicketSelectToBuyAdapter(this, datas);
         listView.setAdapter(adapter);
         tvFunction.setText("确定");
@@ -83,7 +87,11 @@ public class SelectTicketToBuyActivity extends BaseActivity {
                         setResult(RESULT_OK, intent);
                         finish();
                     } else {
-                        mSVProgressHUD.showInfoWithStatus("未选择券包", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        ArrayList<UseableEventInfo> ticketInfos = new ArrayList<UseableEventInfo>();
+                        Intent intent = new Intent(SelectTicketToBuyActivity.this,ConfirmPayActivity.class);
+                        intent.putParcelableArrayListExtra(Constants.PASS_OBJECT,ticketInfos);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
                 }
             }
@@ -92,9 +100,13 @@ public class SelectTicketToBuyActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
-                checkBox.setChecked(!checkBox.isChecked());
-                datas.get(position).setIsCheck(checkBox.isChecked());
+                if (countSelectNum(datas).size()>maxSelectNum) {
+                    mSVProgressHUD.showInfoWithStatus(String.format("最多选择%d",maxSelectNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }else{
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                    checkBox.setChecked(!checkBox.isChecked());
+                    datas.get(position).setIsCheck(checkBox.isChecked());
+                }
             }
         });
 

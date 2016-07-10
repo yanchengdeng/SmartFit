@@ -254,7 +254,7 @@ public class ReopenClassActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ID, reopenClassInfo.getId());
                     bundle.putString(Constants.COURSE_MONEY, reopenClassInfo.getTotalPrice());
                     bundle.putString(Constants.COURSE_TYPE,type);
-                    openActivity(PayActivity.class, bundle);
+                    openActivity(ConfirmOrderCourseActivity.class, bundle);
                 }
 
             }

@@ -336,6 +336,16 @@ public class CoachInfoActivity extends BaseActivity {
             }
         });
 
+        tvReadMoreBrief.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tvCoachBrief.getMaxLines()==2) {
+                    tvCoachBrief.setMaxLines(Integer.MAX_VALUE);
+                }else{
+                    tvCoachBrief.setMaxLines(2);
+                }
+            }
+        });
     }
 
     /******

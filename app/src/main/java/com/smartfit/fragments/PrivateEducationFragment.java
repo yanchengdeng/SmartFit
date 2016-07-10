@@ -31,13 +31,16 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MainBusinessActivity;
 import com.smartfit.activities.OrderPrivateEducationClassActivity;
 import com.smartfit.activities.OrderReserveActivity;
+import com.smartfit.activities.SelectedCoachActivity;
 import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseCoachTypeAdapter;
 import com.smartfit.adpters.PrivateEducationAdapter;
+import com.smartfit.adpters.PrivateEducationClassTypeAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.IdleClassInfo;
 import com.smartfit.beans.IdleClassListInfo;
+import com.smartfit.beans.PrivateCalssType;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
@@ -113,11 +116,14 @@ public class PrivateEducationFragment extends Fragment {
     private int[] selectData = {R.mipmap.icon_1_on, R.mipmap.icon_2_on, R.mipmap.icon_3_on, R.mipmap.icon_4_on, R.mipmap.icon_5_on, R.mipmap.icon_6_on, R.mipmap.icon_7_on};
 
     private PrivateEducationAdapter adapter;
-    private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();
+    private List<PrivateEducationClass> datas = new ArrayList<PrivateEducationClass>();//私教课程数据
+    private List<PrivateCalssType> privateCalssTypes = new ArrayList<>();//私教类别课程
     private List<WorkPointAddress> addresses;
     private List<String> types = new ArrayList<>();
     private String venueId = "0";
     private String sex, startTime, endTime, startPrice, endPrice;
+
+    private int CoachType = 1;//获取当前列表数据类型     0：约教练  1：约课程
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -147,30 +153,43 @@ public class PrivateEducationFragment extends Fragment {
                 venueId = addresses.get(0).getVenueId();
                 startTime = "9:00";
                 endTime = "10:00";
-                loadData();
+                if (CoachType == 0) {
+                    loadData();
+                } else {
+                    getIdleCoachList();
+                    getValueClassficaiton();
+                }
             } else {
                 getVenueList();
             }
         }
 
 
-        adapter = new PrivateEducationAdapter(getActivity(), datas);
-        listView.setAdapter(adapter);
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
-                checkBox.setChecked(!checkBox.isChecked());
-                datas.get(position).setIsCheck(checkBox.isChecked());
-                List<PrivateEducationClass> selectPricates = countSelectNum(datas);
-                if (selectPricates.size() == 0) {
-                    btnSelected.setText("请选择教练");
+                if (CoachType == 0) {
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                    checkBox.setChecked(!checkBox.isChecked());
+                    datas.get(position).setIsCheck(checkBox.isChecked());
+                    List<PrivateEducationClass> selectPricates = countSelectNum(datas);
+                    if (selectPricates.size() == 0) {
+                        btnSelected.setText("请选择教练");
+                    } else {
+                        btnSelected.setText("已选择" + selectPricates.size() + "个");
+                    }
                 } else {
-                    btnSelected.setText("已选择" + selectPricates.size() + "个");
+                    if (idleClass != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("venueId", venueId);
+                        bundle.putParcelable(Constants.PASS_OBJECT, privateCalssTypes.get(position));
+                        bundle.putString("dayTime", selectDate);
+                        bundle.putSerializable(Constants.PASS_IDLE_CLASS_INFO, idleClass);
+                        ((MainBusinessActivity) getActivity()).openActivity(SelectedCoachActivity.class, bundle);
+                    } else {
+                        ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("暂无空闲场馆");
+                    }
                 }
-
             }
         });
 
@@ -187,6 +206,7 @@ public class PrivateEducationFragment extends Fragment {
                         bundle.putSerializable(Constants.PASS_IDLE_CLASS_INFO, idleClass);
                         bundle.putString("start", selectDate + " " + startTime);
                         bundle.putString("end", selectDate + " " + endTime);
+                        bundle.putBoolean("is_inclue_area_fee", false);//是否  已包含场地费用
                         ((MainBusinessActivity) getActivity()).openActivity(OrderPrivateEducationClassActivity.class, bundle);
                     } else {
                         ((MainBusinessActivity) getActivity()).mSVProgressHUD.showInfoWithStatus("暂无空闲场馆");
@@ -216,6 +236,7 @@ public class PrivateEducationFragment extends Fragment {
 
     private String priceDisce[];
 
+
     /**
      * 获取空闲教室
      */
@@ -232,25 +253,27 @@ public class PrivateEducationFragment extends Fragment {
                 IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response, IdleClassListInfo.class);
                 if (idleClassListInfo != null && idleClassListInfo.getClassroomList().size() > 0) {
                     idleClass = idleClassListInfo;
-                    List<Float> prices = new ArrayList<>();
-                    for (IdleClassInfo item : idleClassListInfo.getClassroomList()) {
-                        prices.add(Float.parseFloat(item.getClassroomPrice()));
-                    }
-
-                    for (PrivateEducationClass item : datas) {
-
-                        //只有一个价格  显示    教练费用为250/小时
-                        if (Collections.max(prices).equals(Collections.min(prices))) {
-                            Float price = Float.parseFloat(item.getPrice()) + Collections.max(prices);
-                            item.setShowPriceInfo(String.format("%s/小时", new Object[]{String.valueOf(price)}));
-                        } else {
-                            Float priceLow = Float.parseFloat(item.getPrice()) + Collections.min(prices);
-                            Float priceHight = Float.parseFloat(item.getPrice()) + Collections.max(prices);
-                            LogUtil.w("dyc", "低：" + priceLow + "  高：" + priceHight);
-                            item.setShowPriceInfo(String.format("%1$s-%2$s/小时", new Object[]{String.valueOf(priceLow), String.valueOf(priceHight)}));
+                    if (CoachType == 0) {
+                        List<Float> prices = new ArrayList<>();
+                        for (IdleClassInfo item : idleClassListInfo.getClassroomList()) {
+                            prices.add(Float.parseFloat(item.getClassroomPrice()));
                         }
+
+                        for (PrivateEducationClass item : datas) {
+
+                            //只有一个价格  显示    教练费用为250/小时
+                            if (Collections.max(prices).equals(Collections.min(prices))) {
+                                Float price = Float.parseFloat(item.getPrice()) + Collections.max(prices);
+                                item.setShowPriceInfo(String.format("%s/小时", new Object[]{String.valueOf(price)}));
+                            } else {
+                                Float priceLow = Float.parseFloat(item.getPrice()) + Collections.min(prices);
+                                Float priceHight = Float.parseFloat(item.getPrice()) + Collections.max(prices);
+                                LogUtil.w("dyc", "低：" + priceLow + "  高：" + priceHight);
+                                item.setShowPriceInfo(String.format("%1$s-%2$s/小时", new Object[]{String.valueOf(priceLow), String.valueOf(priceHight)}));
+                            }
+                        }
+                        listView.setAdapter(new PrivateEducationAdapter(getActivity(), datas));
                     }
-                    adapter.setData(datas);
                 }
             }
         }, new Response.ErrorListener() {
@@ -294,6 +317,8 @@ public class PrivateEducationFragment extends Fragment {
             @Override
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                rlOrderTime.setVisibility(View.VISIBLE);
+                btnSelected.setVisibility(View.VISIBLE);
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
                 if (privateEducationClasses != null && privateEducationClasses.size() > 0) {
                     datas = privateEducationClasses;
@@ -317,6 +342,8 @@ public class PrivateEducationFragment extends Fragment {
                 listView.setVisibility(View.INVISIBLE);
                 noData.setVisibility(View.VISIBLE);
                 llListViewCover.setVisibility(View.GONE);
+                rlOrderTime.setVisibility(View.VISIBLE);
+                btnSelected.setVisibility(View.VISIBLE);
             }
         });
         request.setTag(new Object());
@@ -344,7 +371,12 @@ public class PrivateEducationFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
                 selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
-                loadData();
+                if (CoachType == 0) {
+                    loadData();
+                } else {
+                    getIdleCoachList();
+                    getValueClassficaiton();
+                }
             }
         });
     }
@@ -406,15 +438,15 @@ public class PrivateEducationFragment extends Fragment {
         ckMoreType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=selectCoachTypePop){
-                    if (selectCoachTypePop.isShowing()){
+                if (null != selectCoachTypePop) {
+                    if (selectCoachTypePop.isShowing()) {
                         selectCoachTypePop.dismiss();
                         ivCoverBg.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         selectCoachTypePop.show();
                         ivCoverBg.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     showPrivateCoachType();
                 }
             }
@@ -620,7 +652,12 @@ public class PrivateEducationFragment extends Fragment {
                     addressCustomPop.dismiss();
                     venueId = addresses.get(position).getVenueId();
                     ivCoverBg.setVisibility(View.GONE);
-                    loadData();
+                    if (CoachType == 0) {
+                        loadData();
+                    } else {
+                        getIdleCoachList();
+                        getValueClassficaiton();
+                    }
                 }
             });
         }
@@ -645,8 +682,8 @@ public class PrivateEducationFragment extends Fragment {
             listView = (ListView) inflate.findViewById(R.id.listView);
             ivArrow = (ImageView) inflate.findViewById(R.id.iv_more_address_arrow);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.LEFT;
-            params.leftMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
+            params.gravity = Gravity.RIGHT;
+            params.rightMargin = DeviceUtil.dp2px(getActivity(), getResources().getDimension(R.dimen.activity_horizontal_margin));
             ivArrow.setLayoutParams(params);
             listView.setAdapter(new ChooseCoachTypeAdapter(getActivity(), types));
             return inflate;
@@ -663,13 +700,70 @@ public class PrivateEducationFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   LogUtil.w("dyc", types.get(position));
+                    LogUtil.w("dyc", types.get(position));
+
+
                     selectCoachTypePop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
-//                    loadData();
+                    if (position == 0) {
+                        ckMoreType.setText(types.get(1));
+                        ckMoreSelect.setVisibility(View.VISIBLE);
+                        CoachType = 0;
+                        loadData();
+                    } else {
+                        CoachType = 1;
+                        ckMoreType.setText(types.get(0));
+                        ckMoreSelect.setVisibility(View.GONE);
+                        getIdleCoachList();
+                        getValueClassficaiton();
+                    }
                 }
             });
         }
+
+
+    }
+
+
+    private void getValueClassficaiton() {
+        ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+        Map<String, String> data = new HashMap<>();
+        data.put("venueId", venueId);
+        data.put("dayTime", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
+        PostRequest request = new PostRequest(Constants.CLASSIF_LISTPRIVATEVALUEBLECLASSIFICATION, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                rlOrderTime.setVisibility(View.GONE);
+                btnSelected.setVisibility(View.GONE);
+                privateCalssTypes = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateCalssType.class);
+                if (privateCalssTypes != null && privateCalssTypes.size() > 0) {
+                    listView.setAdapter(new PrivateEducationClassTypeAdapter(getActivity(), privateCalssTypes));
+                    listView.setVisibility(View.VISIBLE);
+                    noData.setVisibility(View.GONE);
+
+                } else {
+                    listView.setVisibility(View.GONE);
+                    noData.setVisibility(View.VISIBLE);
+                }
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                noData.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+                rlOrderTime.setVisibility(View.GONE);
+                btnSelected.setVisibility(View.GONE);
+
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(getActivity());
+        ((BaseActivity) getActivity()).mQueue.add(request);
+
+
     }
 
     private class ConditionSelectPop extends BasePopup<ConditionSelectPop> {
@@ -724,7 +818,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetSex();
                     btnBoy.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    sex = "1";
+                    sex = "0";
                 }
             });
 
@@ -733,7 +827,7 @@ public class PrivateEducationFragment extends Fragment {
                 public void onClick(View v) {
                     resetSex();
                     btnGirl.setBackgroundResource(R.drawable.bg_dialog_selector_gray);
-                    sex = "0";
+                    sex = "1";
                 }
             });
 

@@ -350,7 +350,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                     bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
                     bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
                     bundle.putString(Constants.COURSE_TYPE, "2");
-                    openActivity(PayActivity.class, bundle);
+                    openActivity(ConfirmOrderCourseActivity.class, bundle);
                 }
             }
         }, new Response.ErrorListener() {

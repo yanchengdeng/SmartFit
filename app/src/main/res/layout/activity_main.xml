@@ -110,10 +110,11 @@
                     android:layout_weight="3">
 
                     <ImageView
+                        android:id="@+id/iv_ad_up"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/icon_pic_group"
                      />
 
@@ -181,6 +182,7 @@
                 android:layout_marginTop="8dp">
 
                 <ImageView
+                    android:id="@+id/iv_ad_middle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -228,7 +230,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
+                        android:id="@+id/iv_ad_bottom"
                         android:src="@mipmap/icon_pic_weight" />
 
 

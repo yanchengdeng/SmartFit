@@ -71,7 +71,7 @@ public class TicketSelectToBuyAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getEventEndTime())) {
-            viewHolder.tvClassOutdate.setText(String.format("%s过期", DateUtils.getData(item.getEventEndTime())));
+            viewHolder.tvClassOutdate.setText(String.format("过期时间:%s", DateUtils.getData(item.getEventEndTime())));
         }
 
         viewHolder.chSelect.setChecked(item.isCheck());

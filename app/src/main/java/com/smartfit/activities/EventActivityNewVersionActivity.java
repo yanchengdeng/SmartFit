@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -17,7 +17,9 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.adpters.MothActivityAdatper;
 import com.smartfit.beans.NewMonthServerInfo;
+import com.smartfit.beans.NewMouthServerEvent;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateStyle;
 import com.smartfit.utils.DateUtils;
@@ -26,7 +28,9 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -41,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *         create at 2016/7/7 16:22
  */
 public class EventActivityNewVersionActivity extends BaseActivity {
+
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -66,23 +71,12 @@ public class EventActivityNewVersionActivity extends BaseActivity {
     TextView tvCountMoney;
     @Bind(R.id.rl_selectd_num_ui)
     RelativeLayout rlSelectdNumUi;
-    @Bind(R.id.tv_server_season_tittle)
-    TextView tvServerSeasonTittle;
-    @Bind(R.id.tv_server_seasion_price)
-    TextView tvServerSeasionPrice;
-    @Bind(R.id.ll_select_season_server)
-    LinearLayout llSelectSeasonServer;
-    @Bind(R.id.tv_server_half_year_tittle)
-    TextView tvServerHalfYearTittle;
-    @Bind(R.id.tv_server_half_year_price)
-    TextView tvServerHalfYearPrice;
-    @Bind(R.id.ll_select_half_year_server)
-    LinearLayout llSelectHalfYearServer;
-    @Bind(R.id.btn_order)
-    Button btnOrder;
+    @Bind(R.id.grid)
+    GridView grid;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
-
+    @Bind(R.id.btn_order)
+    Button btnOrder;
     private int REQUST_CODE_MOUTH = 0x011;
 
 
@@ -146,29 +140,31 @@ public class EventActivityNewVersionActivity extends BaseActivity {
             tvCountMoney.setText("￥" + newMonthServerInfo.getDefaultMonthPrice());
         }
 
-        if (newMonthServerInfo.getNewestMonthEvents() != null && newMonthServerInfo.getNewestMonthEvents().size() == 2) {
-            if (!TextUtils.isEmpty(newMonthServerInfo.getNewestMonthEvents().get(0).getEventTitle())) {
-                tvServerSeasonTittle.setText(newMonthServerInfo.getNewestMonthEvents().get(0).getEventTitle());
+        if (newMonthServerInfo.getNewestMonthEvents() != null && newMonthServerInfo.getNewestMonthEvents().size() > 0) {
+            ArrayList<NewMouthServerEvent> newMouthServerEvents = newMonthServerInfo.getNewestMonthEvents();
+            List<NewMouthServerEvent> noOutDate = new ArrayList<>();
+            for (NewMouthServerEvent itm : newMouthServerEvents) {
+                if (!TextUtils.isEmpty(itm.getEventEndTime())) {
+                    if (Long.parseLong(itm.getEventEndTime()) > (System.currentTimeMillis() / 1000)) {
+                        noOutDate.add(itm);
+                    }
+                }
             }
-            if (!TextUtils.isEmpty(newMonthServerInfo.getNewestMonthEvents().get(0).getEventPrice())) {
-                tvServerSeasionPrice.setText("￥" + newMonthServerInfo.getNewestMonthEvents().get(0).getEventPrice());
-            }
+            if (noOutDate.size() > 0) {
 
-
-            if (!TextUtils.isEmpty(newMonthServerInfo.getNewestMonthEvents().get(1).getEventTitle())) {
-                tvServerHalfYearTittle.setText(newMonthServerInfo.getNewestMonthEvents().get(1).getEventTitle());
+                grid.setAdapter(new MothActivityAdatper(EventActivityNewVersionActivity.this, newMouthServerEvents));
+                grid.setVisibility(View.VISIBLE);
+            } else {
+                grid.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(newMonthServerInfo.getNewestMonthEvents().get(1).getEventPrice())) {
-                tvServerHalfYearPrice.setText("￥" + newMonthServerInfo.getNewestMonthEvents().get(1).getEventPrice());
-            }
+//            setListViewHeightBasedOnChildren(grid);
         }
-
     }
 
 
-    @OnClick({R.id.iv_back, R.id.rl_selectd_num_ui, R.id.ll_select_season_server, R.id.ll_select_half_year_server, R.id.btn_order})
+    @OnClick({R.id.iv_back, R.id.rl_selectd_num_ui, R.id.btn_order})
     public void onClick(View view) {
-        Bundle bundle = new Bundle();
+
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
@@ -176,24 +172,12 @@ public class EventActivityNewVersionActivity extends BaseActivity {
             case R.id.rl_selectd_num_ui:
                 openActivity(SelectMouthActivity.class, REQUST_CODE_MOUTH);
                 break;
-            case R.id.ll_select_season_server:
-                if (newMonthServerInfo != null && newMonthServerInfo.getNewestMonthEvents().size()==2) {
-                    bundle.putInt(Constants.PAGE_INDEX, 10);
-                    bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo.getNewestMonthEvents().get(0));
-                    openActivity(ConfimPayNoramlActivity.class, bundle);
-                }
-                break;
-            case R.id.ll_select_half_year_server:
-                if (newMonthServerInfo != null && newMonthServerInfo.getNewestMonthEvents().size()==2) {
-                    bundle.putInt(Constants.PAGE_INDEX, 11);
-                    bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo.getNewestMonthEvents().get(1));
-                    openActivity(ConfimPayNoramlActivity.class, bundle);
-                }
-                break;
+
             case R.id.btn_order:
                 //目前购买包月
                 if (newMonthServerInfo != null) {
-                    bundle.putInt(Constants.PAGE_INDEX,9);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 9);
                     bundle.putParcelable(Constants.PASS_OBJECT, newMonthServerInfo);
                     bundle.putInt(Constants.PASS_STRING, mouth);
                     openActivity(ConfirmPayActivity.class, bundle);

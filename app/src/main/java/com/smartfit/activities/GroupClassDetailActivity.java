@@ -63,7 +63,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /***
- * 团体操课程详情
+ * 团体/小班操课程详情
  *
  * @author yanchengdeng
  */
@@ -646,12 +646,12 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }else{
                     if (classInfoDetail != null) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
+                        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX,1));//  1   2  小班课 和团操课  一样处理
                         bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                         bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                         bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
                         bundle.putString(Constants.COURSE_TYPE, type);
-                        openActivity(PayActivity.class, bundle);
+                        openActivity(ConfirmOrderCourseActivity.class, bundle);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                     }

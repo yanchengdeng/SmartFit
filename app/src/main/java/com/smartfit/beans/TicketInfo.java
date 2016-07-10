@@ -14,6 +14,15 @@ public class TicketInfo implements Parcelable {
     private String eventDetial;//这是一个测试月卡,
     private String eventEndTime;//1469894400,
     private String eventType;//3
+    private String status;//  0  未使用   1；已使用  2 等待领取     3：已分享未领取  4已分享已领取
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public boolean isCheck() {
         return isCheck;
@@ -77,6 +86,7 @@ public class TicketInfo implements Parcelable {
         dest.writeString(this.eventDetial);
         dest.writeString(this.eventEndTime);
         dest.writeString(this.eventType);
+        dest.writeString(this.status);
     }
 
     public TicketInfo() {
@@ -89,6 +99,7 @@ public class TicketInfo implements Parcelable {
         this.eventDetial = in.readString();
         this.eventEndTime = in.readString();
         this.eventType = in.readString();
+        this.status = in.readString();
     }
 
     public static final Parcelable.Creator<TicketInfo> CREATOR = new Parcelable.Creator<TicketInfo>() {

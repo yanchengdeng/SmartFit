@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.ListMessageAllInfoItem;
+import com.smartfit.commons.MessageType;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.Options;
 
@@ -87,6 +88,14 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                     viewHolder.tvName.setText("订单成功消息");
                 } else if (item.getSysMessage().getType().equals("7")) {
                     viewHolder.tvName.setText("代课邀请消息");
+                } else if (item.getSysMessage().getType().equals("21")) {
+                    //领取券
+                    viewHolder.tvName.setText("系统消息");
+
+                } else if (item.getSysMessage().getType().equals("23")) {
+                    //领取券
+                    viewHolder.tvName.setText("系统消息");
+
                 }
             }
 
@@ -102,10 +111,25 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                 viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getSourseUserName() + "邀请您加入课程");
             } else if (item.getSysMessage().getType().equals("5")) {
                 viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getSourseUserName() + "决定请求您添加为健身好友");
-            }
+            } else if (item.getSysMessage().getType().equals(MessageType.TICKE_GIFT_GIVE)) {
+                if (item.getSysMessage().getMessageContent() != null) {
 
-            if (!TextUtils.isEmpty(item.getSysMessage().getTime())) {
-                viewHolder.tvDate.setText(DateUtils.getDataTimeMonth(item.getSysMessage().getTime()));
+                    if (!TextUtils.isEmpty(item.getSysMessage().getMessageContent().getContent())) {
+                        viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getDetail());
+                    }
+                }
+            } else if (item.getSysMessage().getType().equals(MessageType.TICKET_BACK_MESSAGE)) {
+                if (item.getSysMessage().getMessageContent() != null) {
+
+
+                    if (!TextUtils.isEmpty(item.getSysMessage().getMessageContent().getContent())) {
+                        viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getDetail());
+                    }
+                }
+
+                if (!TextUtils.isEmpty(item.getSysMessage().getTime())) {
+                    viewHolder.tvDate.setText(DateUtils.getDataTimeMonth(item.getSysMessage().getTime()));
+                }
             }
         } else {
 
@@ -132,7 +156,7 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                 viewHolder.tvDate.setText(DateUtils.getDataTimeMonth(item.getSysMessage().getTime()));
             }
 
-            ImageLoader.getInstance().displayImage(item.getSysMessage().getUrl(),viewHolder.ivIcon, Options.getListOptions());
+            ImageLoader.getInstance().displayImage(item.getSysMessage().getUrl(), viewHolder.ivIcon, Options.getListOptions());
         }
 
         return convertView;

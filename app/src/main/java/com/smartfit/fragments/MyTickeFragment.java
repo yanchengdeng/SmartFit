@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.BindCard;
+import com.smartfit.MessageEvent.ShareTicketSuccess;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.MyTicketGiftActivity;
@@ -57,6 +58,7 @@ public class MyTickeFragment extends BaseFragment {
 
     private EventBus eventBus;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,12 @@ public class MyTickeFragment extends BaseFragment {
             isLoaded = false;//是否加载完毕
             lazyLoad();
         }
+         if (event instanceof ShareTicketSuccess){
+             datas.clear();
+             isPre = true;
+             isLoaded = false;//是否加载完毕
+             lazyLoad();
+         }
     }
 
     private void intView() {

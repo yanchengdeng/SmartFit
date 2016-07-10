@@ -63,10 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/image_padding"
-                android:text="2016-09-03失效"
                 android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal"
-                android:visibility="gone" />
+                android:textSize="@dimen/text_normal_down"
+                />
 
         </LinearLayout>
         <CheckBox

@@ -10,232 +10,166 @@
 
     <include layout="@layout/common_header_view"></include>
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_light">
 
-        <LinearLayout
+
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_header"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerVertical="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_pay_mr"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dip" />
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_toRightOf="@+id/iv_header"
-                    android:singleLine="true"
-                    android:text="@string/app_name"
-                    android:textColor="@color/text_color_black"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:id="@+id/tv_experi_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:layout_toRightOf="@+id/iv_header"
-                    android:text="@string/app_name"
-                    android:textColor="@color/text_color_black"
-                    android:textSize="@dimen/text_normal" />
-            </RelativeLayout>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding_big"
-                android:background="@color/white"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="@string/buy_month_server"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal" />
-
-            <RelativeLayout
-                android:id="@+id/rl_selectd_num_ui"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1px"
-                android:background="@color/white"
-                android:padding="@dimen/activity_horizontal_margin">
-
-
-                <TextView
-                    android:id="@+id/tv_mouth_server_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1个月包月服务"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal" />
-
-
-                <TextView
-                    android:id="@+id/tv_select_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="@dimen/image_padding"
-                    android:drawableRight="@mipmap/icon_next_w_on"
-                    android:text="数量*1"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:id="@+id/tv_count_money_tips"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_select_num"
-                    android:layout_marginTop="@dimen/image_padding"
-                    android:layout_toLeftOf="@+id/tv_count_money"
-                    android:text="金额"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:id="@+id/tv_count_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/tv_select_num"
-                    android:layout_marginLeft="@dimen/image_padding"
-                    android:layout_marginTop="@dimen/image_padding"
-                    android:text="￥0"
-                    android:textColor="@color/common_header_bg"
-                    android:textSize="@dimen/text_normal" />
-            </RelativeLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="@string/member_serive_work_after_buy"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal" />
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding_big"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/header_bar_height"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ll_select_season_server"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_dialog_selector_season"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="@dimen/activity_horizontal_margin">
 
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_header"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/icon_pay_mr"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dip" />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_toRightOf="@+id/iv_header"
+                        android:singleLine="true"
+                        android:text="@string/app_name"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_normal" />
 
-                        <TextView
-                            android:id="@+id/tv_server_season_tittle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="一个季度包月"
-                            android:textColor="@color/text_color_black"
-                            android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/tv_experi_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:layout_toRightOf="@+id/iv_header"
+                        android:text="@string/app_name"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_normal" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/tv_server_seasion_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/image_padding_big"
-                            android:text="￥0"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_normal" />
-                    </LinearLayout>
 
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/image_padding_big"
+                    android:background="@color/white"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="@string/buy_month_server"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
 
-                <LinearLayout
-                    android:id="@+id/ll_select_half_year_server"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
+                <RelativeLayout
+                    android:id="@+id/rl_selectd_num_ui"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:background="@color/white"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+
+                    <TextView
+                        android:id="@+id/tv_mouth_server_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1个月包月服务"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+
+                    <TextView
+                        android:id="@+id/tv_select_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:drawableRight="@mipmap/icon_next_w_on"
+                        android:text="数量*1"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_count_money_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_select_num"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:layout_toLeftOf="@+id/tv_count_money"
+                        android:text="金额"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_count_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tv_select_num"
+                        android:layout_marginLeft="@dimen/image_padding"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:text="￥0"
+                        android:textColor="@color/common_header_bg"
+                        android:textSize="@dimen/text_normal" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_dialog_selector_half_year"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:text="@string/member_serive_work_after_buy"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal" />
 
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_server_half_year_tittle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="半年包月跳楼价"
-                            android:textColor="@color/text_color_black"
-                            android:textSize="@dimen/text_normal" />
-
-                        <TextView
-                            android:id="@+id/tv_server_half_year_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/image_padding_big"
-                            android:text="￥0"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_normal" />
-                    </LinearLayout>
-                </LinearLayout>
+                <GridView
+                    android:id="@+id/grid"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/image_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/white"
+                    android:stretchMode="columnWidth"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin"
+                    android:numColumns="2"
+                    android:verticalSpacing="@dimen/activity_horizontal_margin" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_order"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:background="@drawable/bg_dialog_selector_red"
-                android:gravity="center"
-                android:text="@string/submit_for_pay"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_normal" />
+        </ScrollView>
 
+        <Button
+            android:id="@+id/btn_order"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_dialog_selector_red"
+            android:gravity="center"
+            android:text="@string/submit_for_pay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
 
-        </LinearLayout>
-
-    </ScrollView>
-
-
+    </RelativeLayout>
 </LinearLayout>

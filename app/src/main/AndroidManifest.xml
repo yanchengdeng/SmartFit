@@ -612,6 +612,22 @@
             android:name=".activities.ConfimPayNoramlActivity"
             android:label="@string/title_activity_confim_pay_noraml" >
         </activity>
+        <activity
+            android:name=".activities.SelectedCoachActivity"
+            android:label="@string/title_activity_selected_coach" >
+        </activity>
+        <activity
+            android:name=".activities.SettingOrderCoachTimeActivity"
+            android:label="@string/title_activity_setting_order_coach_time" >
+        </activity>
+        <activity
+            android:name=".activities.ConfirmOrderCourseActivity"
+            android:label="@string/title_activity_confirm_order_course" >
+        </activity>
+        <activity
+            android:name=".activities.SelectUseableTicketForCourseActivity"
+            android:label="@string/title_activity_select_useable_ticket_for_course" >
+        </activity>
     </application>
 
 </manifest>

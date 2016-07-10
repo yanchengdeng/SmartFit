@@ -46,6 +46,9 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * 消息
+ */
 public class MessageActivity extends BaseActivity {
 
 
@@ -144,6 +147,7 @@ public class MessageActivity extends BaseActivity {
 
     private void getMessageList() {
         listMessageAllInfoItems.clear();
+
 //        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
         PostRequest request = new PostRequest(Constants.MESSAGE_GETMESSAGEMAIN, new Response.Listener<JsonObject>() {
             @Override
@@ -257,6 +261,12 @@ public class MessageActivity extends BaseActivity {
                             openActivity(SystemMessageListActivity.class);
                         } else if (item.getSysMessage().getType().equals(MessageType.MESSAGE_TYPE_FRIEND_INVITE)) {
                             openActivity(FriendsMessageActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.TICKE_GIFT_GIVE)) {
+                            openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.TICKE_GIFT_ACCEPTE)) {
+                            openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.TICKET_BACK_MESSAGE)) {
+                            openActivity(SystemMessageListActivity.class);
                         } else {
                             openActivity(CourseMessageActivity.class);
                         }
