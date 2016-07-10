@@ -15,8 +15,8 @@ android {
         applicationId "com.smartfit"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.3"
         manifestPlaceholders = [
                 GETUI_APP_ID    : "8jLZ9Ca3VM7I367qKMB0v2",
                 GETUI_APP_KEY   : "zbK3CyaHK967CJs2TXrQ24",
@@ -30,12 +30,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            proguardFile 'C:/Users/Administrator/AndroidStudioProjects/SmartFit/app/proguard-rules.pro'
+            proguardFile '/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/app/proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.config
             minifyEnabled false
-            proguardFile 'C:/Users/Administrator/AndroidStudioProjects/SmartFit/app/proguard-rules.pro'
+            proguardFile '/Users/dengyancheng/AndroidStudioProjects/MultiImageSelector/SmartFit/app/proguard-rules.pro'
         }
     }
     productFlavors {
