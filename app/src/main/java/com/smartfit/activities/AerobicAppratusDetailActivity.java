@@ -120,7 +120,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
-            tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));
         }
 
@@ -192,7 +192,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 } else {
                     llViewScanCode.setVisibility(View.GONE);
                     tvScanCodeInfo.setVisibility(View.VISIBLE);
-                    tvScanCodeInfo.setText(String.format("课程二维码在开课前一个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                    tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                     tvSaveToPhone.setText(getString(R.string.copy_link));
             }
         }

@@ -543,7 +543,7 @@ public class DateUtils {
         long currentMillions = System.currentTimeMillis() / 1000;
         long startMillions = Long.parseLong(millionTimes);
 
-        if (startMillions - currentMillions > 3600) {
+        if (startMillions - currentMillions > 3600*2) {
             return false;
         } else {
             return true;

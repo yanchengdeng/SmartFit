@@ -39,4 +39,5 @@
     <dimen name="text_small_donw">7sp</dimen>
     <dimen name="text_larger_big">23sp</dimen>
     <dimen name="btn_height">40dp</dimen>
+    <dimen name="horizonal_date_height">60dp</dimen>
 </resources>

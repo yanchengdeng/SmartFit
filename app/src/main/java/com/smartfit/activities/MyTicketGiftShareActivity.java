@@ -21,6 +21,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.views.LoadMoreListView;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -151,7 +152,7 @@ public class MyTicketGiftShareActivity extends BaseActivity {
                         Bundle bundle = new Bundle();
                         ArrayList<TicketInfo>  ticketInfos = countSelectNum(datas);
                         bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
-                        openActivity(OpenShareTicketActivity.class,bundle);
+                        openActivity(WXEntryActivity.class,bundle);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("未选择券包", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }

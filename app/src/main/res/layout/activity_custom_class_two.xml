@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -13,10 +12,9 @@
 
     <com.smartfit.views.HorizontalListView
         android:id="@+id/listview_date"
-        widget:dividerWidth="1dp"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:divider="@color/white" />
+        android:background="#dddddd"
+        android:layout_height="@dimen/horizonal_date_height" />
 
     <RelativeLayout
         android:id="@+id/rl_select_time"

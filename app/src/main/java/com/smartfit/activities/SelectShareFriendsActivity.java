@@ -19,6 +19,7 @@ import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,7 +128,7 @@ public class SelectShareFriendsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (selectPosion > -1) {
-                    Intent intent = new Intent(SelectShareFriendsActivity.this,OpenShareTicketActivity.class);
+                    Intent intent = new Intent(SelectShareFriendsActivity.this,WXEntryActivity.class);
                     intent.putExtra("uid",shareFriendsInfos.get(selectPosion).getUid());
                     setResult(RESULT_OK,intent);
                     finish();

@@ -84,7 +84,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/activity_horizontal_margin"
                         android:lineSpacingExtra="3dp"
-                        android:text="课程二维码在开课前一个小时才会生效，您可以将如下链接保存或者发送给朋友：http://123.57.164.115:8098/sys/upload/qrCodeImg?"
                         android:textColor="@color/text_color_gray"
                         android:textSize="@dimen/text_normal_down" />
 

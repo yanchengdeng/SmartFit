@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.smartfit" >
+    package="com.smartfit">
 
     <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
 
@@ -52,8 +52,7 @@
 
     <permission
         android:name="getui.permission.GetuiService.com.smartfit"
-        android:protectionLevel="normal" >
-    </permission>
+        android:protectionLevel="normal"></permission>
 
     <application
         android:name=".SmartAppliction"
@@ -62,7 +61,7 @@
         android:label="@string/app_name"
         android:persistent="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme" >
+        tools:replace="android:icon,android:theme">
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
@@ -79,7 +78,7 @@
         <!-- 配置第三方Receiver -->
         <receiver
             android:name=".recieve.PushReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.8jLZ9Ca3VM7I367qKMB0v2" />
             </intent-filter>
@@ -90,15 +89,13 @@
             android:name="com.igexin.sdk.PushService"
             android:exported="true"
             android:label="NotificationCenter"
-            android:process=":pushservice" >
-        </service>
+            android:process=":pushservice"></service>
         <service
             android:name="com.igexin.sdk.PushServiceUser"
             android:exported="true"
-            android:label="NotificationCenterUser" >
-        </service>
+            android:label="NotificationCenterUser"></service>
 
-        <receiver android:name="com.igexin.sdk.PushReceiver" >
+        <receiver android:name="com.igexin.sdk.PushReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -112,7 +109,7 @@
         </receiver>
         <receiver
             android:name="com.igexin.sdk.PushManagerReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.pushmanager" />
             </intent-filter>
@@ -124,14 +121,13 @@
             android:exported="false"
             android:process=":pushservice"
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
 
-        <receiver android:name="com.igexin.download.DownloadReceiver" >
+        <receiver android:name="com.igexin.download.DownloadReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -161,7 +157,7 @@
 
         <receiver
             android:name="com.igexin.getuiext.service.PayloadReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
                 <action android:name="com.igexin.sdk.action.8jLZ9Ca3VM7I367qKMB0v2" />
@@ -189,7 +185,7 @@
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true" />
         <!-- 声明sdk所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver" >
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
@@ -219,7 +215,7 @@
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -260,39 +256,14 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
 
-        <!-- uMNNG  分享 -->
 
-        <activity
-            android:name="com.umeng.socialize.editorpage.ShareActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.UMDefault" />
-
-        <!-- 微信 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.UMDialog" />
+            android:label="@string/app_name"
+            android:launchMode="singleInstance" />
 
-        <!-- 新浪微博 -->
-        <activity
-            android:name=".WBShareActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-
-        <!-- end  umeng 分享 -->
         <activity android:name=".activities.OrderReserveActivity" />
         <activity
             android:name=".activities.SearchClassActivity"
@@ -314,7 +285,7 @@
             android:label="@string/title_activity_pay"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityTheme.NoActionBar" >
+            android:theme="@style/ActivityTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -554,80 +525,58 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.VertifyNotPassActivity"
-            android:label="@string/title_activity_vertify_not_pass" >
-        </activity>
+            android:label="@string/title_activity_vertify_not_pass"></activity>
         <activity
             android:name=".activities.ArerobicDetailActivity"
-            android:label="@string/title_activity_arerobic_detail" >
-        </activity>
+            android:label="@string/title_activity_arerobic_detail"></activity>
         <activity
             android:name=".activities.VertifyFinishedActivity"
-            android:label="@string/title_activity_vertify_finished" >
-        </activity>
-        <activity android:name=".activities.AddVertifyInfoActivity" >
-        </activity>
-        <activity android:name=".activities.ActivityListActivity" >
-        </activity>
-        <activity android:name=".activities.EventActivtyDetailActivity" >
-        </activity>
+            android:label="@string/title_activity_vertify_finished"></activity>
+        <activity android:name=".activities.AddVertifyInfoActivity"></activity>
+        <activity android:name=".activities.ActivityListActivity"></activity>
+        <activity android:name=".activities.EventActivtyDetailActivity"></activity>
         <activity
             android:name=".activities.ChatListActivity"
-            android:label="@string/title_activity_chat_list" >
-        </activity>
+            android:label="@string/title_activity_chat_list"></activity>
         <activity
             android:name=".activities.BindCardActivity"
-            android:label="@string/title_activity_bind_card" >
-        </activity>
-        <activity android:name=".activities.AdActivity" >
-        </activity>
-        <activity android:name=".activities.EventActivityNewVersionActivity" >
-        </activity>
+            android:label="@string/title_activity_bind_card"></activity>
+        <activity android:name=".activities.AdActivity"></activity>
+        <activity android:name=".activities.EventActivityNewVersionActivity"></activity>
         <activity
             android:name=".activities.SelectMouthActivity"
-            android:label="@string/title_activity_select_mouth" >
-        </activity>
+            android:label="@string/title_activity_select_mouth"></activity>
         <activity
             android:name=".activities.MyTicketGiftShareActivity"
-            android:label="@string/title_activity_my_ticket_gift_share" >
-        </activity>
+            android:label="@string/title_activity_my_ticket_gift_share"></activity>
         <activity
             android:name=".activities.SelectShareFriendsActivity"
-            android:label="@string/title_activity_select_share_friends" >
-        </activity>
+            android:label="@string/title_activity_select_share_friends"></activity>
         <activity
             android:name=".activities.OpenShareTicketActivity"
-            android:label="@string/title_activity_open_share_ticket" >
-        </activity>
-        <activity android:name=".activities.ConfirmPayActivity" >
-        </activity>
+            android:label="@string/title_activity_open_share_ticket"></activity>
+        <activity android:name=".activities.ConfirmPayActivity"></activity>
         <activity
             android:name=".activities.SelectTicketToBuyActivity"
-            android:label="@string/title_activity_select_ticket_to_buy" >
-        </activity>
+            android:label="@string/title_activity_select_ticket_to_buy"></activity>
         <activity
             android:name=".activities.SelectCardToBuyActivity"
-            android:label="@string/title_activity_select_card_to_buy" >
-        </activity>
+            android:label="@string/title_activity_select_card_to_buy"></activity>
         <activity
             android:name=".activities.ConfimPayNoramlActivity"
-            android:label="@string/title_activity_confim_pay_noraml" >
-        </activity>
+            android:label="@string/title_activity_confim_pay_noraml"></activity>
         <activity
             android:name=".activities.SelectedCoachActivity"
-            android:label="@string/title_activity_selected_coach" >
-        </activity>
+            android:label="@string/title_activity_selected_coach"></activity>
         <activity
             android:name=".activities.SettingOrderCoachTimeActivity"
-            android:label="@string/title_activity_setting_order_coach_time" >
-        </activity>
+            android:label="@string/title_activity_setting_order_coach_time"></activity>
         <activity
             android:name=".activities.ConfirmOrderCourseActivity"
-            android:label="@string/title_activity_confirm_order_course" >
-        </activity>
+            android:label="@string/title_activity_confirm_order_course"></activity>
         <activity
             android:name=".activities.SelectUseableTicketForCourseActivity"
-            android:label="@string/title_activity_select_useable_ticket_for_course" >
-        </activity>
+            android:label="@string/title_activity_select_useable_ticket_for_course"></activity>
     </application>
 
 </manifest>

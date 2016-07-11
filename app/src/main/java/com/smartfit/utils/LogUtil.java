@@ -11,7 +11,7 @@ public class LogUtil {
     private static boolean LOGV = false;
     private static boolean LOGD = false;
     private static boolean LOGI = false;
-    private static boolean LOGW = true;
+    private static boolean LOGW = false;
     private static boolean LOGE = false;
     public static void v(String tag, String mess) {
         if (LOGV) { Log.v(tag, mess); }

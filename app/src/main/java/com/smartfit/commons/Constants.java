@@ -193,6 +193,8 @@ public class Constants {
     public static final String CLASSIF_LISTPRIVATEVALUEBLECLASSIFICATION = "/ClassIf/listPrivateValuebleClassification";
     public static final  String CLASSIF_LISTCOACHESBYVENUEIDANDCOURSETYPECODE = "/ClassIf/listCoachesByVenueIdAndCourseTypeCode";
     public static final String EVENT_ACCEPTSHAREDEVENTUSER = "/event/acceptSharedEventUser";
+    public static final String EVENT_SHARESUCCESSCALLBACK = "/event/shareSuccessCallBack";
+
 
 
     public static final int SIZE = 20;

@@ -723,13 +723,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     bundle.putString(Constants.PASS_STRING, select.getLink());
                     bundle.putString("name", select.getAdName());
                     openActivity(AdActivity.class,bundle);
-
                 }
-
             }
         }
-
-
     }
 
 

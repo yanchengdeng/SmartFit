@@ -31,7 +31,7 @@ public class SelectDateAdapter extends BaseAdapter {
     public SelectDateAdapter(List<CustomeDate> customeDateList, Context context) {
         this.customeDateList = customeDateList;
         this.context = context;
-        params = new LinearLayout.LayoutParams(DeviceUtil.getWidth(context) / 7, DeviceUtil.dp2px(context, 80));
+        params = new LinearLayout.LayoutParams(DeviceUtil.getWidth(context) / 7, DeviceUtil.dp2px(context, 60));
     }
 
     @Override

@@ -16,16 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:button="@null"
             android:checked="false"
             android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
             android:drawablePadding="@dimen/image_padding"
-            android:textColor="@color/text_color_gray"
             android:drawableRight="@mipmap/icon_down"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:text="更多"
+            android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal_down" />
 
 
@@ -35,8 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/ck_more_select"
-            android:layout_toRightOf="@+id/ck_more_address"
-           >
+            android:layout_toRightOf="@+id/ck_more_address">
 
             <TextView
                 android:id="@+id/tv_address"
@@ -56,15 +55,15 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:button="@null"
             android:checked="false"
             android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
             android:drawablePadding="@dimen/image_padding"
             android:drawableRight="@mipmap/icon_down"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
             android:text="筛选"
             android:textSize="@dimen/text_normal_down" />
 
@@ -85,15 +84,14 @@
         <com.smartfit.views.HorizontalListView
             android:id="@+id/listview_date"
             android:layout_width="fill_parent"
-            android:layout_height="80dp"
-            android:divider="@color/white"
-            widget:dividerWidth="0dp" />
+            android:background="#dddddd"
+            android:layout_height="@dimen/horizonal_date_height" />
 
         <RelativeLayout
             android:id="@+id/rl_order_time"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -130,16 +128,14 @@
             <include layout="@layout/listview_no_data"></include>
 
 
-
-                <ListView
-                    android:id="@+id/listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:listSelector="@android:color/transparent"
-                    android:cacheColorHint="@color/transparent"
-                    android:divider="@color/transparent_half"
-                    android:dividerHeight="1px"
-                    android:visibility="gone" />
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/transparent_half"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent" />
 
         </FrameLayout>
 

@@ -94,8 +94,8 @@ public class OpenShareTicketActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof ShareTicketSuccess){
-            if (((ShareTicketSuccess) event).isFinishNow()){
+        if (event instanceof ShareTicketSuccess) {
+            if (((ShareTicketSuccess) event).isFinishNow()) {
                 finish();
             }
 
@@ -110,10 +110,10 @@ public class OpenShareTicketActivity extends BaseActivity {
         StringBuffer stringBuffer = new StringBuffer();
 
         StringBuffer ticketsId = new StringBuffer();
-        for (int i = 0;i<ticketInfos.size();i++ ) {
-            if (i==ticketInfos.size()-1){
+        for (int i = 0; i < ticketInfos.size(); i++) {
+            if (i == ticketInfos.size() - 1) {
                 ticketsId.append(ticketInfos.get(i).getId());
-            }else{
+            } else {
                 ticketsId.append(ticketInfos.get(i).getId()).append("|");
             }
             stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
@@ -319,15 +319,15 @@ public class OpenShareTicketActivity extends BaseActivity {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "好友送您SMART FIT健身大礼包啦";
         msg.description = "中国好朋友强塞一个SMARTFIT健身礼包给你！一懒众衫小，还不快起跑！丢一张健身礼券给你，做我陪练好不好！";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.push);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_logo);
         msg.thumbData = Util.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneSession;
         req.openId = "";
-       boolean is =  api.sendReq(req);
-        LogUtil.w("dyc",is+".......");
+
+        LogUtil.w("dyc", "=========" + api.sendReq(req));
     }
 
 }

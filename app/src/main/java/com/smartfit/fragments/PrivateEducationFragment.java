@@ -123,7 +123,7 @@ public class PrivateEducationFragment extends Fragment {
     private String venueId = "0";
     private String sex, startTime, endTime, startPrice, endPrice;
 
-    private int CoachType = 1;//获取当前列表数据类型     0：约教练  1：约课程
+    private int CoachType = 0;//获取当前列表数据类型     0：约教练  1：约课程
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -706,13 +706,13 @@ public class PrivateEducationFragment extends Fragment {
                     selectCoachTypePop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                     if (position == 0) {
-                        ckMoreType.setText(types.get(1));
+                        ckMoreType.setText(types.get(0));
                         ckMoreSelect.setVisibility(View.VISIBLE);
                         CoachType = 0;
                         loadData();
                     } else {
                         CoachType = 1;
-                        ckMoreType.setText(types.get(0));
+                        ckMoreType.setText(types.get(1));
                         ckMoreSelect.setVisibility(View.GONE);
                         getIdleCoachList();
                         getValueClassficaiton();
@@ -720,8 +720,6 @@ public class PrivateEducationFragment extends Fragment {
                 }
             });
         }
-
-
     }
 
 
