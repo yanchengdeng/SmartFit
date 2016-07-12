@@ -39,8 +39,6 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
 
     private TicketSelectToBuyCourseAdapter adapter;
 
-    private int selectPosion = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,17 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
         listView.setAdapter(adapter);
     }
 
+    private EventUserful getSelectTicket() {
+        EventUserful eventUserful = null;
+        for (EventUserful item : userfulEventes) {
+            if (item.isCheck()) {
+                eventUserful = item;
+            }
+        }
+
+        return eventUserful;
+    }
+
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,14 +81,11 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
         tvFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectPosion == -1) {
-                    mSVProgressHUD.showInfoWithStatus("未选择优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                } else {
-                    Intent intent = new Intent(SelectUseableTicketForCourseActivity.this, ConfirmOrderCourseActivity.class);
-                    intent.putExtra(Constants.PASS_STRING, userfulEventes.get(selectPosion).getId());
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
+
+                Intent intent = new Intent(SelectUseableTicketForCourseActivity.this, ConfirmOrderCourseActivity.class);
+                intent.putExtra(Constants.PASS_STRING, getSelectTicket());
+                setResult(RESULT_OK, intent);
+                finish();
 
             }
         });
@@ -87,12 +93,26 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (EventUserful item : userfulEventes) {
-                    item.setIsCheck(false);
-                }
-                selectPosion = position;
 
-                userfulEventes.get(position).setIsCheck(true);
+                EventUserful selected = getSelectTicket();
+                if (selected == null) {
+                    for (EventUserful item : userfulEventes) {
+                        item.setIsCheck(false);
+                    }
+
+                    userfulEventes.get(position).setIsCheck(true);
+                } else {
+                    //点击 同一个
+                    if (selected.getId().equals(userfulEventes.get(position).getId())) {
+                        selected.setIsCheck(false);
+                    } else {
+                        for (EventUserful item : userfulEventes) {
+                            item.setIsCheck(false);
+                        }
+                        userfulEventes.get(position).setIsCheck(true);
+                    }
+                }
+
                 adapter.notifyDataSetChanged();
             }
         });

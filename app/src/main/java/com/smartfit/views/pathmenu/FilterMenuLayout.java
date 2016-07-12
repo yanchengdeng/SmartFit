@@ -861,12 +861,12 @@ public class FilterMenuLayout extends ViewGroup {
 
         private SavedState(Parcel in) {
             super(in);
-            this.expandProgress = in.readFloat();
-            this.primaryColor = in.readInt();
-            this.primaryDarkColor = in.readInt();
-            this.collapsedRadius = in.readInt();
-            this.expandedRadius = in.readInt();
-            this.state = in.readInt();
+                this.expandProgress = in.readFloat();
+                this.primaryColor = in.readInt();
+                this.primaryDarkColor = in.readInt();
+                this.collapsedRadius = in.readInt();
+                this.expandedRadius = in.readInt();
+                this.state = in.readInt();
         }
 
         @Override

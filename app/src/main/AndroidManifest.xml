@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smartfit">
 
-    <uses-sdk tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -261,7 +260,13 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="@string/app_name" />
+            </intent-filter>
+        </activity>
 
 
         <activity android:name=".activities.OrderReserveActivity" />

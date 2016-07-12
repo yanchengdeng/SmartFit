@@ -76,14 +76,8 @@ public class TicketGiftShareAdapter extends BaseAdapter {
 
         viewHolder.chSelect.setChecked(item.isCheck());
 
-        if (!TextUtils.isEmpty(item.getEventType())) {
-            if (item.getEventType().equals("3")) {
-                viewHolder.tvType.setText("月卡");
-            } else if (item.getEventType().equals("2")) {
-                viewHolder.tvType.setText("买赠");
-            } else if (item.getEventType().equals("1")) {
-                viewHolder.tvType.setText("活动捆绑");
-            }
+        if (!TextUtils.isEmpty(item.getEventTitle())) {
+            viewHolder.tvType.setText(item.getEventTitle());
         }
         return convertView;
     }

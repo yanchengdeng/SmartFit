@@ -40,4 +40,5 @@
     <dimen name="text_larger_big">23sp</dimen>
     <dimen name="btn_height">40dp</dimen>
     <dimen name="horizonal_date_height">60dp</dimen>
+    <dimen name="tickt_max_width">80dp</dimen>
 </resources>

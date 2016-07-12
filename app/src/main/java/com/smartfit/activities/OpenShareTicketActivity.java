@@ -19,15 +19,19 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.ShareTicketSuccess;
+import com.smartfit.MessageEvent.ShareWXSuccess;
+import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.beans.ShareInfo;
 import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.Util;
+import com.smartfit.wxapi.WXEntryActivity;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -82,26 +86,15 @@ public class OpenShareTicketActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_share_ticket);
-        api = WXAPIFactory.createWXAPI(this, Constants.WXPay.APP_ID);
         ButterKnife.bind(this);
         eventBus = EventBus.getDefault();
         eventBus.register(this);
+        api = WXAPIFactory.createWXAPI(this, Constants.WXPay.APP_ID);
         initView();
         addLisener();
 
     }
 
-
-    @Subscribe
-    public void onEvent(Object event) {
-        if (event instanceof ShareTicketSuccess) {
-            if (((ShareTicketSuccess) event).isFinishNow()) {
-                finish();
-            }
-
-        }
-
-    }
 
     private void initView() {
         tvTittle.setText(getString(R.string.tick_gift_share));
@@ -110,14 +103,17 @@ public class OpenShareTicketActivity extends BaseActivity {
         StringBuffer stringBuffer = new StringBuffer();
 
         StringBuffer ticketsId = new StringBuffer();
-        for (int i = 0; i < ticketInfos.size(); i++) {
-            if (i == ticketInfos.size() - 1) {
-                ticketsId.append(ticketInfos.get(i).getId());
-            } else {
-                ticketsId.append(ticketInfos.get(i).getId()).append("|");
-            }
-            stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
 
+        if (ticketInfos != null) {
+            for (int i = 0; i < ticketInfos.size(); i++) {
+                if (i == ticketInfos.size() - 1) {
+                    ticketsId.append(ticketInfos.get(i).getId());
+                } else {
+                    ticketsId.append(ticketInfos.get(i).getId()).append("|");
+                }
+                stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
+
+            }
         }
 
         ticketIds = ticketsId.toString();
@@ -147,10 +143,8 @@ public class OpenShareTicketActivity extends BaseActivity {
             public void onClick(View v) {
 //                uid = "";
 //                showShareDialog("");
-                ShareInfo shareInfo = new ShareInfo();
 
-                shareToWX(shareInfo);
-
+                shareToWX(new ShareInfo());
             }
         });
     }
@@ -267,8 +261,9 @@ public class OpenShareTicketActivity extends BaseActivity {
                 }
             }
         });
-
     }
+
+    ShareInfo shareInfo;
 
     /**
      * 分享券
@@ -284,7 +279,7 @@ public class OpenShareTicketActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.EVENT_SHAREEVENTUSER, msp, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ShareInfo shareInfo = JsonUtils.objectFromJson(response, ShareInfo.class);
+                shareInfo = JsonUtils.objectFromJson(response, ShareInfo.class);
                 if (shareInfo != null) {
                     if (TextUtils.isEmpty(uid)) {
                         shareToWX(shareInfo);
@@ -315,7 +310,7 @@ public class OpenShareTicketActivity extends BaseActivity {
 
     private void shareToWX(ShareInfo shareInfo) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://smartfittest.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
+        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "好友送您SMART FIT健身大礼包啦";
         msg.description = "中国好朋友强塞一个SMARTFIT健身礼包给你！一懒众衫小，还不快起跑！丢一张健身礼券给你，做我陪练好不好！";
@@ -326,8 +321,40 @@ public class OpenShareTicketActivity extends BaseActivity {
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneSession;
         req.openId = "";
+        api.sendReq(req);
+    }
 
-        LogUtil.w("dyc", "=========" + api.sendReq(req));
+    /**
+     * 分享成功 回调
+     *
+     * @param shareId
+     */
+    private void commitShareEvent(String shareId) {
+        Map<String, String> msp = new HashMap();
+        msp.put("sharedId", shareId);
+        PostRequest request = new PostRequest(Constants.EVENT_SHARESUCCESSCALLBACK, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                eventBus.post(new ShareTicketSuccess());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 1500);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                finish();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OpenShareTicketActivity.this);
+        GetSingleRequestUtils.getInstance(this).getRequestQueue().add(request);
     }
 
 }

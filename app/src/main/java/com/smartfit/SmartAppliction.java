@@ -32,12 +32,6 @@ public class SmartAppliction extends Application {
         return app;
     }
 
-    {
-        PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
-        //微信 appid appsecret
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad");
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,7 +41,7 @@ public class SmartAppliction extends Application {
 // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(getApplicationContext(), options);
-//        registerUncaughtExceptionHandler();
+        registerUncaughtExceptionHandler();
 
     }
 

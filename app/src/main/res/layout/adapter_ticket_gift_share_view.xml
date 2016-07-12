@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:maxWidth="@dimen/tickt_max_width"
             android:gravity="center"
             android:text="@string/eaquel_ticket"
             android:textColor="@color/common_header_bg"

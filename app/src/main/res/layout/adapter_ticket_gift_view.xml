@@ -13,12 +13,12 @@
 
     <TextView
         android:id="@+id/tv_type"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:maxWidth="@dimen/tickt_max_width"
+        android:layout_width="wrap_content"
         android:gravity="center"
         android:layout_gravity="center_vertical"
-        android:text="@string/eaquel_ticket"
         android:textColor="@color/common_header_bg"
         android:textSize="@dimen/text_larger" />
 
@@ -70,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="已使用"
+            android:paddingRight="@dimen/image_padding_big"
             android:gravity="right"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_normal_down" />

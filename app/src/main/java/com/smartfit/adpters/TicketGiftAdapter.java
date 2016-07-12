@@ -71,32 +71,26 @@ public class TicketGiftAdapter extends BaseAdapter {
             viewHolder.tvClassOutdate.setText(String.format("过期时间:%s", DateUtils.getData(item.getEventEndTime())));
         }
 
-        if (!TextUtils.isEmpty(item.getEventType())) {
-            if (item.getEventType().equals("3")){
-                viewHolder.tvType.setText("月卡");
-            }else if(item.getEventType().equals("2")){
-                viewHolder.tvType.setText("买赠");
-            }else if(item.getEventType().equals("1")){
-                viewHolder.tvType.setText("活动捆绑");
-            }
+        if (!TextUtils.isEmpty(item.getEventTitle())) {
+            viewHolder.tvType.setText(item.getEventTitle());
         }
 
         if (!TextUtils.isEmpty(item.getStatus())) {
-            if (item.getStatus().equals("0")){
+            if (item.getStatus().equals("0")) {
                 viewHolder.tvStatus.setVisibility(View.INVISIBLE);
-            }else if(item.getStatus().equals("1")){
+            } else if (item.getStatus().equals("1")) {
                 viewHolder.tvStatus.setVisibility(View.VISIBLE);
                 viewHolder.tvStatus.setText("已使用");
 
-            }else if(item.getStatus().equals("2")){
+            } else if (item.getStatus().equals("2")) {
                 viewHolder.tvStatus.setVisibility(View.VISIBLE);
                 viewHolder.tvStatus.setText("使用中");
 
-            }else if(item.getStatus().equals("3")){
+            } else if (item.getStatus().equals("3")) {
                 viewHolder.tvStatus.setVisibility(View.VISIBLE);
                 viewHolder.tvStatus.setText("已分享未领取");
 
-            }else if(item.getStatus().equals("4")){
+            } else if (item.getStatus().equals("4")) {
                 viewHolder.tvStatus.setVisibility(View.VISIBLE);
                 viewHolder.tvStatus.setText("已分享已领取");
 

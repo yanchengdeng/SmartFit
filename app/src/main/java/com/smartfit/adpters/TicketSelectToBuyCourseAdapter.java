@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by dengyancheng on 16/3/12.
  * <p/>
- *  用券 去  抵扣 磕碜费用
+ * 用券 去  抵扣 磕碜费用
  */
 public class TicketSelectToBuyCourseAdapter extends BaseAdapter {
 
@@ -76,13 +76,12 @@ public class TicketSelectToBuyCourseAdapter extends BaseAdapter {
 
         viewHolder.chSelect.setChecked(item.isCheck());
 
-
-        viewHolder.tvType.setText("月卡");
+        if (!TextUtils.isEmpty(item.getEventTitle())) {
+            viewHolder.tvType.setText(item.getEventTitle());
+        }
 
         return convertView;
     }
-
-
 
 
     /**

@@ -119,8 +119,6 @@ public class CustomeMainActivity extends BaseActivity {
                     SharedPreferencesUtils.getInstance().putString(Constants.IS_VIP,userInfo.getIsVip());
                     fillData(userInfo);
                 }
-
-
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
