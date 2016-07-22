@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.FinishActivityAfterPay;
 import com.smartfit.R;
 import com.smartfit.beans.MouthBillInfo;
 import com.smartfit.beans.NewMonthServerInfo;
@@ -22,6 +24,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,17 +89,25 @@ public class ConfirmPayActivity extends BaseActivity {
 
     private StringBuffer eventUserIds, cardSNNumbers;
 
+    private EventBus eventBus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_pay);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
-
-
     }
 
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishActivityAfterPay){
+            finish();
+        }
+    }
     private void initView() {
         tvTittle.setText("支付确认");
         num = getIntent().getIntExtra(Constants.PASS_STRING, 1);
@@ -275,6 +288,15 @@ public class ConfirmPayActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        eventBus.post(new FinishActivityAfterPay());
+                        Intent intent;
+                        if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
+                            intent = new Intent(ConfirmPayActivity.this, CustomeMainActivity.class);
+                        } else {
+                            intent = new Intent(ConfirmPayActivity.this, CustomeCoachActivity.class);
+                        }
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         finish();
                     }
                 }, 1500);

@@ -1,7 +1,6 @@
 package com.smartfit.wxapi;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,18 +13,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.ShareTicketSuccess;
-import com.smartfit.MessageEvent.ShareWXSuccess;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.SelectShareFriendsActivity;
+import com.smartfit.adpters.ShareTicketAdapter;
 import com.smartfit.beans.ShareInfo;
 import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
@@ -34,6 +33,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -68,12 +68,12 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
-    @Bind(R.id.tv_share_tickets)
-    TextView tvShareTickets;
     @Bind(R.id.tv_share_smart)
     TextView tvShareSmart;
     @Bind(R.id.tv_share_wx)
     TextView tvShareWx;
+    @Bind(R.id.listview)
+    ListView listview;
 
 
     private ArrayList<TicketInfo> ticketInfos;
@@ -100,6 +100,12 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         initView();
         addLisener();
         api.handleIntent(getIntent(), this);
+
+    }
+
+    @Subscribe
+    public void onEvent(ShareTicketSuccess event) {
+        finish();
     }
 
     private void initView() {
@@ -109,6 +115,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         StringBuffer stringBuffer = new StringBuffer();
 
         StringBuffer ticketsId = new StringBuffer();
+
 
         if (ticketInfos != null) {
             for (int i = 0; i < ticketInfos.size(); i++) {
@@ -120,10 +127,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
 
             }
+            listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
+
         }
 
         ticketIds = ticketsId.toString();
-        tvShareTickets.setText(stringBuffer.toString());
     }
 
     private void addLisener() {
@@ -147,11 +155,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         tvShareWx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-//                uid = "";
-//                showShareDialog("");
-
-                shareToWX(new ShareInfo());
+                uid = "";
+                showShareDialog("");
             }
         });
     }
@@ -272,6 +277,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     ShareInfo shareInfo;
 
+
     /**
      * 分享券
      *
@@ -292,13 +298,13 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                         shareToWX(shareInfo);
                     } else {
                         mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        eventBus.post(new ShareTicketSuccess());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                eventBus.post(new ShareTicketSuccess());
                                 finish();
                             }
-                        }, 1500);
+                        }, 2000);
                     }
                 }
 
@@ -316,12 +322,13 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     private void shareToWX(ShareInfo shareInfo) {
+        SharedPreferencesUtils.getInstance().putString(Constants.SHARE_ID, shareInfo.getId());
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "好友送您SMART FIT健身大礼包啦";
         msg.description = "中国好朋友强塞一个SMARTFIT健身礼包给你！一懒众衫小，还不快起跑！丢一张健身礼券给你，做我陪练好不好！";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_logo);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.logo_share);
         msg.thumbData = Util.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
@@ -348,7 +355,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Override
     public void onResp(BaseResp baseResp) {
         if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-            mSVProgressHUD.showInfoWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            LogUtil.w("dyc", shareInfo + "============");
+            commitShareEvent();
         } else {
             mSVProgressHUD.showInfoWithStatus("取消分享", SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
@@ -357,30 +365,27 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     /**
      * 分享成功 回调
-     *
-     * @param shareId
      */
-    private void commitShareEvent(String shareId) {
+    private void commitShareEvent() {
         Map<String, String> msp = new HashMap();
-        msp.put("sharedId", shareId);
+        msp.put("sharedId", SharedPreferencesUtils.getInstance().getString(Constants.SHARE_ID, ""));
         PostRequest request = new PostRequest(Constants.EVENT_SHARESUCCESSCALLBACK, msp, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-//                eventBus.post(new ShareTicketSuccess());
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        eventBus.post(new ShareTicketSuccess());
                         finish();
                     }
-                }, 1500);
-
+                }, 2000);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                finish();
             }
         });
         request.setTag(new Object());

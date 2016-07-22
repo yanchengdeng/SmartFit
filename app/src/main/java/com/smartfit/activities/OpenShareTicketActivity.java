@@ -49,6 +49,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ *
+ * 暂时不用了 ---------------------------------------
  * @author dengyancheng
  *         卷分享
  */
@@ -62,8 +64,6 @@ public class OpenShareTicketActivity extends BaseActivity {
     TextView tvFunction;
     @Bind(R.id.iv_function)
     ImageView ivFunction;
-    @Bind(R.id.tv_share_tickets)
-    TextView tvShareTickets;
     @Bind(R.id.tv_share_smart)
     TextView tvShareSmart;
     @Bind(R.id.tv_share_wx)
@@ -117,7 +117,6 @@ public class OpenShareTicketActivity extends BaseActivity {
         }
 
         ticketIds = ticketsId.toString();
-        tvShareTickets.setText(stringBuffer.toString());
     }
 
     private void addLisener() {

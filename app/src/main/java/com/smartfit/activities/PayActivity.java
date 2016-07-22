@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.FinishActivityAfterPay;
 import com.smartfit.MessageEvent.FinishRechage;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.MessageEvent.UpdateCoachClass;
@@ -129,7 +131,7 @@ public class PayActivity extends BaseActivity {
     /****
      * 页面跳转 index
      * <p/>
-     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付
+     * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付 10  包季度/半年
      */
     private int pageIndex = 1;
 
@@ -595,15 +597,15 @@ public class PayActivity extends BaseActivity {
                     getOrderCorse();
                 } else if (pageIndex == 6) {
                     getOrderCorse();
-                } else if (pageIndex == 7 ||pageIndex== 10) {
+                } else if (pageIndex == 7 || pageIndex == 10) {
                     getEventOrder();
                 } else if (pageIndex == 8) {
                     orderID = orderCode;
                     goPay();
-                } else if(pageIndex == 9){
+                } else if (pageIndex == 9) {
                     orderID = orderCode;
                     goPay();
-                }else {
+                } else {
                     if (TextUtils.isEmpty(orderCode)) {
                         getOrderCorse();
                     } else {
@@ -645,7 +647,7 @@ public class PayActivity extends BaseActivity {
                     payUserCouponWithEventUserId();
                 }
             }
-        }else if (payStyle==4){
+        } else if (payStyle == 4) {
             payCardPay();
         }
     }
@@ -654,7 +656,7 @@ public class PayActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus("支付中...", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
         map.put("orderCode", orderID);
-        map.put("cardSNNumber",cardCode);
+        map.put("cardSNNumber", cardCode);
         PostRequest request = new PostRequest(Constants.PAY_CARDPAY, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -873,23 +875,60 @@ public class PayActivity extends BaseActivity {
     private void dealAfterPay() {
         if (pageIndex == 1) {
             eventBus.post(new UpdateGroupClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 3) {
             eventBus.post(new UpdatePrivateClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 4) {
             eventBus.post(new UpdateAreoClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 5) {
             eventBus.post(new UpdateCoachClass());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 6) {
             eventBus.post(new UpdateCustomClassInfo());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 7) {
             finish();
-        }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
+        } else if (pageIndex == 8 || pageIndex == 9 || pageIndex == 10) {
+            eventBus.post(new FinishActivityAfterPay());
+            Intent intent;
+            if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
+                intent = new Intent(PayActivity.this, CustomeMainActivity.class);
+            } else {
+                intent = new Intent(PayActivity.this, CustomeCoachActivity.class);
             }
-        }, 1000);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+
+        }
+
 
     }
 

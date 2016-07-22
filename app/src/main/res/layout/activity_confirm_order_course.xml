@@ -72,6 +72,39 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/rl_go_buy_month_server_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:visibility="gone"
+                android:background="@color/white"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/image_padding"
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/month_server_tips"
+                    android:textColor="@color/common_header_bg"
+                    android:textSize="@dimen/text_normal_down" />
+
+                <TextView
+                    android:id="@+id/tv_buy_month_server"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/image_padding"
+                    android:background="@drawable/bg_dialog_selector_red"
+                    android:gravity="center"
+                    android:text="去购买"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_normal" />
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/rl_user_ticket_ui"

@@ -16,6 +16,8 @@ import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.FinishActivityAfterPay;
+import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.adpters.MothActivityAdatper;
 import com.smartfit.beans.NewMonthServerInfo;
@@ -27,6 +29,9 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,14 +84,24 @@ public class EventActivityNewVersionActivity extends BaseActivity {
     Button btnOrder;
     private int REQUST_CODE_MOUTH = 0x011;
 
+    private EventBus eventBus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_activity_new_version);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this);eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         getData();
+    }
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishActivityAfterPay){
+            finish();
+        }
     }
 
 

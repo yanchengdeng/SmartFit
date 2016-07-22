@@ -41,4 +41,5 @@
     <dimen name="btn_height">40dp</dimen>
     <dimen name="horizonal_date_height">60dp</dimen>
     <dimen name="tickt_max_width">80dp</dimen>
+    <dimen name="tickt_share_list">200dp</dimen>
 </resources>

@@ -90,9 +90,13 @@ public class SmallClassFragment extends BaseFragment {
     @Bind(R.id.iv_cover_bg)
     ImageView ivCoverBg;
 
-    /** 标志位，标志已经初始化完成 */
+    /**
+     * 标志位，标志已经初始化完成
+     */
     private boolean isPrepared;
-    /** 是否已被加载过一次，第二次就不再去请求数据了 */
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
     private boolean isLoaded = false;
 
 
@@ -106,6 +110,7 @@ public class SmallClassFragment extends BaseFragment {
     private List<WorkPointAddress> addresses;
     private String selectType = "0";
     private String venueId = "0";
+    private int slectPostion = 0;
 
 
     @Override
@@ -122,23 +127,26 @@ public class SmallClassFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isPrepared) {
+            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER, 0);
+            doLoadData();
+        }
+    }
 
-    /**
-     * 初始化数据列表加载
-     */
-    private void initListView() {
 
-        adapter = new GroupExpericeItemAdapter(getActivity(), datas);
-        listView.setAdapter(adapter);
+    private void doLoadData() {
         String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
         if (TextUtils.isEmpty(citycode)) {
             ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
         } else {
             List<WorkPointAddress> workPointAddresses = Util.getVenueList();
-            if (workPointAddresses != null && workPointAddresses.size() > 0) {
+            if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size() > slectPostion) {
                 addresses = workPointAddresses;
-                tvAddress.setText(addresses.get(0).getVenueName());
-                venueId = addresses.get(0).getVenueId();
+                tvAddress.setText(addresses.get(slectPostion).getVenueName());
+                venueId = addresses.get(slectPostion).getVenueId();
                 isLoaded = false;
                 lazyLoad();
             } else {
@@ -146,14 +154,23 @@ public class SmallClassFragment extends BaseFragment {
             }
         }
 
+    }
 
+    /**
+     * 初始化数据列表加载
+     */
+    private void initListView() {
+        isPrepared = true;
+        adapter = new GroupExpericeItemAdapter(getActivity(), datas);
+        listView.setAdapter(adapter);
+        doLoadData();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
-                bundle.putString(Constants.COURSE_TYPE,"1");
-                bundle.putInt(Constants.PAGE_INDEX,2);
+                bundle.putString(Constants.COURSE_TYPE, "1");
+                bundle.putInt(Constants.PAGE_INDEX, 2);
                 ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });
@@ -338,7 +355,7 @@ public class SmallClassFragment extends BaseFragment {
                 dialog.dismiss();
                 ivCoverBg.setVisibility(View.GONE);
             }
-        }) ;
+        });
 
         addressCustomPop.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -395,7 +412,7 @@ public class SmallClassFragment extends BaseFragment {
         if (!isPrepared || !isVisible || isLoaded) {
             return;
         }
-            loadData();
+        loadData();
     }
 
 
@@ -437,6 +454,7 @@ public class SmallClassFragment extends BaseFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     venueId = addresses.get(position).getVenueId();
+                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER, position);
                     isLoaded = false;
                     lazyLoad();
                     addressCustomPop.dismiss();
@@ -482,7 +500,7 @@ public class SmallClassFragment extends BaseFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     orderCustomePop.dismiss();
                     selectType = Util.getSortList(getContext()).get(position).getId();
-                    isLoaded =false;
+                    isLoaded = false;
                     lazyLoad();
                     ivCoverBg.setVisibility(View.GONE);
                 }

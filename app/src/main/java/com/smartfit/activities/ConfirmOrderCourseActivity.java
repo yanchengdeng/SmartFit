@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
+import com.smartfit.MessageEvent.FinishActivityAfterPay;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.MessageEvent.UpdateCoachClass;
 import com.smartfit.MessageEvent.UpdateCustomClassInfo;
@@ -30,6 +31,7 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +79,10 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
     TextView tvNoNeedPay;
     @Bind(R.id.rl_server_mouth_no_pay)
     RelativeLayout rlServerMouthNoPay;
+    @Bind(R.id.tv_buy_month_server)
+    TextView tvBuyMonthServer;
+    @Bind(R.id.rl_go_buy_month_server_ui)
+    RelativeLayout rlGoBuyMonthServerUi;
 
     private int GET_TICKET_CODE = 0x0010;
     private int GET_CARD_CODE = 0x0011;
@@ -115,10 +121,18 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         setContentView(R.layout.activity_confirm_order_course);
         ButterKnife.bind(this);
         eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
     }
 
+
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishActivityAfterPay){
+            finish();
+        }
+    }
     private void initView() {
         tvTittle.setText("支付确认");
         startTime = getIntent().getStringExtra("start");
@@ -161,6 +175,9 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 rlServerMouthNoPay.setVisibility(View.GONE);
                 tvPayMoney.setText("￥" + payMoney);
 
+                if (pageIndex == 1 || pageIndex == 4){
+                    rlGoBuyMonthServerUi.setVisibility(View.VISIBLE);
+                }
             }
         }
 
@@ -503,17 +520,24 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                     if (payMoney.equals("0")) {
                         getOrderId();
                     } else {
-                        //去支付
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.PAGE_INDEX, 3);
+                      /*  //去支付
+                        Bundle bundle = getIntent();
+                        bundle.putInt(Constants.PAGE_INDEX, pageIndex);
                         bundle.putString(Constants.COURSE_ID, courseId);
                         bundle.putString(Constants.COURSE_MONEY, payMoney);
-                        bundle.putString(Constants.COURSE_TYPE, "2");
-                        openActivity(PayActivity.class, bundle);
+                        bundle.putString(Constants.COURSE_TYPE, couserType);*/
+                        openActivity(PayActivity.class, getIntent().getExtras());
                         finish();
                     }
 
                 }
+            }
+        });
+
+        tvBuyMonthServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(EventActivityNewVersionActivity.class);
             }
         });
 
@@ -550,23 +574,59 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
     private void dealAfterPay() {
         if (pageIndex == 1) {
             eventBus.post(new UpdateGroupClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 3) {
             eventBus.post(new UpdatePrivateClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 4) {
             eventBus.post(new UpdateAreoClassDetail());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 5) {
             eventBus.post(new UpdateCoachClass());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 6) {
             eventBus.post(new UpdateCustomClassInfo());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1000);
         } else if (pageIndex == 7) {
             finish();
-        }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
+        } else if (pageIndex == 8 || pageIndex == 9 || pageIndex == 10) {
+            eventBus.post(new FinishActivityAfterPay());
+            Intent intent;
+            if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
+                intent = new Intent(ConfirmOrderCourseActivity.this, CustomeMainActivity.class);
+            } else {
+                intent = new Intent(ConfirmOrderCourseActivity.this, CustomeCoachActivity.class);
             }
-        }, 1000);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+
+        }
 
     }
 

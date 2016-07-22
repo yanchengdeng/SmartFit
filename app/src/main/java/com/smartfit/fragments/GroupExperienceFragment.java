@@ -112,6 +112,8 @@ public class GroupExperienceFragment extends BaseFragment {
      */
     private boolean isLoaded = false;
 
+    private int slectPostion = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -124,6 +126,34 @@ public class GroupExperienceFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER,0);
+            if (isPrepared){
+                goLoadData();
+            }
+        }
+    }
+
+    private void goLoadData(){
+            String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+            if (TextUtils.isEmpty(citycode)) {
+                ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            } else {
+                List<WorkPointAddress> workPointAddresses = Util.getVenueList();
+                if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size()>slectPostion) {
+                    addresses = workPointAddresses;
+                    tvAddress.setText(addresses.get(slectPostion).getVenueName());
+                    venueId = addresses.get(slectPostion).getVenueId();
+                    isLoaded = false;
+                    lazyLoad();
+                } else {
+                    getVenueList();
+                }
+            }
+    }
 
     /**
      * 初始化数据列表加载
@@ -132,21 +162,7 @@ public class GroupExperienceFragment extends BaseFragment {
         isPrepared = true;
         adapter = new GroupExpericeItemAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
-        String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
-        if (TextUtils.isEmpty(citycode)) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        } else {
-            List<WorkPointAddress> workPointAddresses = Util.getVenueList();
-            if (workPointAddresses != null && workPointAddresses.size() > 0) {
-                addresses = workPointAddresses;
-                tvAddress.setText(addresses.get(0).getVenueName());
-                venueId = addresses.get(0).getVenueId();
-                isLoaded = false;
-                lazyLoad();
-            } else {
-                getVenueList();
-            }
-        }
+        goLoadData();
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -443,6 +459,7 @@ public class GroupExperienceFragment extends BaseFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     venueId = addresses.get(position).getVenueId();
+                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER,position);
                     isLoaded = false;
                     lazyLoad();
                     addressCustomPop.dismiss();

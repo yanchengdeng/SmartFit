@@ -27,9 +27,11 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.AreaDetailInfo;
+import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
+import com.smartfit.beans.OrderCourse;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -116,16 +118,132 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
-            btnOrder.setVisibility(View.GONE);
+        /*    btnOrder.setVisibility(View.GONE);
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
-            tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-            tvSaveToPhone.setText(getString(R.string.copy_link));
+            tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+            tvSaveToPhone.setText(getString(R.string.copy_link));*/
+            getClassInfo(detail.getId());
         }
 
     /* Do something */
     }
+
+
+    private void getClassInfo(String courseId) {
+
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String, String> data = new HashMap<>();
+        data.put("courseId", courseId);
+        data.put("courseType", "3");
+        PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
+                fillData(detail);
+                mSVProgressHUD.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+
+    }
+
+    private void fillData(ClassInfoDetail detail) {
+        this.codeBar = detail.getQrcodeUrl();
+        /**
+         * 订单状态（
+         * 1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了，
+         * 7课程已结束未评论
+         * 8已评论）
+         */
+        btnOrder.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+
+            if (Integer.parseInt(detail.getOrderStatus()) == 1) {
+                btnOrder.setVisibility(View.VISIBLE);
+            }
+            llScanBar.setVisibility(View.VISIBLE);
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                llViewScanCode.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setVisibility(View.GONE);
+                tvSaveToPhone.setText(getString(R.string.save_to_phone));
+            } else {
+                llViewScanCode.setVisibility(View.GONE);
+                tvScanCodeInfo.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvSaveToPhone.setText(getString(R.string.copy_link));
+            }
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+            llScanBar.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+            codeBar = detail.getQrcodeUrl();
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getVenueName())) {
+            tvAddress.setText(detail.getVenueName());
+        }
+        if (!TextUtils.isEmpty(detail.getClassroomName())) {
+            tvRoom.setText(detail.getClassroomName());
+        }
+
+        tvDistance.setText("距离 " + Util.getDistance(detail.getLat(), detail.getLongit()));
+
+        if (!TextUtils.isEmpty(detail.getStartTime()) && !TextUtils.isEmpty(detail.getEndTime())) {
+            tvTime.setText(DateUtils.getData(detail.getStartTime()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
+        }
+
+        if (!TextUtils.isEmpty(detail.getPrice())) {
+            tvPrice.setText(detail.getPrice());
+        } else {
+            detail.setPrice("免费");
+            tvPrice.setText("免费");
+        }
+
+
+        if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
+            rollViewPager.setVisibility(View.VISIBLE);
+        } else {
+            detail.setCoursePics(new String[]{""});
+            rollViewPager.setVisibility(View.VISIBLE);
+        }
+        rollViewPager.setPlayDelay(3000);
+        rollViewPager.setAnimationDurtion(500);
+        rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getClassroomName()));
+        rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }, 500);
+    }
+
 
 
     private void initView() {

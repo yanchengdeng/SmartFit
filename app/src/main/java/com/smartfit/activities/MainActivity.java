@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         String mainAd = SharedPreferencesUtils.getInstance().getString(Constants.MIAN_ADS, "");
         if (!TextUtils.isEmpty(mainAd)) {
             mainAdInfos = JsonUtils.listFromJson(mainAd, MainAdInfo.class);
-            if (mainAdInfos.size() == 3) {
+            if (mainAdInfos.size() > 0) {
                 for (MainAdInfo item : mainAdInfos) {
                     if (item.getAdposition().equals("1")) {
                         if (item.getPics() != null && item.getPics().length > 0) {
@@ -157,7 +157,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         if (item.getPics() != null && item.getPics().length > 0) {
                             ImageLoader.getInstance().displayImage(item.getPics()[0], ivAdBottom);
                         }
-
                     }
                 }
             }
@@ -448,7 +447,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                         SharedPreferencesUtils.getInstance().putString(Constants.USER_INFO, JsonUtils.toJson(userInfoDetail));
                         if (!TextUtils.isEmpty(userInfoDetail.getCoachId())) {
                             SharedPreferencesUtils.getInstance().putString(Constants.COACH_ID, userInfoDetail.getCoachId());
-                        }else{
+                        } else {
                             getCustomeInfo();
                         }
                         LoginHX(userInfoDetail.getUid());
@@ -472,12 +471,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
 
-
-
-
-        /**
-         * 获取个人用户信息
-         */
+    /**
+     * 获取个人用户信息
+     */
     private void getCustomeInfo() {
         Map<String, String> maps = new HashMap<>();
         maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
@@ -504,7 +500,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         request.headers = NetUtil.getRequestBody(MainActivity.this);
         mQueue.add(request);
     }
-
 
 
     private void bindClient(String client) {
@@ -622,7 +617,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         cardSmartFit.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                //TODO  活动
                                                 if (NetUtil.isLogin(getApplicationContext())) {
 //                                                    openActivity(CustomeClassActivity.class);
                                                     openViewByType(3);
@@ -698,33 +692,38 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
     /**
      * 根据广告位子   跳转到对应的类型  1  上栏  2  中栏   3 低栏
+     *
      * @param adPosion
      */
     private void openViewByType(int adPosion) {
-        if (mainAdInfos!=null && mainAdInfos.size()>0){
+        if (mainAdInfos != null && mainAdInfos.size() > 0) {
             MainAdInfo select = null;
-            for (MainAdInfo item:mainAdInfos){
-                if (item.getAdposition().equals(String.valueOf(adPosion))){
+            for (MainAdInfo item : mainAdInfos) {
+                if (item.getAdposition().equals(String.valueOf(adPosion))) {
                     select = item;
                 }
             }
-            if (select!=null){
-                if (select.getAdType().equals("0")){
+            if (select != null) {
+                if (select.getAdType().equals("0")) {
                     //app 界面
-                    if (select.getApplink().equals("1")){
+                    if (select.getApplink().equals("1")) {
                         //活动列表
                         openActivity(ActivityListActivity.class);
-                    }else {
+                    } else {
                         openActivity(EventActivityNewVersionActivity.class);
                     }
-                }else{
+                } else {
                     //网页
                     Bundle bundle = new Bundle();
                     bundle.putString(Constants.PASS_STRING, select.getLink());
                     bundle.putString("name", select.getAdName());
-                    openActivity(AdActivity.class,bundle);
+                    openActivity(AdActivity.class, bundle);
                 }
+            } else {
+                openActivity(ActivityListActivity.class);
             }
+        } else {
+            openActivity(ActivityListActivity.class);
         }
     }
 

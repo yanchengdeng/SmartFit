@@ -41,7 +41,7 @@ public class SmartAppliction extends Application {
 // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(getApplicationContext(), options);
-        registerUncaughtExceptionHandler();
+//        registerUncaughtExceptionHandler();
 
     }
 

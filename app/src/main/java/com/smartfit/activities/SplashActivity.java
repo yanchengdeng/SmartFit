@@ -73,8 +73,9 @@ public class SplashActivity extends FragmentActivity {
     };
 
 
-    int secods[]= new int[]{2,1,0};
-    int index  =0;
+    int secods[] = new int[]{2, 1, 0};
+    int index = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +84,8 @@ public class SplashActivity extends FragmentActivity {
         countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                LogUtil.w("dyc","执行："+index);
-                if (index<secods.length) {
+                LogUtil.w("dyc", "执行：" + index);
+                if (index < secods.length) {
                     tvSecondJump.setText(String.format("%s 跳过", String.valueOf(secods[index])));
                 }
                 index++;
@@ -113,7 +114,38 @@ public class SplashActivity extends FragmentActivity {
         guideImage.setVisibility(View.VISIBLE);
         getMainAd();
         getLauchPic();
+        goToMain();
 
+    }
+
+    private void goToMain() {
+        String flashAds = SharedPreferencesUtils.getInstance().getString(Constants.SPLASH_ADS, "");
+        if (!TextUtils.isEmpty(flashAds)) {
+            FlashPageInfo flashPageInfo = JsonUtils.objectFromJson(flashAds, FlashPageInfo.class);
+            if (flashPageInfo != null && flashPageInfo.getPics() != null && flashPageInfo.getPics().length > 0) {
+                if (Long.parseLong(flashPageInfo.getAdEndTime()) > (System.currentTimeMillis() / 1000)) {
+                    getImagetBitMpa(flashPageInfo.getPics()[0]);
+                } else {
+                    toMainActivity();
+                }
+            } else {
+                toMainActivity();
+            }
+        } else {
+            toMainActivity();
+        }
+
+    }
+
+
+    private void toMainActivity() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        }, 1500);
     }
 
     /**
@@ -142,7 +174,6 @@ public class SplashActivity extends FragmentActivity {
 
     }
 
-    List<FlashPageInfo> flashPageInfo;
 
     /**
      * 获取启动图片
@@ -151,41 +182,15 @@ public class SplashActivity extends FragmentActivity {
         PostRequest request = new PostRequest(Constants.AD_ADSNAP, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                flashPageInfo = JsonUtils.listFromJson(response.getAsJsonArray("list"), FlashPageInfo.class);
+                List<FlashPageInfo> flashPageInfo = JsonUtils.listFromJson(response.getAsJsonArray("list"), FlashPageInfo.class);
                 if (flashPageInfo != null && flashPageInfo.size() > 0 && flashPageInfo.get(0).getPics().length > 0) {
-                    if (Long.parseLong(flashPageInfo.get(0).getAdEndTime()) > (System.currentTimeMillis() / 1000)) {
-                        getImagetBitMpa(flashPageInfo.get(0).getPics()[0]);
-                    }else{
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                                finish();
-                            }
-                        },2000);
-                    }
-                } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                            finish();
-                        }
-                    },2000);
+                    SharedPreferencesUtils.getInstance().putString(Constants.SPLASH_ADS, JsonUtils.toJson(flashPageInfo.get(0)));
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                        finish();
-                    }
-                }, 2000);
+
             }
         });
         request.headers = NetUtil.getRequestBody(SplashActivity.this);
@@ -264,8 +269,6 @@ public class SplashActivity extends FragmentActivity {
     }
 
 
-
-
     private void startAdCountDown() {
         tvSecondJump.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -273,22 +276,28 @@ public class SplashActivity extends FragmentActivity {
             public void run() {
                 countDownTimer.start();
             }
-        },1000);
+        }, 1000);
     }
 
     @OnClick({R.id.iv_ad_bg, R.id.tv_second_jump})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_ad_bg:
-                if (flashPageInfo != null && flashPageInfo.size() > 0 && !TextUtils.isEmpty(flashPageInfo.get(0).getLink())) {
-                    if (countDownTimer != null) {
-                        countDownTimer.cancel();
+                String flashAds = SharedPreferencesUtils.getInstance().getString(Constants.SPLASH_ADS, "");
+                if (!TextUtils.isEmpty(flashAds)) {
+                    FlashPageInfo flashPageInfo = JsonUtils.objectFromJson(flashAds, FlashPageInfo.class);
+                    if (flashPageInfo != null && flashPageInfo.getPics() != null && flashPageInfo.getPics().length > 0) {
+                        if (Long.parseLong(flashPageInfo.getAdEndTime()) > (System.currentTimeMillis() / 1000)) {
+                            if (countDownTimer != null) {
+                                countDownTimer.cancel();
+                            }
+                            Intent intent = new Intent(SplashActivity.this, AdActivity.class);
+                            intent.putExtra(Constants.PASS_STRING, flashPageInfo.getLink());
+                            intent.putExtra("name", flashPageInfo.getAdName());
+                            startActivity(intent);
+                            finish();
+                        }
                     }
-                    Intent intent = new Intent(SplashActivity.this, AdActivity.class);
-                    intent.putExtra(Constants.PASS_STRING, flashPageInfo.get(0).getLink());
-                    intent.putExtra("name", flashPageInfo.get(0).getAdName());
-                    startActivity(intent);
-                    finish();
                 }
                 break;
             case R.id.tv_second_jump:

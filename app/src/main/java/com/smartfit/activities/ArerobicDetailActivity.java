@@ -111,12 +111,13 @@ public class ArerobicDetailActivity extends BaseActivity {
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
-            btnOrder.setVisibility(View.GONE);
+           /* btnOrder.setVisibility(View.GONE);
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-            tvSaveToPhone.setText(getString(R.string.copy_link));
+            tvSaveToPhone.setText(getString(R.string.copy_link));*/
+            getClassInfo();
         }
 
     /* Do something */

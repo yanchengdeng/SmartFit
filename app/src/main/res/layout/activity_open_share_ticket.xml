@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.smartfit.activities.OpenShareTicketActivity">
 
-    <include layout="@layout/common_header_view"/>
+    <include layout="@layout/common_header_view" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,75 +18,93 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/share_ticket_tips"
             android:textColor="@color/text_color_gray"
-            android:textSize="@dimen/text_normal"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:text="@string/share_ticket_tips"/>
+            android:textSize="@dimen/text_normal" />
 
 
         <TextView
-            android:background="@color/white"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/text_color_black"
             android:layout_width="match_parent"
-            android:text="要分享的券"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:background="@color/white"
-            android:id="@+id/tv_share_tickets"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/text_color_gray"
-            android:text="包月"
-            android:layout_width="match_parent"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/text_color_black"
-            android:text="选择分享方式"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:layout_height="wrap_content" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:background="@color/white"
+            android:drawableLeft="@mipmap/icon_quanshare"
+            android:drawablePadding="@dimen/image_padding"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="要分享的券"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_normal" />
 
-            <TextView
-                android:id="@+id/tv_share_smart"
-                android:layout_width="wrap_content"
-                android:drawableTop="@mipmap/message_icon"
-                android:layout_gravity="center_horizontal"
-                android:drawablePadding="@dimen/image_padding"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tickt_share_list"
+                android:layout_marginTop="1px"
+                android:background="@color/white"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/line_gray"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal"
-                android:text="SMART FIT好友"/>
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/tv_share_wx"
-                android:layout_width="wrap_content"
-                android:drawableTop="@mipmap/app_wx_logo"
-                android:layout_gravity="center_horizontal"
-                android:drawablePadding="@dimen/image_padding"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal"
-                android:gravity="center_horizontal"
-                android:text="微信好友"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="选择分享方式"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_normal" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_share_smart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:drawableTop="@mipmap/message_icon"
+                        android:gravity="center_horizontal"
+                        android:text="SMART FIT好友"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+
+                    <TextView
+                        android:id="@+id/tv_share_wx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:drawableTop="@mipmap/app_wx_logo"
+                        android:gravity="center_horizontal"
+                        android:text="微信好友"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

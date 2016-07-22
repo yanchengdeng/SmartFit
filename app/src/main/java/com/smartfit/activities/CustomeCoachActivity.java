@@ -50,7 +50,8 @@ public class CustomeCoachActivity extends BaseActivity {
 
     private ImageView imageViewHeader;
 
-    private TextView tvName, tvSigneture,tvClassTittle;
+    private TextView tvName, tvSigneture, tvClassTittle;
+    private TextView tvMouthSeaver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,8 @@ public class CustomeCoachActivity extends BaseActivity {
         imageViewHeader = (ImageView) scrollView.getPullRootView().findViewById(R.id.iv_header);
         tvName = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_name);
         tvSigneture = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
-        tvClassTittle = (TextView)scrollView.getPullRootView().findViewById(R.id.tv_class_tittle);
+        tvClassTittle = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_class_tittle);
+        tvMouthSeaver = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_mouth_server);
     }
 
 
@@ -156,10 +158,18 @@ public class CustomeCoachActivity extends BaseActivity {
         });
 
         //礼物
-        scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
+    /*    scrollView.getPullRootView().findViewById(R.id.iv_gift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openActivity(MyTicketGiftActivity.class);
+            }
+        });*/
+
+        //  购买包月
+        scrollView.getPullRootView().findViewById(R.id.ll_custome_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(EventActivityNewVersionActivity.class);
             }
         });
 
@@ -206,8 +216,16 @@ public class CustomeCoachActivity extends BaseActivity {
         });
 
 
-        //教练资料认证认证
+     /*   //
         scrollView.getPullRootView().findViewById(R.id.tv_coach_auth).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachDetailInfoActivity.class);
+            }
+        });*/
+
+        //教练资料认证认证
+        imageViewHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openActivity(CoachDetailInfoActivity.class);
@@ -229,6 +247,13 @@ public class CustomeCoachActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(WalletActivity.class);
+            }
+        });
+        // 卷包
+        scrollView.getPullRootView().findViewById(R.id.rl_my_ticket).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyTicketGiftActivity.class);
             }
         });
 
@@ -302,7 +327,7 @@ public class CustomeCoachActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
                 UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
-                UserInfoDetail userInfoDetail =  Util.getUserInfo(CustomeCoachActivity.this);
+                UserInfoDetail userInfoDetail = Util.getUserInfo(CustomeCoachActivity.this);
                 if (null != userInfo) {
                     userInfoDetail.setBalance(userInfo.getBalance());
                     Util.saveUserInfo(userInfoDetail);
@@ -364,8 +389,17 @@ public class CustomeCoachActivity extends BaseActivity {
         TextView tvVip = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_vip);
         if (!TextUtils.isEmpty(userInfo.getIsVip()) && userInfo.getIsVip().equals("1")) {
             tvVip.setVisibility(View.VISIBLE);
+            tvMouthSeaver.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_wo_baoyue));
+            tvMouthSeaver.setTextColor(getResources().getColor(R.color.common_header_bg));
+            if (!TextUtils.isEmpty(userInfo.getMonthExpiredTime())) {
+                long time = Long.parseLong(userInfo.getMonthExpiredTime()) - System.currentTimeMillis() / 1000;
+                int day = (int) (time / (60 * 60 * 24));
+                tvMouthSeaver.setText(String.format("剩余：%d天", day));
+            }
         } else {
             tvVip.setVisibility(View.INVISIBLE);
+            tvMouthSeaver.setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_wo_nobaoyue));
+            tvMouthSeaver.setTextColor(getResources().getColor(R.color.text_color_black));
         }
 
         TextView tvMotto = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_motto);
@@ -392,6 +426,11 @@ public class CustomeCoachActivity extends BaseActivity {
         TextView tvPocket = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_pocket);
         if (!TextUtils.isEmpty(userInfo.getBalance())) {
             tvPocket.setText("余额" + userInfo.getBalance() + "元");
+        }
+
+        TextView tvTicketNum = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_ticket);
+        if (!TextUtils.isEmpty(userInfo.getTicketNum())) {
+            tvTicketNum.setText(userInfo.getTicketNum() + "张未使用");
         }
 
         TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);

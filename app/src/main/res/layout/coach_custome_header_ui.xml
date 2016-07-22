@@ -21,6 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="30dp"
+        android:visibility="gone"
         android:src="@mipmap/icon_gift" />
 
 
@@ -49,53 +50,60 @@
         android:visibility="invisible" />
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_custome_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="70dp"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/image_padding_big">
 
-        <TextView
-            android:id="@+id/tv_name"
+        <LinearLayout
+            android:id="@+id/ll_custome_ui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/image_padding"
-            android:maxLength="10"
-            android:text=""
-            android:textColor="@color/common_header_bg"
-            android:textSize="@dimen/text_larger" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_motto"
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_larger" />
+
+
+            <TextView
+                android:id="@+id/tv_mouth_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:background="@drawable/icon_wo_nobaoyue"
+                android:gravity="center_vertical|right"
+                android:text="@string/open_mouth_server"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal_down" />
+
+
+            <TextView
+                android:id="@+id/tv_motto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_mouth_server"
+                android:layout_marginTop="@dimen/image_padding"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@string/no_sign"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal" />
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_name"
-            android:layout_marginTop="@dimen/image_padding"
-            android:gravity="center_vertical"
-            android:maxLength="10"
-            android:singleLine="true"
-            android:text="@string/no_sign"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_normal" />
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_next_w" />
 
-        <TextView
-            android:id="@+id/tv_coach_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_motto"
-            android:layout_marginTop="@dimen/image_padding"
-            android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:drawableRight="@mipmap/icon_next_w"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="教练资料认证"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_normal" />
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

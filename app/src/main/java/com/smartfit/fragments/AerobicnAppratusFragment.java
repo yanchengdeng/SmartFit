@@ -59,7 +59,7 @@ import butterknife.ButterKnife;
  * Created by dengyancheng on 16/2/28.
  * 有氧机械
  */
-public class AerobicnAppratusFragment extends Fragment {
+public class AerobicnAppratusFragment extends BaseFragment {
     /****
      * 地址弹出选择框
      */
@@ -106,6 +106,16 @@ public class AerobicnAppratusFragment extends Fragment {
 
     private String startTime, endTime;
 
+    /**
+     * 标志位，标志已经初始化完成
+     */
+    private boolean isPrepared;
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    private boolean isLoaded = false;
+    private int slectPostion = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -118,29 +128,53 @@ public class AerobicnAppratusFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER,0);
+            if (isPrepared){
+                doLoadData();
+            }
+        }
+    }
+
+
+    private void doLoadData(){
+        String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
+        if (TextUtils.isEmpty(citycode)) {
+            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
+        } else {
+            List<WorkPointAddress> workPointAddresses = Util.getVenueList();
+            if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size()>slectPostion) {
+                addresses = workPointAddresses;
+                tvAddress.setText(addresses.get(slectPostion).getVenueName());
+                venueId = addresses.get(slectPostion).getVenueId();
+                startTime = "9:00";
+                endTime = "10:00";
+                lazyLoad();
+            } else {
+                getVenueList();
+            }
+        }
+    }
+
+    @Override
+    protected void lazyLoad() {
+        if (!isPrepared || !isVisible || isLoaded) {
+            return;
+        }
+        loadData();
+    }
+
     /**
      * 初始化数据列表加载
      */
     private void initListView() {
         adapter = new AerobincnAppratusItemAdapter(getActivity(), datas);
         listView.setAdapter(adapter);
-        String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
-        if (TextUtils.isEmpty(citycode)) {
-            ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
-        } else {
-            List<WorkPointAddress> workPointAddresses = Util.getVenueList();
-            if (workPointAddresses != null && workPointAddresses.size() > 0) {
-                addresses = workPointAddresses;
-                tvAddress.setText(addresses.get(0).getVenueName());
-                venueId = addresses.get(0).getVenueId();
-                startTime = "9:00";
-                endTime = "10:00";
-                loadData();
-            } else {
-                getVenueList();
-            }
-        }
-
+        isPrepared = true;
+        doLoadData();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -171,6 +205,7 @@ public class AerobicnAppratusFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.CLASSROOM_GETIDLEAEROBICCLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                isLoaded = true;
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 List<AreoInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), AreoInfo.class);
                 if (null != requestList && requestList.size() > 0) {
@@ -222,7 +257,8 @@ public class AerobicnAppratusFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectDateAdapter.setCurrentPositon(position);
                 selectDate = Calendar.getInstance().get(Calendar.YEAR) + "-" + customeDates.get(position).getDate();
-                loadData();
+                isLoaded = false;
+                lazyLoad();
             }
         });
     }
@@ -321,7 +357,8 @@ public class AerobicnAppratusFragment extends Fragment {
                 tvTime.setText(data.getExtras().getString("time_before") + " - " + data.getExtras().getString("time_after"));
                 startTime = data.getExtras().getString("time_before");
                 endTime = data.getExtras().getString("time_after");
-                loadData();
+                isLoaded = false;
+                lazyLoad();
             }
 
         }
@@ -440,7 +477,9 @@ public class AerobicnAppratusFragment extends Fragment {
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                     venueId = addresses.get(position).getVenueId();
-                    loadData();
+                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER,position);
+                    isLoaded = false;
+                    lazyLoad();
                 }
             });
         }
@@ -483,7 +522,8 @@ public class AerobicnAppratusFragment extends Fragment {
                     orderCustomePop.dismiss();
                     selectType = Util.getSortList(getContext()).get(position).getId();
                     ivCoverBg.setVisibility(View.GONE);
-                    loadData();
+                    isLoaded = false;
+                    lazyLoad();
                 }
             });
         }

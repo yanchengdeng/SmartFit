@@ -27,14 +27,14 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="@drawable/bg_dialog_selector_red_empty"
+            android:background="@drawable/bg_dialog_selector_transe_black_empty"
             android:paddingTop="@dimen/image_padding"
             android:paddingBottom="@dimen/image_padding"
             android:paddingLeft="@dimen/image_padding_big"
             android:paddingRight="@dimen/image_padding_big"
             android:text="3 跳过"
             android:visibility="gone"
-            android:textColor="@color/common_header_bg"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
 
 

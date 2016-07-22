@@ -8,9 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartfit.MessageEvent.FinishActivityAfterPay;
 import com.smartfit.R;
 import com.smartfit.beans.NewMouthServerEvent;
 import com.smartfit.commons.Constants;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,16 +46,24 @@ public class ConfimPayNoramlActivity extends BaseActivity {
     @Bind(R.id.btn_pay)
     Button btnPay;
     private NewMouthServerEvent newMouthServerEvent;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confim_pay_noraml);
         ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         addLisener();
+    }
 
-
+    @Subscribe
+    public void onEvent(Object event) {
+        if (event instanceof FinishActivityAfterPay){
+            finish();
+        }
     }
 
     private void initView() {

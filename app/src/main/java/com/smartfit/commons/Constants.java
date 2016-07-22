@@ -11,6 +11,8 @@ public class Constants {
 
     public final static String MIAN_ADS = "main_ads";//主页广告
 
+    public final static String SPLASH_ADS = "splash_ads";//封面广告
+
     /*****
      * 首页传入 位置
      */
@@ -23,11 +25,11 @@ public class Constants {
 
     public final static String PASS_IDLE_CLASS_INFO = "idle_class_info";
     /***
-     * //定义  1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定   8 淋浴支付  9 包月  10  包季度/半年
+     * //定义  1 ：团体课  2.小班课  3.私教课 .4 有氧课  5 再次开课  6 自订课程  7  活动绑定   8 淋浴支付  9 包月  10  包季度/半年
      */
     public static final String PAGE_INDEX = "page_index";
 
-
+    public static final String SHARE_ID = "SHARE_ID";
 
 
     public static final String CITY_CODE = "city_code";
@@ -50,6 +52,8 @@ public class Constants {
 
     public static final String ORDER_TIME = "order_time";
 
+    public static final String SELECT_ADDRESS_VENER = "SELECT_ADDRESS_VENER";
+
 
     public static final String UID = "uid";//用户id
     public static final String ACCOUNT = "account";//账号
@@ -64,7 +68,7 @@ public class Constants {
 
     public static final String IS_VIP = "is_vip";
 
-    public static  boolean IS_PASS_FROM_ORDER = true;//购买    、充值 false
+    public static boolean IS_PASS_FROM_ORDER = true;//购买    、充值 false
     public static int PAGE_INDEX_FROM = 1;// 1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定  8 .淋浴充值
 
     /**
@@ -191,10 +195,9 @@ public class Constants {
     public static final String EVENT_SHAREEVENTUSER = "/event/shareEventUser";
     public static final String ORDER_ORDERMONTHSELL = "/order/orderMonthSell";
     public static final String CLASSIF_LISTPRIVATEVALUEBLECLASSIFICATION = "/ClassIf/listPrivateValuebleClassification";
-    public static final  String CLASSIF_LISTCOACHESBYVENUEIDANDCOURSETYPECODE = "/ClassIf/listCoachesByVenueIdAndCourseTypeCode";
+    public static final String CLASSIF_LISTCOACHESBYVENUEIDANDCOURSETYPECODE = "/ClassIf/listCoachesByVenueIdAndCourseTypeCode";
     public static final String EVENT_ACCEPTSHAREDEVENTUSER = "/event/acceptSharedEventUser";
     public static final String EVENT_SHARESUCCESSCALLBACK = "/event/shareSuccessCallBack";
-
 
 
     public static final int SIZE = 20;
@@ -225,8 +228,7 @@ public class Constants {
 
     public static class Net {
         //正式上线地址
-//       public static final String URL = "http://139.196.228.98:7098";
-
+//        public static final String URL = "http://139.196.228.98:7098";
 
         //发布测试的接口
         public static final String URL = "http://139.196.228.98:8098";

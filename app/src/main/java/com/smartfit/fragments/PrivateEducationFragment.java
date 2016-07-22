@@ -124,6 +124,15 @@ public class PrivateEducationFragment extends Fragment {
     private String sex, startTime, endTime, startPrice, endPrice;
 
     private int CoachType = 0;//获取当前列表数据类型     0：约教练  1：约课程
+    private int slectPostion = 0;
+    /**
+     * 标志位，标志已经初始化完成
+     */
+    private boolean isPrepared;
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    private boolean isLoaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -138,19 +147,25 @@ public class PrivateEducationFragment extends Fragment {
         return view;
     }
 
-    /**
-     * 初始化数据列表加载
-     */
-    private void initListView() {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isPrepared) {
+            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER, 0);
+            doLoadData();
+        }
+    }
+
+    private void doLoadData() {
         String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
         if (TextUtils.isEmpty(citycode)) {
             ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
         } else {
             List<WorkPointAddress> workPointAddresses = Util.getVenueList();
-            if (workPointAddresses != null && workPointAddresses.size() > 0) {
+            if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size() > slectPostion) {
                 addresses = workPointAddresses;
-                tvAddress.setText(addresses.get(0).getVenueName());
-                venueId = addresses.get(0).getVenueId();
+                tvAddress.setText(addresses.get(slectPostion).getVenueName());
+                venueId = addresses.get(slectPostion).getVenueId();
                 startTime = "9:00";
                 endTime = "10:00";
                 if (CoachType == 0) {
@@ -163,8 +178,15 @@ public class PrivateEducationFragment extends Fragment {
                 getVenueList();
             }
         }
+    }
 
+    /**
+     * 初始化数据列表加载
+     */
+    private void initListView() {
 
+        doLoadData();
+        isPrepared = true;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -251,7 +273,7 @@ public class PrivateEducationFragment extends Fragment {
             @Override
             public void onResponse(JsonObject response) {
                 IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response, IdleClassListInfo.class);
-                if (idleClassListInfo != null && idleClassListInfo.getClassroomList().size() > 0) {
+                if (idleClassListInfo != null && idleClassListInfo.getClassroomList() != null && idleClassListInfo.getClassroomList().size() > 0) {
                     idleClass = idleClassListInfo;
                     if (CoachType == 0) {
                         List<Float> prices = new ArrayList<>();
@@ -316,7 +338,8 @@ public class PrivateEducationFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                if (getActivity() != null)
+                    ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 rlOrderTime.setVisibility(View.VISIBLE);
                 btnSelected.setVisibility(View.VISIBLE);
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
@@ -651,6 +674,7 @@ public class PrivateEducationFragment extends Fragment {
                     tvAddress.setText(addresses.get(position).getVenueName());
                     addressCustomPop.dismiss();
                     venueId = addresses.get(position).getVenueId();
+                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER, position);
                     ivCoverBg.setVisibility(View.GONE);
                     if (CoachType == 0) {
                         loadData();
