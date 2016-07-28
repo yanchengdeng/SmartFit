@@ -12,7 +12,7 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
@@ -191,6 +191,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -215,7 +216,17 @@
                         android:text="元"
                         />
                 </LinearLayout>
+
+
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_send_red"
+                android:layout_width="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/send_red_package"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btn_order"

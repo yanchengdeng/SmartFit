@@ -4,28 +4,27 @@
     android:layout_height="fill_parent"
     android:background="#ffffff"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:scrollbars="none" >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
+        android:text="分享到"
         android:textColor="@color/text_color_black"
-        android:textSize="@dimen/text_normal"
-        android:layout_height="wrap_content"
-        android:text="分享到"/>
+        android:textSize="@dimen/text_normal" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/line_gray"/>
+        android:background="@color/line_gray" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/ll_wechat"
@@ -34,7 +33,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="15dp" >
+            android:padding="15dp">
 
             <ImageView
                 android:layout_width="50dp"
@@ -57,7 +56,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="15dp" >
+            android:padding="15dp">
 
             <ImageView
                 android:layout_width="50dp"
@@ -73,43 +72,29 @@
                 android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_sina"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="15dp" >
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@mipmap/icon_share_sina" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/image_padding"
-                android:text="微博"
-                android:textColor="@color/text_color_gray"
-                android:textSize="@dimen/text_normal" />
-        </LinearLayout>
-
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="@dimen/header_bar_height"
-        android:background="@color/line_gray"/>
+        android:background="@color/line_gray" />
 
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_close"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/image_padding_big"
-        android:src="@mipmap/icon_share_close"/>
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="取消分享"
+        android:textColor="@color/text_color_blue"
+        android:textSize="@dimen/text_normal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_gray" />
+
 
 </LinearLayout>

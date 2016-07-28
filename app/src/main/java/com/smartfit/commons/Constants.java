@@ -199,6 +199,10 @@ public class Constants {
     public static final String EVENT_ACCEPTSHAREDEVENTUSER = "/event/acceptSharedEventUser";
     public static final String EVENT_SHARESUCCESSCALLBACK = "/event/shareSuccessCallBack";
 
+    //v1.0.5
+    public static final String EVENT_GETAVAILABLECASHEVENT = "/event/getAvailableCashEvent";
+    public static final String EVENT_GETSHAREDMAINPAGE = "/event/getSharedMainPage";
+
 
     public static final int SIZE = 20;
     public static final String SEX_MAN = "0";

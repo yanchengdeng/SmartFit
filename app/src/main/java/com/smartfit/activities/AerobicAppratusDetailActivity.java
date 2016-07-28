@@ -1,13 +1,16 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.google.gson.JsonObject;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
@@ -31,7 +35,6 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
-import com.smartfit.beans.OrderCourse;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -42,6 +45,7 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+import com.smartfit.views.ShareBottomDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -97,6 +101,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     Button btnOrder;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+    @Bind(R.id.iv_send_red)
+    ImageView ivSendRed;
     private String classroomid;
     private String startTime, endTime;
 
@@ -113,6 +119,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         addLisener();
+        showCashTicketDialog();
     }
 
     @Subscribe
@@ -125,9 +132,69 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));*/
             getClassInfo(detail.getId());
+//            showCashTicketDialog();
         }
 
     /* Do something */
+    }
+
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p>
+     * 1:小班课
+     * <p>
+     * 2:私教课
+     * <p>
+     * 3:器械课
+     * <p>
+     * 4:月卡
+     */
+    private void showCashTicketDialog() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "3");
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                getShareContent("2");
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 获取现金券内容
+     *
+     * @param shareId
+     */
+    private void getShareContent(String shareId) {
+        Map<String, String> data = new HashMap<>();
+        data.put("shareId", shareId);
+        data.put("mobileNo", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "0"));
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
     }
 
 
@@ -245,7 +312,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
 
-
     private void initView() {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
         classroomid = getIntent().getStringExtra(Constants.COURSE_ID);
@@ -303,15 +369,15 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (Integer.parseInt(detail.getState()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
-                if (DateUtils.isQeWorked(detail.getStartTime())) {
-                    llViewScanCode.setVisibility(View.VISIBLE);
-                    tvScanCodeInfo.setVisibility(View.GONE);
-                    tvSaveToPhone.setText(getString(R.string.save_to_phone));
-                } else {
-                    llViewScanCode.setVisibility(View.GONE);
-                    tvScanCodeInfo.setVisibility(View.VISIBLE);
-                    tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL,detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                    tvSaveToPhone.setText(getString(R.string.copy_link));
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                llViewScanCode.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setVisibility(View.GONE);
+                tvSaveToPhone.setText(getString(R.string.save_to_phone));
+            } else {
+                llViewScanCode.setVisibility(View.GONE);
+                tvScanCodeInfo.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvSaveToPhone.setText(getString(R.string.copy_link));
             }
         }
 
@@ -320,8 +386,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
         }
-
-
 
 
         if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {
@@ -418,6 +482,44 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 }
             }
         });
+
+
+        ivSendRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCashDialog();
+            }
+        });
+    }
+
+    private void showCashDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showShareWxDialog();
+
+            }
+        });
+    }
+
+    private void showShareWxDialog() {
+        ShareBottomDialog dialog = new ShareBottomDialog(AerobicAppratusDetailActivity.this, scrollView);
+        dialog.showAnim(new BounceTopEnter())//
+                .show();
     }
 
     /**
@@ -431,7 +533,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
                 if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
                     createLinyuOrder(lingyunListInfo.getListData());
-                }else{
+                } else {
                     if (classInfoDetail != null) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.PAGE_INDEX, 4);
@@ -439,8 +541,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                         bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getClassroomPrice());
                         bundle.putString("start_time", startTime);
                         bundle.putString("end_time", endTime);
-                        bundle.putString("classroom",classInfoDetail.getId());
-                        bundle.putString(Constants.COURSE_TYPE,"3");
+                        bundle.putString("classroom", classInfoDetail.getId());
+                        bundle.putString(Constants.COURSE_TYPE, "3");
                         bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                         openActivity(ConfirmOrderCourseActivity.class, bundle);
                     } else {
@@ -468,18 +570,18 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
      * @param listData
      */
     private void createLinyuOrder(final List<LinyuRecord> listData) {
-        StringBuilder sbID =new StringBuilder();
-        for (LinyuRecord item:listData){
+        StringBuilder sbID = new StringBuilder();
+        for (LinyuRecord item : listData) {
             sbID.append(item.getRecordId()).append("|");
         }
         Map<String, String> map = new HashMap<>();
         map.put("recordIdStr", sbID.toString());
-        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc==", response.toString());
-                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
-                if (linyuCourseInfo!=null){
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response, LinyuCourseInfo.class);
+                if (linyuCourseInfo != null) {
                     Util.showLinyuRechagerDialog(AerobicAppratusDetailActivity.this, linyuCourseInfo);
                 }
             }
@@ -519,7 +621,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             View relativeLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.ad_common_view, null);
             ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.iv_cover_bg);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
-            ImageLoader.getInstance().displayImage(imgs[position], imageView,Options.getListOptions());
+            ImageLoader.getInstance().displayImage(imgs[position], imageView, Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             textView.setText(infos[0] + "(" + courceName + ")");
             return relativeLayout;

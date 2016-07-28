@@ -356,7 +356,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     public void onResp(BaseResp baseResp) {
         if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
             LogUtil.w("dyc", shareInfo + "============");
-            commitShareEvent();
+            if (shareInfo!=null) {
+                commitShareEvent();
+            }else{
+                finish();
+            }
         } else {
             mSVProgressHUD.showInfoWithStatus("取消分享", SVProgressHUD.SVProgressHUDMaskType.Clear);
         }
