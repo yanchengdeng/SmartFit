@@ -198,6 +198,7 @@ public class GroupExperienceFragment extends BaseFragment {
             public void onResponse(JsonObject response) {
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 isLoaded = true;
+                datas.clear();
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);

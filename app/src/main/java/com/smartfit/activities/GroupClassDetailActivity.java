@@ -403,14 +403,24 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvWaitingAccept.setVisibility(View.GONE);
                 tvClassTittle.setVisibility(View.GONE);
                 tvContent.setVisibility(View.GONE);
-                llMyclassScore.setVisibility(View.GONE);//我的课程得分
-                llMackScore.setVisibility(View.VISIBLE);//评分
+
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
                 tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
                 lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
                 tvMore.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
+                        //未报名
+                        llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                        llMackScore.setVisibility(View.GONE);//评分
+                    } else {
+                        llMyclassScore.setVisibility(View.GONE);//我的课程得分
+                        llMackScore.setVisibility(View.VISIBLE);//评分
+                    }
+                }
+
 
             } else if (detail.getOrderStatus().equals("8") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6")) {
                 //订单详情页  已结束 未评论
@@ -429,7 +439,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
             } else {
                 //去订购
-                btnOrder.setVisibility(View.VISIBLE);
+//                btnOrder.setVisibility(View.VISIBLE);
                 tvWaitingAccept.setVisibility(View.GONE);
                 tvClassTittle.setVisibility(View.VISIBLE);
                 tvContent.setVisibility(View.VISIBLE);
@@ -441,6 +451,24 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvAppriseListTips.setVisibility(View.VISIBLE);
                 lisviewDiscuss.setVisibility(View.VISIBLE);
                 tvMore.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+
+        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
+            if (detail.getCourseStatus().equals("0")) {
+                btnOrder.setVisibility(View.VISIBLE);
+                llOrderSuccess.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+            } else if (detail.getCourseStatus().equals("1")) {
+                btnOrder.setVisibility(View.GONE);
+                llOrderSuccess.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.VISIBLE);
+            } else if (detail.getCourseStatus().equals("2")) {
+                btnOrder.setVisibility(View.GONE);
+                llOrderSuccess.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
             }
         }
 
@@ -497,8 +525,6 @@ public class GroupClassDetailActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
         mQueue.add(request);
-
-
     }
 
 
@@ -643,10 +669,10 @@ public class GroupClassDetailActivity extends BaseActivity {
                 LingyunListInfo lingyunListInfo = JsonUtils.objectFromJson(response, LingyunListInfo.class);
                 if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
                     createLinyuOrder(lingyunListInfo.getListData());
-                }else{
+                } else {
                     if (classInfoDetail != null) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX,1));//  1   2  小班课 和团操课  一样处理
+                        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX, 1));//  1   2  小班课 和团操课  一样处理
                         bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
                         bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
                         bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
@@ -678,18 +704,18 @@ public class GroupClassDetailActivity extends BaseActivity {
      * @param listData
      */
     private void createLinyuOrder(final List<LinyuRecord> listData) {
-        StringBuilder sbID =new StringBuilder();
-        for (LinyuRecord item:listData){
+        StringBuilder sbID = new StringBuilder();
+        for (LinyuRecord item : listData) {
             sbID.append(item.getRecordId()).append("|");
         }
         Map<String, String> map = new HashMap<>();
         map.put("recordIdStr", sbID.toString());
-        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map,new Response.Listener<JsonObject>() {
+        PostRequest request = new PostRequest(Constants.ORDER_ORDERSHOWER, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc==", response.toString());
-                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response,LinyuCourseInfo.class);
-                if (linyuCourseInfo!=null){
+                LinyuCourseInfo linyuCourseInfo = JsonUtils.objectFromJson(response, LinyuCourseInfo.class);
+                if (linyuCourseInfo != null) {
                     Util.showLinyuRechagerDialog(GroupClassDetailActivity.this, linyuCourseInfo);
                 }
             }

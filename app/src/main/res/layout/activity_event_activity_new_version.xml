@@ -166,7 +166,7 @@
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:background="@drawable/bg_dialog_selector_red"
             android:gravity="center"
-            android:text="@string/submit_for_pay"
+            android:text="下一步"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal" />
 

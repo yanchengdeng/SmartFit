@@ -6,11 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
 import com.smartfit.beans.ClassInfo;
@@ -78,7 +79,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
             viewHolder.tvTittle.setText(item.getCourseName());
         }
 
-        if (TextUtils.isEmpty(item.getPartCount())){
+        if (TextUtils.isEmpty(item.getPartCount())) {
             item.setPartCount("0");
         }
         if (!TextUtils.isEmpty(item.getPersonCount()) && !TextUtils.isEmpty(item.getPersonCount())) {
@@ -86,7 +87,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getBeginTime()) && !TextUtils.isEmpty(item.getEndTime())) {
-            viewHolder.tvTime.setText(DateUtils.getDataTime(item.getBeginTime())+ "-" + DateUtils.getDataTime(item.getEndTime()));
+            viewHolder.tvTime.setText(DateUtils.getDataTime(item.getBeginTime()) + "-" + DateUtils.getDataTime(item.getEndTime()));
         }
 
 
@@ -95,10 +96,36 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getCourseType())) {
-            if (item.getCourseType().equals("1")){
+            if (item.getCourseType().equals("1")) {
                 viewHolder.tvPriceInfo.setVisibility(View.GONE);
-            }else{
+            } else {
                 viewHolder.tvPriceInfo.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (!TextUtils.isEmpty(item.getCourseStatus())) {
+            if (item.getCourseStatus().equals("0")){
+                //未开始
+                viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.white));
+                viewHolder.llPriceUi.setVisibility(View.VISIBLE);
+                viewHolder.tvClassStatus.setVisibility(View.GONE);
+                viewHolder.tvClassStatus.setText("进行中");
+                viewHolder.tvClassStatus.setTextColor(context.getResources().getColor(R.color.blue_light));
+            }else if (item.getCourseStatus().equals("1")){
+                //正在进行
+                viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.white));
+                viewHolder.llPriceUi.setVisibility(View.GONE);
+                viewHolder.tvClassStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvClassStatus.setText("进行中");
+                viewHolder.tvClassStatus.setTextColor(context.getResources().getColor(R.color.blue_light));
+
+            }else if (item.getCourseStatus().equals("2")){
+                //已结束
+                viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
+                viewHolder.llPriceUi.setVisibility(View.GONE);
+                viewHolder.tvClassStatus.setVisibility(View.VISIBLE);
+                viewHolder.tvClassStatus.setText("已结束");
+                viewHolder.tvClassStatus.setTextColor(context.getResources().getColor(R.color.text_color_gray));
             }
         }
 
@@ -113,15 +140,12 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'adapter_group_experice_item.xml'
-     * for easy to all layout elements.
-     *
-     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
-     */
+
     static class ViewHolder {
         @Bind(R.id.iv_icon)
-        ImageView ivIcon;
+        RoundedImageView ivIcon;
+        @Bind(R.id.rl_icon_ui)
+        RelativeLayout rlIconUi;
         @Bind(R.id.tv_tittle)
         TextView tvTittle;
         @Bind(R.id.tv_couch)
@@ -132,10 +156,18 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         TextView tvJoin;
         @Bind(R.id.tv_time)
         TextView tvTime;
+        @Bind(R.id.ll_context_ui)
+        RelativeLayout llContextUi;
         @Bind(R.id.tv_price)
         TextView tvPrice;
         @Bind(R.id.tv_price_info)
         TextView tvPriceInfo;
+        @Bind(R.id.ll_price_ui)
+        LinearLayout llPriceUi;
+        @Bind(R.id.tv_class_status)
+        TextView tvClassStatus;
+        @Bind(R.id.rl_all_ui)
+        RelativeLayout rlAllUi;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

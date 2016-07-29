@@ -83,6 +83,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
     TextView tvBuyMonthServer;
     @Bind(R.id.rl_go_buy_month_server_ui)
     RelativeLayout rlGoBuyMonthServerUi;
+    @Bind(R.id.tv_select_pay_type_tips)
+    TextView tvSelectPayTypeTips;
 
     private int GET_TICKET_CODE = 0x0010;
     private int GET_CARD_CODE = 0x0011;
@@ -129,10 +131,11 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof FinishActivityAfterPay){
+        if (event instanceof FinishActivityAfterPay) {
             finish();
         }
     }
+
     private void initView() {
         tvTittle.setText("支付确认");
         startTime = getIntent().getStringExtra("start");
@@ -162,6 +165,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                     tvPayMoney.setText("￥" + 0);
                     payMoney = "0";
                     isUserdTicket = true;
+                    tvSelectPayTypeTips.setVisibility(View.GONE);
                 } else {
                     rlUserTicketUi.setVisibility(View.VISIBLE);
                     rlSelectCardUi.setVisibility(View.VISIBLE);
@@ -175,10 +179,11 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 rlServerMouthNoPay.setVisibility(View.GONE);
                 tvPayMoney.setText("￥" + payMoney);
 
-                if (pageIndex == 1 || pageIndex == 4){
+                if (pageIndex == 1 || pageIndex == 4) {
                     rlGoBuyMonthServerUi.setVisibility(View.VISIBLE);
                 }
             }
+            changePayButtonContent();
         }
 
         getUseFullEvent();
@@ -238,6 +243,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                     isUserdTicket = true;
                     selectTicketId = userfulEventes.get(0).getId();
                     tvTicketValue.setText(String.format("-￥%s", payMoney));
+                    changePayButtonContent();
                 }
             }
         }, new Response.ErrorListener() {
@@ -446,6 +452,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 tvUserTicketUsable.setText(String.format("%d张可用", userfulEventes.size()));
             }
 
+            changePayButtonContent();
 
         } else if (requestCode == GET_CARD_CODE && resultCode == RESULT_OK) {
             if (data.getExtras() != null && null != data.getExtras().getParcelableArrayList(Constants.PASS_OBJECT)) {
@@ -456,7 +463,17 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 if (codes != null && codes.size() > 0) {
                     cardCode = codes.get(0);
                 }
+                changePayButtonContent();
             }
+        }
+    }
+
+
+    private void changePayButtonContent() {
+        if (tvPayMoney.getText().toString().equals("￥0")) {
+            btnPay.setText("确认提交");
+        } else {
+            btnPay.setText("确认支付");
         }
     }
 

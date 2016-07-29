@@ -480,15 +480,19 @@
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
-            <LinearLayout
-                android:id="@+id/ll_have_ordered_members"
-                android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:orientation="horizontal">
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:scrollbars="none">
 
-
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_have_ordered_members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -645,7 +649,7 @@
         android:background="@color/gray_light"
         android:gravity="center"
         android:padding="@dimen/image_padding_big"
-        android:text="等待教练接单中..."
+        android:text="课程进行中..."
         android:textColor="@color/text_color_gray"
         android:visibility="invisible" />
 

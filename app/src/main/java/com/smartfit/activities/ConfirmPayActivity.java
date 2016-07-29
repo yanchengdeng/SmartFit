@@ -132,6 +132,7 @@ public class ConfirmPayActivity extends BaseActivity {
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
         }
+        changePayButtonContent();
     }
 
     ArrayList<UseableEventInfo> ticketInfos;
@@ -154,6 +155,7 @@ public class ConfirmPayActivity extends BaseActivity {
                     numTicket = 0;
                     tvTicketValue.setText("");
                     tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
+                    changePayButtonContent();
                 }
             }
 
@@ -179,6 +181,16 @@ public class ConfirmPayActivity extends BaseActivity {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
+        }
+
+        changePayButtonContent();
+    }
+
+    private void changePayButtonContent(){
+        if (tvPayMoney.getText().toString().equals("￥0")){
+            btnPay.setText("确认提交");
+        }else{
+            btnPay.setText("确认支付");
         }
     }
 

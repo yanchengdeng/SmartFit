@@ -1,112 +1,116 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_all_ui"
     android:padding="@dimen/activity_horizontal_margin">
 
-  <RelativeLayout
-      android:id="@+id/rl_icon_ui"
-      android:layout_centerVertical="true"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_icon_ui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
-      <com.makeramen.roundedimageview.RoundedImageView
-          android:id="@+id/iv_icon"
-          android:scaleType="centerCrop"
-          android:layout_width="@dimen/icon_normal_size"
-          android:layout_marginTop="2dp"
-          android:src="@mipmap/bg_pic"
-          app:riv_corner_radius="4dip"
-          app:riv_oval="false"
-          android:layout_height="@dimen/icon_normal_size" />
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/icon_normal_size"
+            android:layout_height="@dimen/icon_normal_size"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_pic"
+            app:riv_corner_radius="4dip"
+            app:riv_oval="false" />
 
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:visibility="invisible"
-          android:src="@mipmap/icon_office"/>
-  </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_office"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/ll_context_ui"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/rl_icon_ui"
         android:layout_toLeftOf="@+id/ll_price_ui"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_toRightOf="@+id/rl_icon_ui"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_tittle"
             android:layout_width="wrap_content"
-            android:singleLine="true"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_marginTop="@dimen/image_padding_big"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_normal"
+            android:singleLine="true"
             android:text=""
-            android:layout_height="wrap_content" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal" />
 
         <LinearLayout
-            android:layout_below="@+id/tv_tittle"
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tittle"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_couch"
                     android:layout_width="wrap_content"
-                    android:singleLine="true"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
-                    android:text="教练"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/image_padding"
-                    android:layout_height="wrap_content" />
+                    android:singleLine="true"
+                    android:text="教练"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
 
                 <RatingBar
                     android:id="@+id/ratingBar"
+                    style="@style/roomRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/image_padding"
-                    style="@style/roomRatingBar"
-                    android:isIndicator="true"
-                    android:focusable="false"
                     android:clickable="false"
+                    android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:isIndicator="true"
                     android:numStars="5"
-                    android:rating="4"
-                    />
+                    android:rating="4" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/image_padding"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_join"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
                     android:text="0/0人"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
 
                 <TextView
                     android:id="@+id/tv_time"
-                    android:layout_marginLeft="@dimen/image_padding_big"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/image_padding_big"
                     android:singleLine="true"
-                    android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down"
                     android:text=""
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_normal_down" />
 
             </LinearLayout>
 
@@ -114,38 +118,52 @@
         </LinearLayout>
 
 
-
-
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:id="@+id/ll_price_ui"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_price"
+
+        <LinearLayout
+            android:id="@+id/ll_price_ui"
             android:layout_width="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/common_header_bg"
-            android:textSize="@dimen/text_normal_down"
-            android:text="0元"
-            android:layout_height="wrap_content" />
+
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="0元"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal_down" />
+
+            <TextView
+                android:id="@+id/tv_price_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="会员免费"
+                android:textColor="@color/common_header_bg"
+                android:textSize="@dimen/text_normal_down" />
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/tv_price_info"
+            android:id="@+id/tv_class_status"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/common_header_bg"
-            android:textSize="@dimen/text_normal_down"
-            android:text="会员免费"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
+            android:text="进行中"
+            android:visibility="invisible"
+            android:textColor="@color/blue_light"
+            android:textSize="@dimen/text_normal_down" />
+    </FrameLayout>
 
 </RelativeLayout>

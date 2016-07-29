@@ -24,6 +24,16 @@ public class ClassInfo {
     private String classUrl;//http;////localhost;//8089/upload/picture/2016/3/27/1459078205056/1459078205.jpg,
     private String beginTime;//1459904400
 
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
+    }
+
+    private String courseStatus;//0:未开始1:正在进行2:已结束
+
     public String getCourseType() {
         return courseType;
     }

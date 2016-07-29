@@ -31,6 +31,15 @@ public class ClassInfoDetail {
     private String classroomName;//台江－团操,
     private String courseDetail;//123123123,
     private String startDate;//1460217600,
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
+    }
+
+    private String courseStatus;//0:未开始1:正在进行2:已结束
 
     public String getUid() {
         return uid;

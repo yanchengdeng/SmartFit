@@ -72,12 +72,18 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="您可以使用以下抵扣方式"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
 
             <RelativeLayout
                 android:id="@+id/rl_user_ticket_ui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:background="@color/white"
                 android:padding="@dimen/activity_horizontal_margin">
 

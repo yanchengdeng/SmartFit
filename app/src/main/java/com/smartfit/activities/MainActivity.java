@@ -709,7 +709,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     if (select.getApplink().equals("1")) {
                         //活动列表
                         openActivity(ActivityListActivity.class);
-                    } else {
+                    } else {//包月
                         openActivity(EventActivityNewVersionActivity.class);
                     }
                 } else {
