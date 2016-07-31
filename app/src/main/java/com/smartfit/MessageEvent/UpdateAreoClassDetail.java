@@ -9,4 +9,14 @@ package com.smartfit.MessageEvent;/**
  * 邮箱：yanchengdeng@gmail.com
  */
 public class UpdateAreoClassDetail {
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -30,7 +30,6 @@ import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
-import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -87,6 +86,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     private EventBus eventBus;
 
+    private String ticketType = "1";
+
+    private String cashEventId;
+    private String courseId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,28 +114,37 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     private void initView() {
         tvTittle.setText(getString(R.string.tick_gift_share));
-        ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
-
-        StringBuffer stringBuffer = new StringBuffer();
-
-        StringBuffer ticketsId = new StringBuffer();
-
-
-        if (ticketInfos != null) {
-            for (int i = 0; i < ticketInfos.size(); i++) {
-                if (i == ticketInfos.size() - 1) {
-                    ticketsId.append(ticketInfos.get(i).getId());
-                } else {
-                    ticketsId.append(ticketInfos.get(i).getId()).append("|");
-                }
-                stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
-
-            }
-            listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
-
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(Constants.TICKET_SHARE_TYPE))) {
+            ticketType = getIntent().getStringExtra(Constants.TICKET_SHARE_TYPE);
         }
 
-        ticketIds = ticketsId.toString();
+        if (ticketType.equals("1")) {
+            ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
+
+            StringBuffer stringBuffer = new StringBuffer();
+
+            StringBuffer ticketsId = new StringBuffer();
+
+
+            if (ticketInfos != null) {
+                for (int i = 0; i < ticketInfos.size(); i++) {
+                    if (i == ticketInfos.size() - 1) {
+                        ticketsId.append(ticketInfos.get(i).getId());
+                    } else {
+                        ticketsId.append(ticketInfos.get(i).getId()).append("|");
+                    }
+                    stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
+
+                }
+                listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
+
+            }
+
+            ticketIds = ticketsId.toString();
+        } else if (ticketType.equals("2")) {
+            cashEventId = getIntent().getStringExtra(Constants.PASS_STRING);
+            courseId = getIntent().getStringExtra("course_id");
+        }
     }
 
     private void addLisener() {
@@ -269,7 +282,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     return;
                 } else {
 
-                    doShareTicket(uid, etContent.getEditableText().toString());
+                    if (ticketType.equals("1")) {
+                        doShareTicket(uid, etContent.getEditableText().toString());
+                    } else if (ticketType.equals("2")) {
+                        doShareCash(uid, etContent.getEditableText().toString());
+                    }
                 }
             }
         });
@@ -321,6 +338,74 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     }
 
+    /**
+     * 分享现金券
+     *
+     * @param uid
+     * @param code
+     */
+    private void doShareCash(final String uid, String code) {
+        Map<String, String> msp = new HashMap();
+        msp.put("cashEventId", cashEventId);
+        msp.put("checkCode", code);
+        msp.put("shareToUid", uid);
+        msp.put("courseId", courseId);
+        PostRequest request = new PostRequest(Constants.EVENT_SHARECASHEVENTUSER, msp, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                shareInfo = JsonUtils.objectFromJson(response, ShareInfo.class);
+                if (shareInfo != null) {
+                    if (TextUtils.isEmpty(uid)) {
+                        if (ticketType.equals("1")) {
+                            shareToWX(shareInfo);
+                        } else if (ticketType.equals("2")) {
+                            shareCashTowx();
+                        }
+                    } else {
+                        mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                eventBus.post(new ShareTicketSuccess());
+                                finish();
+                            }
+                        }, 2000);
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(WXEntryActivity.this);
+        mQueue.add(request);
+
+    }
+
+    /**
+     * 直接分享现金券
+     */
+    private void shareCashTowx() {
+        SharedPreferencesUtils.getInstance().putString(Constants.SHARE_ID, shareInfo.getId());
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = "好友送您SMART FIT健身大礼包啦";
+        msg.description = "恭喜获得一个现金大礼包，分享好友后可立即领取";
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.wx_red_package);
+        msg.thumbData = Util.bmpToByteArray(thumb, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.openId = "";
+        api.sendReq(req);
+    }
+
     private void shareToWX(ShareInfo shareInfo) {
         SharedPreferencesUtils.getInstance().putString(Constants.SHARE_ID, shareInfo.getId());
         WXWebpageObject webpage = new WXWebpageObject();
@@ -355,10 +440,20 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Override
     public void onResp(BaseResp baseResp) {
         if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-            LogUtil.w("dyc", shareInfo + "============");
-            if (shareInfo!=null) {
-                commitShareEvent();
-            }else{
+            if (shareInfo != null) {
+                if (ticketType.equals("1")) {
+                    commitShareEvent();
+                } else if (ticketType.equals("2")) {
+                    mSVProgressHUD.showSuccessWithStatus("分享成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            eventBus.post(new ShareTicketSuccess());
+                            finish();
+                        }
+                    }, 2000);
+                }
+            } else {
                 finish();
             }
         } else {

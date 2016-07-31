@@ -606,7 +606,9 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 }
             }, 1000);
         } else if (pageIndex == 4) {
-            eventBus.post(new UpdateAreoClassDetail());
+            UpdateAreoClassDetail updateAreoClassDetail = new UpdateAreoClassDetail();
+            updateAreoClassDetail.setId(courseId);
+            eventBus.post(updateAreoClassDetail);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

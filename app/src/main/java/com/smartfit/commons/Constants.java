@@ -70,6 +70,7 @@ public class Constants {
 
     public static boolean IS_PASS_FROM_ORDER = true;//购买    、充值 false
     public static int PAGE_INDEX_FROM = 1;// 1 ：团体课  2.小班课  3.私教课 .4 自顶课程  5 再次开课  6 自订课程  7  活动绑定  8 .淋浴充值
+    public static final String TICKET_SHARE_TYPE = "ticket_share_type";//分享全类型： 1 优惠券   2 现金券
 
     /**
      * 接口域名方法
@@ -202,6 +203,7 @@ public class Constants {
     //v1.0.5
     public static final String EVENT_GETAVAILABLECASHEVENT = "/event/getAvailableCashEvent";
     public static final String EVENT_GETSHAREDMAINPAGE = "/event/getSharedMainPage";
+    public static final String EVENT_SHARECASHEVENTUSER = "/event/shareCashEventUser";
 
 
     public static final int SIZE = 20;

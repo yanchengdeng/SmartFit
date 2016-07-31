@@ -10,6 +10,11 @@
 
     <include layout="@layout/common_header_view"></include>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <ScrollView
         android:id="@+id/scrollView"
         android:visibility="visible"
@@ -220,13 +225,7 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/iv_send_red"
-                android:layout_width="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@mipmap/send_red_package"
-                android:layout_height="wrap_content" />
+
 
             <Button
                 android:id="@+id/btn_order"
@@ -243,7 +242,17 @@
         </LinearLayout>
 
     </ScrollView>
+        <ImageView
+            android:id="@+id/iv_send_red"
+            android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/header_bar_height"
+            android:src="@mipmap/wx_red_package"
+            android:layout_height="wrap_content" />
 
-
+    </RelativeLayout>
 
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.AreaDetailInfo;
+import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
@@ -46,6 +46,7 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -106,9 +107,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     private String classroomid;
     private String startTime, endTime;
 
-    private ClassInfoDetail classInfoDetail;
 
     private EventBus eventBus;
+    private String cashEventId;
+    private String courseId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,20 +122,23 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         addLisener();
-        showCashTicketDialog();
+
     }
 
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
-        /*    btnOrder.setVisibility(View.GONE);
+            btnOrder.setVisibility(View.GONE);
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-            tvSaveToPhone.setText(getString(R.string.copy_link));*/
-            getClassInfo(detail.getCourseId());
-//            showCashTicketDialog();
+            tvSaveToPhone.setText(getString(R.string.copy_link));
+            if (!TextUtils.isEmpty(((UpdateAreoClassDetail) event).getId())) {
+                courseId = ((UpdateAreoClassDetail) event).getId();
+                getClassInfo(((UpdateAreoClassDetail) event).getId());
+                showCashTicketDialog(((UpdateAreoClassDetail) event).getId());
+            }
         }
 
     /* Do something */
@@ -149,14 +155,21 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
      * 3:器械课
      * <p/>
      * 4:月卡
+     *
+     * @param id
      */
-    private void showCashTicketDialog() {
+    private void showCashTicketDialog(String id) {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", "3");
+        data.put("orgId", id);
         PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                getShareContent("2");
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    ivSendRed.setVisibility(View.VISIBLE);
+                }
 
 
             }
@@ -208,7 +221,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
-                fillData(detail);
+                fillOrderSuccess(detail);
                 mSVProgressHUD.dismiss();
 
             }
@@ -224,11 +237,21 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 
     }
 
-    String codeBar;
-    ClassInfoDetail detail;
+    /**
+     * 订购成功后
+     *
+     * @param detail
+     */
+    private void fillOrderSuccess(ClassInfoDetail detail) {
 
-    private void fillData(ClassInfoDetail detail) {
-        this.codeBar = detail.getQrcodeUrl();
+
+    }
+
+    String codeBar;
+    AreaDetailInfo detail;
+
+    private void fillData(AreaDetailInfo detail) {
+        this.detail = detail;
         /**
          * 订单状态（
          * 1我报名但未付款，
@@ -240,13 +263,10 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
          * 7课程已结束未评论
          * 8已评论）
          */
-        btnOrder.setVisibility(View.GONE);
-        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-
-            if (Integer.parseInt(detail.getOrderStatus()) == 1) {
-                btnOrder.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(detail.getState())) {
+            if (Integer.parseInt(detail.getState()) >= 4) {
+                tvSaveToPhone.setVisibility(View.GONE);
             }
-            llScanBar.setVisibility(View.VISIBLE);
             if (DateUtils.isQeWorked(detail.getStartTime())) {
                 llViewScanCode.setVisibility(View.VISIBLE);
                 tvScanCodeInfo.setVisibility(View.GONE);
@@ -254,12 +274,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             } else {
                 llViewScanCode.setVisibility(View.GONE);
                 tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
         }
 
-
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
@@ -267,52 +286,35 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-            llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-        }
-
-
-        if (!TextUtils.isEmpty(detail.getVenueName())) {
-            tvAddress.setText(detail.getVenueName());
+        if (!TextUtils.isEmpty(detail.getVenue().getVenueName())) {
+            tvAddress.setText(detail.getVenue().getVenueName());
         }
         if (!TextUtils.isEmpty(detail.getClassroomName())) {
             tvRoom.setText(detail.getClassroomName());
         }
 
-        tvDistance.setText("距离 " + Util.getDistance(detail.getLat(), detail.getLongit()));
+        tvDistance.setText("距离 " + Util.getDistance(detail.getVenue().getLatitude(), detail.getVenue().getLongitude()));
 
-        if (!TextUtils.isEmpty(detail.getStartTime()) && !TextUtils.isEmpty(detail.getEndTime())) {
-            tvTime.setText(DateUtils.getData(detail.getStartTime()) + "~" + DateUtils.getDataTime(detail.getEndTime()));
+        if (!TextUtils.isEmpty(detail.getVenue().getLastModifyTime())) {
+            tvTime.setText(DateUtils.getData(startTime) + "~" + DateUtils.getDataTime(endTime));
         }
 
-        if (!TextUtils.isEmpty(detail.getPrice())) {
-            tvPrice.setText(detail.getPrice());
+        if (!TextUtils.isEmpty(detail.getClassroomPrice())) {
+            tvPrice.setText(detail.getClassroomPrice());
         } else {
-            detail.setPrice("免费");
+            detail.getVenue().setOrderPriceSum("免费");
             tvPrice.setText("免费");
         }
 
-
-        if (null != detail.getCoursePics() && detail.getCoursePics().length > 0) {
+        if (null != detail.getClassroomPics() && detail.getClassroomPics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
-            detail.setCoursePics(new String[]{""});
+            detail.setClassroomPics(new String[]{""});
             rollViewPager.setVisibility(View.VISIBLE);
         }
-
-        if (!TextUtils.isEmpty(detail.getIsParted())) {
-            if (detail.getIsParted().equals("0")) {
-                btnOrder.setVisibility(View.VISIBLE);
-            } else {
-                btnOrder.setVisibility(View.GONE);
-            }
-        }
-
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
-        rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getClassroomName()));
+        rollViewPager.setAdapter(new TestNomalAdapter(detail.getClassroomPics(), detail.getClassroomName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         new Handler().postDelayed(new Runnable() {
@@ -330,20 +332,19 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
-        getClassInfo(detail.getCourseId());
+        getClassInfo();
 
     }
 
-   /* private void getClassInfo() {
+    private void getClassInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> data = new HashMap<>();
         data.put("classroomId", classroomid);
         PostRequest request = new PostRequest(Constants.CLASSROOM_GETCLASSROOM, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
+                AreaDetailInfo detail = JsonUtils.objectFromJson(response.toString(), AreaDetailInfo.class);
                 if (detail != null) {
-                    classInfoDetail = detail;
                     fillData(detail);
                 }
                 mSVProgressHUD.dismiss();
@@ -358,15 +359,16 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
         mQueue.add(request);
-    }*/
+    }
 
 
   /*  String codeBar;
-    ClassInfoDetail detail;
+    ClassInfoDetail classInfoDetail;
 
     private void fillData(ClassInfoDetail detail) {
-        this.detail = detail;
-        */
+        this.classInfoDetail = detail;
+
+    */
 
     /**
      * 订单状态（
@@ -520,7 +522,12 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showShareWxDialog();
+//                showShareWxDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashEventId);
+                bundle.putString("course_id", courseId);
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                openActivity(WXEntryActivity.class, bundle);
 
             }
         });
@@ -544,16 +551,16 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
                     createLinyuOrder(lingyunListInfo.getListData());
                 } else {
-                    if (classInfoDetail != null) {
+                    if (detail != null) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.PAGE_INDEX, 4);
-                        bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+                        bundle.putString(Constants.COURSE_ID, detail.getId());
+                        bundle.putString(Constants.COURSE_MONEY, detail.getClassroomPrice());
                         bundle.putString("start_time", startTime);
                         bundle.putString("end_time", endTime);
-                        bundle.putString("classroom", classInfoDetail.getClassroomId());
+                        bundle.putString("classroom", detail.getId());
                         bundle.putString(Constants.COURSE_TYPE, "3");
-                        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
+                        bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
                         openActivity(ConfirmOrderCourseActivity.class, bundle);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +33,6 @@ import com.smartfit.adpters.ChooseAddressAdapter;
 import com.smartfit.adpters.ChooseOrderAdapter;
 import com.smartfit.adpters.SelectDateAdapter;
 import com.smartfit.beans.AreoInfo;
-import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.CustomeDate;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.Constants;
@@ -98,7 +96,7 @@ public class AerobicnAppratusFragment extends BaseFragment {
 
 
     private AerobincnAppratusItemAdapter adapter;
-    private List<ClassInfo> datas = new ArrayList<ClassInfo>();
+    private List<AreoInfo> datas = new ArrayList<AreoInfo>();
 
     private List<WorkPointAddress> addresses;
 
@@ -181,7 +179,7 @@ public class AerobicnAppratusFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.COURSE_ID, datas.get(position).getCourseId());
+                bundle.putString(Constants.COURSE_ID, datas.get(position).getClassroomId());
                 bundle.putString("start", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +startTime)));
                 bundle.putString("end", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +endTime)));
                 ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
@@ -201,16 +199,14 @@ public class AerobicnAppratusFragment extends BaseFragment {
         Map<String, String> data = new HashMap<>();
         data.put("orderBy", selectType);
         data.put("venueId", venueId);
-        data.put("courseType","3");
-        data.put("time", String.valueOf(DateUtils.getTheDateMillions(selectDate)));
-//        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
-//        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
-        PostRequest request = new PostRequest(Constants.GET_CLASS_LIST, data, new Response.Listener<JsonObject>() {
+        data.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
+        data.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
+        PostRequest request = new PostRequest(Constants.CLASSROOM_GETIDLEAEROBICCLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 isLoaded = true;
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
+                List<AreoInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), AreoInfo.class);
                 if (null != requestList && requestList.size() > 0) {
                     datas.addAll(requestList);
                     adapter.setData(datas);
@@ -227,10 +223,11 @@ public class AerobicnAppratusFragment extends BaseFragment {
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(getActivity());
         ((BaseActivity) getActivity()).mQueue.add(request);
+
     }
 
 
-    private void noMoreData(List<ClassInfo> datas) {
+    private void noMoreData(List<AreoInfo> datas) {
         if (datas.size() > 0) {
             listView.setVisibility(View.VISIBLE);
             noData.setVisibility(View.GONE);

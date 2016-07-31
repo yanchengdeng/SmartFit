@@ -691,6 +691,7 @@ public class PayActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 WXPayAppId wxPayAppId = JsonUtils.objectFromJson(response, WXPayAppId.class);
+                SharedPreferencesUtils.getInstance().putString("course_id",courseId);
                 weixinPay(wxPayAppId);
             }
         }, new Response.ErrorListener() {
@@ -890,7 +891,9 @@ public class PayActivity extends BaseActivity {
                 }
             }, 1000);
         } else if (pageIndex == 4) {
-            eventBus.post(new UpdateAreoClassDetail());
+            UpdateAreoClassDetail updateAreoClassDetail = new UpdateAreoClassDetail();
+            updateAreoClassDetail.setId(courseId);
+            eventBus.post(updateAreoClassDetail);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

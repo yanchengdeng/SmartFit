@@ -1,18 +1,22 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -21,6 +25,7 @@ import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.MessageEvent.UpdateRoom;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
+import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.IdleClassListInfo;
 import com.smartfit.beans.LingyunListInfo;
@@ -28,6 +33,7 @@ import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
@@ -38,6 +44,8 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
+import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -98,6 +106,10 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     TextView tvShareFriends;
     @Bind(R.id.ll_scan_bar)
     LinearLayout llScanBar;
+    @Bind(R.id.iv_send_red)
+    ImageView ivSendRed;
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private IdleClassListInfo idleClassListInfo;
@@ -118,7 +130,70 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         addLisener();
+        showCashTicketDialog();
+
     }
+
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p/>
+     * 1:小班课
+     * <p/>
+     * 2:私教课
+     * <p/>
+     * 3:器械课
+     * <p/>
+     * 4:月卡
+     */
+    private void showCashTicketDialog() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "2");
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null) {
+                    getShareContent(cashTickeInfo.getId());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 获取现金券内容
+     *
+     * @param shareId
+     */
+    private void getShareContent(String shareId) {
+        Map<String, String> data = new HashMap<>();
+        data.put("shareId", shareId);
+        data.put("mobileNo", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "0"));
+        PostRequest request = new PostRequest(Constants.EVENT_GETSHAREDMAINPAGE, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+    }
+
 
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
@@ -127,7 +202,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
-        isInclueAreaFee = getIntent().getBooleanExtra("is_inclue_area_fee",false);
+        isInclueAreaFee = getIntent().getBooleanExtra("is_inclue_area_fee", false);
 
         tvClassTime.setText(startTime + " ~ " + DateUtils.getDataType(endTime));
         ImageLoader.getInstance().displayImage(idleClassListInfo.getVenueUrl(), ivSpaceIcon, Options.getListOptions());
@@ -245,6 +320,50 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 }
             }
         });
+
+        ivSendRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCashDialog();
+            }
+        });
+    }
+
+
+    private void showCashDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                Bundle bundle = new Bundle();
+                ArrayList<TicketInfo>  ticketInfos =new ArrayList<TicketInfo>();
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);
+
+//                showShareWxDialog();
+
+            }
+        });
+    }
+
+    private void showShareWxDialog() {
+        ShareBottomDialog dialog = new ShareBottomDialog(OrderPrivateEducationClassActivity.this, scrollView);
+        dialog.showAnim(new BounceTopEnter())//
+                .show();
     }
 
     private void initRoom(int positon) {
@@ -280,9 +399,9 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
 
         for (PrivateEducationClass item : privateEducationClasses) {
-            if (isInclueAreaFee){
+            if (isInclueAreaFee) {
                 item.setShowPrice(item.getPrice());
-            }else {
+            } else {
                 item.setShowPrice(String.valueOf(Float.parseFloat(item.getPrice()) + Float.parseFloat(idleClassListInfo.getClassroomList().get(positon).getClassroomPrice())));
             }
         }

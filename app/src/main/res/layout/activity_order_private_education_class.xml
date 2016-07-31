@@ -16,6 +16,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -285,6 +286,15 @@
                         android:textColor="@color/text_color_gray"
                         android:textSize="@dimen/text_normal_down" />
                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_send_red"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:src="@mipmap/wx_red_package"
+                    android:layout_height="wrap_content" />
+
 
             </LinearLayout>
 

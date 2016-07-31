@@ -114,7 +114,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         } else if (pageIndex == 3) {
             eventBus.post(new UpdatePrivateClassDetail());
         } else if (pageIndex == 4) {
-            eventBus.post(new UpdateAreoClassDetail());
+            UpdateAreoClassDetail updateAreoClassDetail = new UpdateAreoClassDetail();
+            updateAreoClassDetail.setId(SharedPreferencesUtils.getInstance().getString("course_id",""));
+            eventBus.post(updateAreoClassDetail);
         } else if (pageIndex == 5) {
             eventBus.post(new UpdateCoachClass());
         } else if (pageIndex == 6) {

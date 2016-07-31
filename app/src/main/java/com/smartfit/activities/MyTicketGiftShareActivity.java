@@ -75,11 +75,10 @@ public class MyTicketGiftShareActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof ShareTicketSuccess){
+        if (event instanceof ShareTicketSuccess) {
             finish();
         }
     }
-
 
 
     private void intView() {
@@ -100,11 +99,21 @@ public class MyTicketGiftShareActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 TicketListInfo ticketInfos = JsonUtils.objectFromJson(response, TicketListInfo.class);
                 if (ticketInfos.getListData() != null && ticketInfos.getListData().size() > 0) {
-                    datas.addAll(ticketInfos.getListData());
-                    tvFunction.setVisibility(View.VISIBLE);
-                    adapter.setData(datas);
-                    listView.setVisibility(View.VISIBLE);
-                    noData.setVisibility(View.GONE);
+                    for (TicketInfo item : ticketInfos.getListData()) {
+                        if (item.getEventType().equals("21")) {
+                            datas.addAll(ticketInfos.getListData());
+                        }
+
+                    }
+                    if (datas.size() > 0) {
+                        tvFunction.setVisibility(View.VISIBLE);
+                        adapter.setData(datas);
+                        listView.setVisibility(View.VISIBLE);
+                        noData.setVisibility(View.GONE);
+                    } else {
+                        listView.setVisibility(View.GONE);
+                        noData.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     if (datas.size() > 0) {
                         listView.setVisibility(View.VISIBLE);
@@ -150,9 +159,9 @@ public class MyTicketGiftShareActivity extends BaseActivity {
                 if (datas.size() > 0) {
                     if (countSelectNum(datas).size() > 0) {
                         Bundle bundle = new Bundle();
-                        ArrayList<TicketInfo>  ticketInfos = countSelectNum(datas);
+                        ArrayList<TicketInfo> ticketInfos = countSelectNum(datas);
                         bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
-                        openActivity(WXEntryActivity.class,bundle);
+                        openActivity(WXEntryActivity.class, bundle);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("未选择券包", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     }

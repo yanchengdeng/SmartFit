@@ -24,7 +24,7 @@
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/red_package"
+        android:drawableLeft="@mipmap/wx_red_package"
         android:drawablePadding="@dimen/image_padding"
         android:gravity="left|center_vertical"
         android:lineSpacingExtra="5dp"

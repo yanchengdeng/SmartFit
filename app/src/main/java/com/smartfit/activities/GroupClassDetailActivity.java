@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateGroupClassDetail;
 import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
+import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
@@ -50,6 +53,7 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -157,6 +161,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     LinearLayout llViewScanCode;//二维码  显示
     @Bind(R.id.tv_scan_code_info)
     TextView tvScanCodeInfo;// 链接显示
+    @Bind(R.id.iv_send_red)
+    ImageView ivSendRed;
 
 
     private DiscussItemAdapter adapter;
@@ -189,13 +195,79 @@ public class GroupClassDetailActivity extends BaseActivity {
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
+        showCashTicketDialog();
 
     }
+
+    private String cashEventId;
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p/>
+     * 1:小班课
+     * <p/>
+     * 2:私教课
+     * <p/>
+     * 3:器械课
+     * <p/>
+     * 4:月卡
+     */
+    private void showCashTicketDialog() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", type);
+        data.put("orgId",id);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    ivSendRed.setVisibility(View.VISIBLE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 获取现金券内容
+     *
+     * @param shareId
+     */
+    private void getShareContent(String shareId) {
+        Map<String, String> data = new HashMap<>();
+        data.put("shareId", shareId);
+        data.put("mobileNo", SharedPreferencesUtils.getInstance().getString(Constants.ACCOUNT, "0"));
+        PostRequest request = new PostRequest(Constants.EVENT_GETSHAREDMAINPAGE, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+    }
+
 
     @Subscribe
     public void onEvent(Object event) {
         if (event instanceof UpdateGroupClassDetail) {
             loadData();
+            showCashTicketDialog();
         }
     }
 
@@ -307,6 +379,14 @@ public class GroupClassDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(commentInfo.getCommentContent())) {
                 tvMyClassScore.setText(commentInfo.getCommentContent());
             }
+            tvAppriseListTips.setVisibility(View.VISIBLE);
+            lisviewDiscuss.setVisibility(View.VISIBLE);
+            tvMore.setVisibility(View.VISIBLE);
+        }else{
+            tvAppriseListTips.setVisibility(View.GONE);
+            lisviewDiscuss.setVisibility(View.GONE);
+            tvMore.setVisibility(View.GONE);
+
         }
 
         if (!TextUtils.isEmpty(detail.getShared())) {
@@ -345,10 +425,6 @@ public class GroupClassDetailActivity extends BaseActivity {
             //TODO  暂时隐藏
             llScanBar.setVisibility(View.GONE);//发送朋友 二维码
             llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-            tvAppriseListTips.setVisibility(View.VISIBLE);
-            lisviewDiscuss.setVisibility(View.VISIBLE);
-            tvMore.setVisibility(View.VISIBLE);
-
 
         } else {
             if (detail.getOrderStatus().equals("2")) {
@@ -362,9 +438,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
-                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
-                tvMore.setVisibility(View.VISIBLE);
 
 
             } else if (detail.getOrderStatus().equals("3")) {
@@ -378,9 +451,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.VISIBLE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
-                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
-                tvMore.setVisibility(View.VISIBLE);
+
 
             } else if (detail.getOrderStatus().equals("4")) {
                 //订单详情页   预约成功
@@ -393,9 +464,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.VISIBLE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
-                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
-                tvMore.setVisibility(View.VISIBLE);
+
 
             } else if (detail.getOrderStatus().equals("7")) {
                 //订单详情页  已结束 未评论
@@ -407,9 +476,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.VISIBLE);//评论列表
-                lisviewDiscuss.setVisibility(View.VISIBLE);//评论列表
-                tvMore.setVisibility(View.VISIBLE);
+
                 if (!TextUtils.isEmpty(detail.getIsParted())) {
                     if (detail.getIsParted().equals("0")) {
                         //未报名
@@ -433,9 +500,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.GONE);//评论列表
-                lisviewDiscuss.setVisibility(View.GONE);//评论列表
-                tvMore.setVisibility(View.GONE);
+
 
             } else {
                 //去订购
@@ -448,29 +513,12 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-                tvAppriseListTips.setVisibility(View.VISIBLE);
-                lisviewDiscuss.setVisibility(View.VISIBLE);
-                tvMore.setVisibility(View.VISIBLE);
+
             }
         }
 
 
 
-        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
-            if (detail.getCourseStatus().equals("0")) {
-                btnOrder.setVisibility(View.VISIBLE);
-                llOrderSuccess.setVisibility(View.GONE);
-                tvWaitingAccept.setVisibility(View.GONE);
-            } else if (detail.getCourseStatus().equals("1")) {
-                btnOrder.setVisibility(View.GONE);
-                llOrderSuccess.setVisibility(View.GONE);
-                tvWaitingAccept.setVisibility(View.VISIBLE);
-            } else if (detail.getCourseStatus().equals("2")) {
-                btnOrder.setVisibility(View.GONE);
-                llOrderSuccess.setVisibility(View.GONE);
-                tvWaitingAccept.setVisibility(View.GONE);
-            }
-        }
 
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
@@ -490,6 +538,40 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
 
+        }
+
+
+
+        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
+            if (detail.getCourseStatus().equals("0")) {
+                btnOrder.setVisibility(View.VISIBLE);
+                llOrderSuccess.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(detail.getIsParted())){
+                    if (detail.getIsParted().equals("0")){
+                        btnOrder.setVisibility(View.VISIBLE);
+                    }else {
+                        btnOrder.setVisibility(View.GONE);
+                    }
+                }
+            } else if (detail.getCourseStatus().equals("1")) {
+
+                tvWaitingAccept.setVisibility(View.GONE);
+                tvWaitingAccept.setText("课程进行中...");
+                if (!TextUtils.isEmpty(detail.getIsParted())){
+                    if (detail.getIsParted().equals("0")){
+                        btnOrder.setVisibility(View.VISIBLE);
+                        llOrderSuccess.setVisibility(View.GONE);
+                    }else {
+                        btnOrder.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.VISIBLE);
+                    }
+                }
+            } else if (detail.getCourseStatus().equals("2")) {
+                btnOrder.setVisibility(View.GONE);
+                llOrderSuccess.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.GONE);
+            }
         }
         scrollView.fullScroll(ScrollView.FOCUS_UP);
 
@@ -546,6 +628,16 @@ public class GroupClassDetailActivity extends BaseActivity {
                         .show();
             }
         });
+
+
+        ivSendRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCashDialog();
+            }
+        });
+
+
 
 
         tvMore.setOnClickListener(new View.OnClickListener() {
@@ -656,6 +748,42 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void showCashDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+//                showShareWxDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashEventId);
+                bundle.putString("course_id",classInfoDetail.getCourseId());
+                bundle.putString(Constants.TICKET_SHARE_TYPE,"2");
+                openActivity(WXEntryActivity.class, bundle);
+
+            }
+        });
+    }
+
+
+    private void showShareWxDialog() {
+        ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView);
+        dialog.showAnim(new BounceTopEnter())//
+                .show();
     }
 
     /**

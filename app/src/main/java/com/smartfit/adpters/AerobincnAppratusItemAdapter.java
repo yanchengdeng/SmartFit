@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.beans.AreoInfo;
-import com.smartfit.beans.ClassInfo;
 
 import java.util.List;
 
@@ -24,10 +23,10 @@ import butterknife.ButterKnife;
  */
 public class AerobincnAppratusItemAdapter extends BaseAdapter {
     private Context context;
-    private List<ClassInfo> datas;
+    private List<AreoInfo> datas;
 
     public AerobincnAppratusItemAdapter(Context context
-            , List<ClassInfo> datas) {
+            , List<AreoInfo> datas) {
         this.context = context;
         this.datas = datas;
 
@@ -59,9 +58,9 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ClassInfo item = datas.get(position);
-        if (!TextUtils.isEmpty(item.getCourseName())) {
-            viewHolder.tvTittle.setText(item.getCourseName());
+        AreoInfo item = datas.get(position);
+        if (!TextUtils.isEmpty(item.getClassroomName())) {
+            viewHolder.tvTittle.setText(item.getClassroomName());
         }
 
 
@@ -73,14 +72,14 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
             }
         }
 
-        if (!TextUtils.isEmpty(item.getPrice())) {
-            viewHolder.tvPrice.setText(item.getPrice() + "元/次");
+        if (!TextUtils.isEmpty(item.getClassroomPrice())) {
+            viewHolder.tvPrice.setText(item.getClassroomPrice() + "元/次");
         }
 
         return convertView;
     }
 
-    public void setData(List<ClassInfo> datas) {
+    public void setData(List<AreoInfo> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
