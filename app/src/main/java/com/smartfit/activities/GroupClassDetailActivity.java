@@ -41,6 +41,7 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -59,6 +60,7 @@ import com.umeng.socialize.UMShareAPI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +202,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     }
 
     private String cashEventId;
+    private String cashEventName;
     /**
      * 获取现金券id
      * 0:团操课
@@ -222,6 +225,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
                 if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
                     cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
                 }
             }
@@ -556,23 +560,30 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             } else if (detail.getCourseStatus().equals("1")) {
 
-                tvWaitingAccept.setVisibility(View.GONE);
+                tvWaitingAccept.setVisibility(View.VISIBLE);
                 tvWaitingAccept.setText("课程进行中...");
                 if (!TextUtils.isEmpty(detail.getIsParted())){
                     if (detail.getIsParted().equals("0")){
-                        btnOrder.setVisibility(View.VISIBLE);
+                        btnOrder.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.GONE);
                     }else {
                         btnOrder.setVisibility(View.GONE);
-                        llOrderSuccess.setVisibility(View.VISIBLE);
+                        llOrderSuccess.setVisibility(View.GONE);
                     }
                 }
             } else if (detail.getCourseStatus().equals("2")) {
-                btnOrder.setVisibility(View.GONE);
-                llOrderSuccess.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
+                btnOrder.setVisibility(View.GONE);
+                if (detail.getIsParted().equals("0")) {
+                    llOrderSuccess.setVisibility(View.GONE);
+                }else{
+                    llOrderSuccess.setVisibility(View.VISIBLE);
+                }
             }
         }
+
+
+
         scrollView.fullScroll(ScrollView.FOCUS_UP);
 
         new Handler().postDelayed(new Runnable() {
@@ -768,12 +779,17 @@ public class GroupClassDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-//                showShareWxDialog();
-                Bundle bundle = new Bundle();
+                showShareWxDialog();
+               /* Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, cashEventId);
-                bundle.putString("course_id",classInfoDetail.getCourseId());
-                bundle.putString(Constants.TICKET_SHARE_TYPE,"2");
-                openActivity(WXEntryActivity.class, bundle);
+                bundle.putString("course_id", classInfoDetail.getCourseId());
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashEventName);
+                ticketInfos.add(ticketInfo);
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);*/
 
             }
         });

@@ -192,6 +192,7 @@ public class PayActivity extends BaseActivity {
             return false;
         }
     });
+    private String areaCourseId;
 
 
     @Override
@@ -691,7 +692,7 @@ public class PayActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 LogUtil.w("dyc", response.toString());
                 WXPayAppId wxPayAppId = JsonUtils.objectFromJson(response, WXPayAppId.class);
-                SharedPreferencesUtils.getInstance().putString("course_id",courseId);
+                SharedPreferencesUtils.getInstance().putString("course_id", areaCourseId);
                 weixinPay(wxPayAppId);
             }
         }, new Response.ErrorListener() {
@@ -823,6 +824,7 @@ public class PayActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
                 if (orderCourse != null) {
+                    areaCourseId = orderCourse.getGoodsId();
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
@@ -892,7 +894,7 @@ public class PayActivity extends BaseActivity {
             }, 1000);
         } else if (pageIndex == 4) {
             UpdateAreoClassDetail updateAreoClassDetail = new UpdateAreoClassDetail();
-            updateAreoClassDetail.setId(courseId);
+            updateAreoClassDetail.setId(areaCourseId);
             eventBus.post(updateAreoClassDetail);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -923,8 +925,12 @@ public class PayActivity extends BaseActivity {
             Intent intent;
             if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
                 intent = new Intent(PayActivity.this, CustomeMainActivity.class);
+                intent.putExtra("hava_buy_mouth",true);
+                intent.putExtra("coursre_id",courseId);
             } else {
                 intent = new Intent(PayActivity.this, CustomeCoachActivity.class);
+                intent.putExtra("hava_buy_mouth",true);
+                intent.putExtra("coursre_id",courseId);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

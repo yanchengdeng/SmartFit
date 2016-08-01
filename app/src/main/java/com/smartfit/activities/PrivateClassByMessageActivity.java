@@ -1,10 +1,12 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,16 +16,19 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
+import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CoachInfo;
 import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
@@ -33,6 +38,8 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
+import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,10 +101,13 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     TextView tvShareFriends;
     @Bind(R.id.ll_scan_bar)
     LinearLayout llScanBar;
+    @Bind(R.id.iv_send_red)
+    ImageView ivSendRed;
     private String couseId;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private String startTime, endTime;
+    private String cashEventId, cashEventName;
 
 
     @Override
@@ -114,6 +124,44 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
         btnOrder.setVisibility(View.GONE);
+        showCashTicketDialog();
+    }
+
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p/>
+     * 1:小班课
+     * <p/>
+     * 2:私教课
+     * <p/>
+     * 3:器械课
+     * <p/>
+     * 4:月卡
+     */
+    private void showCashTicketDialog() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "2");
+        data.put("orgId", couseId);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
+                    ivSendRed.setVisibility(View.VISIBLE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PrivateClassByMessageActivity.this);
+        mQueue.add(request);
     }
 
     private void getData() {
@@ -142,7 +190,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         mQueue.add(request);
     }
 
-    private void addLisener(){
+    private void addLisener() {
         //保存手机
         tvSaveToPhone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +229,54 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                 }
             }
         });
+        ivSendRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCashDialog();
+            }
+        });
+    }
+
+    private void showCashDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+              /*  Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashEventId);
+                bundle.putString("course_id", couseId);
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashEventName);
+                ticketInfos.add(ticketInfo);
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);*/
+
+                showShareWxDialog();
+
+            }
+        });
+    }
+
+    private void showShareWxDialog() {
+        ShareBottomDialog dialog = new ShareBottomDialog(PrivateClassByMessageActivity.this, scrollView);
+        dialog.showAnim(new BounceTopEnter())//
+                .show();
     }
 
     /**

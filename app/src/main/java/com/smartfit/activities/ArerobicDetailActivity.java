@@ -1,5 +1,6 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.google.gson.JsonObject;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
@@ -26,7 +29,9 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
+import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -36,10 +41,13 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,10 +100,14 @@ public class ArerobicDetailActivity extends BaseActivity {
     Button btnOrder;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+    @Bind(R.id.iv_send_red)
+    ImageView ivSendRed;
     private String courseId;
     private EventBus eventBus;
 
     private ClassInfoDetail detail;
+    private String cashEventId;
+    private String cashEventName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +118,7 @@ public class ArerobicDetailActivity extends BaseActivity {
         eventBus.register(this);
         initView();
         addLisener();
+
     }
 
     @Subscribe
@@ -128,7 +141,50 @@ public class ArerobicDetailActivity extends BaseActivity {
         courseId = getIntent().getStringExtra(Constants.PASS_STRING);
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
+        showCashTicketDialog(courseId);
     }
+
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p/>
+     * 1:小班课
+     * <p/>
+     * 2:私教课
+     * <p/>
+     * 3:器械课
+     * <p/>
+     * 4:月卡
+     *
+     * @param id
+     */
+    private void showCashTicketDialog(String id) {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "3");
+        data.put("orgId", id);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
+                    ivSendRed.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ArerobicDetailActivity.this);
+        mQueue.add(request);
+    }
+
 
     private void getClassInfo() {
 
@@ -196,14 +252,12 @@ public class ArerobicDetailActivity extends BaseActivity {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
+        }else{
+            llScanBar.setVisibility(View.GONE);
         }
 
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-            llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-        }
+
 
 
         if (!TextUtils.isEmpty(detail.getVenueName())) {
@@ -224,6 +278,15 @@ public class ArerobicDetailActivity extends BaseActivity {
         } else {
             detail.setPrice("免费");
             tvPrice.setText("免费");
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getIsParted())) {
+            if (detail.getIsParted().equals("0")) {
+                btnOrder.setVisibility(View.VISIBLE);
+            } else {
+                btnOrder.setVisibility(View.GONE);
+            }
         }
 
 
@@ -312,6 +375,53 @@ public class ArerobicDetailActivity extends BaseActivity {
                 }
             }
         });
+
+        ivSendRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCashDialog();
+            }
+        });
+    }
+
+    private void showCashDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showShareWxDialog();
+              /*  Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashEventId);
+                bundle.putString("course_id", courseId);
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashEventName);
+                ticketInfos.add(ticketInfo);
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);*/
+
+            }
+        });
+    }
+
+    private void showShareWxDialog() {
+        ShareBottomDialog dialog = new ShareBottomDialog(ArerobicDetailActivity.this, scrollView);
+        dialog.showAnim(new BounceTopEnter())//
+                .show();
     }
 
     private class TestNomalAdapter extends StaticPagerAdapter {

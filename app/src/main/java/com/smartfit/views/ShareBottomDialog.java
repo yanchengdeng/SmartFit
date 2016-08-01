@@ -61,8 +61,8 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
                 webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" ;
                 WXMediaMessage msg = new WXMediaMessage(webpage);
                 msg.title = "好友送您SMART FIT健身大礼包啦";
-                msg.description = "恭喜获得一个现金大礼包，分享好友后可立即领取";
-                Bitmap thumb = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share);
+                msg.description = "包月仅需139元,自由器械+海量团操轻松拥有！";
+                Bitmap thumb = BitmapFactory.decodeResource(context.getResources(), R.mipmap.wx_red_package);
                 msg.thumbData = Util.bmpToByteArray(thumb, true);
                 SendMessageToWX.Req req = new SendMessageToWX.Req();
                 req.transaction = buildTransaction("webpage");

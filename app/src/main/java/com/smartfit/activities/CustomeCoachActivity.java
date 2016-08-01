@@ -1,11 +1,13 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.MessageEvent.LoginSuccess;
 import com.smartfit.MessageEvent.UpdateCoachInfo;
 import com.smartfit.R;
+import com.smartfit.beans.CashTickeInfo;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -32,10 +36,12 @@ import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
+import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +87,81 @@ public class CustomeCoachActivity extends BaseActivity {
         int mScreenWidth = localDisplayMetrics.widthPixels;
         LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) (9.0F * (mScreenWidth / 16.0F)));
         scrollView.setHeaderLayoutParams(localObject);
+        if (getIntent().getBooleanExtra("hava_buy_mouth", false)) {
+            showCashTicketDialog();
+        }
+    }
+
+    /**
+     * 获取现金券id
+     * 0:团操课
+     * <p/>
+     * 1:小班课
+     * <p/>
+     * 2:私教课
+     * <p/>
+     * 3:器械课
+     * <p/>
+     * 4:月卡  可不传
+     */
+    private void showCashTicketDialog() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "4");
+//        data.put("orgId",courseId);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    showCashDialog(cashTickeInfo);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(CustomeCoachActivity.this);
+        mQueue.add(request);
+    }
+
+
+    private void showCashDialog(final CashTickeInfo cashTickeInfo) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_cash_ticket_content);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashTickeInfo.getId());
+                bundle.putString("course_id", getIntent().getStringExtra("coursre_id"));
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashTickeInfo.getCashEventName());
+                ticketInfos.add(ticketInfo);
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);
+
+//                showShareWxDialog();
+
+            }
+        });
     }
 
     @Override

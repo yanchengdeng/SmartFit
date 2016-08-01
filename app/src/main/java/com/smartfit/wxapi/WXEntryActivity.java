@@ -119,7 +119,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         }
 
         if (ticketType.equals("1")) {
-            ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
+
 
             StringBuffer stringBuffer = new StringBuffer();
 
@@ -136,7 +136,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
 
                 }
-                listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
+
 
             }
 
@@ -145,6 +145,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             cashEventId = getIntent().getStringExtra(Constants.PASS_STRING);
             courseId = getIntent().getStringExtra("course_id");
         }
+        ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
+        listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
     }
 
     private void addLisener() {

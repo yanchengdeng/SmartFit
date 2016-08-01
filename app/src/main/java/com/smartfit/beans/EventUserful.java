@@ -21,6 +21,16 @@ public class EventUserful implements Parcelable {
     private String eventDetial;// 这是一个测试月卡,
     private String courseClassId;// null
 
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    private String ticketPrice;
+
     public boolean isCheked() {
         return isCheked;
     }
@@ -157,6 +167,7 @@ public class EventUserful implements Parcelable {
         dest.writeString(this.eventTitle);
         dest.writeString(this.eventDetial);
         dest.writeString(this.courseClassId);
+        dest.writeString(this.ticketPrice);
         dest.writeByte(isCheked ? (byte) 1 : (byte) 0);
         dest.writeByte(isCheck ? (byte) 1 : (byte) 0);
     }
@@ -177,11 +188,12 @@ public class EventUserful implements Parcelable {
         this.eventTitle = in.readString();
         this.eventDetial = in.readString();
         this.courseClassId = in.readString();
+        this.ticketPrice = in.readString();
         this.isCheked = in.readByte() != 0;
         this.isCheck = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<EventUserful> CREATOR = new Parcelable.Creator<EventUserful>() {
+    public static final Creator<EventUserful> CREATOR = new Creator<EventUserful>() {
         public EventUserful createFromParcel(Parcel source) {
             return new EventUserful(source);
         }

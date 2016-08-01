@@ -29,6 +29,7 @@ import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+import com.smartfit.utils.SharedPreferencesUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -178,7 +179,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                 rlSelectCardUi.setVisibility(View.VISIBLE);
                 rlServerMouthNoPay.setVisibility(View.GONE);
                 tvPayMoney.setText("￥" + payMoney);
-
+                isUserdTicket = false;
                 if (pageIndex == 1 || pageIndex == 4) {
                     rlGoBuyMonthServerUi.setVisibility(View.VISIBLE);
                 }
@@ -236,13 +237,26 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 ArrayList<EventUserful> eventUserfuls = JsonUtils.listFromJson(response.getAsJsonArray("list"), EventUserful.class);
                 if (eventUserfuls != null && eventUserfuls.size() > 0) {
+                    selectTicketId = eventUserfuls.get(0).getId();
                     userfulEventes = eventUserfuls;
                     tvUserTicketUsable.setVisibility(View.VISIBLE);
                     tvUserTicketUsable.setText(String.format("%d张可用", eventUserfuls.size()));
-                    tvPayMoney.setText("￥0");
-                    isUserdTicket = true;
-                    selectTicketId = userfulEventes.get(0).getId();
-                    tvTicketValue.setText(String.format("-￥%s", payMoney));
+                    if (eventUserfuls.get(0).getEventType().equals("21")) {
+                        isUserdTicket = false;
+                        isUserCashTicket = true;
+                        tvTicketValue.setText(String.format("-￥%s", eventUserfuls.get(0).getTicketPrice()));
+                        if (Float.parseFloat(eventUserfuls.get(0).getTicketPrice()) >= Float.parseFloat(payMoney)) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - Float.parseFloat(eventUserfuls.get(0).getTicketPrice())));
+                            payMoney = String.valueOf(Float.parseFloat(payMoney) - Float.parseFloat(eventUserfuls.get(0).getTicketPrice()));
+                        }
+                    } else {
+                        tvTicketValue.setText(String.format("-￥%s", payMoney));
+                        tvPayMoney.setText("￥0");
+                        isUserdTicket = true;
+                        isUserCashTicket = false;
+                    }
                     changePayButtonContent();
                 }
             }
@@ -335,6 +349,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus("获取订单信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
         map.put("courseId", courseId);
+        if (isUserCashTicket)
+        map.put("cashEventUserId", selectTicketId);
 //        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         PostRequest request = new PostRequest(Constants.ORDER_ORDERCOURSE, map, new Response.Listener<JsonObject>() {
             @Override
@@ -374,11 +390,15 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 //                    payUserCouponWithEventUserId();
 //            }
 
-        if (isUserdTicket) {
-            if (couserType.equals("3")) {
-                payAerobicByEvent();
+        if (isUserdTicket || isUserCashTicket) {
+            if (isUserdTicket) {
+                if (couserType.equals("3")) {
+                    payAerobicByEvent();
+                } else {
+                    payUserCouponWithEventUserId();
+                }
             } else {
-                payUserCouponWithEventUserId();
+                payOrder();
             }
         } else if (isUserCard) {
             payCardPay();
@@ -390,6 +410,37 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 //            mSVProgressHUD.showInfoWithStatus(getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
 //        }
     }
+
+
+    /***
+     * 本地余额支付订单
+     */
+    private void payOrder() {
+
+        mSVProgressHUD.setText("正在支付");
+        Map<String, String> map = new HashMap<>();
+        map.put("orderCode", orderID);
+        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.PAY_BALANCEPAY, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.showSuccessWithStatus("支付成功", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                mSVProgressHUD.dismiss();
+                dealAfterPay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ConfirmOrderCourseActivity.this);
+        mQueue.add(request);
+    }
+
+
+    private String areaCourseId;
 
     /***
      * 支付有氧课程
@@ -407,6 +458,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
                 if (orderCourse != null) {
+                    areaCourseId = orderCourse.getGoodsId();
                     if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
                         orderID = orderCourse.getOrderCode();
                     }
@@ -427,7 +479,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         mQueue.add(request);
     }
 
-    boolean isUserdTicket, isUserCard;
+    //是否使用优惠券、现金券 实体卡
+    boolean isUserdTicket, isUserCashTicket, isUserCard;
 
 
     private String selectTicketId;
@@ -439,13 +492,28 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         if (requestCode == GET_TICKET_CODE && resultCode == RESULT_OK) {
 
             if (data.getExtras() != null && null != data.getParcelableExtra(Constants.PASS_STRING)) {
-                isUserdTicket = true;
-                tvTicketValue.setText(String.format("-￥%s", payMoney));
-                tvPayMoney.setText("￥0");
+
                 EventUserful item = data.getParcelableExtra(Constants.PASS_STRING);
                 selectTicketId = item.getId();
+                if (item.getEventType().equals("21")) {
+                    isUserdTicket = false;
+                    isUserCashTicket = true;
+                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(payMoney)) {
+                        tvPayMoney.setText("￥0");
+                    } else {
+                        tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice())));
+                        payMoney = String.valueOf(Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice()));
+                    }
+                } else {
+                    tvTicketValue.setText(String.format("-￥%s", payMoney));
+                    tvPayMoney.setText("￥0");
+                    isUserdTicket = true;
+                    isUserCashTicket = false;
+                }
             } else {
                 isUserdTicket = false;
+                payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
                 tvPayMoney.setText("￥" + payMoney);
                 tvTicketValue.setText("");
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
@@ -537,13 +605,10 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                     if (payMoney.equals("0")) {
                         getOrderId();
                     } else {
-                      /*  //去支付
-                        Bundle bundle = getIntent();
-                        bundle.putInt(Constants.PAGE_INDEX, pageIndex);
-                        bundle.putString(Constants.COURSE_ID, courseId);
-                        bundle.putString(Constants.COURSE_MONEY, payMoney);
-                        bundle.putString(Constants.COURSE_TYPE, couserType);*/
-                        openActivity(PayActivity.class, getIntent().getExtras());
+                        //去支付
+                        Bundle payBundle = getIntent().getExtras();
+                        payBundle.putString(Constants.COURSE_MONEY, payMoney);
+                        openActivity(PayActivity.class, payBundle);
                         finish();
                     }
 
@@ -607,7 +672,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
             }, 1000);
         } else if (pageIndex == 4) {
             UpdateAreoClassDetail updateAreoClassDetail = new UpdateAreoClassDetail();
-            updateAreoClassDetail.setId(courseId);
+            updateAreoClassDetail.setId(areaCourseId);
             eventBus.post(updateAreoClassDetail);
             new Handler().postDelayed(new Runnable() {
                 @Override

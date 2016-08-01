@@ -340,7 +340,8 @@ public class PrivateEducationFragment extends Fragment {
             public void onResponse(JsonObject response) {
                 if (getActivity() != null)
                     ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                rlOrderTime.setVisibility(View.VISIBLE);
+                if (rlOrderTime != null)
+                    rlOrderTime.setVisibility(View.VISIBLE);
                 btnSelected.setVisibility(View.VISIBLE);
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
                 if (privateEducationClasses != null && privateEducationClasses.size() > 0) {

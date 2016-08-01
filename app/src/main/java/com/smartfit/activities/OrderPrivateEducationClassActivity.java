@@ -120,6 +120,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     private String courseId;
 
     private boolean isInclueAreaFee;//1.0.3 接口中的教练价格 已包含产地费  如果是 true 则不需要再加场地费用
+    private String cashEventId;
+    private String cashEventName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,12 +151,15 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     private void showCashTicketDialog() {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", "2");
+        data.put("orgId",courseId);
         PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
-                if (cashTickeInfo != null) {
-                    getShareContent(cashTickeInfo.getId());
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
+                    ivSendRed.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
@@ -233,6 +238,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             btnOrder.setVisibility(View.INVISIBLE);
             tvWaitingAccept.setVisibility(View.VISIBLE);
             getCourseCode();
+            showCashTicketDialog();
         }
     }
 
@@ -349,12 +355,18 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
 
-                Bundle bundle = new Bundle();
-                ArrayList<TicketInfo>  ticketInfos =new ArrayList<TicketInfo>();
+              /*  Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, cashEventId);
+                bundle.putString("course_id", courseId);
+                bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashEventName);
+                ticketInfos.add(ticketInfo);
                 bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
-                openActivity(WXEntryActivity.class, bundle);
+                openActivity(WXEntryActivity.class, bundle);*/
 
-//                showShareWxDialog();
+                showShareWxDialog();
 
             }
         });

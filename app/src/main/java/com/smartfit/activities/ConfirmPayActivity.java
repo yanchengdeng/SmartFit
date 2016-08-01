@@ -91,6 +91,8 @@ public class ConfirmPayActivity extends BaseActivity {
 
     private EventBus eventBus;
 
+    private String mouthCourseid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,13 +260,14 @@ public class ConfirmPayActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 MouthBillInfo billInfo = JsonUtils.objectFromJson(response, MouthBillInfo.class);
                 if (billInfo != null) {
+                    mouthCourseid = billInfo.getGoodsId();
                     if (Float.parseFloat(billInfo.getOrderPrice()) == 0.0) {
                         payOrder(billInfo.getOrderCode());
 
                     } else {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.PAGE_INDEX, 9);// 7  包月支付
-//                    bundle.putString(Constants.COURSE_ID, billInfo.getId());
+                    bundle.putString(Constants.COURSE_ID, billInfo.getGoodsId());
                         bundle.putString(Constants.COURSE_MONEY, billInfo.getOrderPrice());
                         bundle.putString(Constants.COURSE_ORDER_CODE, billInfo.getOrderCode());
                         openActivity(PayActivity.class, bundle);
@@ -304,8 +307,12 @@ public class ConfirmPayActivity extends BaseActivity {
                         Intent intent;
                         if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
                             intent = new Intent(ConfirmPayActivity.this, CustomeMainActivity.class);
+                            intent.putExtra("hava_buy_mouth",true);
+                            intent.putExtra("coursre_id",mouthCourseid);
                         } else {
                             intent = new Intent(ConfirmPayActivity.this, CustomeCoachActivity.class);
+                            intent.putExtra("hava_buy_mouth",true);
+                            intent.putExtra("coursre_id",mouthCourseid);
                         }
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);

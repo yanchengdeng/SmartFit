@@ -35,6 +35,7 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -51,6 +52,7 @@ import com.smartfit.wxapi.WXEntryActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +113,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     private EventBus eventBus;
     private String cashEventId;
     private String courseId;
+    private String cashEventName;
 
 
     @Override
@@ -129,11 +132,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     public void onEvent(Object event) {
         if (event instanceof UpdateAreoClassDetail) {
             btnOrder.setVisibility(View.GONE);
-            llScanBar.setVisibility(View.VISIBLE);
+           /* llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.GONE);
             tvScanCodeInfo.setVisibility(View.VISIBLE);
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-            tvSaveToPhone.setText(getString(R.string.copy_link));
+            tvSaveToPhone.setText(getString(R.string.copy_link));*/
             if (!TextUtils.isEmpty(((UpdateAreoClassDetail) event).getId())) {
                 courseId = ((UpdateAreoClassDetail) event).getId();
                 getClassInfo(((UpdateAreoClassDetail) event).getId());
@@ -168,6 +171,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
                 if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
                     cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
                 }
 
@@ -237,17 +241,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 
     }
 
-    /**
-     * 订购成功后
-     *
-     * @param detail
-     */
-    private void fillOrderSuccess(ClassInfoDetail detail) {
 
-
-    }
-
-    String codeBar;
     AreaDetailInfo detail;
 
     private void fillData(AreaDetailInfo detail) {
@@ -362,25 +356,24 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
 
-  /*  String codeBar;
+    String codeBar;
     ClassInfoDetail classInfoDetail;
 
-    private void fillData(ClassInfoDetail detail) {
+    private void fillOrderSuccess(ClassInfoDetail detail) {
         this.classInfoDetail = detail;
 
-    */
 
-    /**
-     * 订单状态（
-     * 1我报名但未付款，
-     * 2已经付款教练未接单，
-     * 3已经付款教练接单（即正常），
-     * 4课程已经结束
-     * 5我退出该课程，
-     * 6该课程被取消了，
-     * 7课程已结束未评论
-     * 8已评论）
-     *//*
+        /**
+         * 订单状态（
+         * 1我报名但未付款，
+         * 2已经付款教练未接单，
+         * 3已经付款教练接单（即正常），
+         * 4课程已经结束
+         * 5我退出该课程，
+         * 6该课程被取消了，
+         * 7课程已结束未评论
+         * 8已评论）
+         */
         if (!TextUtils.isEmpty(detail.getOrderStatus())) {
             if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
@@ -392,7 +385,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             } else {
                 llViewScanCode.setVisibility(View.GONE);
                 tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
         }
@@ -439,7 +432,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 scrollView.setVisibility(View.VISIBLE);
             }
         }, 500);
-    }*/
+    }
+
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -522,12 +516,17 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-//                showShareWxDialog();
-                Bundle bundle = new Bundle();
+                showShareWxDialog();
+             /*   Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, cashEventId);
                 bundle.putString("course_id", courseId);
                 bundle.putString(Constants.TICKET_SHARE_TYPE, "2");
-                openActivity(WXEntryActivity.class, bundle);
+                ArrayList<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+                TicketInfo ticketInfo = new TicketInfo();
+                ticketInfo.setEventTitle(cashEventName);
+                ticketInfos.add(ticketInfo);
+                bundle.putParcelableArrayList(Constants.PASS_OBJECT, ticketInfos);
+                openActivity(WXEntryActivity.class, bundle);*/
 
             }
         });
