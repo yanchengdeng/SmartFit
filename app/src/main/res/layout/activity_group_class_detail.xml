@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.GroupClassDetailActivity">
@@ -136,15 +137,21 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <RatingBar
+                    <com.hedgehog.ratingbar.RatingBar
                         android:id="@+id/ratingBar_for_coach"
-                        style="@style/roomRatingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        android:numStars="5"
-                        android:rating="5"
-                        android:stepSize="1" />
+                        hedgehog:clickable="true"
+                        hedgehog:halfstart="true"
+                        hedgehog:starCount="5"
+                        hedgehog:starEmpty="@mipmap/icon_star_bg_large"
+                        hedgehog:starFill="@mipmap/icon_star_large"
+                        hedgehog:starHalf="@mipmap/icon_star_large"
+                        hedgehog:starImageHeight="40dp"
+                        hedgehog:starImageWidth="40dp"
+                        hedgehog:starImagePadding="10dp"/>
                 </LinearLayout>
 
                 <EditText
@@ -667,7 +674,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:visibility="gone"
         android:layout_marginBottom="@dimen/header_bar_height"
-        android:src="@mipmap/wx_red_package"
+        android:src="@mipmap/icon_send_red_package"
         android:layout_height="wrap_content" />
 
 

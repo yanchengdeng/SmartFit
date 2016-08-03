@@ -31,7 +31,6 @@ import com.smartfit.MessageEvent.UpdateAreoClassDetail;
 import com.smartfit.R;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -42,12 +41,10 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,6 +128,7 @@ public class ArerobicDetailActivity extends BaseActivity {
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));*/
             getClassInfo();
+            showCashTicketDialog(courseId);
         }
 
     /* Do something */
@@ -141,7 +139,6 @@ public class ArerobicDetailActivity extends BaseActivity {
         courseId = getIntent().getStringExtra(Constants.PASS_STRING);
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
-        showCashTicketDialog(courseId);
     }
 
     /**
@@ -170,6 +167,13 @@ public class ArerobicDetailActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Util.isInCurrentActivty(ArerobicDetailActivity.this))
+                                showCashDialog();
+                        }
+                    }, 2000);
                 }
 
 
@@ -252,12 +256,9 @@ public class ArerobicDetailActivity extends BaseActivity {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
-        }else{
+        } else {
             llScanBar.setVisibility(View.GONE);
         }
-
-
-
 
 
         if (!TextUtils.isEmpty(detail.getVenueName())) {
@@ -419,7 +420,7 @@ public class ArerobicDetailActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(ArerobicDetailActivity.this, scrollView);
+        ShareBottomDialog dialog = new ShareBottomDialog(ArerobicDetailActivity.this, scrollView,cashEventId,"3",courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

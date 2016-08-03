@@ -28,7 +28,6 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CoachInfo;
 import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
@@ -39,7 +38,6 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +149,8 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
+                    if (Util.isInCurrentActivty(PrivateClassByMessageActivity.this))
+                        showCashDialog();
                 }
             }
         }, new Response.ErrorListener() {
@@ -274,7 +274,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(PrivateClassByMessageActivity.this, scrollView);
+        ShareBottomDialog dialog = new ShareBottomDialog(PrivateClassByMessageActivity.this, scrollView,cashEventId,"2",couseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

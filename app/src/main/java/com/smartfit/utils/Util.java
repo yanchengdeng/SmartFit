@@ -376,6 +376,28 @@ public class Util {
         return false;
     }
 
+    /**
+     * 需要权限:android.permission.GET_TASKS
+     * 是否是当前app
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isInCurrentActivty(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (tasks != null && !tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            LogUtil.w("dyc", "topActivity:" + topActivity.getClassName());
+            LogUtil.w("dyc", "context :" + context.getClass().getName());
+            if (topActivity.getClassName().equals(context.getClass().getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 需要权限:android.permission.GET_TASKS

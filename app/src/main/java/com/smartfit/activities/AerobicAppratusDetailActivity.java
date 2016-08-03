@@ -35,7 +35,6 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -47,12 +46,10 @@ import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,9 +170,14 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Util.isInCurrentActivty(AerobicAppratusDetailActivity.this))
+                                showCashDialog();
+                        }
+                    }, 2000);
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -533,7 +535,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(AerobicAppratusDetailActivity.this, scrollView);
+        ShareBottomDialog dialog = new ShareBottomDialog(AerobicAppratusDetailActivity.this, scrollView,cashEventId,"3",courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

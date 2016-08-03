@@ -146,7 +146,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             courseId = getIntent().getStringExtra("course_id");
         }
         ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
-        listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
+        if (ticketInfos != null && ticketInfos.size() > 0)
+            listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
     }
 
     private void addLisener() {

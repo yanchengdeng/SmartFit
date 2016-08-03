@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,7 +34,6 @@ import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.JsonUtils;
@@ -45,7 +45,6 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -151,7 +150,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     private void showCashTicketDialog() {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", "2");
-        data.put("orgId",courseId);
+        data.put("orgId", courseId);
         PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -160,6 +159,14 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Util.isInCurrentActivty(OrderPrivateEducationClassActivity.this))
+                                showCashDialog();
+                        }
+                    },2000);
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -373,7 +380,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(OrderPrivateEducationClassActivity.this, scrollView);
+        ShareBottomDialog dialog = new ShareBottomDialog(OrderPrivateEducationClassActivity.this, scrollView,cashEventId,"2",courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

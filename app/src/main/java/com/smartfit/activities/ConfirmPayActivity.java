@@ -260,14 +260,14 @@ public class ConfirmPayActivity extends BaseActivity {
                 mSVProgressHUD.dismiss();
                 MouthBillInfo billInfo = JsonUtils.objectFromJson(response, MouthBillInfo.class);
                 if (billInfo != null) {
-                    mouthCourseid = billInfo.getGoodsId();
+                    mouthCourseid = billInfo.getId();
                     if (Float.parseFloat(billInfo.getOrderPrice()) == 0.0) {
                         payOrder(billInfo.getOrderCode());
 
                     } else {
                         Bundle bundle = new Bundle();
                         bundle.putInt(Constants.PAGE_INDEX, 9);// 7  包月支付
-                    bundle.putString(Constants.COURSE_ID, billInfo.getGoodsId());
+                        bundle.putString(Constants.COURSE_ID, billInfo.getGoodsId());
                         bundle.putString(Constants.COURSE_MONEY, billInfo.getOrderPrice());
                         bundle.putString(Constants.COURSE_ORDER_CODE, billInfo.getOrderCode());
                         openActivity(PayActivity.class, bundle);

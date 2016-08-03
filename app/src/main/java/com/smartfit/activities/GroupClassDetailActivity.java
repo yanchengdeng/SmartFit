@@ -41,7 +41,6 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -54,13 +53,11 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,8 +120,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView tvOperateAddress;
     @Bind(R.id.tv_class_tittle)
     TextView tvClassTittle;
-    @Bind(R.id.ratingBar_for_coach)
-    RatingBar ratingBarForCoach;
+
     @Bind(R.id.btn_commit_comments)
     Button btnCommitComments;
     @Bind(R.id.ll_mack_score)
@@ -165,6 +161,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView tvScanCodeInfo;// 链接显示
     @Bind(R.id.iv_send_red)
     ImageView ivSendRed;
+    @Bind(R.id.ratingBar_for_coach)
+    com.hedgehog.ratingbar.RatingBar ratingBarForCoach;
 
 
     private DiscussItemAdapter adapter;
@@ -193,7 +191,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivFunction.setVisibility(View.INVISIBLE);
         ratingBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
         ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
-        ratingBarForCoach.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
+//        ratingBarForCoach.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 50));
+        ratingBarForCoach.setStar(starts);
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
@@ -203,6 +202,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private String cashEventId;
     private String cashEventName;
+
     /**
      * 获取现金券id
      * 0:团操课
@@ -218,7 +218,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     private void showCashTicketDialog() {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", type);
-        data.put("orgId",id);
+        data.put("orgId", id);
         PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -227,6 +227,13 @@ public class GroupClassDetailActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Util.isInCurrentActivty(GroupClassDetailActivity.this))
+                                showCashDialog();
+                        }
+                    }, 2000);
                 }
             }
         }, new Response.ErrorListener() {
@@ -386,7 +393,7 @@ public class GroupClassDetailActivity extends BaseActivity {
             tvAppriseListTips.setVisibility(View.VISIBLE);
             lisviewDiscuss.setVisibility(View.VISIBLE);
             tvMore.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvAppriseListTips.setVisibility(View.GONE);
             lisviewDiscuss.setVisibility(View.GONE);
             tvMore.setVisibility(View.GONE);
@@ -522,8 +529,6 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
 
-
-
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
@@ -545,28 +550,28 @@ public class GroupClassDetailActivity extends BaseActivity {
         }
 
 
-
         if (!TextUtils.isEmpty(detail.getCourseStatus())) {
             if (detail.getCourseStatus().equals("0")) {
                 btnOrder.setVisibility(View.VISIBLE);
-                llOrderSuccess.setVisibility(View.GONE);
                 tvWaitingAccept.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(detail.getIsParted())){
-                    if (detail.getIsParted().equals("0")){
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
                         btnOrder.setVisibility(View.VISIBLE);
-                    }else {
+                        llOrderSuccess.setVisibility(View.GONE);
+                    } else {
                         btnOrder.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.VISIBLE);
                     }
                 }
             } else if (detail.getCourseStatus().equals("1")) {
 
                 tvWaitingAccept.setVisibility(View.VISIBLE);
                 tvWaitingAccept.setText("课程进行中...");
-                if (!TextUtils.isEmpty(detail.getIsParted())){
-                    if (detail.getIsParted().equals("0")){
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
                         btnOrder.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         btnOrder.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.GONE);
                     }
@@ -576,12 +581,11 @@ public class GroupClassDetailActivity extends BaseActivity {
                 btnOrder.setVisibility(View.GONE);
                 if (detail.getIsParted().equals("0")) {
                     llOrderSuccess.setVisibility(View.GONE);
-                }else{
+                } else {
                     llOrderSuccess.setVisibility(View.VISIBLE);
                 }
             }
         }
-
 
 
         scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -623,6 +627,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     String codeBar;
 
+    float starts = 5.0f;
+
     private void addLisener() {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -634,7 +640,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView);
+                ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId,type,id);
                 dialog.showAnim(new BounceTopEnter())//
                         .show();
             }
@@ -649,8 +655,6 @@ public class GroupClassDetailActivity extends BaseActivity {
         });
 
 
-
-
         tvMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -663,16 +667,18 @@ public class GroupClassDetailActivity extends BaseActivity {
         btnCommitComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submintScore(ratingBarForCoach.getRating(), etCoachApprise.getEditableText().toString());
+                submintScore(starts, etCoachApprise.getEditableText().toString());
             }
         });
 
-        ratingBarForCoach.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        ratingBarForCoach.setOnRatingChangeListener(new com.hedgehog.ratingbar.RatingBar.OnRatingChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                ratingBarForCoach.setRating(rating);
+            public void onRatingChange(float v) {
+                ratingBarForCoach.setStar(v);
+                starts = v;
             }
         });
+
 
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -797,7 +803,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView);
+        ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId,type,id);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }
