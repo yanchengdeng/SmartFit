@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by dengyancheng on 16/3/12.
- * <p/>
+ * <p>
  * 用券 去  抵扣 磕碜费用
  */
 public class TicketSelectToBuyCourseAdapter extends BaseAdapter {
@@ -70,14 +70,25 @@ public class TicketSelectToBuyCourseAdapter extends BaseAdapter {
             viewHolder.tvClassInfo.setText(item.getEventDetial());
         }
 
-        if (!TextUtils.isEmpty(item.getEndTime())) {
-            viewHolder.tvClassOutdate.setText(String.format("过期时间:%s", DateUtils.getData(item.getEndTime())));
+        if (!TextUtils.isEmpty(item.getEventEndTime())) {
+            viewHolder.tvClassOutdate.setText(String.format("过期时间:%s", DateUtils.getData(item.getEventEndTime())));
         }
 
-        viewHolder.chSelect.setChecked(item.isCheck());
+        viewHolder.chSelect.setChecked(item.isCheked());
 
         if (!TextUtils.isEmpty(item.getEventTitle())) {
-            viewHolder.tvType.setText(item.getEventTitle());
+            if (item.getEventType().equals("21")) {
+                //0现金券1满减券2折扣券
+                if (item.getCashEventType().equals("0")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("1")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("2")) {
+                    viewHolder.tvType.setText(item.getTicketPrice() + "折");
+                }
+            } else {
+                viewHolder.tvType.setText(item.getEventTitle());
+            }
         }
 
         return convertView;

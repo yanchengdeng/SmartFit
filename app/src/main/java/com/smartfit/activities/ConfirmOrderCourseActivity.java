@@ -95,7 +95,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 
     /****
      * 页面跳转 index
-     * <p/>
+     * <p>
      * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付  10 季度、半年
      */
     private int pageIndex = 1;
@@ -350,7 +350,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("courseId", courseId);
         if (isUserCashTicket)
-        map.put("cashEventUserId", selectTicketId);
+            map.put("cashEventUserId", selectTicketId);
 //        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         PostRequest request = new PostRequest(Constants.ORDER_ORDERCOURSE, map, new Response.Listener<JsonObject>() {
             @Override
@@ -492,19 +492,42 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         if (requestCode == GET_TICKET_CODE && resultCode == RESULT_OK) {
 
             if (data.getExtras() != null && null != data.getParcelableExtra(Constants.PASS_STRING)) {
-
+                payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
                 EventUserful item = data.getParcelableExtra(Constants.PASS_STRING);
                 selectTicketId = item.getId();
                 if (item.getEventType().equals("21")) {
                     isUserdTicket = false;
                     isUserCashTicket = true;
-                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
-                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(payMoney)) {
-                        tvPayMoney.setText("￥0");
-                    } else {
-                        tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice())));
-                        payMoney = String.valueOf(Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice()));
+                    // 0现金券1满减券2折扣券
+                    if (item.getCashEventType().equals("0")) {
+                        tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                        if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(payMoney)) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice())));
+                            payMoney = String.valueOf(Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice()));
+                        }
+                    } else if (item.getCashEventType().equals("1")) {
+                        tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                        if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(payMoney)) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice())));
+                            payMoney = String.valueOf(Float.parseFloat(payMoney) - Float.parseFloat(item.getTicketPrice()));
+                        }
+
+                    } else if (item.getCashEventType().equals("2")) {
+                        float discount = (1 - Float.parseFloat(item.getTicketPrice())/10) * Float.parseFloat(payMoney);
+                        tvTicketValue.setText(String.format("-￥%s", String.valueOf(discount)));
+                        if (discount >= Float.parseFloat(payMoney)) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - discount));
+                            payMoney = String.valueOf(Float.parseFloat(payMoney) - discount);
+                        }
+
                     }
+
                 } else {
                     tvTicketValue.setText(String.format("-￥%s", payMoney));
                     tvPayMoney.setText("￥0");
@@ -512,8 +535,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                     isUserCashTicket = false;
                 }
             } else {
-                isUserdTicket = false;
                 payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
+                isUserdTicket = false;
                 tvPayMoney.setText("￥" + payMoney);
                 tvTicketValue.setText("");
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
@@ -608,6 +631,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
                         //去支付
                         Bundle payBundle = getIntent().getExtras();
                         payBundle.putString(Constants.COURSE_MONEY, payMoney);
+                        if (isUserCashTicket)
+                            payBundle.putString("cash_ticket", selectTicketId);
                         openActivity(PayActivity.class, payBundle);
                         finish();
                     }

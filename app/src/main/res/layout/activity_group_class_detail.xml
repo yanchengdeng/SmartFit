@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.GroupClassDetailActivity">
@@ -150,8 +150,8 @@
                         hedgehog:starFill="@mipmap/icon_star_large"
                         hedgehog:starHalf="@mipmap/icon_star_large"
                         hedgehog:starImageHeight="40dp"
-                        hedgehog:starImageWidth="40dp"
-                        hedgehog:starImagePadding="10dp"/>
+                        hedgehog:starImagePadding="10dp"
+                        hedgehog:starImageWidth="40dp" />
                 </LinearLayout>
 
                 <EditText
@@ -554,8 +554,6 @@
             </LinearLayout>
 
 
-
-
             <TextView
                 android:id="@+id/tv_apprise_list_tips"
                 android:layout_width="match_parent"
@@ -565,25 +563,24 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/image_padding"
                 android:text="以往用户评价"
-                android:visibility="gone"
                 android:textColor="@color/text_color_black"
-                android:textSize="@dimen/text_normal_down" />
+                android:textSize="@dimen/text_normal_down"
+                android:visibility="gone" />
 
             <com.smartfit.views.MyListView
                 android:id="@+id/lisview_discuss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:visibility="gone"
                 android:cacheColorHint="@android:color/transparent"
                 android:divider="@color/line_gray"
                 android:dividerHeight="1px"
-                android:listSelector="@android:color/transparent" />
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray_light"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/header_bar_height">
 
@@ -592,11 +589,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:visibility="gone"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="点击查看更多"
                     android:textColor="@color/text_color_gray"
-                    android:textSize="@dimen/text_normal_down" />
+                    android:textSize="@dimen/text_normal_down"
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -669,13 +666,13 @@
     <ImageView
         android:id="@+id/iv_send_red"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:visibility="gone"
         android:layout_marginBottom="@dimen/header_bar_height"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:src="@mipmap/icon_send_red_package"
-        android:layout_height="wrap_content" />
+        android:visibility="gone" />
 
 
 </RelativeLayout>

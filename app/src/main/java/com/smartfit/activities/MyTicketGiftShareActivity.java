@@ -100,10 +100,9 @@ public class MyTicketGiftShareActivity extends BaseActivity {
                 TicketListInfo ticketInfos = JsonUtils.objectFromJson(response, TicketListInfo.class);
                 if (ticketInfos.getListData() != null && ticketInfos.getListData().size() > 0) {
                     for (TicketInfo item : ticketInfos.getListData()) {
-                        if (item.getEventType().equals("21")) {
-                            datas.addAll(ticketInfos.getListData());
+                        if (!item.getEventType().equals("21")) {
+                            datas.add(item);
                         }
-
                     }
                     if (datas.size() > 0) {
                         tvFunction.setVisibility(View.VISIBLE);

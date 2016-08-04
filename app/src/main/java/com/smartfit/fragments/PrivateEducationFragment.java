@@ -342,7 +342,8 @@ public class PrivateEducationFragment extends Fragment {
                     ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 if (rlOrderTime != null)
                     rlOrderTime.setVisibility(View.VISIBLE);
-                btnSelected.setVisibility(View.VISIBLE);
+                if (btnSelected != null)
+                    btnSelected.setVisibility(View.VISIBLE);
                 List<PrivateEducationClass> privateEducationClasses = JsonUtils.listFromJson(response.getAsJsonArray("list"), PrivateEducationClass.class);
                 if (privateEducationClasses != null && privateEducationClasses.size() > 0) {
                     datas = privateEducationClasses;

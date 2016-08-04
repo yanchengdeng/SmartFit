@@ -41,6 +41,7 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
+import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -53,11 +54,13 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
+import com.smartfit.wxapi.WXEntryActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +123,6 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView tvOperateAddress;
     @Bind(R.id.tv_class_tittle)
     TextView tvClassTittle;
-
     @Bind(R.id.btn_commit_comments)
     Button btnCommitComments;
     @Bind(R.id.ll_mack_score)
@@ -196,7 +198,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
-        showCashTicketDialog();
+//        showCashTicketDialog();
 
     }
 
@@ -206,13 +208,13 @@ public class GroupClassDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -483,7 +485,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                 tvWaitingAccept.setVisibility(View.GONE);
                 tvClassTittle.setVisibility(View.GONE);
                 tvContent.setVisibility(View.GONE);
-
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
@@ -587,6 +588,11 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         }
 
+        if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7")|| detail.getOrderStatus().equals("8")) {
+            tvWaitingAccept.setVisibility(View.GONE);
+            btnOrder.setVisibility(View.GONE);
+            llOrderSuccess.setVisibility(View.GONE);
+        }
 
         scrollView.fullScroll(ScrollView.FOCUS_UP);
 
@@ -640,7 +646,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId,type,id);
+                ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId, type, id);
                 dialog.showAnim(new BounceTopEnter())//
                         .show();
             }
@@ -803,7 +809,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId,type,id);
+        ShareBottomDialog dialog = new ShareBottomDialog(GroupClassDetailActivity.this, scrollView, cashEventId, type, id);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }
@@ -939,7 +945,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
             ImageLoader.getInstance().displayImage(imgs[position], imageView, Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            textView.setText(infos[0] + "(" + courceName + ")");
+//            textView.setText(infos[0] + "(" + courceName + ")");
+            textView.setText("");
             return relativeLayout;
         }
 

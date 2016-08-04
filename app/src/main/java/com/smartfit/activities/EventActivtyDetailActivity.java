@@ -182,7 +182,8 @@ public class EventActivtyDetailActivity extends BaseActivity {
             TextView textView = (TextView) relativeLayout.findViewById(R.id.tv_tittle);
             ImageLoader.getInstance().displayImage(imgs[position], imageView, Options.getListOptions());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            textView.setText(infos[0] + "(" + courceName + ")");
+//            textView.setText(infos[0] + "(" + courceName + ")");
+            textView.setText("");
             return relativeLayout;
         }
 

@@ -66,7 +66,7 @@ public class UserEventAdapter extends BaseAdapter {
             viewHolder.tvUsefulTittle.setText(item.getEventDetial());
         }
 
-        viewHolder.chSelect.setChecked(item.isCheck());
+        viewHolder.chSelect.setChecked(item.isCheked());
 
 
         return convertView;

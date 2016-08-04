@@ -154,6 +154,8 @@ public class PayActivity extends BaseActivity {
 
     private String cardCode;
 
+    private String cashEventId;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -311,6 +313,7 @@ public class PayActivity extends BaseActivity {
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
         orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
         couserType = getIntent().getStringExtra(Constants.COURSE_TYPE);
+        cashEventId = getIntent().getStringExtra("cash_ticket");
         if (pageIndex == 4) {
             startTime = getIntent().getStringExtra("start_time");
             endTime = getIntent().getStringExtra("end_time");
@@ -393,7 +396,7 @@ public class PayActivity extends BaseActivity {
                 reInitUserEvent();
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
                 checkBox.setChecked(!checkBox.isChecked());
-                userfulEventes.get(position).setIsCheck(checkBox.isChecked());
+                userfulEventes.get(position).setIsCheked(checkBox.isChecked());
                 payStyle = 3;
                 ivAlipaySelected.setVisibility(View.GONE);
                 ivWxSelected.setVisibility(View.GONE);
@@ -539,7 +542,7 @@ public class PayActivity extends BaseActivity {
     private void reInitUserEvent() {
         if (userfulEventes.size() > 0) {
             for (EventUserful item : userfulEventes) {
-                item.setIsCheck(false);
+                item.setIsCheked(false);
             }
             ((UserEventAdapter) listview.getAdapter()).notifyDataSetChanged();
         }
@@ -552,6 +555,9 @@ public class PayActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus("获取订单信息", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
         map.put("courseId", courseId);
+        if (!TextUtils.isEmpty(cashEventId)) {
+            map.put("cashEventUserId", cashEventId);
+        }
 //        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
         PostRequest request = new PostRequest(Constants.ORDER_ORDERCOURSE, map, new Response.Listener<JsonObject>() {
             @Override
@@ -746,7 +752,7 @@ public class PayActivity extends BaseActivity {
      */
     private EventUserful getSeletctedEvent() {
         for (EventUserful item : userfulEventes) {
-            if (item.isCheck()) {
+            if (item.isCheked()) {
                 return item;
             }
         }
@@ -925,12 +931,12 @@ public class PayActivity extends BaseActivity {
             Intent intent;
             if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
                 intent = new Intent(PayActivity.this, CustomeMainActivity.class);
-                intent.putExtra("hava_buy_mouth",true);
-                intent.putExtra("coursre_id",courseId);
+                intent.putExtra("hava_buy_mouth", true);
+                intent.putExtra("coursre_id", courseId);
             } else {
                 intent = new Intent(PayActivity.this, CustomeCoachActivity.class);
-                intent.putExtra("hava_buy_mouth",true);
-                intent.putExtra("coursre_id",courseId);
+                intent.putExtra("hava_buy_mouth", true);
+                intent.putExtra("coursre_id", courseId);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

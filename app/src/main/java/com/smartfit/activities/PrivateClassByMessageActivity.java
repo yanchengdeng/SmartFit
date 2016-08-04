@@ -122,7 +122,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
         btnOrder.setVisibility(View.GONE);
-        showCashTicketDialog();
+//        showCashTicketDialog();
     }
 
     /**

@@ -107,6 +107,8 @@ public class SplashActivity extends FragmentActivity {
         }
 
 
+
+
     }
 
     private void initLaunchLogo() {

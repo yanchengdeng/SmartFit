@@ -72,7 +72,18 @@ public class TicketGiftAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getEventTitle())) {
-            viewHolder.tvType.setText(item.getEventTitle());
+            if (item.getEventType().equals("21")) {
+                //0现金券1满减券2折扣券
+                if (item.getCashEventType().equals("0")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("1")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("2")) {
+                    viewHolder.tvType.setText(item.getTicketPrice() + "折");
+                }
+            } else {
+                viewHolder.tvType.setText(item.getEventTitle());
+            }
         }
 
         if (!TextUtils.isEmpty(item.getStatus())) {

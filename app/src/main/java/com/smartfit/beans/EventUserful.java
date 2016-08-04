@@ -8,28 +8,19 @@ import android.os.Parcelable;
  */
 public class EventUserful implements Parcelable {
 
-    private String id;// 1339,
-    private String userId;// 33,
-    private String eventId;// 12,
-    private String startTime;// 1463582722,
-    private String endTime;// 1466261122,
-    private String eventType;// 3,
-    private String courseTypeCode;// null,
-    private String coachLevel;// null,
-    private String count;// 0,
-    private String eventTitle;// 包月卡,
-    private String eventDetial;// 这是一个测试月卡,
-    private String courseClassId;// null
-
-    public String getTicketPrice() {
-        return ticketPrice;
-    }
-
-    public void setTicketPrice(String ticketPrice) {
-        this.ticketPrice = ticketPrice;
-    }
-
-    private String ticketPrice;
+    private String id;//5267,
+    private String eventId;//null,
+    private String eventTitle;//10元活动现金券,
+    private String eventDetial;//123123123,
+    private String eventEndTime;//1472631600,
+    private String eventType;//21,
+    private String count;//null,
+    private String usedTime;//1470191509,
+    private String coachLevel;//null,
+    private String ticketPrice;//10,
+    private String status;//0,
+    private String cashEventType;//0现金券1满减券2折扣券
+    private boolean isCheked;
 
     public boolean isCheked() {
         return isCheked;
@@ -39,18 +30,6 @@ public class EventUserful implements Parcelable {
         this.isCheked = isCheked;
     }
 
-    private boolean isCheked;
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setIsCheck(boolean isCheck) {
-        this.isCheck = isCheck;
-    }
-
-    private boolean isCheck;
-
     public String getId() {
         return id;
     }
@@ -59,68 +38,12 @@ public class EventUserful implements Parcelable {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getEventId() {
         return eventId;
     }
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
-    public String getCourseTypeCode() {
-        return courseTypeCode;
-    }
-
-    public void setCourseTypeCode(String courseTypeCode) {
-        this.courseTypeCode = courseTypeCode;
-    }
-
-    public String getCoachLevel() {
-        return coachLevel;
-    }
-
-    public void setCoachLevel(String coachLevel) {
-        this.coachLevel = coachLevel;
-    }
-
-    public String getCount() {
-        return count;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
     }
 
     public String getEventTitle() {
@@ -139,12 +62,68 @@ public class EventUserful implements Parcelable {
         this.eventDetial = eventDetial;
     }
 
-    public String getCourseClassId() {
-        return courseClassId;
+    public String getEventEndTime() {
+        return eventEndTime;
     }
 
-    public void setCourseClassId(String courseClassId) {
-        this.courseClassId = courseClassId;
+    public void setEventEndTime(String eventEndTime) {
+        this.eventEndTime = eventEndTime;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getUsedTime() {
+        return usedTime;
+    }
+
+    public void setUsedTime(String usedTime) {
+        this.usedTime = usedTime;
+    }
+
+    public String getCoachLevel() {
+        return coachLevel;
+    }
+
+    public void setCoachLevel(String coachLevel) {
+        this.coachLevel = coachLevel;
+    }
+
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCashEventType() {
+        return cashEventType;
+    }
+
+    public void setCashEventType(String cashEventType) {
+        this.cashEventType = cashEventType;
     }
 
 
@@ -156,20 +135,18 @@ public class EventUserful implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
-        dest.writeString(this.userId);
         dest.writeString(this.eventId);
-        dest.writeString(this.startTime);
-        dest.writeString(this.endTime);
-        dest.writeString(this.eventType);
-        dest.writeString(this.courseTypeCode);
-        dest.writeString(this.coachLevel);
-        dest.writeString(this.count);
         dest.writeString(this.eventTitle);
         dest.writeString(this.eventDetial);
-        dest.writeString(this.courseClassId);
+        dest.writeString(this.eventEndTime);
+        dest.writeString(this.eventType);
+        dest.writeString(this.count);
+        dest.writeString(this.usedTime);
+        dest.writeString(this.coachLevel);
         dest.writeString(this.ticketPrice);
+        dest.writeString(this.status);
+        dest.writeString(this.cashEventType);
         dest.writeByte(isCheked ? (byte) 1 : (byte) 0);
-        dest.writeByte(isCheck ? (byte) 1 : (byte) 0);
     }
 
     public EventUserful() {
@@ -177,23 +154,21 @@ public class EventUserful implements Parcelable {
 
     protected EventUserful(Parcel in) {
         this.id = in.readString();
-        this.userId = in.readString();
         this.eventId = in.readString();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-        this.eventType = in.readString();
-        this.courseTypeCode = in.readString();
-        this.coachLevel = in.readString();
-        this.count = in.readString();
         this.eventTitle = in.readString();
         this.eventDetial = in.readString();
-        this.courseClassId = in.readString();
+        this.eventEndTime = in.readString();
+        this.eventType = in.readString();
+        this.count = in.readString();
+        this.usedTime = in.readString();
+        this.coachLevel = in.readString();
         this.ticketPrice = in.readString();
+        this.status = in.readString();
+        this.cashEventType = in.readString();
         this.isCheked = in.readByte() != 0;
-        this.isCheck = in.readByte() != 0;
     }
 
-    public static final Creator<EventUserful> CREATOR = new Creator<EventUserful>() {
+    public static final Parcelable.Creator<EventUserful> CREATOR = new Parcelable.Creator<EventUserful>() {
         public EventUserful createFromParcel(Parcel source) {
             return new EventUserful(source);
         }

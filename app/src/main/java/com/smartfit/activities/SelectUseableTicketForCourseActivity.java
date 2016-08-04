@@ -62,7 +62,7 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
     private EventUserful getSelectTicket() {
         EventUserful eventUserful = null;
         for (EventUserful item : userfulEventes) {
-            if (item.isCheck()) {
+            if (item.isCheked()) {
                 eventUserful = item;
             }
         }
@@ -97,19 +97,19 @@ public class SelectUseableTicketForCourseActivity extends BaseActivity {
                 EventUserful selected = getSelectTicket();
                 if (selected == null) {
                     for (EventUserful item : userfulEventes) {
-                        item.setIsCheck(false);
+                        item.setIsCheked(false);
                     }
 
-                    userfulEventes.get(position).setIsCheck(true);
+                    userfulEventes.get(position).setIsCheked(true);
                 } else {
                     //点击 同一个
                     if (selected.getId().equals(userfulEventes.get(position).getId())) {
-                        selected.setIsCheck(false);
+                        selected.setIsCheked(false);
                     } else {
                         for (EventUserful item : userfulEventes) {
-                            item.setIsCheck(false);
+                            item.setIsCheked(false);
                         }
-                        userfulEventes.get(position).setIsCheck(true);
+                        userfulEventes.get(position).setIsCheked(true);
                     }
                 }
 

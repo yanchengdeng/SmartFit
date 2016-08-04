@@ -131,7 +131,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
         addLisener();
-        showCashTicketDialog();
+//        showCashTicketDialog();
 
     }
 
