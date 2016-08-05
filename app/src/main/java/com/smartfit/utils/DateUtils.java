@@ -335,68 +335,8 @@ public class DateUtils {
     }
 
 
-    public static int getIconOfWeek(int day) {
-        int icon = R.mipmap.icon_1;
-        switch (day) {
-            case 1:
-                icon = R.mipmap.icon_7;
-                break;
-            case 2:
-                icon = R.mipmap.icon_1;
-                break;
-            case 3:
-                icon = R.mipmap.icon_2;
-                break;
-            case 4:
-                icon = R.mipmap.icon_3;
-                break;
-            case 5:
-                icon = R.mipmap.icon_4;
-                break;
-            case 6:
-                icon = R.mipmap.icon_5;
-                break;
-            case 7:
-                icon = R.mipmap.icon_6;
-                break;
-        }
-        return icon;
-    }
 
 
-    /***
-     * 获取点击的日期图片
-     *
-     * @param day
-     * @return
-     */
-    public static int getSelectIconOfWeek(int day) {
-        int icon = R.mipmap.icon_1;
-        switch (day) {
-            case 1:
-                icon = R.mipmap.icon_7_on;
-                break;
-            case 2:
-                icon = R.mipmap.icon_1_on;
-                break;
-            case 3:
-                icon = R.mipmap.icon_2_on;
-                break;
-            case 4:
-                icon = R.mipmap.icon_3_on;
-                break;
-            case 5:
-                icon = R.mipmap.icon_4_on;
-                break;
-            case 6:
-                icon = R.mipmap.icon_5_on;
-                break;
-            case 7:
-                icon = R.mipmap.icon_6_on;
-                break;
-        }
-        return icon;
-    }
 
     /**
      * 获取一周日期信息 ：日期    周几

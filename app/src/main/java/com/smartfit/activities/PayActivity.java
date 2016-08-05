@@ -357,6 +357,7 @@ public class PayActivity extends BaseActivity {
         Map<String, String> maps = new HashMap<>();
         maps.put("courseId", courseEventId);
         maps.put("courseType", couserType);
+        maps.put("totalMoney",payMoney);
         PostRequest request = new PostRequest(Constants.EVENT_GETUSEFULLEVENTS, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

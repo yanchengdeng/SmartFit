@@ -84,7 +84,7 @@ public class ConfirmPayActivity extends BaseActivity {
 
     private NewMonthServerInfo newMonthServerInfo;
 
-    private int numTicket,numCards;//选择优惠劵数、选择实体卡
+    private int numTicket, numCards;//选择优惠劵数、选择实体卡
 
 
     private StringBuffer eventUserIds, cardSNNumbers;
@@ -92,6 +92,8 @@ public class ConfirmPayActivity extends BaseActivity {
     private EventBus eventBus;
 
     private String mouthCourseid;
+
+    private String payMoney;
 
 
     @Override
@@ -106,10 +108,11 @@ public class ConfirmPayActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof FinishActivityAfterPay){
+        if (event instanceof FinishActivityAfterPay) {
             finish();
         }
     }
+
     private void initView() {
         tvTittle.setText("支付确认");
         num = getIntent().getIntExtra(Constants.PASS_STRING, 1);
@@ -117,18 +120,46 @@ public class ConfirmPayActivity extends BaseActivity {
         tvName.setText(String.format("%d个包月服务", num));
         tvMoney.setText("￥" + String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num));
         ivHeader.setImageResource(R.drawable.icon_yueka);
+        payMoney = newMonthServerInfo.getDefaultMonthPrice();
         if (num == 1) {
             if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
                 tvUserTicketUsable.setText(String.format("%d张可用", newMonthServerInfo.getEventListDTOs().size()));
-                tvTicketValue.setText(String.format("-￥%s", newMonthServerInfo.getDefaultMonthPrice()));
-                tvPayMoney.setText(String.format("￥0"));
                 ticketInfos = newMonthServerInfo.getEventListDTOs();
+                UseableEventInfo item = newMonthServerInfo.getEventListDTOs().get(0);
+                //==================================================
+                if (item.getCashEventType().equals("0")) {
+                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
+                        tvPayMoney.setText("￥0");
+                    } else {
+                        tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
+                        payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
+                    }
+                } else if (item.getCashEventType().equals("1")) {
+                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
+                        tvPayMoney.setText("￥0");
+                    } else {
+                        tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
+                        payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
+                    }
+
+                } else if (item.getCashEventType().equals("2")) {
+                    float discount = (1 - Float.parseFloat(item.getTicketPrice()) / 10) * Float.parseFloat(payMoney);
+                    discount = Float.parseFloat(String.format("%.2f", discount));
+                    tvTicketValue.setText(String.format("-￥%s", String.valueOf(discount)));
+                    if (discount >= Float.parseFloat(payMoney)) {
+                        tvPayMoney.setText("￥0");
+                    } else {
+                        tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - discount));
+                        payMoney = String.valueOf(Float.parseFloat(payMoney) - discount);
+                    }
+                }
             } else {
                 tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
             }
-            if (newMonthServerInfo.getEventListDTOs()!=null && newMonthServerInfo.getEventListDTOs().size()>0)
-            {
+            if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
                 numTicket = num;
             }
         } else {
@@ -149,9 +180,9 @@ public class ConfirmPayActivity extends BaseActivity {
                 ticketInfos = data.getParcelableArrayListExtra(Constants.PASS_OBJECT);
                 if (ticketInfos != null && ticketInfos.size() > 0) {
                     numTicket = ticketInfos.size();
-                    tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
+//                    tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
                     countLeftMoney(ticketInfos, cardNums);
-                }else{
+                } else {
                     //不选择优惠券时
                     ticketInfos = new ArrayList<>();
                     numTicket = 0;
@@ -181,6 +212,13 @@ public class ConfirmPayActivity extends BaseActivity {
 
         if (count > 0) {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
+
+
+            tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
+
+            // 记得 包月支付接口 更改======================================================================================
+
+
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
         }
@@ -188,10 +226,10 @@ public class ConfirmPayActivity extends BaseActivity {
         changePayButtonContent();
     }
 
-    private void changePayButtonContent(){
-        if (tvPayMoney.getText().toString().equals("￥0")){
+    private void changePayButtonContent() {
+        if (tvPayMoney.getText().toString().equals("￥0")) {
             btnPay.setText("确认提交");
-        }else{
+        } else {
             btnPay.setText("确认支付");
         }
     }
@@ -204,20 +242,20 @@ public class ConfirmPayActivity extends BaseActivity {
                 break;
             case R.id.rl_user_ticket_ui:
                 //购买一个月  服务 ：如果有优惠劵默认选第一个张
-                    if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
-                          Bundle bundle = new Bundle();
-                          bundle.putParcelableArrayList(Constants.PASS_OBJECT, newMonthServerInfo.getEventListDTOs());
-                          bundle.putInt(Constants.PASS_STRING, num - numCards);
-                          openActivity(SelectTicketToBuyActivity.class, bundle, GET_TICKET_CODE);
-                    } else {
-                        mSVProgressHUD.showInfoWithStatus("无可用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
+                if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(Constants.PASS_OBJECT, newMonthServerInfo.getEventListDTOs());
+                    bundle.putInt(Constants.PASS_STRING, num - numCards);
+                    openActivity(SelectTicketToBuyActivity.class, bundle, GET_TICKET_CODE);
+                } else {
+                    mSVProgressHUD.showInfoWithStatus("无可用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
                 break;
             case R.id.rl_select_card_ui:
                 if (num - numTicket > 0) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PASS_STRING, num - numTicket);
-                    bundle.putString(Constants.COURSE_TYPE,"0");
+                    bundle.putString(Constants.COURSE_TYPE, "0");
                     openActivity(SelectCardToBuyActivity.class, bundle, GET_CARD_CODE);
                 } else {
                     mSVProgressHUD.showInfoWithStatus("已使用优惠劵", SVProgressHUD.SVProgressHUDMaskType.Clear);
@@ -307,12 +345,12 @@ public class ConfirmPayActivity extends BaseActivity {
                         Intent intent;
                         if (TextUtils.isEmpty(NetUtil.getUserInfo().getCoachId())) {
                             intent = new Intent(ConfirmPayActivity.this, CustomeMainActivity.class);
-                            intent.putExtra("hava_buy_mouth",true);
-                            intent.putExtra("coursre_id",mouthCourseid);
+                            intent.putExtra("hava_buy_mouth", true);
+                            intent.putExtra("coursre_id", mouthCourseid);
                         } else {
                             intent = new Intent(ConfirmPayActivity.this, CustomeCoachActivity.class);
-                            intent.putExtra("hava_buy_mouth",true);
-                            intent.putExtra("coursre_id",mouthCourseid);
+                            intent.putExtra("hava_buy_mouth", true);
+                            intent.putExtra("coursre_id", mouthCourseid);
                         }
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);

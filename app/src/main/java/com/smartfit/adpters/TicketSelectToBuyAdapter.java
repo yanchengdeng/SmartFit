@@ -66,8 +66,8 @@ public class TicketSelectToBuyAdapter extends BaseAdapter {
             viewHolder.tvClassName.setText(item.getEventTitle());
         }
 
-        if (!TextUtils.isEmpty(item.getEventDetail())) {
-            viewHolder.tvClassInfo.setText(item.getEventDetail());
+        if (!TextUtils.isEmpty(item.getEventDetial())) {
+            viewHolder.tvClassInfo.setText(item.getEventDetial());
         }
 
         if (!TextUtils.isEmpty(item.getEventEndTime())) {
@@ -77,7 +77,20 @@ public class TicketSelectToBuyAdapter extends BaseAdapter {
         viewHolder.chSelect.setChecked(item.isCheck());
 
 
-        viewHolder.tvType.setText("月卡");
+        if (!TextUtils.isEmpty(item.getEventTitle())) {
+            if (item.getEventType().equals("21")) {
+                //0现金券1满减券2折扣券
+                if (item.getCashEventType().equals("0")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("1")) {
+                    viewHolder.tvType.setText("￥" + item.getTicketPrice());
+                } else if (item.getCashEventType().equals("2")) {
+                    viewHolder.tvType.setText(item.getTicketPrice() + "折");
+                }
+            } else {
+                viewHolder.tvType.setText(item.getEventTitle());
+            }
+        }
 
         return convertView;
     }

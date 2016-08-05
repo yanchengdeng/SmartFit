@@ -60,7 +60,7 @@ public class SelectTicketToBuyActivity extends BaseActivity {
     private void intView() {
         tvTittle.setText(getString(R.string.tick_gift));
         datas = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
-        maxSelectNum = getIntent().getIntExtra(Constants.PASS_STRING,1);
+        maxSelectNum = getIntent().getIntExtra(Constants.PASS_STRING, 1);
         adapter = new TicketSelectToBuyAdapter(this, datas);
         listView.setAdapter(adapter);
         tvFunction.setText("确定");
@@ -82,14 +82,14 @@ public class SelectTicketToBuyActivity extends BaseActivity {
                 if (datas.size() > 0) {
                     if (countSelectNum(datas).size() > 0) {
                         ArrayList<UseableEventInfo> ticketInfos = countSelectNum(datas);
-                        Intent intent = new Intent(SelectTicketToBuyActivity.this,ConfirmPayActivity.class);
-                        intent.putParcelableArrayListExtra(Constants.PASS_OBJECT,ticketInfos);
+                        Intent intent = new Intent(SelectTicketToBuyActivity.this, ConfirmPayActivity.class);
+                        intent.putParcelableArrayListExtra(Constants.PASS_OBJECT, ticketInfos);
                         setResult(RESULT_OK, intent);
                         finish();
                     } else {
                         ArrayList<UseableEventInfo> ticketInfos = new ArrayList<UseableEventInfo>();
-                        Intent intent = new Intent(SelectTicketToBuyActivity.this,ConfirmPayActivity.class);
-                        intent.putParcelableArrayListExtra(Constants.PASS_OBJECT,ticketInfos);
+                        Intent intent = new Intent(SelectTicketToBuyActivity.this, ConfirmPayActivity.class);
+                        intent.putParcelableArrayListExtra(Constants.PASS_OBJECT, ticketInfos);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -100,16 +100,39 @@ public class SelectTicketToBuyActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (countSelectNum(datas).size()>maxSelectNum) {
-                    mSVProgressHUD.showInfoWithStatus(String.format("最多选择%d",maxSelectNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                }else{
-                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
-                    checkBox.setChecked(!checkBox.isChecked());
-                    datas.get(position).setIsCheck(checkBox.isChecked());
+                if (countSelectNum(datas).size() > maxSelectNum) {
+                    mSVProgressHUD.showInfoWithStatus(String.format("最多选择%d", maxSelectNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    if (!checkHasContainCashTicket(countSelectNum(datas))) {
+                        CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        datas.get(position).setIsCheck(checkBox.isChecked());
+                    } else {
+                        mSVProgressHUD.showInfoWithStatus("已选过现金券", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    }
                 }
             }
         });
+    }
 
+    /**
+     * 是否包含  现金券
+     *
+     * @param useableEventInfos
+     * @return 未包含 false 已包含  true
+     */
+    private boolean checkHasContainCashTicket(ArrayList<UseableEventInfo> useableEventInfos) {
+        boolean isContain = false;
+        if (useableEventInfos == null) {
+            return false;
+        } else {
+            for (UseableEventInfo item : useableEventInfos) {
+                if (item.getEventType().equals("21")) {
+                    isContain = true;
+                }
+            }
+            return isContain;
+        }
     }
 
     /**
