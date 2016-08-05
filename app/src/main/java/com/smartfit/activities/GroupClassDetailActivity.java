@@ -198,12 +198,11 @@ public class GroupClassDetailActivity extends BaseActivity {
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
-//        showCashTicketDialog();
+        showCashTicketButton();
 
     }
 
     private String cashEventId;
-    private String cashEventName;
 
     /**
      * 获取现金券id
@@ -227,15 +226,36 @@ public class GroupClassDetailActivity extends BaseActivity {
                 CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
                 if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
                     cashEventId = cashTickeInfo.getId();
-                    cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Util.isInCurrentActivty(GroupClassDetailActivity.this))
-                                showCashDialog();
-                        }
-                    }, 2000);
+                    showCashDialog();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+    }
+
+
+    /**
+     * 弹出红包  按钮
+     */
+    private void showCashTicketButton() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", type);
+        data.put("orgId", id);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    ivSendRed.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
@@ -280,7 +300,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     public void onEvent(Object event) {
         if (event instanceof UpdateGroupClassDetail) {
             loadData();
-            showCashTicketDialog();
+            showCashTicketButton();
         }
     }
 
@@ -588,13 +608,19 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         }
 
-        if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7")|| detail.getOrderStatus().equals("8")) {
+        if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
             tvWaitingAccept.setVisibility(View.GONE);
             btnOrder.setVisibility(View.GONE);
             llOrderSuccess.setVisibility(View.GONE);
         }
 
-        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -904,8 +930,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
                 mSVProgressHUD.showSuccessWithStatus("已评分", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-
-
+                loadData();
+                showCashTicketDialog();
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -69,6 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:gravity="center_vertical">
 
                     <com.makeramen.roundedimageview.RoundedImageView
@@ -77,8 +79,8 @@
                         android:layout_height="80dp"
                         android:scaleType="centerCrop"
                         android:src="@mipmap/bg_pic"
-                        app:riv_oval="false"
-                        app:riv_corner_radius="4dip" />
+                        app:riv_corner_radius="4dip"
+                        app:riv_oval="false" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -132,11 +134,149 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_myclass_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:text="我的评分"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/header_bar_height"
+                        android:orientation="vertical">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar_my_class"
+                            style="@style/roomRatingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:rating="0" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:text="我的课程评价"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_my_class_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/header_bar_height"
+                        android:layout_marginRight="@dimen/header_bar_height"
+                        android:lineSpacingExtra="@dimen/image_padding"
+                        android:text="未评价内容"
+                        android:textColor="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_mack_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:text="给教练评分"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_normal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.hedgehog.ratingbar.RatingBar
+                            android:id="@+id/ratingBar_for_coach"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            hedgehog:clickable="true"
+                            hedgehog:halfstart="true"
+                            hedgehog:starCount="5"
+                            hedgehog:starEmpty="@mipmap/icon_star_bg_large"
+                            hedgehog:starFill="@mipmap/icon_star_large"
+                            hedgehog:starHalf="@mipmap/icon_star_large"
+                            hedgehog:starImageHeight="40dp"
+                            hedgehog:starImagePadding="10dp"
+                            hedgehog:starImageWidth="40dp" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_coach_apprise"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_margin="@dimen/activity_vertical_margin"
+                        android:background="@drawable/bg_dialog_selector_gray_empty"
+                        android:gravity="left|top"
+                        android:hint="填写你对本课程的评语"
+                        android:padding="@dimen/image_padding"
+                        android:textColor="@color/text_color_gray"
+                        android:textColorHint="@color/text_color_gray"
+                        android:textSize="@dimen/text_normal_down" />
+
+                    <Button
+                        android:id="@+id/btn_commit_comments"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                        android:background="@drawable/bg_dialog_selector_red"
+                        android:gravity="center"
+                        android:text="@string/submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_normal" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_vertical_margin"
+                        android:background="@color/gray_light" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray" />
+
+                <LinearLayout
                     android:id="@+id/ll_scan_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -291,16 +431,17 @@
 
 
         </ScrollView>
+
         <ImageView
             android:id="@+id/iv_send_red"
             android:layout_width="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/header_bar_height"
-            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/header_bar_height"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:src="@mipmap/icon_send_red_package"
-            android:layout_height="wrap_content" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_waiting_accept"

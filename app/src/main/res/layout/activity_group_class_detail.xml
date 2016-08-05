@@ -108,7 +108,7 @@
                     android:layout_marginLeft="@dimen/header_bar_height"
                     android:layout_marginRight="@dimen/header_bar_height"
                     android:lineSpacingExtra="@dimen/image_padding"
-                    android:text="我的课程评价"
+                    android:text="未评价内容"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_normal" />
 
@@ -380,11 +380,7 @@
                             android:textSize="@dimen/text_normal_down" />
 
                     </LinearLayout>
-
-
                 </LinearLayout>
-
-
             </RelativeLayout>
 
             <TextView

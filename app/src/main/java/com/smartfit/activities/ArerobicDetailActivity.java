@@ -53,7 +53,7 @@ import butterknife.ButterKnife;
 
 /**
  * 有氧器械详情课程
- * <p/>
+ * <p>
  * 只为查看课程详情
  */
 public class ArerobicDetailActivity extends BaseActivity {
@@ -128,7 +128,7 @@ public class ArerobicDetailActivity extends BaseActivity {
             tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
             tvSaveToPhone.setText(getString(R.string.copy_link));*/
             getClassInfo();
-            showCashTicketDialog(courseId);
+            showCashTicketButton(courseId);
         }
 
     /* Do something */
@@ -144,18 +144,18 @@ public class ArerobicDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      *
      * @param id
      */
-    private void showCashTicketDialog(String id) {
+    private void showCashTicketButton(String id) {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", "3");
         data.put("orgId", id);
@@ -167,16 +167,7 @@ public class ArerobicDetailActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Util.isInCurrentActivty(ArerobicDetailActivity.this))
-                                showCashDialog();
-                        }
-                    }, 2000);
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -249,9 +240,11 @@ public class ArerobicDetailActivity extends BaseActivity {
                 tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
+
+            if (detail.getOrderStatus().equals("3")||detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
+                showCashTicketButton(courseId);
+            }
         }
-
-
         if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
@@ -420,7 +413,7 @@ public class ArerobicDetailActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(ArerobicDetailActivity.this, scrollView,cashEventId,"3",courseId);
+        ShareBottomDialog dialog = new ShareBottomDialog(ArerobicDetailActivity.this, scrollView, cashEventId, "3", courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

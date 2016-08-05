@@ -137,7 +137,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (!TextUtils.isEmpty(((UpdateAreoClassDetail) event).getId())) {
                 courseId = ((UpdateAreoClassDetail) event).getId();
                 getClassInfo(((UpdateAreoClassDetail) event).getId());
-                showCashTicketDialog(((UpdateAreoClassDetail) event).getId());
+                showCashTicketButton(((UpdateAreoClassDetail) event).getId());
             }
         }
 
@@ -147,18 +147,20 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      *
      * @param id
      */
-    private void showCashTicketDialog(String id) {
+
+
+    private void showCashTicketButton(String id) {
         Map<String, String> data = new HashMap<>();
         data.put("orgType", "3");
         data.put("orgId", id);
@@ -170,13 +172,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Util.isInCurrentActivty(AerobicAppratusDetailActivity.this))
-                                showCashDialog();
-                        }
-                    }, 2000);
                 }
             }
         }, new Response.ErrorListener() {
@@ -535,7 +530,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(AerobicAppratusDetailActivity.this, scrollView,cashEventId,"3",courseId);
+        ShareBottomDialog dialog = new ShareBottomDialog(AerobicAppratusDetailActivity.this, scrollView, cashEventId, "3", courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

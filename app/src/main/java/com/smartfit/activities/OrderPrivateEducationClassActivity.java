@@ -138,13 +138,13 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -159,14 +159,6 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Util.isInCurrentActivty(OrderPrivateEducationClassActivity.this))
-                                showCashDialog();
-                        }
-                    },2000);
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -380,7 +372,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(OrderPrivateEducationClassActivity.this, scrollView,cashEventId,"2",courseId);
+        ShareBottomDialog dialog = new ShareBottomDialog(OrderPrivateEducationClassActivity.this, scrollView, cashEventId, "2", courseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }

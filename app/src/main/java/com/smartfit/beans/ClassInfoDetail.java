@@ -31,6 +31,26 @@ public class ClassInfoDetail {
     private String classroomName;//台江－团操,
     private String courseDetail;//123123123,
     private String startDate;//1460217600,
+
+    private String commentStar;//null,
+    private String commentContent;//null,
+
+    public String getCommentStar() {
+        return commentStar;
+    }
+
+    public void setCommentStar(String commentStar) {
+        this.commentStar = commentStar;
+    }
+
+    public String getCommentContent() {
+        return commentContent;
+    }
+
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
     public String getCourseStatus() {
         return courseStatus;
     }
@@ -39,7 +59,7 @@ public class ClassInfoDetail {
         this.courseStatus = courseStatus;
     }
 
-    private String courseStatus;//0:未开始1:正在进行2:已结束
+    private String courseStatus;//0;//未开始1;//正在进行2;//已结束
 
     public String getUid() {
         return uid;
@@ -132,7 +152,7 @@ public class ClassInfoDetail {
         this.shared = shared;
     }
 
-    private String shared ;
+    private String shared;
 
     public String getOrderStatus() {
         return orderStatus;
@@ -150,7 +170,8 @@ public class ClassInfoDetail {
      * 4课程已经结束
      * 5我退出该课程，
      * 6该课程被取消了，
-     * 7课程已结束未评论8已评论）
+     * 7课程已结束未评论
+     * 8已评论）
      */
     private String orderStatus;
 

@@ -8,8 +8,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -101,6 +103,20 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     LinearLayout llScanBar;
     @Bind(R.id.iv_send_red)
     ImageView ivSendRed;
+    @Bind(R.id.ratingBar_my_class)
+    RatingBar ratingBarMyClass;
+    @Bind(R.id.tv_my_class_score)
+    TextView tvMyClassScore;
+    @Bind(R.id.ll_myclass_score)
+    LinearLayout llMyclassScore;
+    @Bind(R.id.ratingBar_for_coach)
+    com.hedgehog.ratingbar.RatingBar ratingBarForCoach;
+    @Bind(R.id.et_coach_apprise)
+    EditText etCoachApprise;
+    @Bind(R.id.btn_commit_comments)
+    Button btnCommitComments;
+    @Bind(R.id.ll_mack_score)
+    LinearLayout llMackScore;
     private String couseId;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
@@ -119,22 +135,26 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         addLisener();
     }
 
+    float starts = 5.0f;
+
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
         btnOrder.setVisibility(View.GONE);
-//        showCashTicketDialog();
+        ratingBarForCoach.setStar(starts);
+        ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
+        showCashTicketButton();
     }
 
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -149,8 +169,32 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                     cashEventId = cashTickeInfo.getId();
                     cashEventName = cashTickeInfo.getCashEventName();
                     ivSendRed.setVisibility(View.VISIBLE);
-                    if (Util.isInCurrentActivty(PrivateClassByMessageActivity.this))
-                        showCashDialog();
+                    showCashDialog();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PrivateClassByMessageActivity.this);
+        mQueue.add(request);
+    }
+
+    private void showCashTicketButton() {
+        Map<String, String> data = new HashMap<>();
+        data.put("orgType", "2");
+        data.put("orgId", couseId);
+        PostRequest request = new PostRequest(Constants.EVENT_GETAVAILABLECASHEVENT, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CashTickeInfo cashTickeInfo = JsonUtils.objectFromJson(response, CashTickeInfo.class);
+                if (cashTickeInfo != null && !TextUtils.isEmpty(cashTickeInfo.getId())) {
+                    cashEventId = cashTickeInfo.getId();
+                    cashEventName = cashTickeInfo.getCashEventName();
+                    ivSendRed.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
@@ -235,7 +279,56 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                 showCashDialog();
             }
         });
+
+        btnCommitComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submintScore(starts, etCoachApprise.getEditableText().toString());
+            }
+        });
+
+        ratingBarForCoach.setOnRatingChangeListener(new com.hedgehog.ratingbar.RatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(float v) {
+                ratingBarForCoach.setStar(v);
+                starts = v;
+            }
+        });
+
     }
+
+    private void submintScore(float rating, String comments) {
+        if (detail == null)
+            return;
+        mSVProgressHUD.showWithStatus(getString(R.string.submit_ing), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String, String> data = new HashMap<>();
+        if (detail.getCommentList() != null && detail.getCommentList().size() > 0) {
+            data.put("commentId", detail.getCommentList().get(0).getCommentId());
+        }
+
+        data.put("topicId", detail.getTopicId());
+        data.put("commentStar", String.valueOf(rating));
+        data.put("commentContent", comments);
+        PostRequest request = new PostRequest(Constants.COMMENT_SAVE, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showSuccessWithStatus("已评分", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+                getData();
+                showCashTicketDialog();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(getString(R.string.try_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(PrivateClassByMessageActivity.this);
+        mQueue.add(request);
+    }
+
 
     private void showCashDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
@@ -274,7 +367,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(PrivateClassByMessageActivity.this, scrollView,cashEventId,"2",couseId);
+        ShareBottomDialog dialog = new ShareBottomDialog(PrivateClassByMessageActivity.this, scrollView, cashEventId, "2", couseId);
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }
@@ -344,8 +437,24 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                 tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
                 tvSaveToPhone.setText(getString(R.string.copy_link));
             }
-
         }
+
+        if (detail.getOrderStatus().equals("8")) {
+            //已评论
+            llMyclassScore.setVisibility(View.VISIBLE);
+            llMackScore.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(detail.getCommentStar())) {
+                ratingBarMyClass.setRating(Float.parseFloat(detail.getCommentStar()));
+            }
+            if (!TextUtils.isEmpty(detail.getCommentContent())) {
+                tvMyClassScore.setText(detail.getCommentContent());
+            }
+
+        } else if (detail.getOrderStatus().equals("7")) {
+            llMyclassScore.setVisibility(View.GONE);
+            llMackScore.setVisibility(View.VISIBLE);
+        }
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
