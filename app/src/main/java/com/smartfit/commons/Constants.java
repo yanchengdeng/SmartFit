@@ -234,10 +234,10 @@ public class Constants {
 
     public static class Net {
         //正式上线地址
-//        public static final String URL = "http://139.196.228.98:7098";
+        public static final String URL = "http://139.196.228.98:7098";
 
         //发布测试的接口
-        public static final String URL = "http://139.196.228.98:8098";
+//        public static final String URL = "http://139.196.228.98:8098";
 
         //内部测试接口
 //        public static final String URL = "http://123.57.164.115:8098";
