@@ -87,7 +87,7 @@ public class ConfirmPayActivity extends BaseActivity {
     private int numTicket, numCards;//选择优惠劵数、选择实体卡
 
 
-    private StringBuffer eventUserIds, cardSNNumbers;
+    private StringBuffer eventUserIds, StringCashIds, cardSNNumbers;
 
     private EventBus eventBus;
 
@@ -125,35 +125,41 @@ public class ConfirmPayActivity extends BaseActivity {
             if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
                 tvUserTicketUsable.setVisibility(View.VISIBLE);
                 tvUserTicketUsable.setText(String.format("%d张可用", newMonthServerInfo.getEventListDTOs().size()));
-                ticketInfos = newMonthServerInfo.getEventListDTOs();
-                UseableEventInfo item = newMonthServerInfo.getEventListDTOs().get(0);
-                //==================================================
-                if (item.getCashEventType().equals("0")) {
-                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
-                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
-                        tvPayMoney.setText("￥0");
-                    } else {
-                        tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
-                        payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
-                    }
-                } else if (item.getCashEventType().equals("1")) {
-                    tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
-                    if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
-                        tvPayMoney.setText("￥0");
-                    } else {
-                        tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
-                        payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
-                    }
 
-                } else if (item.getCashEventType().equals("2")) {
-                    float discount = (1 - Float.parseFloat(item.getTicketPrice()) / 10) * Float.parseFloat(payMoney);
-                    discount = Float.parseFloat(String.format("%.2f", discount));
-                    tvTicketValue.setText(String.format("-￥%s", String.valueOf(discount)));
-                    if (discount >= Float.parseFloat(payMoney)) {
-                        tvPayMoney.setText("￥0");
-                    } else {
-                        tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - discount));
-                        payMoney = String.valueOf(Float.parseFloat(payMoney) - discount);
+                UseableEventInfo item = newMonthServerInfo.getEventListDTOs().get(0);
+                ticketInfos = new ArrayList<>();
+                ticketInfos.add(item);
+                if (item.getEventType().equals("3")) {
+                    tvTicketValue.setText(String.format("-￥%s", newMonthServerInfo.getDefaultMonthPrice()));
+                    tvPayMoney.setText(String.format("￥0"));
+                } else if (item.getEventType().equals("21")) {
+                    if (item.getCashEventType().equals("0")) {
+                        tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                        if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
+                            payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
+                        }
+                    } else if (item.getCashEventType().equals("1")) {
+                        tvTicketValue.setText(String.format("-￥%s", item.getTicketPrice()));
+                        if (Float.parseFloat(item.getTicketPrice()) >= Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice())) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
+                            payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
+                        }
+
+                    } else if (item.getCashEventType().equals("2")) {
+                        float discount = (1 - Float.parseFloat(item.getTicketPrice()) / 10) * Float.parseFloat(payMoney);
+                        discount = Float.parseFloat(String.format("%.2f", discount));
+                        tvTicketValue.setText(String.format("-￥%s", String.valueOf(discount)));
+                        if (discount >= Float.parseFloat(payMoney)) {
+                            tvPayMoney.setText("￥0");
+                        } else {
+                            tvPayMoney.setText("￥" + (Float.parseFloat(payMoney) - discount));
+                            payMoney = String.valueOf(Float.parseFloat(payMoney) - discount);
+                        }
                     }
                 }
             } else {
@@ -211,14 +217,33 @@ public class ConfirmPayActivity extends BaseActivity {
         count = ((ticketInfos != null && ticketInfos.size() > 0) ? ticketInfos.size() : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
 
         if (count > 0) {
-            tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
+            UseableEventInfo cashEventInfo = null;
+            if (ticketInfos != null && ticketInfos.size() > 0) {
+                for (UseableEventInfo item : ticketInfos) {
+                    if (item.getEventType().equals("21")) {
+                        cashEventInfo = item;
+                    }
+                }
+            }
 
-
-            tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
-
-            // 记得 包月支付接口 更改======================================================================================
-
-
+            if (cashEventInfo != null) {
+                Float ticketValue = 0f;
+                if (cashEventInfo.getCashEventType().equals("0")) {
+                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice()) + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
+                } else if (cashEventInfo.getCashEventType().equals("1")) {
+                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice()) + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
+                } else if (cashEventInfo.getCashEventType().equals("2")) {
+                    float discount = (1 - Float.parseFloat(cashEventInfo.getTicketPrice()) / 10) * Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num);
+                    discount = Float.parseFloat(String.format("%.2f", discount));
+                    ticketValue = discount;
+                }
+                tvTicketValue.setText(String.format("-￥%.2f", ticketValue));
+                Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) *(num-(count-ticketInfos.size())) - ticketValue;
+                tvPayMoney.setText(String.format("￥%.2f", payFloat));
+            } else {
+                tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
+                tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
+            }
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
         }
@@ -278,10 +303,26 @@ public class ConfirmPayActivity extends BaseActivity {
         maps.put("useMonthRang", String.valueOf(num));
         if (ticketInfos != null && ticketInfos.size() > 0) {
             eventUserIds = new StringBuffer();
+            StringCashIds = new StringBuffer();
             for (UseableEventInfo ticket : ticketInfos) {
-                eventUserIds.append(ticket.getId()).append("|");
+
+                if (ticket.getEventType().equals("3")) {
+                    eventUserIds.append(ticket.getId()).append("|");
+                }
+                if (ticket.getEventType().equals("21")) {
+                    StringCashIds.append(ticket.getId());
+                }
             }
-            maps.put("eventUserIds", eventUserIds.toString());//券
+            if (eventUserIds != null ) {
+                if (eventUserIds.toString().substring(eventUserIds.length()-1,eventUserIds.length()).equals("|")){
+                    maps.put("eventUserIds", eventUserIds.toString().substring(0,eventUserIds.length()-1));//券
+                }else{
+                    maps.put("eventUserIds", eventUserIds.toString());//券
+                }
+            }
+            if (StringCashIds != null) {
+                maps.put("cashEventUserId", StringCashIds.toString());
+            }
         }
 
         if (cardNums != null && cardNums.size() > 0) {

@@ -17,7 +17,6 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.MessageEvent.FinishActivityAfterPay;
-import com.smartfit.MessageEvent.UpdateWalletInfo;
 import com.smartfit.R;
 import com.smartfit.adpters.MothActivityAdatper;
 import com.smartfit.beans.NewMonthServerInfo;
@@ -115,6 +114,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
     private void getData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
+        maps.put("useMonthRang",String.valueOf(mouth));
         PostRequest request = new PostRequest(Constants.EVENT_GETMONTHSELLBOARD, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

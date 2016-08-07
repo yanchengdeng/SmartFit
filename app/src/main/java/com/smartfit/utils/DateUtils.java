@@ -524,7 +524,7 @@ public class DateUtils {
 
     public static String getHour(String startTime, String endTime) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date now = null;
+        java.util.Date now = null;
         try {
             now = df.parse(endTime);
             java.util.Date date = df.parse(startTime);

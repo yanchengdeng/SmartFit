@@ -41,7 +41,6 @@ import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
-import com.smartfit.beans.TicketInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.DeviceUtil;
@@ -54,13 +53,11 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
-import com.smartfit.wxapi.WXEntryActivity;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,7 +195,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         loadData();
         addLisener();
-        showCashTicketButton();
+//        showCashTicketButton();
 
     }
 
@@ -532,8 +529,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                 //TODO  暂时隐藏
                 llScanBar.setVisibility(View.GONE);//发送朋友 二维码
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
-
-
             } else {
                 //去订购
 //                btnOrder.setVisibility(View.VISIBLE);
@@ -613,6 +608,11 @@ public class GroupClassDetailActivity extends BaseActivity {
             btnOrder.setVisibility(View.GONE);
             llOrderSuccess.setVisibility(View.GONE);
         }
+
+        if (detail.getOrderStatus().equals("8") ){
+            showCashTicketDialog();
+        }
+
 
         new Handler().post(new Runnable() {
             @Override

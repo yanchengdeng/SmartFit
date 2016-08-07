@@ -91,11 +91,12 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                 } else if (item.getSysMessage().getType().equals("21")) {
                     //领取券
                     viewHolder.tvName.setText("系统消息");
-
                 } else if (item.getSysMessage().getType().equals("23")) {
                     //领取券
                     viewHolder.tvName.setText("系统消息");
-
+                } else if (item.getSysMessage().getType().equals("24")) {
+                   //器械课完结后通知
+                    viewHolder.tvName.setText("系统消息");
                 }
             }
 
@@ -120,13 +121,19 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                 }
             } else if (item.getSysMessage().getType().equals(MessageType.TICKET_BACK_MESSAGE)) {
                 if (item.getSysMessage().getMessageContent() != null) {
-
-
                     if (!TextUtils.isEmpty(item.getSysMessage().getMessageContent().getContent())) {
                         viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getDetail());
                     }
                 }
-
+                if (!TextUtils.isEmpty(item.getSysMessage().getTime())) {
+                    viewHolder.tvDate.setText(DateUtils.getDataTimeMonth(item.getSysMessage().getTime()));
+                }
+            } else if (item.getSysMessage().getType().equals(MessageType.AEREABICON_CLASS_OVER)) {
+                if (item.getSysMessage().getMessageContent() != null) {
+                    if (!TextUtils.isEmpty(item.getSysMessage().getMessageContent().getContent())) {
+                        viewHolder.tvContent.setText(item.getSysMessage().getMessageContent().getDetail());
+                    }
+                }
                 if (!TextUtils.isEmpty(item.getSysMessage().getTime())) {
                     viewHolder.tvDate.setText(DateUtils.getDataTimeMonth(item.getSysMessage().getTime()));
                 }

@@ -113,6 +113,15 @@ public class SystemMesageAdatper extends BaseAdapter {
             }
             ImageLoader.getInstance().displayImage(item.getMessageContent().getSourseUserPicUrl(), viewHolder.ivIcon, Options.getHeaderOptions());
             viewHolder.tvAccepte.setVisibility(View.VISIBLE);
+        }else if(item.getType().equals(MessageType.AEREABICON_CLASS_OVER)){
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
         }
 
         viewHolder.tvAccepte.setOnClickListener(new View.OnClickListener() {

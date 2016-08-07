@@ -267,6 +267,8 @@ public class MessageActivity extends BaseActivity {
                             openActivity(SystemMessageListActivity.class);
                         } else if (item.getSysMessage().getType().equals(MessageType.TICKET_BACK_MESSAGE)) {
                             openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.AEREABICON_CLASS_OVER)) {
+                            openActivity(SystemMessageListActivity.class);
                         } else {
                             openActivity(CourseMessageActivity.class);
                         }

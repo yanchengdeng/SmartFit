@@ -23,12 +23,12 @@ import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.smartfit.MessageEvent.UpdatePrivateClassDetail;
 import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CoachInfo;
-import com.smartfit.beans.PrivateClassOrderInfo;
 import com.smartfit.beans.PrivateEducationClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
@@ -40,6 +40,9 @@ import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +126,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     private String startTime, endTime;
     private String cashEventId, cashEventName;
 
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +134,22 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         setContentView(R.layout.activity_private_class_by_message);
         ButterKnife.bind(this);
         couseId = getIntent().getStringExtra(Constants.PASS_STRING);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         getData();
         addLisener();
+    }
+
+    @Subscribe
+    public void onEvent(Object event) {/* Do something */
+
+        if (event instanceof UpdatePrivateClassDetail) {
+            btnOrder.setVisibility(View.INVISIBLE);
+            tvWaitingAccept.setVisibility(View.VISIBLE);
+//            getCourseCode();
+//            showCashTicketDialog();
+        }
     }
 
     float starts = 5.0f;
@@ -142,19 +159,19 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         btnOrder.setVisibility(View.GONE);
         ratingBarForCoach.setStar(starts);
         ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
-        showCashTicketButton();
+
     }
 
     /**
      * 获取现金券id
      * 0:团操课
-     * <p>
+     * <p/>
      * 1:小班课
-     * <p>
+     * <p/>
      * 2:私教课
-     * <p>
+     * <p/>
      * 3:器械课
-     * <p>
+     * <p/>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -449,10 +466,39 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             if (!TextUtils.isEmpty(detail.getCommentContent())) {
                 tvMyClassScore.setText(detail.getCommentContent());
             }
-
+            showCashTicketButton();
         } else if (detail.getOrderStatus().equals("7")) {
             llMyclassScore.setVisibility(View.GONE);
             llMackScore.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
+            if (detail.getCourseStatus().equals("0")) {
+                btnOrder.setVisibility(View.VISIBLE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
+                        btnOrder.setVisibility(View.VISIBLE);
+                    } else {
+                        btnOrder.setVisibility(View.GONE);
+                    }
+                }
+            } else if (detail.getCourseStatus().equals("1")) {
+
+                tvWaitingAccept.setVisibility(View.VISIBLE);
+                tvWaitingAccept.setText("课程进行中...");
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
+                        btnOrder.setVisibility(View.GONE);
+                    } else {
+                        btnOrder.setVisibility(View.GONE);
+                    }
+                }
+            } else if (detail.getCourseStatus().equals("2")) {
+                tvWaitingAccept.setVisibility(View.GONE);
+                btnOrder.setVisibility(View.GONE);
+
+            }
         }
 
 
@@ -499,10 +545,10 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(detail.getPrice())) {
-            monney += Float.parseFloat(detail.getPrice());
-        }
-        tvClassPrice.setText(String.format("%.2f", monney * Float.parseFloat(DateUtils.getHour(startTime, endTime))));
+//        if (!TextUtils.isEmpty(detail.getPrice())) {
+        monney = Float.parseFloat(detail.getPrice());
+//        }
+        tvClassPrice.setText(String.format("%.2f", monney * (DateUtils.getHourNum(startTime, endTime))));
     }
 
 
@@ -516,8 +562,8 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                 break;
             case R.id.btn_order:
                 if (detail != null)
-//                    orderPrivateClass();
-                    break;
+                    orderPrivateClass();
+                break;
             case R.id.iv_back:
                 finish();
                 break;
@@ -528,45 +574,13 @@ public class PrivateClassByMessageActivity extends BaseActivity {
      * 预约私教课
      */
     private void orderPrivateClass() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (PrivateEducationClass item : privateEducationClasses) {
-            stringBuilder.append(item.getCoachId()).append("|");
-        }
-
-
-        HashMap<String, String> maps = new HashMap<>();
-        maps.put("coachIdList", stringBuilder.toString());
-        maps.put("startTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
-        maps.put("endTime", String.valueOf(DateUtils.getTheDateTimeMillions(endTime)));
-        maps.put("latitude", detail.getLat());
-        maps.put("longitude", detail.getLongit());
-        maps.put("classroomId", detail.getClassroomId());
-
-
-        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
-        PostRequest request = new PostRequest(Constants.COACH_BESPOKECOACH, maps, new Response.Listener<JsonObject>() {
-            @Override
-            public void onResponse(JsonObject response) {
-                mSVProgressHUD.dismiss();
-                PrivateClassOrderInfo privateClassOrderInfo = JsonUtils.objectFromJson(response.toString(), PrivateClassOrderInfo.class);
-                if (privateClassOrderInfo != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(Constants.PAGE_INDEX, 3);
-                    bundle.putString(Constants.COURSE_ID, privateClassOrderInfo.getCourseId());
-                    bundle.putString(Constants.COURSE_MONEY, tvClassPrice.getText().toString());
-                    bundle.putString(Constants.COURSE_TYPE, "2");
-                    openActivity(ConfirmOrderCourseActivity.class, bundle);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
-            }
-        });
-        request.setTag(new Object());
-        request.headers = NetUtil.getRequestBody(PrivateClassByMessageActivity.this);
-        mQueue.add(request);
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX, 3));//  1   2  小班课 和团操课  一样处理
+        bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
+        bundle.putString(Constants.COURSE_ID, detail.getCourseId());
+        bundle.putString(Constants.COURSE_MONEY, detail.getPrice());
+        bundle.putString(Constants.COURSE_TYPE, "2");
+        openActivity(ConfirmOrderCourseActivity.class, bundle);
 
 
     }

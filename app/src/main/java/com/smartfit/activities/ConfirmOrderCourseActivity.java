@@ -95,7 +95,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 
     /****
      * 页面跳转 index
-     * <p>
+     * <p/>
      * //定义  1 ：团体课  2.小班课  3.私教课 4.有氧器械  5 再次开课 （直接付款） 6  （学员）自定课程  7 教练自订课程  8 淋浴付费  9 包月支付  10 季度、半年
      */
     private int pageIndex = 1;
@@ -186,8 +186,10 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
             }
             changePayButtonContent();
         }
+        if (TextUtils.isEmpty(orderCode)) {
+            getUseFullEvent();
+        }
 
-        getUseFullEvent();
 
 /**注意：包月  ：只增对 团操  和器械才免费  ：  其他有优惠券 或实体卡 可以使用 或是 本地金额支付、第三方支付
  *
@@ -405,15 +407,6 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 
 
     private void goPay() {
-        //支付机械课程
-
-//        if (userfulEventes.size() != 0) {
-//            if (couserType.equals("3")) {
-//                payAerobicByEvent();
-//            } else {
-//                if (!TextUtils.isEmpty(selectTicketId))
-//                    payUserCouponWithEventUserId();
-//            }
 
         if (isUserdTicket || isUserCashTicket) {
             if (isUserdTicket) {
@@ -604,6 +597,9 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         rlUserTicketUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!TextUtils.isEmpty(orderCode)) {
+                    return;
+                }
                 if (userfulEventes != null && userfulEventes.size() > 0) {
                     if (!isUserCard) {
                         Bundle bundle = new Bundle();
@@ -623,6 +619,9 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         rlSelectCardUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!TextUtils.isEmpty(orderCode)) {
+                    return;
+                }
                 if (!isUserCard && !isUserdTicket) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.PASS_STRING, 1);

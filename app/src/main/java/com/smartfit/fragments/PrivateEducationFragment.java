@@ -270,6 +270,7 @@ public class PrivateEducationFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.CLASSIF_LISTTHEVENUEIDLECLASSROOMS, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                btnSelected.setText("请选择教练");
                 IdleClassListInfo idleClassListInfo = JsonUtils.objectFromJson(response, IdleClassListInfo.class);
                 if (idleClassListInfo != null && idleClassListInfo.getClassroomList() != null && idleClassListInfo.getClassroomList().size() > 0) {
                     idleClass = idleClassListInfo;
@@ -299,6 +300,7 @@ public class PrivateEducationFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                btnSelected.setText("请选择教练");
                 Log.w("dyc", error.getLocalizedMessage() + error.getMessage());
 
             }
@@ -336,6 +338,7 @@ public class PrivateEducationFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.COACH_LISTIDLECOACHESBYVENUEID, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
+                btnSelected.setText("请选择教练");
                 if (getActivity() != null)
                     ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 if (rlOrderTime != null)
@@ -367,6 +370,7 @@ public class PrivateEducationFragment extends Fragment {
                 llListViewCover.setVisibility(View.GONE);
                 rlOrderTime.setVisibility(View.VISIBLE);
                 btnSelected.setVisibility(View.VISIBLE);
+                btnSelected.setText("请选择教练");
             }
         });
         request.setTag(new Object());

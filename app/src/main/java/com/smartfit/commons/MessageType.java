@@ -83,4 +83,10 @@ public class MessageType {
     public static String TICKET_BACK_MESSAGE = "23";
 
 
+    /***
+     * 有氧器械课程结束
+     */
+
+    public static String AEREABICON_CLASS_OVER = "24";
+
 }
