@@ -395,7 +395,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     private void shareCashTowx() {
         SharedPreferencesUtils.getInstance().putString(Constants.SHARE_ID, shareInfo.getId());
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
+        webpage.webpageUrl = Constants.SHARE_TICKET_URL + shareInfo.getId();
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "好友送您SMART FIT健身大礼包啦";
         msg.description = "恭喜获得一个现金大礼包，分享好友后可立即领取";
@@ -412,7 +412,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     private void shareToWX(ShareInfo shareInfo) {
         SharedPreferencesUtils.getInstance().putString(Constants.SHARE_ID, shareInfo.getId());
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://smartfit.esaydo.com/index/html/share.html?shareid=" + shareInfo.getId();
+        webpage.webpageUrl = Constants.SHARE_TICKET_URL + shareInfo.getId();
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "好友送您SMART FIT健身大礼包啦";
         msg.description = "中国好朋友强塞一个SMARTFIT健身礼包给你！一懒众衫小，还不快起跑！丢一张健身礼券给你，做我陪练好不好！";

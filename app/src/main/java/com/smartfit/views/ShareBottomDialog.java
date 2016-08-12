@@ -40,7 +40,6 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
     private TextView ivClose;
     private Context context;
     private IWXAPI api;
-    private String CASH_URL = "http://smartfit.esaydo.com/index/html/cashshare/get.html?shareid=";
     ShareInfo shareInfo;
 
     public ShareBottomDialog(Context context, View animateView, String cashId, String courseType, String courseId) {
@@ -101,7 +100,7 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
             public void onClick(View v) {
                 if (shareInfo != null) {
                     WXWebpageObject webpage = new WXWebpageObject();
-                    webpage.webpageUrl = CASH_URL + shareInfo.getId();
+                    webpage.webpageUrl = Constants.SHARE_CASH_URL + shareInfo.getId();
                     ;
                     WXMediaMessage msg = new WXMediaMessage(webpage);
                     msg.title = "好友送您SMART FIT健身大礼包啦";
@@ -125,7 +124,7 @@ public class ShareBottomDialog extends BottomBaseDialog<ShareBottomDialog> {
             public void onClick(View v) {
                 if (shareInfo != null) {
                     WXWebpageObject webpage = new WXWebpageObject();
-                    webpage.webpageUrl = CASH_URL + shareInfo.getId();
+                    webpage.webpageUrl = Constants.SHARE_CASH_URL + shareInfo.getId();
                     WXMediaMessage msg = new WXMediaMessage(webpage);
                     msg.title = "好友送您SMART FIT健身大礼包啦";
                     msg.description = "包月仅需139元,自由器械+海量团操轻松拥有！";

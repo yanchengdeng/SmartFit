@@ -297,7 +297,7 @@ public class GroupClassDetailActivity extends BaseActivity {
     public void onEvent(Object event) {
         if (event instanceof UpdateGroupClassDetail) {
             loadData();
-            showCashTicketButton();
+//            showCashTicketButton();
         }
     }
 

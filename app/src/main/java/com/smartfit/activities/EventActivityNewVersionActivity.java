@@ -90,7 +90,8 @@ public class EventActivityNewVersionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_activity_new_version);
-        ButterKnife.bind(this);eventBus = EventBus.getDefault();
+        ButterKnife.bind(this);
+        eventBus = EventBus.getDefault();
         eventBus.register(this);
         initView();
         getData();
@@ -98,7 +99,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(Object event) {
-        if (event instanceof FinishActivityAfterPay){
+        if (event instanceof FinishActivityAfterPay) {
             finish();
         }
     }
@@ -114,7 +115,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
     private void getData() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
-        maps.put("useMonthRang",String.valueOf(mouth));
+        maps.put("useMonthRang", String.valueOf(mouth));
         PostRequest request = new PostRequest(Constants.EVENT_GETMONTHSELLBOARD, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

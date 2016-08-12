@@ -147,7 +147,7 @@
                     android:padding="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/image_padding"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:stretchMode="columnWidth"
                     android:cacheColorHint="@android:color/transparent"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin"

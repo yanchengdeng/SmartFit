@@ -84,9 +84,9 @@
                     android:id="@+id/card_small_class"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="2"
                     android:background="@color/common_header_bg"
                     android:gravity="center">
@@ -104,9 +104,9 @@
                     android:id="@+id/ll_activity_bind_up"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="3">
 
                     <ImageView
@@ -134,9 +134,9 @@
 
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="3"
                     android:background="@color/find_private_coach"
                     android:gravity="center">
@@ -155,9 +155,9 @@
 
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="2"
                     android:background="#de5426"
                     android:gravity="center">
@@ -176,14 +176,15 @@
             <LinearLayout
                 android:id="@+id/card_banner"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp">
+                android:layout_height="60dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp">
 
                 <ImageView
                     android:id="@+id/iv_ad_middle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:scaleType="fitXY"
                     android:src="@mipmap/icon_pic_surfer" />
@@ -201,9 +202,9 @@
                     android:id="@+id/card_aerobic_appratus"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="2"
                     android:background="#ffbc01"
                     android:gravity="center">
@@ -221,9 +222,9 @@
                     android:id="@+id/card_smart_fit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="3">
 
                     <ImageView

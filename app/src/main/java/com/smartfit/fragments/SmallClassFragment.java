@@ -190,6 +190,7 @@ public class SmallClassFragment extends BaseFragment {
             @Override
             public void onResponse(JsonObject response) {
                 isLoaded = true;
+                datas.clear();
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 List<ClassInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), ClassInfo.class);
                 if (null != requestList && requestList.size() > 0) {

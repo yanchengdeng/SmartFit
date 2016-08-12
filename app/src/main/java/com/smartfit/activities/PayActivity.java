@@ -883,7 +883,7 @@ public class PayActivity extends BaseActivity {
      * 自付完成后  需要操作的步骤
      */
     private void dealAfterPay() {
-        if (pageIndex == 1) {
+        if (pageIndex == 1 ||pageIndex == 2) {
             eventBus.post(new UpdateGroupClassDetail());
             new Handler().postDelayed(new Runnable() {
                 @Override

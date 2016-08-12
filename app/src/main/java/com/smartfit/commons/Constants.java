@@ -247,4 +247,12 @@ public class Constants {
         public static final String WX_PAY_CALLBACK = Net.URL + "/pay/weixinCallback";
 
     }
+    //正式 分享环境
+    public static final String SHARE_TICKET_URL = "http://smartfit.esaydo.com/index/html/share.html?shareid=";
+    public static final String SHARE_CASH_URL = "http://smartfit.esaydo.com/index/html/cashshare/get.html?shareid=";
+
+
+    //测试分享环境
+//    public static final String SHARE_TICKET_URL = "http://smartfittest.esaydo.com/index/html/share.html?shareid=";
+//    public static final String SHARE_CASH_URL = "http://smartfittest.esaydo.com/index/html/cashshare/get.html?shareid=";
 }

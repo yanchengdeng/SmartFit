@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 
+import com.hyphenate.util.DensityUtil;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
@@ -17,6 +19,7 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.ConfimPayNoramlActivity;
 import com.smartfit.beans.NewMouthServerEvent;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.DeviceUtil;
 
 import java.util.ArrayList;
 
@@ -33,9 +36,12 @@ public class MothActivityAdatper extends BaseAdapter {
     private Context context;
     private ArrayList<NewMouthServerEvent> newMouthServerEvents;
 
+    private LinearLayout.LayoutParams params;
+
     public MothActivityAdatper(Context context, ArrayList<NewMouthServerEvent> newMouthServerEvents) {
         this.context = context;
         this.newMouthServerEvents = newMouthServerEvents;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.px2dip(context, DeviceUtil.getWidth(context) - 100));
     }
 
     @Override
@@ -68,10 +74,11 @@ public class MothActivityAdatper extends BaseAdapter {
         final NewMouthServerEvent item = newMouthServerEvents.get(position);
         if (item.getPics() != null && item.getPics().length > 0) {
             ImageLoader.getInstance().displayImage(item.getPics()[0], viewHolder.ivIcon);
-        }else{
+        } else {
             viewHolder.ivIcon.setImageResource(R.mipmap.bg_pic);
         }
 
+        viewHolder.ivIcon.setLayoutParams(params);
         viewHolder.ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

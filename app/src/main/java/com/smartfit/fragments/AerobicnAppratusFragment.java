@@ -92,7 +92,6 @@ public class AerobicnAppratusFragment extends BaseFragment {
     private int REQUEST_CODE_ORDER_TIME = 0x112;
 
 
-
     private AerobincnAppratusItemAdapter adapter;
     private List<AreoInfo> datas = new ArrayList<AreoInfo>();
 
@@ -128,22 +127,22 @@ public class AerobicnAppratusFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER,0);
-            if (isPrepared){
+        if (isVisibleToUser) {
+            slectPostion = SharedPreferencesUtils.getInstance().getInt(Constants.SELECT_ADDRESS_VENER, 0);
+            if (isPrepared) {
                 doLoadData();
             }
         }
     }
 
 
-    private void doLoadData(){
+    private void doLoadData() {
         String citycode = SharedPreferencesUtils.getInstance().getString(Constants.CITY_CODE, "");
         if (TextUtils.isEmpty(citycode)) {
             ((BaseActivity) getActivity()).mSVProgressHUD.showInfoWithStatus(getString(R.string.no_city_location), SVProgressHUD.SVProgressHUDMaskType.Clear);
         } else {
             List<WorkPointAddress> workPointAddresses = Util.getVenueList();
-            if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size()>slectPostion) {
+            if (workPointAddresses != null && workPointAddresses.size() > 0 && workPointAddresses.size() > slectPostion) {
                 addresses = workPointAddresses;
                 tvAddress.setText(addresses.get(slectPostion).getVenueName());
                 venueId = addresses.get(slectPostion).getVenueId();
@@ -178,8 +177,8 @@ public class AerobicnAppratusFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.COURSE_ID, datas.get(position).getClassroomId());
-                bundle.putString("start", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +startTime)));
-                bundle.putString("end", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " +endTime)));
+                bundle.putString("start", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
+                bundle.putString("end", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
                 ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
             }
         });
@@ -203,6 +202,7 @@ public class AerobicnAppratusFragment extends BaseFragment {
             @Override
             public void onResponse(JsonObject response) {
                 isLoaded = true;
+                datas.clear();
                 ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
                 List<AreoInfo> requestList = JsonUtils.listFromJson(response.getAsJsonArray("list"), AreoInfo.class);
                 if (null != requestList && requestList.size() > 0) {
@@ -475,7 +475,7 @@ public class AerobicnAppratusFragment extends BaseFragment {
                     addressCustomPop.dismiss();
                     ivCoverBg.setVisibility(View.GONE);
                     venueId = addresses.get(position).getVenueId();
-                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER,position);
+                    SharedPreferencesUtils.getInstance().putInt(Constants.SELECT_ADDRESS_VENER, position);
                     isLoaded = false;
                     lazyLoad();
                 }
