@@ -20,7 +20,7 @@ public class UserInfo {
     private String fansCount;//0,
     private String friendCount;//0,
     private String balance;//0,
-    private ArrayList<CommentInfo> commonList;//null,
+    private ArrayList<ClassCommend> commonList;//null,
     private String coachInfo;//null,
     private String courseCount;//null,
     private String[] coachDynamicPics;//
@@ -257,11 +257,11 @@ public class UserInfo {
         this.balance = balance;
     }
 
-    public ArrayList<CommentInfo> getCommonList() {
+    public ArrayList<ClassCommend> getCommonList() {
         return commonList;
     }
 
-    public void setCommonList(ArrayList<CommentInfo> commonList) {
+    public void setCommonList(ArrayList<ClassCommend> commonList) {
         this.commonList = commonList;
     }
 

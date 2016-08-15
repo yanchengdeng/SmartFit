@@ -34,6 +34,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 设置页
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
 public class SettingActivity extends BaseActivity {
 
     @Bind(R.id.iv_header)
-    ImageView ivHeader;
+    CircleImageView ivHeader;
     @Bind(R.id.tv_name)
     TextView tvName;
     @Bind(R.id.iv_accept_msg_not)
@@ -95,18 +96,6 @@ public class SettingActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        String userInfo = SharedPreferencesUtils.getInstance().getString(Constants.USER_INFO, "");
-        if (!TextUtils.isEmpty(userInfo)) {
-            UserInfoDetail userInfoDetail = JsonUtils.objectFromJson(userInfo, UserInfoDetail.class);
-            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader, Options.getHeaderOptionsCircle());
-            if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
-                tvName.setText(userInfoDetail.getNickName());
-            }
-        }
-    }
 
     private void initView() {
         userInfoDetail = Util.getUserInfo(SettingActivity.this);
@@ -125,6 +114,12 @@ public class SettingActivity extends BaseActivity {
             } else {
                 ivAcceptRing.setVisibility(View.GONE);
                 ivAcceptRingNot.setVisibility(View.VISIBLE);
+            }
+
+
+            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader);
+            if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
+                tvName.setText(userInfoDetail.getNickName());
             }
         }
 

@@ -296,6 +296,7 @@ public class SplashActivity extends FragmentActivity {
                             Intent intent = new Intent(SplashActivity.this, AdActivity.class);
                             intent.putExtra(Constants.PASS_STRING, flashPageInfo.getLink());
                             intent.putExtra("name", flashPageInfo.getAdName());
+                            intent.putExtra("is_from_main", true);
                             startActivity(intent);
                             finish();
                         }

@@ -1,25 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:background="@color/common_bg"
     android:fitsSystemWindows="true"
-    android:background="@null"
+    android:orientation="vertical"
     tools:context="com.smartfit.activities.FaqContentActivity">
 
     <include layout="@layout/common_header_view"></include>
 
 
     <TextView
-        android:id="@+id/tv_content"
-        android:textColor="@color/text_color_gray"
-        android:textSize="@dimen/text_normal"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:lineSpacingExtra="5dp"
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/header_bar_height"
+        android:drawablePadding="@dimen/image_padding_big"
+        android:drawableTop="@mipmap/push"
+        android:gravity="center_horizontal"
         android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_larger_big"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/image_padding"
+        android:background="@drawable/bg_dialog_selector_gray_empty_corner"
+        android:paddingBottom="@dimen/image_padding"
+        android:paddingLeft="@dimen/text_larger_big"
+        android:paddingRight="@dimen/text_larger_big"
+        android:paddingTop="@dimen/image_padding"
+        android:text="v2.0"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+
+    <TextView
+        android:id="@+id/tv_new_function"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/header_bar_height"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/icon_next_w"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="新功能介绍"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_check_udpate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/icon_next_w"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="检查更新"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/tv_user_deal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/icon_next_w"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="使用协议"
+        android:textColor="@color/text_color_gray"
+        android:textSize="@dimen/text_normal" />
 
 
 </LinearLayout>

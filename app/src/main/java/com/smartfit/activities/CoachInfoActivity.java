@@ -21,6 +21,7 @@ import com.hyphenate.easeui.EaseConstant;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smartfit.R;
+import com.smartfit.adpters.CoachAppraiseAdapter;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
@@ -31,6 +32,7 @@ import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
+import com.smartfit.views.MyListView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -193,6 +195,16 @@ public class CoachInfoActivity extends BaseActivity {
                 tvaddFriends.setText("已添加好友");
             }
         }
+
+
+        if (userInfo.getCommonList() != null && userInfo.getCommonList().size() > 0) {
+            listView.setVisibility(View.VISIBLE);
+            tvMoreApprise.setVisibility(View.VISIBLE);
+            listView.setAdapter(new CoachAppraiseAdapter(CoachInfoActivity.this, userInfo.getCommonList()));
+        } else {
+            listView.setVisibility(View.GONE);
+            tvMoreApprise.setVisibility(View.GONE);
+        }
     }
 
 
@@ -215,6 +227,8 @@ public class CoachInfoActivity extends BaseActivity {
     TextView tvVIP, tvName, tvMotto, tvAttention, tvFans, tvCore, tvaddFriends;
     TextView tvCoachBrief, tvReadMoreBrief, tvRating, tvTeachedClass, tvHeight, tvWeight, tvCoachInfo, tvHisClasses;
     LinearLayout llDynamic;
+    MyListView listView;
+    TextView tvMoreApprise;
 
     private void initView() {
         tvCoachMoreInfo = scrollView.getPullRootView().findViewById(R.id.tv_read_more_info);
@@ -242,6 +256,8 @@ public class CoachInfoActivity extends BaseActivity {
         tvCoachInfo = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_coach_info);
         tvHisClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_his_classes);
         llDynamic = (LinearLayout) scrollView.getPullRootView().findViewById(R.id.ll_dynamic_ui);
+        listView = (MyListView) scrollView.getPullRootView().findViewById(R.id.listview);
+        tvMoreApprise = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_look_more_apprise);
 
     }
 
@@ -339,11 +355,20 @@ public class CoachInfoActivity extends BaseActivity {
         tvReadMoreBrief.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tvCoachBrief.getMaxLines()==2) {
+                if (tvCoachBrief.getMaxLines() == 2) {
                     tvCoachBrief.setMaxLines(Integer.MAX_VALUE);
-                }else{
+                    tvReadMoreBrief.setText("收起");
+                } else {
                     tvCoachBrief.setMaxLines(2);
+                    tvReadMoreBrief.setText("展开");
                 }
+            }
+        });
+
+        tvMoreApprise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(CoachAppraiseActivity.class);
             }
         });
     }

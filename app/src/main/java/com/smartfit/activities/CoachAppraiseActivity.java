@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.smartfit.R;
 import com.smartfit.adpters.CoachAppraiseAdapter;
 import com.smartfit.adpters.GroupExpericeItemAdapter;
+import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.CommentInfo;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class CoachAppraiseActivity extends BaseActivity {
 
     private int page = 1;
     private CoachAppraiseAdapter adapter;
-    private List<String> datas = new ArrayList<String>();
+    private List<ClassCommend> datas = new ArrayList<ClassCommend>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +82,6 @@ public class CoachAppraiseActivity extends BaseActivity {
     }
 
     private void loadData(String contions) {
-        for (int i = 0; i < 10; i++) {
-            datas.add("模拟数据" + i + String.valueOf(page));
-        }
 
         adapter.setData(datas);
 

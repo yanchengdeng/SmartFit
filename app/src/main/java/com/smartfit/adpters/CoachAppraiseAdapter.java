@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.CommentInfo;
 
 import java.util.List;
 
@@ -23,15 +26,14 @@ import butterknife.ButterKnife;
  */
 public class CoachAppraiseAdapter extends BaseAdapter {
     private Context context;
-    private List<String> datas;
-    private List<String> data;
+    private List<ClassCommend> datas;
     RelativeLayout.LayoutParams params;
 
-    public CoachAppraiseAdapter(Context context, List<String> datas) {
+    public CoachAppraiseAdapter(Context context, List<ClassCommend> datas) {
         this.context = context;
         this.datas = datas;
-        params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,24);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT ,RelativeLayout.TRUE);
+        params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
     }
 
@@ -62,11 +64,19 @@ public class CoachAppraiseAdapter extends BaseAdapter {
         }
 
         viewhold.ratingBar.setLayoutParams(params);
+        ClassCommend item = datas.get(position);
+        if (!TextUtils.isEmpty(item.getCommentContent())) {
+            viewhold.tvJoin.setText(item.getCommentContent());
+        }
+        viewhold.tvJoin.setSingleLine();
+        if (!TextUtils.isEmpty(item.getCommentStar())) {
+            viewhold.ratingBar.setRating(Float.parseFloat(item.getCommentStar()));
+        }
         return convertView;
     }
 
-    public void setData(List<String> data) {
-        this.data = data;
+    public void setData(List<ClassCommend> data) {
+        this.datas = data;
         notifyDataSetChanged();
     }
 

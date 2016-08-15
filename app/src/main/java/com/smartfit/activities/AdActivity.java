@@ -33,6 +33,7 @@ public class AdActivity extends BaseActivity {
 
     private String url;
     private String adName;
+    private boolean isFromMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class AdActivity extends BaseActivity {
         ButterKnife.bind(this);
         url = getIntent().getStringExtra(Constants.PASS_STRING);
         adName = getIntent().getStringExtra("name");
+        isFromMain = getIntent().getBooleanExtra("is_from_main", false);
         if (!TextUtils.isEmpty(adName)) {
             tvTittle.setText(adName);
         }
@@ -75,13 +77,17 @@ public class AdActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     public void onClick() {
-        openActivity(MainActivity.class);
+        if (isFromMain) {
+            openActivity(MainActivity.class);
+        }
         finish();
     }
 
     @Override
     public void onBackPressed() {
-        openActivity(MainActivity.class);
+        if (isFromMain) {
+            openActivity(MainActivity.class);
+        }
         finish();
     }
 }
