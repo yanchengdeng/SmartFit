@@ -179,6 +179,7 @@ public class AerobicnAppratusFragment extends BaseFragment {
                 bundle.putString(Constants.COURSE_ID, datas.get(position).getClassroomId());
                 bundle.putString("start", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + startTime)));
                 bundle.putString("end", String.valueOf(DateUtils.getTheDateTimeMillions(selectDate + " " + endTime)));
+                bundle.putString("open_time",datas.get(position).getOpenAppointmentTime());
                 ((MainBusinessActivity) getActivity()).openActivity(AerobicAppratusDetailActivity.class, bundle);
             }
         });

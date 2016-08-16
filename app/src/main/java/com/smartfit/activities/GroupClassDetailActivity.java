@@ -58,6 +58,7 @@ import com.umeng.socialize.UMShareAPI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -609,8 +610,21 @@ public class GroupClassDetailActivity extends BaseActivity {
             llOrderSuccess.setVisibility(View.GONE);
         }
 
-        if (detail.getOrderStatus().equals("8") ){
+        if (detail.getOrderStatus().equals("8")) {
             showCashTicketDialog();
+        }
+
+
+        if (!TextUtils.isEmpty(detail.getOpenAppointmentTime())) {
+            if (type.equals("0")) {
+                if (System.currentTimeMillis() > Long.parseLong(detail.getOpenAppointmentTime()) * 1000) {
+
+                } else {
+                    btnOrder.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.VISIBLE);
+                    tvWaitingAccept.setText(DateUtils.getDayOFWeek(GroupClassDetailActivity.this, DateUtils.getInteger(DateUtils.getDate(detail.getOpenAppointmentTime()), Calendar.DAY_OF_WEEK)) + DateUtils.getData(detail.getOpenAppointmentTime(), " HH:mm") + "开放预约");
+                }
+            }
         }
 
 
@@ -726,6 +740,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                 if (classInfoDetail != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString(Constants.PASS_STRING, classInfoDetail.getUid());
+                    bundle.putString("coach_id", classInfoDetail.getCoachId());
                     openActivity(CoachInfoActivity.class, bundle);
                 }
             }

@@ -158,7 +158,7 @@ public class GroupExperienceFragment extends BaseFragment {
      */
     private void initListView() {
         isPrepared = true;
-        adapter = new GroupExpericeItemAdapter(getActivity(), datas);
+        adapter = new GroupExpericeItemAdapter(getActivity(), datas,true);
         listView.setAdapter(adapter);
         goLoadData();
 

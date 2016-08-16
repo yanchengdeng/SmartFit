@@ -50,6 +50,7 @@ import com.smartfit.views.ShareBottomDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,8 +104,12 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     ScrollView scrollView;
     @Bind(R.id.iv_send_red)
     ImageView ivSendRed;
+    @Bind(R.id.ll_price)
+    LinearLayout llPrice;
+    @Bind(R.id.tv_waiting_accept)
+    TextView tvWaitingAccept;
     private String classroomid;
-    private String startTime, endTime;
+    private String startTime, endTime, openTime;
 
 
     private EventBus eventBus;
@@ -296,13 +301,22 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             detail.getVenue().setOrderPriceSum("免费");
             tvPrice.setText("免费");
         }
-
         if (null != detail.getClassroomPics() && detail.getClassroomPics().length > 0) {
             rollViewPager.setVisibility(View.VISIBLE);
         } else {
             detail.setClassroomPics(new String[]{""});
             rollViewPager.setVisibility(View.VISIBLE);
         }
+
+        if (System.currentTimeMillis() > Long.parseLong(openTime) * 1000) {
+            btnOrder.setVisibility(View.VISIBLE);
+            tvWaitingAccept.setVisibility(View.INVISIBLE);
+        } else {
+            btnOrder.setVisibility(View.GONE);
+            tvWaitingAccept.setVisibility(View.VISIBLE);
+            tvWaitingAccept.setText(DateUtils.getDayOFWeek(AerobicAppratusDetailActivity.this, DateUtils.getInteger(DateUtils.getDate(openTime), Calendar.DAY_OF_WEEK)) + DateUtils.getData(openTime, " HH:mm") + "开放预约");
+        }
+
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
         rollViewPager.setAdapter(new TestNomalAdapter(detail.getClassroomPics(), detail.getClassroomName()));
@@ -322,6 +336,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         classroomid = getIntent().getStringExtra(Constants.COURSE_ID);
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
+        openTime = getIntent().getStringExtra("open_time");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
 
@@ -422,6 +437,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         rollViewPager.setAnimationDurtion(500);
         rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getClassroomName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
+
+
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         new Handler().postDelayed(new Runnable() {
             @Override

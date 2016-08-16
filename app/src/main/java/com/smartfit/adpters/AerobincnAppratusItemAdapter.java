@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.smartfit.R;
 import com.smartfit.beans.AreoInfo;
+import com.smartfit.utils.DateUtils;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,6 +76,19 @@ public class AerobincnAppratusItemAdapter extends BaseAdapter {
 
         if (!TextUtils.isEmpty(item.getClassroomPrice())) {
             viewHolder.tvPrice.setText(item.getClassroomPrice() + "元/次");
+        }
+
+        if (System.currentTimeMillis() > Long.parseLong(item.getOpenAppointmentTime()) * 1000) {
+
+            viewHolder.tvPrice.setText(item.getClassroomPrice() + "元/次");
+            viewHolder.tvPriceInfo.setText("会员免费");
+            viewHolder.tvPrice.setTextColor(context.getResources().getColor(R.color.find_private_coach));
+            viewHolder.tvPriceInfo.setTextColor(context.getResources().getColor(R.color.common_header_bg));
+        } else {
+            viewHolder.tvPrice.setText(DateUtils.getDayOFWeek(context, DateUtils.getInteger(DateUtils.getDate(item.getOpenAppointmentTime()), Calendar.DAY_OF_WEEK)) + DateUtils.getData(item.getOpenAppointmentTime(), " HH:mm"));
+            viewHolder.tvPriceInfo.setText("开放预约");
+            viewHolder.tvPrice.setTextColor(context.getResources().getColor(R.color.text_color_gray));
+            viewHolder.tvPriceInfo.setTextColor(context.getResources().getColor(R.color.text_color_gray));
         }
 
         return convertView;

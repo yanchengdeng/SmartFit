@@ -242,6 +242,18 @@
         </LinearLayout>
 
     </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_waiting_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_light"
+            android:gravity="center"
+            android:padding="@dimen/image_padding_big"
+            android:text="课程进行中..."
+            android:textColor="@color/text_color_gray"
+            android:visibility="invisible" />
         <ImageView
             android:id="@+id/iv_send_red"
             android:layout_width="wrap_content"

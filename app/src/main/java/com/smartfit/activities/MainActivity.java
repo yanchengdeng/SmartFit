@@ -1,7 +1,10 @@
 package com.smartfit.activities;
 
+import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,12 +13,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -53,10 +59,12 @@ import com.smartfit.beans.LinyuRecord;
 import com.smartfit.beans.MainAdInfo;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.beans.UserInfoDetail;
+import com.smartfit.beans.VersionInfo;
 import com.smartfit.beans.WorkPointAddress;
 import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
@@ -68,6 +76,7 @@ import com.smartfit.utils.Util;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +125,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     private EventBus eventBus;
 
     private List<MainAdInfo> mainAdInfos;
+
+    private String downLoadURL = "/download/smartfit.apk";
 
 
     @Override
@@ -189,7 +200,113 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
 
         requestCityList();
+
+        getLastVersion();
     }
+
+    /**
+     * 获取最新版本信息
+     */
+    private void getLastVersion() {
+        Map<String, String> data = new HashMap<>();
+        PostRequest request = new PostRequest(Constants.VERSIONMANAGER_GETLATESTUPDATE, data, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                VersionInfo versionInfo = JsonUtils.objectFromJson(response.toString(), VersionInfo.class);
+                if (versionInfo != null)
+                    showUpdateDialog(versionInfo);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.headers = NetUtil.getRequestBody(MainActivity.this);
+        GetSingleRequestUtils.getInstance(MainActivity.this).getRequestQueue().add(request);
+    }
+
+    /**
+     * 版本升级对话框
+     *
+     * @param versionInfo
+     */
+    private void showUpdateDialog(final VersionInfo versionInfo) {
+
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_app_update);
+
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+        tvTittle.setText(String.format("版本：%s | 大小：%sM | 更新日期：%s", new Object[]{versionInfo.getVersionName(), versionInfo.getPackageSize(), DateUtils.getData(versionInfo.getUpdateTime(), "yyyy-MM-dd")}));
+
+        TextView tvContent = (TextView) dialog.getWindow().findViewById(R.id.tv_content);
+        if (!TextUtils.isEmpty(versionInfo.getContent())) {
+            tvContent.setText(versionInfo.getContent());
+        }
+
+        if (versionInfo.getForceUpdate().equals("1")) {
+            dialog.getWindow().findViewById(R.id.cancel_action).setVisibility(View.GONE);
+            dialog.setCanceledOnTouchOutside(false);
+        }
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (!TextUtils.isEmpty(versionInfo.getUrl())) {
+                    doDownLoadApp(versionInfo.getUrl());
+                }
+            }
+        });
+    }
+
+    /**
+     * 下载最新版本app
+     *
+     * @param filepath
+     */
+    private void doDownLoadApp(String filepath) {
+        DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+//下载请求
+        DownloadManager.Request down = new DownloadManager.Request(Uri.parse(filepath));
+//设置允许使用的网络类型
+        down.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+//发出通知，既后台下载
+        down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        down.setMimeType("application/vnd.android.package-archive");
+        //下载完成文件存放的位置
+        down.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "smartfit.apk");
+        down.setTitle("正在下载");
+//将下载请求放入队列中,开始下载
+        manager.enqueue(down);
+    }
+
+
+    /**
+     * 作者： 邓言诚 创建于： 2016/7/18 11:42.
+     */
+    class DownLoadCompleteReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + downLoadURL)),
+                        "application/vnd.android.package-archive");
+                startActivity(intent);
+            } else if (intent.getAction().equals(DownloadManager.ACTION_NOTIFICATION_CLICKED)) {
+
+            }
+        }
+    }
+
 
     /**
      * 获取城市列表

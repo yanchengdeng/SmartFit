@@ -461,5 +461,6 @@
         SelectUseableTicketForCourseActivity
     </string>
     <string name="month_server_tips">购买包月服务可享免费预约团操课和有氧器械</string>
+    <string name="title_activity_user_deal">UserDealActivity</string>
 
 </resources>

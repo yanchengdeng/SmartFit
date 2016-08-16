@@ -16,6 +16,16 @@ public class AreoInfo {
     private String classroomPersonCount;//8,
     private String partCount;//0
 
+    public String getOpenAppointmentTime() {
+        return openAppointmentTime;
+    }
+
+    public void setOpenAppointmentTime(String openAppointmentTime) {
+        this.openAppointmentTime = openAppointmentTime;
+    }
+
+    private String openAppointmentTime;
+
     public String getClassroomId() {
         return classroomId;
     }

@@ -35,6 +35,16 @@ public class ClassInfoDetail {
     private String commentStar;//null,
     private String commentContent;//null,
 
+    public String getOpenAppointmentTime() {
+        return openAppointmentTime;
+    }
+
+    public void setOpenAppointmentTime(String openAppointmentTime) {
+        this.openAppointmentTime = openAppointmentTime;
+    }
+
+    private String openAppointmentTime;
+
     public String getCommentStar() {
         return commentStar;
     }

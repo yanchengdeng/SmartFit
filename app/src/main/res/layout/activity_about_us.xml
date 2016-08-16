@@ -36,7 +36,7 @@
         android:paddingLeft="@dimen/text_larger_big"
         android:paddingRight="@dimen/text_larger_big"
         android:paddingTop="@dimen/image_padding"
-        android:text="v2.0"
+        android:text="v1.0"
         android:textColor="@color/text_color_gray"
         android:textSize="@dimen/text_normal" />
 

@@ -228,7 +228,7 @@ public class DateUtils {
      * @param dateType 日期格式
      * @return 数值
      */
-    private static int getInteger(Date date, int dateType) {
+    public static int getInteger(Date date, int dateType) {
         int num = 0;
         Calendar calendar = Calendar.getInstance();
         if (date != null) {
@@ -374,6 +374,17 @@ public class DateUtils {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return simpleDateFormat.format(date);
+
+    }
+
+
+
+    public static Date getDate(String longSeconds) {
+
+        Date date = new Date(Long.parseLong(longSeconds) * 1000);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return date;
 
     }
 

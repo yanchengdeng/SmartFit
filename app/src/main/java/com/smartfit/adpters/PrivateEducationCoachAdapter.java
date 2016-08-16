@@ -100,6 +100,7 @@ public class PrivateEducationCoachAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getUid());
+                bundle.putString("coach_id", item.getCoachId());
                 ((BaseActivity) context).openActivity(CoachInfoActivity.class, bundle);
             }
         });

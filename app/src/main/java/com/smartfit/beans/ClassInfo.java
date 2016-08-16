@@ -24,6 +24,16 @@ public class ClassInfo {
     private String classUrl;//http;////localhost;//8089/upload/picture/2016/3/27/1459078205056/1459078205.jpg,
     private String beginTime;//1459904400
 
+    public String getOpenAppointmentTime() {
+        return openAppointmentTime;
+    }
+
+    public void setOpenAppointmentTime(String openAppointmentTime) {
+        this.openAppointmentTime = openAppointmentTime;
+    }
+
+    private String openAppointmentTime;
+
     public String getCourseStatus() {
         return courseStatus;
     }

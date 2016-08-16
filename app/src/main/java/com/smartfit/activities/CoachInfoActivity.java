@@ -67,11 +67,12 @@ public class CoachInfoActivity extends BaseActivity {
         getCoachInfo();
     }
 
-    String uid;
+    String uid,coachId;
 
     private void getCoachInfo() {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         uid = getIntent().getExtras().getString(Constants.PASS_STRING);
+        coachId = getIntent().getExtras().getString("coach_id");
         Map<String, String> maps = new HashMap<>();
         maps.put("uid", uid);
         PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
@@ -358,9 +359,11 @@ public class CoachInfoActivity extends BaseActivity {
                 if (tvCoachBrief.getMaxLines() == 2) {
                     tvCoachBrief.setMaxLines(Integer.MAX_VALUE);
                     tvReadMoreBrief.setText("收起");
+                    tvReadMoreBrief.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_up), null);
                 } else {
                     tvCoachBrief.setMaxLines(2);
                     tvReadMoreBrief.setText("展开");
+                    tvReadMoreBrief.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.icon_down), null);
                 }
             }
         });
@@ -368,7 +371,9 @@ public class CoachInfoActivity extends BaseActivity {
         tvMoreApprise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(CoachAppraiseActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, coachId);
+                openActivity(CoachAppraiseActivity.class, bundle);
             }
         });
     }

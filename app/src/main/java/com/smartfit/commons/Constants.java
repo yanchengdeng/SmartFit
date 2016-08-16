@@ -93,6 +93,7 @@ public class Constants {
     public static final String COACH_LISTIDLECOACHESBYVENUEID = "/coach/listIdleCoachesByVenueId";
     public static final String USER_CANCELCOURSELIST = "/User/cancelCourseList";
     public static final String COMMENT_SAVE = "/comment/save";
+    public static final String COMMENT_GETCOMMENTS_BYCOACHID = "/comment/getCommentsByCoachId";
     public static final String COURSE_COACHJOINCOURSE = "/course/coachJoinCourse";
     public static final String COACH_BESPOKECOACH = "/coach/bespokeCoach";
     public static final String CLASSIF_GETCLASSIFICATION = "/ClassIf/getClassification";
@@ -204,6 +205,10 @@ public class Constants {
     public static final String EVENT_GETAVAILABLECASHEVENT = "/event/getAvailableCashEvent";
     public static final String EVENT_GETSHAREDMAINPAGE = "/event/getSharedMainPage";
     public static final String EVENT_SHARECASHEVENTUSER = "/event/shareCashEventUser";
+    //v1.1
+    public static final String VERSIONMANAGER_GETLATESTUPDATE = "/versionmanager/getLatestUpdate";
+    public static final String VERSIONMANAGER_GETPROTOCOL = "/versionmanager/getProtocol";
+    public  static final String VERSIONMANAGER_GETINTRODUCE = "/versionmanager/getIntroduce";
 
 
     public static final int SIZE = 20;

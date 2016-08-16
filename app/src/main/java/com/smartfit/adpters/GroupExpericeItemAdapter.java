@@ -1,6 +1,7 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.smartfit.beans.ClassInfo;
 import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.Options;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,6 +33,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
     private Context context;
     private List<ClassInfo> datas;
     LinearLayout.LayoutParams params;
+    private boolean isGroup;
 
     public GroupExpericeItemAdapter(Context context
             , List<ClassInfo> datas) {
@@ -38,6 +41,13 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         this.datas = datas;
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
 
+    }
+
+    public GroupExpericeItemAdapter(Context context, List<ClassInfo> datas, boolean isGroup) {
+        this.context = context;
+        this.datas = datas;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 25);
+        this.isGroup = isGroup;
     }
 
     @Override
@@ -104,14 +114,14 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getCourseStatus())) {
-            if (item.getCourseStatus().equals("0")){
+            if (item.getCourseStatus().equals("0")) {
                 //未开始
                 viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.white));
                 viewHolder.llPriceUi.setVisibility(View.VISIBLE);
                 viewHolder.tvClassStatus.setVisibility(View.GONE);
                 viewHolder.tvClassStatus.setText("进行中");
                 viewHolder.tvClassStatus.setTextColor(context.getResources().getColor(R.color.blue_light));
-            }else if (item.getCourseStatus().equals("1")){
+            } else if (item.getCourseStatus().equals("1")) {
                 //正在进行
                 viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.white));
                 viewHolder.llPriceUi.setVisibility(View.GONE);
@@ -119,7 +129,7 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
                 viewHolder.tvClassStatus.setText("进行中");
                 viewHolder.tvClassStatus.setTextColor(context.getResources().getColor(R.color.blue_light));
 
-            }else if (item.getCourseStatus().equals("2")){
+            } else if (item.getCourseStatus().equals("2")) {
                 //已结束
                 viewHolder.rlAllUi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
                 viewHolder.llPriceUi.setVisibility(View.GONE);
@@ -130,6 +140,22 @@ public class GroupExpericeItemAdapter extends BaseAdapter {
         }
 
         ImageLoader.getInstance().displayImage(item.getClassUrl(), viewHolder.ivIcon, Options.getListOptions());
+
+
+        //当前时间  》  可预约时间   可以下单
+        if (isGroup) {
+            if (System.currentTimeMillis() > Long.parseLong(item.getOpenAppointmentTime()) * 1000) {
+                viewHolder.tvPrice.setText(item.getPrice() + "元");
+                viewHolder.tvPriceInfo.setText("会员免费");
+                viewHolder.tvPrice.setTextColor(context.getResources().getColor(R.color.common_header_bg));
+                viewHolder.tvPriceInfo.setTextColor(context.getResources().getColor(R.color.common_header_bg));
+            } else {
+                viewHolder.tvPrice.setText(DateUtils.getDayOFWeek(context, DateUtils.getInteger(DateUtils.getDate(item.getOpenAppointmentTime()), Calendar.DAY_OF_WEEK)) + DateUtils.getData(item.getOpenAppointmentTime(), " HH:mm"));
+                viewHolder.tvPriceInfo.setText("开放预约");
+                viewHolder.tvPrice.setTextColor(context.getResources().getColor(R.color.text_color_gray));
+                viewHolder.tvPriceInfo.setTextColor(context.getResources().getColor(R.color.text_color_gray));
+            }
+        }
 
         viewHolder.ratingBar.setLayoutParams(params);
         return convertView;
