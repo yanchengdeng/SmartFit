@@ -1,10 +1,13 @@
 package com.smartfit.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by dengyancheng on 16/3/19.
  * 课程列表信息
  */
-public class ClassInfo {
+public class ClassInfo implements Parcelable {
 
     private String courseType;//null,
     private String otherCount;//null,
@@ -179,4 +182,69 @@ public class ClassInfo {
     public void setBeginTime(String beginTime) {
         this.beginTime = beginTime;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.courseType);
+        dest.writeString(this.otherCount);
+        dest.writeString(this.partCount);
+        dest.writeString(this.courseId);
+        dest.writeString(this.courseName);
+        dest.writeString(this.coachRealName);
+        dest.writeString(this.linkPhone);
+        dest.writeString(this.coachId);
+        dest.writeString(this.price);
+        dest.writeString(this.nickName);
+        dest.writeString(this.stars);
+        dest.writeString(this.endTime);
+        dest.writeString(this.personCount);
+        dest.writeString(this.classroomPersonCount);
+        dest.writeString(this.courseDetail);
+        dest.writeString(this.classUrl);
+        dest.writeString(this.beginTime);
+        dest.writeString(this.openAppointmentTime);
+        dest.writeString(this.courseStatus);
+    }
+
+    public ClassInfo() {
+    }
+
+    protected ClassInfo(Parcel in) {
+        this.courseType = in.readString();
+        this.otherCount = in.readString();
+        this.partCount = in.readString();
+        this.courseId = in.readString();
+        this.courseName = in.readString();
+        this.coachRealName = in.readString();
+        this.linkPhone = in.readString();
+        this.coachId = in.readString();
+        this.price = in.readString();
+        this.nickName = in.readString();
+        this.stars = in.readString();
+        this.endTime = in.readString();
+        this.personCount = in.readString();
+        this.classroomPersonCount = in.readString();
+        this.courseDetail = in.readString();
+        this.classUrl = in.readString();
+        this.beginTime = in.readString();
+        this.openAppointmentTime = in.readString();
+        this.courseStatus = in.readString();
+    }
+
+    public static final Parcelable.Creator<ClassInfo> CREATOR = new Parcelable.Creator<ClassInfo>() {
+        @Override
+        public ClassInfo createFromParcel(Parcel source) {
+            return new ClassInfo(source);
+        }
+
+        @Override
+        public ClassInfo[] newArray(int size) {
+            return new ClassInfo[size];
+        }
+    };
 }

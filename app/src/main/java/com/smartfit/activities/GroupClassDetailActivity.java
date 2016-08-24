@@ -39,6 +39,7 @@ import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassCommend;
+import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CourseNotition;
 import com.smartfit.beans.LingyunListInfo;
@@ -178,6 +179,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private String type = "0";
 
+    private ClassInfo classInfo;
+
     private EventBus eventBus;
 
 
@@ -190,6 +193,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         eventBus.register(this);
         id = getIntent().getStringExtra(Constants.PASS_STRING);
         type = getIntent().getStringExtra(Constants.COURSE_TYPE);
+        classInfo = getIntent().getParcelableExtra(Constants.PASS_OBJECT);
         tvTittle.setText(getString(R.string.class_detail));
         if (type.equals("0")) {
             tvWarningTips.setText(getString(R.string.group_experien_cancle_class_tips));
@@ -215,13 +219,13 @@ public class GroupClassDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p>
+     * <p/>
      * 1:小班课
-     * <p>
+     * <p/>
      * 2:私教课
-     * <p>
+     * <p/>
      * 3:器械课
-     * <p>
+     * <p/>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -660,6 +664,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("courseId", id);
         data.put("courseType", type);
+        data.put("beginTime", classInfo.getBeginTime());
+        data.put("endTime", classInfo.getEndTime());
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
