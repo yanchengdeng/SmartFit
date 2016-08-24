@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@null"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.UserDealActivity">
 
     <include layout="@layout/common_header_view" />

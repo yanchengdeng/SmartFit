@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,7 +61,7 @@ public class AboutUsActivity extends BaseActivity {
     TextView tvUserDeal;
 
     private String downLoadURL = "/download/smartfit.apk";
-
+    DownLoadCompleteReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,11 @@ public class AboutUsActivity extends BaseActivity {
         ButterKnife.bind(this);
         tvTittle.setText(getString(R.string.about_us));
         tvVersion.setText("V" + DeviceUtil.getVersionName(this));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        filter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
+        receiver = new DownLoadCompleteReceiver();
+        registerReceiver(receiver, filter);
     }
 
     @OnClick({R.id.iv_back, R.id.tv_new_function, R.id.tv_check_udpate, R.id.tv_user_deal})

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartfit.R;
+import com.smartfit.beans.EntityCardInfo;
 
 import java.util.List;
 
@@ -26,9 +27,9 @@ import butterknife.ButterKnife;
 public class VertifyCardSuccessAdapter extends BaseAdapter {
 
     private Context context;
-    private List<String> vertifyCards;
+    private List<EntityCardInfo> vertifyCards;
 
-    public VertifyCardSuccessAdapter(Context context, List<String> vertifyCards) {
+    public VertifyCardSuccessAdapter(Context context, List<EntityCardInfo> vertifyCards) {
         this.context = context;
         this.vertifyCards = vertifyCards;
 
@@ -60,13 +61,13 @@ public class VertifyCardSuccessAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (!TextUtils.isEmpty(vertifyCards.get(position))) {
-            viewHolder.etCardCode.setText(vertifyCards.get(position));
+        if (!TextUtils.isEmpty(vertifyCards.get(position).getCode())) {
+            viewHolder.etCardCode.setText(vertifyCards.get(position).getCode());
         }
         return convertView;
     }
 
-    public void setData(List<String> vertifyCards) {
+    public void setData(List<EntityCardInfo> vertifyCards) {
         this.vertifyCards = vertifyCards;
         notifyDataSetChanged();
     }

@@ -209,6 +209,10 @@ public class Constants {
     public static final String VERSIONMANAGER_GETLATESTUPDATE = "/versionmanager/getLatestUpdate";
     public static final String VERSIONMANAGER_GETPROTOCOL = "/versionmanager/getProtocol";
     public  static final String VERSIONMANAGER_GETINTRODUCE = "/versionmanager/getIntroduce";
+    public  static final String COURSE_GETNOTIFICATION = "/course/getNotification";
+    public static final String USER_SAVENOPROTOCOL = "/User/saveNoProtocol";
+    public static final String USER_MYBOOKLIST = "/User/myBookList";
+    public static final String USER_MYABSENTLIST = "/User/myAbsentList";
 
 
     public static final int SIZE = 20;

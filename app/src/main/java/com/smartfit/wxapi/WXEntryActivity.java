@@ -54,6 +54,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 券分享
  * Created by ntop on 15/9/4.
  */
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
@@ -114,13 +115,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     private void initView() {
         tvTittle.setText(getString(R.string.tick_gift_share));
+        ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
         if (!TextUtils.isEmpty(getIntent().getStringExtra(Constants.TICKET_SHARE_TYPE))) {
             ticketType = getIntent().getStringExtra(Constants.TICKET_SHARE_TYPE);
         }
-
         if (ticketType.equals("1")) {
-
-
             StringBuffer stringBuffer = new StringBuffer();
 
             StringBuffer ticketsId = new StringBuffer();
@@ -134,20 +133,17 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                         ticketsId.append(ticketInfos.get(i).getId()).append("|");
                     }
                     stringBuffer.append(ticketInfos.get(i).getEventTitle()).append("\n");
-
                 }
-
-
             }
-
             ticketIds = ticketsId.toString();
         } else if (ticketType.equals("2")) {
             cashEventId = getIntent().getStringExtra(Constants.PASS_STRING);
             courseId = getIntent().getStringExtra("course_id");
         }
-        ticketInfos = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
-        if (ticketInfos != null && ticketInfos.size() > 0)
+
+        if (ticketInfos != null && ticketInfos.size() > 0) {
             listview.setAdapter(new ShareTicketAdapter(WXEntryActivity.this, ticketInfos));
+        }
     }
 
     private void addLisener() {

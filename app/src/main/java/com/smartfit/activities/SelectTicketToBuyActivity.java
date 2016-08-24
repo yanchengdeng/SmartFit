@@ -13,6 +13,7 @@ import com.smartfit.R;
 import com.smartfit.adpters.TicketSelectToBuyAdapter;
 import com.smartfit.beans.UseableEventInfo;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.views.LoadMoreListView;
 
 import java.util.ArrayList;
@@ -100,15 +101,26 @@ public class SelectTicketToBuyActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (countSelectNum(datas).size() > maxSelectNum) {
-                    mSVProgressHUD.showInfoWithStatus(String.format("最多选择%d", maxSelectNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                } else {
-                    if (!checkHasContainCashTicket(countSelectNum(datas))) {
-                        CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                if (countSelectNumMouth(datas) >= maxSelectNum) {
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.ch_select);
+                    if (checkBox.isChecked()) {
                         checkBox.setChecked(!checkBox.isChecked());
                         datas.get(position).setIsCheck(checkBox.isChecked());
                     } else {
-                        mSVProgressHUD.showInfoWithStatus("已选过现金券", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        mSVProgressHUD.showInfoWithStatus(String.format("已选择%d张", maxSelectNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    }
+                } else {
+                    CheckBox cashBox = (CheckBox) view.findViewById(R.id.ch_select);
+                    if (!checkHasContainCashTicket(countSelectNum(datas))) {
+                        cashBox.setChecked(!cashBox.isChecked());
+                        datas.get(position).setIsCheck(cashBox.isChecked());
+                    } else {
+                        if (datas.get(position).getEventType().equals("21")) {
+                            mSVProgressHUD.showInfoWithStatus("已选过现金券", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                        } else {
+                            cashBox.setChecked(!cashBox.isChecked());
+                            datas.get(position).setIsCheck(cashBox.isChecked());
+                        }
                     }
                 }
             }
@@ -134,6 +146,31 @@ public class SelectTicketToBuyActivity extends BaseActivity {
             return isContain;
         }
     }
+
+    /**
+     * 计算已经选择券所代表的月数
+     *
+     * @param datas
+     */
+    private int countSelectNumMouth(List<UseableEventInfo> datas) {
+        int selectMouth = 0;
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).isCheck() == true) {
+                if (datas.get(i).getEventType().equals("3")) {
+                    selectMouth = selectMouth + 1;
+                } else if (datas.get(i).getEventType().equals("15")) {
+                    selectMouth = selectMouth + 3;
+                } else if (datas.get(i).getEventType().equals("16")) {
+                    selectMouth = selectMouth + 12;
+                } else if (datas.get(i).getEventType().equals("21")) {
+                    selectMouth = selectMouth + 1;
+                }
+            }
+        }
+        LogUtil.w("dyc", "---" + selectMouth);
+        return selectMouth;
+    }
+
 
     /**
      * 计算已经选择券

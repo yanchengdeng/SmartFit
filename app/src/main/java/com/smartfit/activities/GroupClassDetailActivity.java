@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,6 +40,7 @@ import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassCommend;
 import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.CourseNotition;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
@@ -163,6 +166,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     ImageView ivSendRed;
     @Bind(R.id.ratingBar_for_coach)
     com.hedgehog.ratingbar.RatingBar ratingBarForCoach;
+    @Bind(R.id.tv_warning_tips)
+    TextView tvWarningTips;
 
 
     private DiscussItemAdapter adapter;
@@ -186,6 +191,11 @@ public class GroupClassDetailActivity extends BaseActivity {
         id = getIntent().getStringExtra(Constants.PASS_STRING);
         type = getIntent().getStringExtra(Constants.COURSE_TYPE);
         tvTittle.setText(getString(R.string.class_detail));
+        if (type.equals("0")) {
+            tvWarningTips.setText(getString(R.string.group_experien_cancle_class_tips));
+        } else {
+            tvWarningTips.setText(getString(R.string.small_class_cancle_class_tips));
+        }
         ivFunction.setImageResource(R.mipmap.ic_more_share);
         //TODO  分享暂时隐藏
         ivFunction.setVisibility(View.INVISIBLE);
@@ -868,13 +878,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                     createLinyuOrder(lingyunListInfo.getListData());
                 } else {
                     if (classInfoDetail != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX, 1));//  1   2  小班课 和团操课  一样处理
-                        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
-                        bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
-                        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
-                        bundle.putString(Constants.COURSE_TYPE, type);
-                        openActivity(ConfirmOrderCourseActivity.class, bundle);
+                        getCourseNotition(classInfoDetail);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                     }
@@ -892,6 +896,135 @@ public class GroupClassDetailActivity extends BaseActivity {
         request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
         mQueue.add(request);
 
+    }
+
+    private void getCourseNotition(ClassInfoDetail classInfoDetail) {
+        Map<String, String> map = new HashMap<>();
+        map.put("beginTime", classInfoDetail.getStartTime());
+        map.put("courseType", type);
+        PostRequest request = new PostRequest(Constants.COURSE_GETNOTIFICATION, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CourseNotition courseNotition = JsonUtils.objectFromJson(response.toString(), CourseNotition.class);
+                if (courseNotition != null) {
+                    //  课程提醒
+                    // 0:忽略不弹窗1:预约协议2:限制消息
+                    if (courseNotition.getType().equals("0")) {
+                        goBuyCourseUI();
+                    } else {
+                        showCourseNotiton(courseNotition);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+    }
+
+    private void goBuyCourseUI() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX, 1));//  1   2  小班课 和团操课  一样处理
+        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
+        bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
+        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+        bundle.putString(Constants.COURSE_TYPE, type);
+        openActivity(ConfirmOrderCourseActivity.class, bundle);
+    }
+
+    /**
+     * 弹出课程提醒对话框
+     *
+     * @param courseNotition
+     */
+    private void showCourseNotiton(final CourseNotition courseNotition) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_course_notition);
+
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+
+        TextView tvRightButton = (TextView) dialog.getWindow().findViewById(R.id.commit_action);
+        TextView tvLeftButton = (TextView) dialog.getWindow().findViewById(R.id.cancel_action);
+        final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
+        if (courseNotition.getType().equals("1")) {
+            tvTittle.setText("器械区预约协议");
+            tvRightButton.setText("同意协议，马山预约");
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(false);
+        } else if (courseNotition.getType().equals("2")) {
+            tvTittle.setText("预约确认");
+            tvRightButton.setText("确定预约");
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        } else if (courseNotition.getType().equals("3")) {
+            tvTittle.setText("限制提示");
+            tvLeftButton.setText("知道了");
+            tvRightButton.setVisibility(View.GONE);
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        }
+        TextView tvContent = (TextView) dialog.getWindow().findViewById(R.id.tv_content);
+        if (!TextUtils.isEmpty(courseNotition.getContent())) {
+            tvContent.setText(courseNotition.getContent());
+        }
+
+
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
+                    dialog.dismiss();
+                    saveHaveReaderProtocol();
+                } else if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")) {
+                        goBuyCourseUI();
+                        dialog.dismiss();
+                    } else if (courseNotition.getType().equals("3")) {
+                        dialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(GroupClassDetailActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 设置已读协议
+     */
+    private void saveHaveReaderProtocol() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseType", type);
+        PostRequest request = new PostRequest(Constants.USER_SAVENOPROTOCOL, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                goBuyCourseUI();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
     }
 
 

@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +34,7 @@ import com.smartfit.R;
 import com.smartfit.beans.AreaDetailInfo;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.CourseNotition;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
 import com.smartfit.beans.LinyuRecord;
@@ -108,6 +111,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     LinearLayout llPrice;
     @Bind(R.id.tv_waiting_accept)
     TextView tvWaitingAccept;
+    @Bind(R.id.tv_warning_tips)
+    TextView tvWarningTips;
     private String classroomid;
     private String startTime, endTime, openTime;
 
@@ -333,6 +338,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
+        tvWarningTips.setText(getString(R.string.areob_class_cancle_class_tips));
         classroomid = getIntent().getStringExtra(Constants.COURSE_ID);
         startTime = getIntent().getStringExtra("start");
         endTime = getIntent().getStringExtra("end");
@@ -565,16 +571,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                     createLinyuOrder(lingyunListInfo.getListData());
                 } else {
                     if (detail != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.PAGE_INDEX, 4);
-                        bundle.putString(Constants.COURSE_ID, detail.getId());
-                        bundle.putString(Constants.COURSE_MONEY, detail.getClassroomPrice());
-                        bundle.putString("start_time", startTime);
-                        bundle.putString("end_time", endTime);
-                        bundle.putString("classroom", detail.getId());
-                        bundle.putString(Constants.COURSE_TYPE, "3");
-                        bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
-                        openActivity(ConfirmOrderCourseActivity.class, bundle);
+                        getCourseNotition(detail);
                     } else {
                         mSVProgressHUD.showInfoWithStatus("课程请求获取失败", SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
                     }
@@ -592,6 +589,150 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
         mQueue.add(request);
 
+    }
+
+    /**
+     * 获取预约提醒
+     *
+     * @param detail
+     */
+    private void getCourseNotition(final AreaDetailInfo detail) {
+        Map<String, String> map = new HashMap<>();
+        map.put("beginTime", detail.getStartTime());
+        map.put("courseType", "3");
+        PostRequest request = new PostRequest(Constants.COURSE_GETNOTIFICATION, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CourseNotition courseNotition = JsonUtils.objectFromJson(response.toString(), CourseNotition.class);
+                if (courseNotition != null) {
+                    //  课程提醒
+                    // 0:忽略不弹窗1:预约协议2:限制消息3 禁止消息
+                    if (courseNotition.getType().equals("0")) {
+                        goBuyCourseUI();
+                    } else {
+                        showCourseNotiton(courseNotition);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+    }
+
+
+    private void goBuyCourseUI() {
+        if (detail != null) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.PAGE_INDEX, 4);
+            bundle.putString(Constants.COURSE_ID, detail.getId());
+            bundle.putString(Constants.COURSE_MONEY, detail.getClassroomPrice());
+            bundle.putString("start_time", startTime);
+            bundle.putString("end_time", endTime);
+            bundle.putString("classroom", detail.getId());
+            bundle.putString(Constants.COURSE_TYPE, "3");
+            bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
+            openActivity(ConfirmOrderCourseActivity.class, bundle);
+        }
+
+    }
+
+    /**
+     * 弹出课程提醒对话框
+     * 1:预约协议2:限制消息 3:禁止消息
+     *
+     * @param courseNotition
+     */
+    private void showCourseNotiton(final CourseNotition courseNotition) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_course_notition);
+
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+
+        TextView tvRightButton = (TextView) dialog.getWindow().findViewById(R.id.commit_action);
+        TextView tvLeftButton = (TextView) dialog.getWindow().findViewById(R.id.cancel_action);
+        final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
+        if (courseNotition.getType().equals("1")) {
+            tvTittle.setText("器械区预约协议");
+            tvRightButton.setText("同意协议，马山预约");
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(false);
+        } else if (courseNotition.getType().equals("2")) {
+            tvTittle.setText("预约确认");
+            tvRightButton.setText("确定预约");
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        } else if (courseNotition.getType().equals("3")) {
+            tvTittle.setText("限制提示");
+            tvLeftButton.setText("知道了");
+            tvRightButton.setVisibility(View.GONE);
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        }
+
+
+        TextView tvContent = (TextView) dialog.getWindow().findViewById(R.id.tv_content);
+        if (!TextUtils.isEmpty(courseNotition.getContent())) {
+            tvContent.setText(courseNotition.getContent());
+        }
+
+
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
+                    dialog.dismiss();
+                    saveHaveReaderProtocol();
+                } else if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")) {
+                        goBuyCourseUI();
+                        dialog.dismiss();
+                    } else if (courseNotition.getType().equals("3")) {
+                        dialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(AerobicAppratusDetailActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 设置已读协议
+     */
+    private void saveHaveReaderProtocol() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseType", "3");
+        PostRequest request = new PostRequest(Constants.USER_SAVENOPROTOCOL, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                goBuyCourseUI();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
     }
 
     /**

@@ -47,6 +47,8 @@
                     android:dividerHeight="0px"
                     android:listSelector="@android:color/transparent" />
 
+                <include layout="@layout/custom_cancle_class_tips"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

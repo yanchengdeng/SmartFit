@@ -11,8 +11,10 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
+import com.smartfit.fragments.MyAbsentClassesFragment;
 import com.smartfit.fragments.MyAddClassesFragment;
 import com.smartfit.fragments.MyClassesOverFragment;
+import com.smartfit.fragments.MyQueueClassesFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,11 +71,13 @@ public class MyClassesActivity extends BaseActivity {
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.my_add_classes, MyAddClassesFragment.class)
+                .add("已排队", MyQueueClassesFragment.class)
                 .add(R.string.already_over, MyClassesOverFragment.class)
+                .add("已旷课", MyAbsentClassesFragment.class)
                 .create());
 
         viewpager.setAdapter(adapter);
-        viewpager.setOffscreenPageLimit(2);
+        viewpager.setOffscreenPageLimit(4);
         viewpagertab.setViewPager(viewpager);
         viewpager.setCurrentItem(0);
 

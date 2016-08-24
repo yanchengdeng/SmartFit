@@ -56,6 +56,13 @@
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_normal" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray" />
+
+            <include layout="@layout/custom_cancle_class_tips" />
+
             <LinearLayout
                 android:id="@+id/ll_myclass_score"
                 android:layout_width="match_parent"

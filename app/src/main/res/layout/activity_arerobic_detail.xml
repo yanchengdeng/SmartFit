@@ -222,6 +222,9 @@
                     </LinearLayout>
                 </RelativeLayout>
 
+
+                <include layout="@layout/custom_cancle_class_tips" />
+
                 <Button
                     android:id="@+id/btn_order"
                     android:layout_width="match_parent"

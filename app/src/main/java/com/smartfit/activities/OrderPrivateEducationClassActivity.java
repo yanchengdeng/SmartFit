@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,6 +29,7 @@ import com.smartfit.R;
 import com.smartfit.adpters.PrivateEducationOrderAdapter;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassInfoDetail;
+import com.smartfit.beans.CourseNotition;
 import com.smartfit.beans.IdleClassListInfo;
 import com.smartfit.beans.LingyunListInfo;
 import com.smartfit.beans.LinyuCourseInfo;
@@ -108,6 +111,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     ImageView ivSendRed;
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+    @Bind(R.id.tv_warning_tips)
+    TextView tvWarningTips;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private IdleClassListInfo idleClassListInfo;
@@ -200,6 +205,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText(getString(R.string.private_education));
+        tvWarningTips.setText(getString(R.string.private_class_cancle_class_tips));
         privateEducationClasses = getIntent().getParcelableArrayListExtra(Constants.PASS_OBJECT);
         idleClassListInfo = (IdleClassListInfo) getIntent().getSerializableExtra(Constants.PASS_IDLE_CLASS_INFO);
 
@@ -454,22 +460,139 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 if (lingyunListInfo != null && lingyunListInfo.getListData() != null && lingyunListInfo.getListData().size() > 0) {
                     createLinyuOrder(lingyunListInfo.getListData());
                 } else {
-                    orderPrivateClass();
+                    getCourseNotition();
                 }
-
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                mSVProgressHUD.showErrorWithStatus(error.getMessage());
             }
         });
         request.setTag(new Object());
         request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
         mQueue.add(request);
+    }
+
+    private void getCourseNotition() {
+        Map<String, String> map = new HashMap<>();
+        map.put("beginTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+        map.put("courseType", "2");
+        PostRequest request = new PostRequest(Constants.COURSE_GETNOTIFICATION, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                CourseNotition courseNotition = JsonUtils.objectFromJson(response.toString(), CourseNotition.class);
+                if (courseNotition != null) {
+                    //  课程提醒
+                    // 0:忽略不弹窗1:预约协议2:限制消息
+                    if (courseNotition.getType().equals("0")) {
+                        orderPrivateClass();
+                    } else {
+                        showCourseNotiton(courseNotition);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+    }
+
+    /**
+     * 弹出课程提醒对话框
+     *
+     * @param courseNotition
+     */
+    private void showCourseNotiton(final CourseNotition courseNotition) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_course_notition);
+
+        TextView tvTittle = (TextView) dialog.getWindow().findViewById(R.id.tv_tittle);
+
+        TextView tvRightButton = (TextView) dialog.getWindow().findViewById(R.id.commit_action);
+        TextView tvLeftButton = (TextView) dialog.getWindow().findViewById(R.id.cancel_action);
+        final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
+        if (courseNotition.getType().equals("1")) {
+            tvTittle.setText("器械区预约协议");
+            tvRightButton.setText("同意协议，马山预约");
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(false);
+        } else if (courseNotition.getType().equals("2")) {
+            tvTittle.setText("预约确认");
+            tvRightButton.setText("确定预约");
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        } else if (courseNotition.getType().equals("3")) {
+            tvTittle.setText("限制提示");
+            tvLeftButton.setText("知道了");
+            tvRightButton.setVisibility(View.GONE);
+            checkBox.setVisibility(View.GONE);
+            checkBox.setChecked(true);
+        }
+
+        TextView tvContent = (TextView) dialog.getWindow().findViewById(R.id.tv_content);
+        if (!TextUtils.isEmpty(courseNotition.getContent())) {
+            tvContent.setText(courseNotition.getContent());
+        }
+
+
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().findViewById(R.id.cancel_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
+                    dialog.dismiss();
+                    saveHaveReaderProtocol();
+                } else if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")) {
+                        orderPrivateClass();
+                        dialog.dismiss();
+                    } else if (courseNotition.getType().equals("3")) {
+                        dialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(OrderPrivateEducationClassActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
+
+    /**
+     * 设置已读协议
+     */
+    private void saveHaveReaderProtocol() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseType", "2");
+        PostRequest request = new PostRequest(Constants.USER_SAVENOPROTOCOL, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                orderPrivateClass();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+    }
+
 
     /**
      * 生成淋浴订单

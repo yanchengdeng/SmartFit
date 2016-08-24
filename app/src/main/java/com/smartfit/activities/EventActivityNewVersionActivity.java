@@ -209,10 +209,33 @@ public class EventActivityNewVersionActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUST_CODE_MOUTH && resultCode == RESULT_OK) {
             if (data.getIntExtra(Constants.PASS_STRING, 0) != 0) {
-                mouth = data.getIntExtra(Constants.PASS_STRING, 0);
+                mouth = data.getIntExtra(Constants.PASS_STRING, 1);
                 tvSelectNum.setText(String.format("数量*%d", mouth));
                 tvCountMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * mouth));
+                updateMouthInfo();
             }
         }
+    }
+
+    private void updateMouthInfo() {
+        mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
+        Map<String, String> maps = new HashMap<>();
+        maps.put("useMonthRang", String.valueOf(mouth));
+        PostRequest request = new PostRequest(Constants.EVENT_GETMONTHSELLBOARD, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                mSVProgressHUD.dismiss();
+                newMonthServerInfo = JsonUtils.objectFromJson(response, NewMonthServerInfo.class);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(EventActivityNewVersionActivity.this);
+        mQueue.add(request);
     }
 }

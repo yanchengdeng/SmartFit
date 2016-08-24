@@ -16,11 +16,13 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.MessageEvent.FinishActivityAfterPay;
 import com.smartfit.R;
+import com.smartfit.beans.EntityCardInfo;
 import com.smartfit.beans.MouthBillInfo;
 import com.smartfit.beans.NewMonthServerInfo;
 import com.smartfit.beans.UseableEventInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 import com.smartfit.utils.SharedPreferencesUtils;
@@ -30,6 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -40,6 +43,9 @@ import butterknife.OnClick;
  * 支付确认  v1.0.3
  * <p/>
  * 只针对包月方式使用    ：当包月数目大于 1   时：包月可以同时使用优惠劵和实体卡，其他支付 不可同时使用（注：月季卡 和半年卡 不可使用优惠劵和实体卡）
+ * <p/>
+ * v1.1
+ * 当月数  大于>=3个月时  可选择季度卡 支付   月数 >= 12  可使用年卡支付
  *
  * @author yanchengdeng
  *         create at 2016/7/7 18:15
@@ -149,7 +155,6 @@ public class ConfirmPayActivity extends BaseActivity {
                             tvPayMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice())));
                             payMoney = String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) - Float.parseFloat(item.getTicketPrice()));
                         }
-
                     } else if (item.getCashEventType().equals("2")) {
                         float discount = (1 - Float.parseFloat(item.getTicketPrice()) / 10) * Float.parseFloat(payMoney);
                         discount = Float.parseFloat(String.format("%.2f", discount));
@@ -175,7 +180,7 @@ public class ConfirmPayActivity extends BaseActivity {
     }
 
     ArrayList<UseableEventInfo> ticketInfos;
-    ArrayList<String> cardNums;
+    ArrayList<EntityCardInfo> cardNums;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,10 +206,21 @@ public class ConfirmPayActivity extends BaseActivity {
 
         } else if (requestCode == GET_CARD_CODE && resultCode == RESULT_OK) {
             if (data.getExtras() != null) {
-                cardNums = data.getStringArrayListExtra(Constants.PASS_OBJECT);
+                cardNums = data.getParcelableArrayListExtra(Constants.PASS_OBJECT);
                 if (cardNums != null && cardNums.size() > 0) {
                     numCards = cardNums.size();
-                    tvUserCard.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * cardNums.size())));
+                    //计算实体卡 实际是多少个月
+                    int entityCardNum = 0;
+                    for (EntityCardInfo item : cardNums) {
+                        if (item.getType().equals("14")) {
+                            entityCardNum = entityCardNum + 1;
+                        } else if (item.getType().equals("15")) {
+                            entityCardNum = entityCardNum + 3;
+                        } else if (item.getType().equals("16")) {
+                            entityCardNum = entityCardNum + 12;
+                        }
+                    }
+                    tvUserCard.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * entityCardNum)));
                     countLeftMoney(ticketInfos, cardNums);
                 }
             }
@@ -213,8 +229,12 @@ public class ConfirmPayActivity extends BaseActivity {
 
     int count;
 
-    private void countLeftMoney(ArrayList<UseableEventInfo> ticketInfos, ArrayList<String> cardNums) {
-        count = ((ticketInfos != null && ticketInfos.size() > 0) ? ticketInfos.size() : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
+    private void countLeftMoney(ArrayList<UseableEventInfo> ticketInfos, ArrayList<EntityCardInfo> cardNums) {
+        //选择的优惠券包含的月数
+        int slectMoutNum = countSelectNumMouth(ticketInfos);
+
+
+        count = ((slectMoutNum > 0) ? slectMoutNum : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
 
         if (count > 0) {
             UseableEventInfo cashEventInfo = null;
@@ -238,11 +258,11 @@ public class ConfirmPayActivity extends BaseActivity {
                     ticketValue = discount;
                 }
                 tvTicketValue.setText(String.format("-￥%.2f", ticketValue));
-                Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) *(num-(count-ticketInfos.size())) - ticketValue;
+                Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - (count - slectMoutNum)) - ticketValue;
                 tvPayMoney.setText(String.format("￥%.2f", payFloat));
             } else {
                 tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
-                tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * ticketInfos.size())));
+                tvTicketValue.setText(String.format("-￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * count)));
             }
         } else {
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
@@ -256,6 +276,34 @@ public class ConfirmPayActivity extends BaseActivity {
             btnPay.setText("确认提交");
         } else {
             btnPay.setText("确认支付");
+        }
+    }
+
+    /**
+     * 计算已经选择券所代表的月数
+     *
+     * @param datas
+     */
+    private int countSelectNumMouth(List<UseableEventInfo> datas) {
+        if (datas != null && datas.size() > 0) {
+            int selectMouth = 0;
+            for (int i = 0; i < datas.size(); i++) {
+                if (datas.get(i).isCheck() == true) {
+                    if (datas.get(i).getEventType().equals("3")) {
+                        selectMouth = selectMouth + 1;
+                    } else if (datas.get(i).getEventType().equals("15")) {
+                        selectMouth = selectMouth + 3;
+                    } else if (datas.get(i).getEventType().equals("16")) {
+                        selectMouth = selectMouth + 12;
+                    } else if (datas.get(i).getEventType().equals("21")) {
+                        selectMouth = selectMouth + 1;
+                    }
+                }
+            }
+            LogUtil.w("dyc", "---" + selectMouth);
+            return selectMouth;
+        } else {
+            return 0;
         }
     }
 
@@ -306,29 +354,29 @@ public class ConfirmPayActivity extends BaseActivity {
             StringCashIds = new StringBuffer();
             for (UseableEventInfo ticket : ticketInfos) {
 
-                if (ticket.getEventType().equals("3")) {
+                if (ticket.getEventType().equals("3") || ticket.getEventType().equals("15") || ticket.getEventType().equals("16")) {
                     eventUserIds.append(ticket.getId()).append("|");
                 }
                 if (ticket.getEventType().equals("21")) {
                     StringCashIds.append(ticket.getId());
                 }
             }
-            if (eventUserIds != null ) {
-                if (eventUserIds.toString().substring(eventUserIds.length()-1,eventUserIds.length()).equals("|")){
-                    maps.put("eventUserIds", eventUserIds.toString().substring(0,eventUserIds.length()-1));//券
-                }else{
+            if (eventUserIds != null && eventUserIds.length() > 0) {
+                if (eventUserIds.toString().substring(eventUserIds.length() - 1, eventUserIds.length()).equals("|")) {
+                    maps.put("eventUserIds", eventUserIds.toString().substring(0, eventUserIds.length() - 1));//券
+                } else {
                     maps.put("eventUserIds", eventUserIds.toString());//券
                 }
             }
-            if (StringCashIds != null) {
+            if (StringCashIds != null && StringCashIds.length() > 0) {
                 maps.put("cashEventUserId", StringCashIds.toString());
             }
         }
 
         if (cardNums != null && cardNums.size() > 0) {
             cardSNNumbers = new StringBuffer();
-            for (String card : cardNums) {
-                cardSNNumbers.append(card).append("|");
+            for (EntityCardInfo card : cardNums) {
+                cardSNNumbers.append(card.getCode()).append("|");
             }
             maps.put("cardSNNumbers", cardSNNumbers.toString());//卡号
         }
@@ -356,7 +404,7 @@ public class ConfirmPayActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mSVProgressHUD.showErrorWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
             }
         });
         request.setTag(new Object());

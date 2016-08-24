@@ -16,7 +16,11 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.smartfit.R;
 import com.smartfit.adpters.VertifyCardSuccessAdapter;
+import com.smartfit.beans.EntityCardInfo;
+import com.smartfit.beans.EntityType;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
+import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
 
@@ -55,7 +59,7 @@ public class SelectCardToBuyActivity extends BaseActivity {
 
     private String couserType = "0";// 实体卡支付类型    0 包月 ；  1 小班  ；  2 私教
 
-    private ArrayList<String> vertifyCards = new ArrayList<>();
+    private ArrayList<EntityCardInfo> vertifyCards = new ArrayList<>();
 
     private VertifyCardSuccessAdapter adapter;
 
@@ -113,7 +117,7 @@ public class SelectCardToBuyActivity extends BaseActivity {
                         }
                     }
                     Intent intent = new Intent(SelectCardToBuyActivity.this, ConfirmPayActivity.class);
-                    intent.putStringArrayListExtra(Constants.PASS_OBJECT, vertifyCards);
+                    intent.putParcelableArrayListExtra(Constants.PASS_OBJECT, vertifyCards);
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
@@ -147,7 +151,8 @@ public class SelectCardToBuyActivity extends BaseActivity {
         PostRequest request = new PostRequest(Constants.EVENT_CARDCHECK, map, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                vertifyCards.add(code);
+                EntityType entityType = JsonUtils.objectFromJson(response, EntityType.class);
+                vertifyCards.add(new EntityCardInfo(code, entityType.getData()));
                 etCardCode.setText("");
                 etCardCode.setHint(getString(R.string.card_tips));
                 adapter.setData(vertifyCards);

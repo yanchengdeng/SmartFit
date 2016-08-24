@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -128,7 +129,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
     private String downLoadURL = "/download/smartfit.apk";
 
-
+    DownLoadCompleteReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,6 +201,12 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
 
         requestCityList();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        filter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
+        receiver = new DownLoadCompleteReceiver();
+        registerReceiver(receiver, filter);
 
         getLastVersion();
     }
