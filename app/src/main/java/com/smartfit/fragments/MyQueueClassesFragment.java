@@ -21,8 +21,11 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
+import com.smartfit.adpters.MyRankClassStatusAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
+import com.smartfit.beans.MyRankClass;
+import com.smartfit.beans.MyRankClassList;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -48,8 +51,8 @@ public class MyQueueClassesFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
 
-    private MyClassOrderStatusAdapter adapter;
-    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
+    private MyRankClassStatusAdapter adapter;
+    private List<MyRankClass> myAddClassArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,7 @@ public class MyQueueClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), myAddClassArrayList, true);
+        adapter = new MyRankClassStatusAdapter(getActivity(), myAddClassArrayList);
         listView.setAdapter(adapter);
         loadData();
 
@@ -86,7 +89,7 @@ public class MyQueueClassesFragment extends Fragment {
      *
      * @param item
      */
-    private void openClass(MyAddClass item) {
+    private void openClass(MyRankClass item) {
         if (!TextUtils.isEmpty(item.getCourseType())) {
             //0  团操 1  小班   2  私教  3  有氧
             if (item.getCourseType().equals("0")) {
@@ -123,8 +126,8 @@ public class MyQueueClassesFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.USER_MYBOOKLIST, datas, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-              /*  ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                MyRankClassList subClasses = JsonUtils.objectFromJson(response, MyRankClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
                     myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
@@ -134,7 +137,7 @@ public class MyQueueClassesFragment extends Fragment {
                     listView.setVisibility(View.GONE);
                     noData.setVisibility(View.VISIBLE);
 
-                }*/
+                }
             }
         }, new Response.ErrorListener() {
             @Override

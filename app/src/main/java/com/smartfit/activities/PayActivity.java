@@ -156,6 +156,8 @@ public class PayActivity extends BaseActivity {
 
     private String cashEventId;
 
+    private boolean isAddLink;//是否排队
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -313,6 +315,7 @@ public class PayActivity extends BaseActivity {
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
         orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
         couserType = getIntent().getStringExtra(Constants.COURSE_TYPE);
+        isAddLink = getIntent().getBooleanExtra("add_rank",false);
         cashEventId = getIntent().getStringExtra("cash_ticket");
         if (pageIndex == 4) {
             startTime = getIntent().getStringExtra("start_time");

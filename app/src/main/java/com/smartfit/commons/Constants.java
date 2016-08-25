@@ -213,6 +213,8 @@ public class Constants {
     public static final String USER_SAVENOPROTOCOL = "/User/saveNoProtocol";
     public static final String USER_MYBOOKLIST = "/User/myBookList";
     public static final String USER_MYABSENTLIST = "/User/myAbsentList";
+    public static final String ORDER_BOOKCOURSE = "/order/bookCourse";
+    public static final String USER_CANCELBOOK = "/User/cancelBook";
 
 
     public static final int SIZE = 20;

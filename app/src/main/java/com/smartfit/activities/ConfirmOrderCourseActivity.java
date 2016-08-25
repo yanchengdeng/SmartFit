@@ -117,6 +117,8 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
     private String orderID;//订单 id
     private EventBus eventBus;
 
+    private boolean isAddRand;//是否是加入排队课程
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         payMoney = getIntent().getStringExtra(Constants.COURSE_MONEY);
         orderCode = getIntent().getStringExtra(Constants.COURSE_ORDER_CODE);
         couserType = getIntent().getStringExtra(Constants.COURSE_TYPE);
+        isAddRand = getIntent().getBooleanExtra("add_rank", false);
         if (pageIndex == 4) {
             startTime = getIntent().getStringExtra("start_time");
             endTime = getIntent().getStringExtra("end_time");
@@ -331,7 +334,11 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
             goPay();
         } else {
             if (TextUtils.isEmpty(orderCode)) {
-                getOrderCorse();
+                if (isAddRand) {
+                    rankClassLink();
+                } else {
+                    getOrderCorse();
+                }
             } else {
                 orderID = orderCode;
                 if (isUserCard) {
@@ -372,6 +379,43 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
         request.headers = NetUtil.getRequestBody(ConfirmOrderCourseActivity.this);
         mQueue.add(request);
 
+    }
+
+
+    /**
+     * 课程排队
+     */
+    private void rankClassLink() {
+        mSVProgressHUD.showWithStatus("排队中...", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> map = new HashMap<>();
+        map.put("courseId", courseId);
+        if (isUserCashTicket)
+            map.put("cashEventUserId", selectTicketId);
+//        map.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        PostRequest request = new PostRequest(Constants.ORDER_BOOKCOURSE, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.toString());
+                OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
+                if (orderCourse != null) {
+                    if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
+                        orderID = orderCourse.getOrderCode();
+                    }
+                }
+                goPay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                messsge = error.getMessage();
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ConfirmOrderCourseActivity.this);
+        mQueue.add(request);
     }
 
     /**

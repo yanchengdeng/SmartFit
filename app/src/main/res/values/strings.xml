@@ -467,5 +467,7 @@
     <string name="private_class_cancle_class_tips">1、如不能按时参加课程请在开课2小时前取消预约，否则将全额扣除课时费或抵扣券。\n2、课前刷教室门禁签到可加1点信用分，旷课扣除3点</string>
     <string name="areob_class_cancle_class_tips">如不能按时参加课程需在开课15分钟前取消预约，无故旷课将影响下次约课。</string>
     <string name="cancel_course_tips">点击同意协议</string>
+    <string name="add_rank">加入排队</string>
+    <string name="cancle_rank">取消排队</string>
 
 </resources>

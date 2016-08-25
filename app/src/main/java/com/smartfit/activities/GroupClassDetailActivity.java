@@ -169,6 +169,14 @@ public class GroupClassDetailActivity extends BaseActivity {
     com.hedgehog.ratingbar.RatingBar ratingBarForCoach;
     @Bind(R.id.tv_warning_tips)
     TextView tvWarningTips;
+    @Bind(R.id.tv_rank_num)
+    TextView tvRankNum;
+    @Bind(R.id.tv_rank_tips)
+    TextView tvRankTips;
+    @Bind(R.id.btn_add_rank)
+    TextView btnAddRank;
+    @Bind(R.id.rl_rank)
+    RelativeLayout rlRank;
 
 
     private DiscussItemAdapter adapter;
@@ -434,6 +442,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
         }
 
+
         if (!TextUtils.isEmpty(detail.getShared())) {
             if (detail.getShared().equals("0")) {
                 tvShareFriends.setText("发送给朋友");
@@ -640,6 +649,22 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             }
         }
+        LogUtil.w("dyc", detail.getIsFull() + "....." + detail.getBookNumber());
+        // 显示 排队
+        if (!TextUtils.isEmpty(detail.getIsFull())) {
+            if (detail.getIsFull().equals("1")) {
+                //团操课 排队机制
+                if (type.equals("0")) {
+                    rlRank.setVisibility(View.VISIBLE);
+                    tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                    btnAddRank.setVisibility(View.VISIBLE);
+
+                    //TODO
+                    btnOrder.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.GONE);
+                }
+            }
+        }
 
 
         new Handler().post(new Runnable() {
@@ -826,6 +851,56 @@ public class GroupClassDetailActivity extends BaseActivity {
                         }
                     });
                 }
+            }
+        });
+
+        tvRankTips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRandDialog();
+            }
+        });
+
+        //加入排队
+        btnAddRank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRandLink();
+            }
+
+
+        });
+    }
+
+
+    /**
+     * 加入排队
+     */
+    private void addRandLink() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.PAGE_INDEX, getIntent().getIntExtra(Constants.PAGE_INDEX, 1));//  1   2  小班课 和团操课  一样处理
+        bundle.putString(Constants.COURSE_ORDER_CODE, classInfoDetail.getOrderCode());
+        bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
+        bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
+        bundle.putString(Constants.COURSE_TYPE, type);
+        bundle.putBoolean("add_rank",true);
+        openActivity(ConfirmOrderCourseActivity.class, bundle);
+
+
+    }
+
+    /**
+     * 排队对话框
+     */
+    private void openRandDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.show();
+        dialog.getWindow().setContentView(R.layout.dialog_rank_tips);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }
