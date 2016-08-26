@@ -215,6 +215,8 @@ public class Constants {
     public static final String USER_MYABSENTLIST = "/User/myAbsentList";
     public static final String ORDER_BOOKCOURSE = "/order/bookCourse";
     public static final String USER_CANCELBOOK = "/User/cancelBook";
+    public static final String USER_APPEALPUNISH = "/User/appealPunish";
+    public static final String USER_LISTUSERSCORE = "/User/listUserScore";
 
 
     public static final int SIZE = 20;

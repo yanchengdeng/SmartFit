@@ -20,11 +20,17 @@ import com.smartfit.activities.ArerobicDetailActivity;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
+import com.smartfit.adpters.MyAbsentClassAdapter;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
+import com.smartfit.beans.MyAbsentClass;
+import com.smartfit.beans.MyAbsentClassList;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.commons.Constants;
+import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.PostRequest;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +51,9 @@ public class MyAbsentClassesFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
 
-    private MyClassOrderStatusAdapter adapter;
-    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
+    private MyAbsentClassAdapter adapter;
+    private List<MyAbsentClass> myAddClassArrayList = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class MyAbsentClassesFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), myAddClassArrayList, true);
+        adapter = new MyAbsentClassAdapter(getActivity(), myAddClassArrayList, true);
         listView.setAdapter(adapter);
         loadData();
 
@@ -83,19 +90,23 @@ public class MyAbsentClassesFragment extends Fragment {
      *
      * @param item
      */
-    private void openClass(MyAddClass item) {
+    private void openClass(MyAbsentClass item) {
         if (!TextUtils.isEmpty(item.getCourseType())) {
             //0  团操 1  小班   2  私教  3  有氧
             if (item.getCourseType().equals("0")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "0");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("1")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "1");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("2")) {
@@ -106,6 +117,8 @@ public class MyAbsentClassesFragment extends Fragment {
             } else if (item.getCourseType().equals("3")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(ArerobicDetailActivity.class, bundle);
             }
         }
@@ -120,8 +133,8 @@ public class MyAbsentClassesFragment extends Fragment {
         PostRequest request = new PostRequest(Constants.USER_MYABSENTLIST, datas, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-              /*  ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                MyAbsentClassList subClasses = JsonUtils.objectFromJson(response, MyAbsentClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
                     myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
@@ -131,7 +144,7 @@ public class MyAbsentClassesFragment extends Fragment {
                     listView.setVisibility(View.GONE);
                     noData.setVisibility(View.VISIBLE);
 
-                }*/
+                }
             }
         }, new Response.ErrorListener() {
             @Override

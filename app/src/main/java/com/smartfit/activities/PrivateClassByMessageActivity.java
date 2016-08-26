@@ -241,6 +241,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("courseId", couseId);
         data.put("courseType", "2");
+
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

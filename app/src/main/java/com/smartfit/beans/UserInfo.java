@@ -28,6 +28,16 @@ public class UserInfo {
     private String monthExpiredTime;//:1483725739,
     private String ticketNum;//2,
 
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    private String score;
+
     public String getMonthExpiredTime() {
         return monthExpiredTime;
     }

@@ -198,12 +198,16 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "0");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("1")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "1");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("2")) {
@@ -214,6 +218,8 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             } else if (item.getCourseType().equals("3")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) context).openActivity(ArerobicDetailActivity.class, bundle);
             }
         }
@@ -225,8 +231,8 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
         dialog.content("确认取消该课程吗？")//
                 .style(NormalDialog.STYLE_TWO)//
                 .titleTextSize(23)//
-                        //.showAnim(mBasIn)//
-                        //.dismissAnim(mBasOut)//
+                //.showAnim(mBasIn)//
+                //.dismissAnim(mBasOut)//
                 .show();
 
         dialog.setOnBtnClickL(

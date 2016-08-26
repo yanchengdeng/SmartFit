@@ -121,6 +121,10 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
          * 5我退出该课程，
          * 6该课程被取消了
          * ，7课程已结束未评论8已评论）
+         * 9 正在排队
+         * 10 已排到对
+         * 11 迟到
+         * 12 旷课
          */
         if (!TextUtils.isEmpty(item.getStatus())) {
             if (item.getStatus().equals("1")) {
@@ -146,6 +150,18 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("8")) {
                 viewHolder.tvStatus.setText("已评价");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
+            } else if (item.getStatus().equals("9")) {
+                viewHolder.tvStatus.setText("正在排队");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
+            } else if (item.getStatus().equals("10")) {
+                viewHolder.tvStatus.setText("已排到队");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
+            } else if (item.getStatus().equals("11")) {
+                viewHolder.tvStatus.setText("已迟到");
+                viewHolder.llHandleFunciton.setVisibility(View.GONE);
+            } else if (item.getStatus().equals("12")) {
+                viewHolder.tvStatus.setText("已旷课");
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             }
         }
@@ -208,8 +224,8 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         dialog.content(tips)//
                 .style(NormalDialog.STYLE_TWO)//
                 .titleTextSize(23)//
-                        //.showAnim(mBasIn)//
-                        //.dismissAnim(mBasOut)//
+                //.showAnim(mBasIn)//
+                //.dismissAnim(mBasOut)//
                 .show();
 
         dialog.setOnBtnClickL(
@@ -239,8 +255,8 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         dialog.content("确定要拨打教练电话吗？")//
                 .style(NormalDialog.STYLE_TWO)//
                 .titleTextSize(23)//
-                        //.showAnim(mBasIn)//
-                        //.dismissAnim(mBasOut)//
+                //.showAnim(mBasIn)//
+                //.dismissAnim(mBasOut)//
                 .show();
 
         dialog.setOnBtnClickL(

@@ -21,8 +21,11 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.GroupClassDetailActivity;
 import com.smartfit.activities.PrivateClassByMessageActivity;
 import com.smartfit.adpters.MyClassOrderStatusAdapter;
+import com.smartfit.adpters.MyCreditRecordAdapter;
 import com.smartfit.beans.MyAddClass;
 import com.smartfit.beans.MyAddClassList;
+import com.smartfit.beans.MyCreditRecord;
+import com.smartfit.beans.MyCreditRecordClassList;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
@@ -38,11 +41,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by dengyancheng on 16/3/12.
- * <p/>
- * 我结束的课程
+ * 全部信用记录
  */
-public class MyClassesOverFragment extends Fragment {
+public class MyAllCreditRecordFragment extends Fragment {
 
 
     @Bind(R.id.listView)
@@ -50,8 +51,8 @@ public class MyClassesOverFragment extends Fragment {
     @Bind(R.id.no_data)
     TextView noData;
 
-    private MyClassOrderStatusAdapter adapter;
-    private List<MyAddClass> myAddClassArrayList = new ArrayList<>();
+    private MyCreditRecordAdapter adapter;
+    private List<MyCreditRecord> myAddClassArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,76 +69,24 @@ public class MyClassesOverFragment extends Fragment {
     }
 
     private void intData() {
-        adapter = new MyClassOrderStatusAdapter(getActivity(), myAddClassArrayList, false);
+        adapter = new MyCreditRecordAdapter(getActivity(), myAddClassArrayList);
         listView.setAdapter(adapter);
         loadData();
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                openClass(myAddClassArrayList.get(position));
-            }
-        });
-
-
     }
 
-    /**
-     * 跳转叨叨详情页
-     *
-     * @param item
-     */
-    private void openClass(MyAddClass item) {
-        if (!TextUtils.isEmpty(item.getCourseType())) {
-            //0  团操 1  小班   2  私教  3  有氧
-            if (item.getCourseType().equals("0")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, item.getId());
-                bundle.putString(Constants.COURSE_TYPE, "0");
-                bundle.putString("start", item.getStartTime());
-                bundle.putString("end", item.getEndTime());
-                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
-
-            } else if (item.getCourseType().equals("1")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, item.getId());
-                bundle.putString(Constants.COURSE_TYPE, "1");
-                bundle.putString("start", item.getStartTime());
-                bundle.putString("end", item.getEndTime());
-                ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
-
-            } else if (item.getCourseType().equals("2")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getId());
-                ((BaseActivity) getActivity()).openActivity(PrivateClassByMessageActivity.class,bundle);
-
-            } else if (item.getCourseType().equals("3")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING,item.getId());
-                bundle.putString("start", item.getStartTime());
-                bundle.putString("end", item.getEndTime());
-                ((BaseActivity) getActivity()).openActivity(ArerobicDetailActivity.class,bundle);
-            }
-        }
-
-    }
 
     private void loadData() {
         ((BaseActivity) getActivity()).mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.Clear);
 
         final Map<String, String> datas = new HashMap<>();
-        datas.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
-        datas.put("showType", "1");
-        PostRequest request = new PostRequest(Constants.USER_CONTACTCOURSELIST, datas, new Response.Listener<JsonObject>() {
+        datas.put("pageNo", "1");
+        datas.put("pageSize", "100");
+        datas.put("queryType", "0");
+        PostRequest request = new PostRequest(Constants.USER_LISTUSERSCORE, datas, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
-                if (getActivity()!=null){
-                    ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
-                }
-                MyAddClassList subClasses = JsonUtils.objectFromJson(response, MyAddClassList.class);
+                ((BaseActivity) getActivity()).mSVProgressHUD.dismiss();
+                MyCreditRecordClassList subClasses = JsonUtils.objectFromJson(response, MyCreditRecordClassList.class);
                 if (subClasses != null && subClasses.getListData().size() > 0) {
                     myAddClassArrayList.addAll(subClasses.getListData());
                     adapter.setData(subClasses.getListData());
@@ -166,5 +115,6 @@ public class MyClassesOverFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 
 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +58,7 @@ import butterknife.ButterKnife;
 
 /**
  * 有氧器械详情课程
- * <p>
+ * <p/>
  * 只为查看课程详情
  */
 public class ArerobicDetailActivity extends BaseActivity {
@@ -105,7 +106,17 @@ public class ArerobicDetailActivity extends BaseActivity {
     ImageView ivSendRed;
     @Bind(R.id.tv_warning_tips)
     TextView tvWarningTips;
-    private String courseId;
+    @Bind(R.id.tv_rank_num)
+    TextView tvRankNum;
+    @Bind(R.id.tv_rank_tips)
+    TextView tvRankTips;
+    @Bind(R.id.btn_add_rank)
+    TextView btnAddRank;
+    @Bind(R.id.rl_rank)
+    RelativeLayout rlRank;
+    @Bind(R.id.tv_waiting_accept)
+    TextView tvWaitingAccept;
+    private String courseId, startTime, endTime;
     private EventBus eventBus;
 
     private ClassInfoDetail detail;
@@ -144,6 +155,8 @@ public class ArerobicDetailActivity extends BaseActivity {
         tvTittle.setText(getString(R.string.aerobic_apparatus));
         tvWarningTips.setText(getString(R.string.areob_class_cancle_class_tips));
         courseId = getIntent().getStringExtra(Constants.PASS_STRING);
+        startTime = getIntent().getStringExtra("start");
+        endTime = getIntent().getStringExtra("end");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
     }
@@ -151,13 +164,13 @@ public class ArerobicDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p>
+     * <p/>
      * 1:小班课
-     * <p>
+     * <p/>
      * 2:私教课
-     * <p>
+     * <p/>
      * 3:器械课
-     * <p>
+     * <p/>
      * 4:月卡
      *
      * @param id
@@ -194,6 +207,8 @@ public class ArerobicDetailActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("courseId", courseId);
         data.put("courseType", "3");
+        data.put("startTime", startTime);
+        data.put("endTime", endTime);
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -301,6 +316,38 @@ public class ArerobicDetailActivity extends BaseActivity {
         rollViewPager.setAnimationDurtion(500);
         rollViewPager.setAdapter(new TestNomalAdapter(detail.getCoursePics(), detail.getClassroomName()));
         rollViewPager.setHintView(new ColorPointHintView(this, getResources().getColor(R.color.common_header_bg), Color.WHITE));
+        // 显示 排队
+        if (!TextUtils.isEmpty(detail.getIsFull())) {
+            if (detail.getIsFull().equals("1")) {
+                //团操课 排队机制
+                //首先是未开始的课程都可以去排队  购买
+                /**
+                 * 0:未开始1:正在进行2:已结束3:已排队 4:已排到
+                 */
+                if (detail.getCourseStatus().equals("0")) {
+                    rlRank.setVisibility(View.VISIBLE);
+                    tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                    btnAddRank.setVisibility(View.VISIBLE);
+                } else if (detail.getCourseStatus().equals("3")) {
+                    rlRank.setVisibility(View.VISIBLE);
+                    tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                    btnAddRank.setVisibility(View.GONE);
+                } else if (detail.getCourseStatus().equals("4")) {
+                    rlRank.setVisibility(View.GONE);
+                } else if (detail.getCourseStatus().equals("1")) {
+                    btnOrder.setVisibility(View.GONE);
+                    rlRank.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.VISIBLE);
+                    tvWaitingAccept.setText("课程进行中...");
+                } else if (detail.getCourseStatus().equals("2")) {
+                    btnOrder.setVisibility(View.GONE);
+                    rlRank.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.GONE);
+                }
+            }
+        }
+
+
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         new Handler().postDelayed(new Runnable() {
             @Override

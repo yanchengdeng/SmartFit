@@ -1,17 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light"
+    android:background="@null"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.smartfit.activities.FadeBackActivity">
+    tools:context="com.smartfit.activities.AllegeAbsentClassActivity">
 
-    <include layout="@layout/common_header_view"></include>
+    <include layout="@layout/common_header_view" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/gray_light"
         android:scrollbars="none">
 
         <LinearLayout
@@ -20,12 +22,48 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/header_bar_height">
 
-
             <TextView
+                android:id="@+id/tv_class_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="@string/question_desc"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="课程："
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_coach_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="教练：暂无信息"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_absent_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="时间："
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_absent_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="申述理由："
                 android:textColor="@color/text_color_black"
                 android:textSize="@dimen/text_normal" />
 
@@ -33,10 +71,11 @@
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/ad_height"
+                android:layout_height="150dp"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:background="@color/white"
                 android:gravity="top"
-                android:hint="@string/fadeback_tips"
+                android:hint="请填写申诉理由"
                 android:lineSpacingExtra="3dp"
                 android:padding="@dimen/image_padding_big"
                 android:textColor="@color/text_color_gray"
@@ -75,8 +114,8 @@
                 android:id="@+id/btn_submmit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginLeft="@dimen/header_bar_height"
-                android:layout_marginRight="@dimen/header_bar_height"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/header_bar_height"
                 android:background="@drawable/bg_dialog_selector_blue"
                 android:gravity="center"
@@ -84,8 +123,17 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/allege_tips"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
 
         </LinearLayout>
-
     </ScrollView>
+
 </LinearLayout>

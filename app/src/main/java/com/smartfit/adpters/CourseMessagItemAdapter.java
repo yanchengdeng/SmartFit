@@ -247,12 +247,16 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
                 bundle.putString(Constants.COURSE_TYPE, "0");
+                bundle.putString("start", item.getMessageContent().getStartTime());
+                bundle.putString("end", item.getMessageContent().getEndTime());
                 ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("1")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
                 bundle.putString(Constants.COURSE_TYPE, "1");
+                bundle.putString("start", item.getMessageContent().getStartTime());
+                bundle.putString("end", item.getMessageContent().getEndTime());
                 ((BaseActivity) context).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("2")) {
@@ -263,6 +267,8 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             } else if (item.getMessageContent().getCourseType().equals("3")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
+                bundle.putString("start", item.getMessageContent().getStartTime());
+                bundle.putString("end", item.getMessageContent().getEndTime());
                 ((BaseActivity) context).openActivity(ArerobicDetailActivity.class, bundle);
             }
         }

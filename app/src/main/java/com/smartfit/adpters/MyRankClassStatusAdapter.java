@@ -3,6 +3,7 @@ package com.smartfit.adpters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,11 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.sina.weibo.sdk.api.share.Base;
 import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
+import com.smartfit.activities.ConfirmOrderCourseActivity;
 import com.smartfit.beans.MyRankClass;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.DateUtils;
@@ -168,7 +171,15 @@ public class MyRankClassStatusAdapter extends BaseAdapter {
         viewHolder.tvPayMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                if (item.getCourseType().equals("0")){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.PAGE_INDEX, 1);//  1   2  小班课 和团操课  一样处理
+                    bundle.putString(Constants.COURSE_ORDER_CODE, "");
+                    bundle.putString(Constants.COURSE_ID, item.getCourseClassId());
+                    bundle.putString(Constants.COURSE_MONEY, item.getCoursePrice());
+                    bundle.putString(Constants.COURSE_TYPE, item.getCourseType());
+                    ((BaseActivity)context).openActivity(ConfirmOrderCourseActivity.class, bundle);
+                }
             }
         });
 
@@ -233,12 +244,6 @@ public class MyRankClassStatusAdapter extends BaseAdapter {
                 });
 
     }
-
-
-    private void NormalDialogStyleTwo(final String phone) {
-
-    }
-
 
     static class ViewHolder {
         @Bind(R.id.tv_time)

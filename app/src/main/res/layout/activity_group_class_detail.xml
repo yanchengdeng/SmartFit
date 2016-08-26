@@ -658,7 +658,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/transe_gray_light">
+        android:background="@color/transe_gray_light"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/tv_rank_num"

@@ -113,6 +113,8 @@ public class SearchClassActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
                 bundle.putString(Constants.COURSE_TYPE, TextUtils.isEmpty(datas.get(position).getCourseType()) ? "0" : datas.get(position).getCourseType());
+                bundle.putString("start", datas.get(position).getBeginTime());
+                bundle.putString("end", datas.get(position).getEndTime());
                 openActivity(GroupClassDetailActivity.class, bundle);
             }
         });

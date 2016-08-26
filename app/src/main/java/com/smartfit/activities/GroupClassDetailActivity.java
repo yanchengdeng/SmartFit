@@ -187,7 +187,7 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private String type = "0";
 
-    private ClassInfo classInfo;
+    private String startTime, endTime;
 
     private EventBus eventBus;
 
@@ -201,7 +201,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         eventBus.register(this);
         id = getIntent().getStringExtra(Constants.PASS_STRING);
         type = getIntent().getStringExtra(Constants.COURSE_TYPE);
-        classInfo = getIntent().getParcelableExtra(Constants.PASS_OBJECT);
+        startTime = getIntent().getStringExtra("start");
+        endTime = getIntent().getStringExtra("end");
         tvTittle.setText(getString(R.string.class_detail));
         if (type.equals("0")) {
             tvWarningTips.setText(getString(R.string.group_experien_cancle_class_tips));
@@ -655,13 +656,37 @@ public class GroupClassDetailActivity extends BaseActivity {
             if (detail.getIsFull().equals("1")) {
                 //团操课 排队机制
                 if (type.equals("0")) {
-                    rlRank.setVisibility(View.VISIBLE);
-                    tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
-                    btnAddRank.setVisibility(View.VISIBLE);
+                    //首先是未开始的课程都可以去排队  购买
+                    /**
+                     * 0:未开始1:正在进行2:已结束3:已排队 4:已排到
+                     */
+                    if (detail.getCourseStatus().equals("0")) {
 
-                    //TODO
-                    btnOrder.setVisibility(View.GONE);
-                    tvWaitingAccept.setVisibility(View.GONE);
+                        rlRank.setVisibility(View.VISIBLE);
+                        tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                        btnAddRank.setVisibility(View.VISIBLE);
+                        llOrderSuccess.setVisibility(View.GONE);
+                    } else if (detail.getCourseStatus().equals("3")) {
+                        rlRank.setVisibility(View.VISIBLE);
+                        tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                        btnAddRank.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.GONE);
+                    } else if (detail.getCourseStatus().equals("4")) {
+                        rlRank.setVisibility(View.GONE);
+//                        tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+//                        btnAddRank.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.VISIBLE);
+                    } else if (detail.getCourseStatus().equals("1")) {
+                        btnOrder.setVisibility(View.GONE);
+                        rlRank.setVisibility(View.GONE);
+                        tvWaitingAccept.setVisibility(View.VISIBLE);
+                        tvWaitingAccept.setText("课程进行中...");
+                    } else if (detail.getCourseStatus().equals("2")) {
+                        btnOrder.setVisibility(View.GONE);
+                        rlRank.setVisibility(View.GONE);
+                        tvWaitingAccept.setVisibility(View.GONE);
+                    }
+
                 }
             }
         }
@@ -689,8 +714,8 @@ public class GroupClassDetailActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("courseId", id);
         data.put("courseType", type);
-        data.put("beginTime", classInfo.getBeginTime());
-        data.put("endTime", classInfo.getEndTime());
+        data.put("beginTime", startTime);
+        data.put("endTime", endTime);
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
@@ -883,7 +908,7 @@ public class GroupClassDetailActivity extends BaseActivity {
         bundle.putString(Constants.COURSE_ID, classInfoDetail.getCourseId());
         bundle.putString(Constants.COURSE_MONEY, classInfoDetail.getPrice());
         bundle.putString(Constants.COURSE_TYPE, type);
-        bundle.putBoolean("add_rank",true);
+        bundle.putBoolean("add_rank", true);
         openActivity(ConfirmOrderCourseActivity.class, bundle);
 
 

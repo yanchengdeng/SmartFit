@@ -134,6 +134,7 @@ public class ReopenClassActivity extends BaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put("courseId", courserId);
         data.put("courseType", type);
+
         PostRequest request = new PostRequest(Constants.SEARCH_CLASS_DETAIL, data, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {

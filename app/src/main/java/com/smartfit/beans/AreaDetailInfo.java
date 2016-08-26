@@ -30,6 +30,43 @@ public class AreaDetailInfo {
     private VenueInfo venue;
     private String[] classroomPics;
     private String isParted;
+    private String isFull;//是否满额
+    private String bookTotal;//排队人数
+    private String bookNumber;//我的排队编号
+
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
+    }
+
+    private String courseStatus;
+
+    public String getIsFull() {
+        return isFull;
+    }
+
+    public void setIsFull(String isFull) {
+        this.isFull = isFull;
+    }
+
+    public String getBookTotal() {
+        return bookTotal;
+    }
+
+    public void setBookTotal(String bookTotal) {
+        this.bookTotal = bookTotal;
+    }
+
+    public String getBookNumber() {
+        return bookNumber;
+    }
+
+    public void setBookNumber(String bookNumber) {
+        this.bookNumber = bookNumber;
+    }
 
     public String getQrcodeUrl() {
         return qrcodeUrl;

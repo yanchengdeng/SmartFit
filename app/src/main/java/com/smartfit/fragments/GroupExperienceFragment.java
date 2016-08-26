@@ -174,7 +174,8 @@ public class GroupExperienceFragment extends BaseFragment {
                 bundle.putString(Constants.PASS_STRING, datas.get(position).getCourseId());
                 bundle.putString(Constants.COURSE_TYPE, "0");
                 bundle.putInt(Constants.PAGE_INDEX,1);
-                bundle.putParcelable(Constants.PASS_OBJECT,datas.get(position));
+                bundle.putString("start",datas.get(position).getBeginTime());
+                bundle.putString("end",datas.get(position).getEndTime());
                 ((MainBusinessActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
             }
         });

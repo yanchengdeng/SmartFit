@@ -241,6 +241,59 @@
             </LinearLayout>
 
         </ScrollView>
+        <RelativeLayout
+            android:id="@+id/rl_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/transe_gray_light"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/tv_rank_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/image_padding_big"
+                android:text="预约已满,当前排队人数：0"
+                android:textColor="@color/text_color_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/tv_rank_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_rank_num"
+                android:padding="@dimen/image_padding_big"
+                android:text="什么是排队?"
+                android:textColor="@color/blue_light"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/btn_add_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:background="@drawable/bg_dialog_selector_red"
+                android:gravity="center"
+                android:padding="@dimen/image_padding"
+                android:text="@string/add_rank"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_waiting_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_light"
+            android:gravity="center"
+            android:padding="@dimen/image_padding_big"
+            android:text="课程进行中..."
+            android:textColor="@color/text_color_gray"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_send_red"

@@ -96,12 +96,16 @@ public class MyQueueClassesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "0");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("1")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
                 bundle.putString(Constants.COURSE_TYPE, "1");
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(GroupClassDetailActivity.class, bundle);
 
             } else if (item.getCourseType().equals("2")) {
@@ -112,6 +116,8 @@ public class MyQueueClassesFragment extends Fragment {
             } else if (item.getCourseType().equals("3")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) getActivity()).openActivity(ArerobicDetailActivity.class, bundle);
             }
         }

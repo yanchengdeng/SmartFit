@@ -96,13 +96,13 @@ public class CustomeCoachActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡  可不传
      */
     private void showCashTicketDialog() {
@@ -174,7 +174,7 @@ public class CustomeCoachActivity extends BaseActivity {
     }
 
     private void showShareWxDialog() {
-        ShareBottomDialog dialog = new ShareBottomDialog(CustomeCoachActivity.this, scrollView, cashEventId,"4",getIntent().getStringExtra("coursre_id"));
+        ShareBottomDialog dialog = new ShareBottomDialog(CustomeCoachActivity.this, scrollView, cashEventId, "4", getIntent().getStringExtra("coursre_id"));
         dialog.showAnim(new BounceTopEnter())//
                 .show();
     }
@@ -353,6 +353,14 @@ public class CustomeCoachActivity extends BaseActivity {
             }
         });
 
+        //信用
+        scrollView.getPullRootView().findViewById(R.id.rl_my_credit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(MyCreditActivity.class);
+            }
+        });
+
 
         //我发起课程
         scrollView.getPullRootView().findViewById(R.id.rl_my_class_ui).setOnClickListener(new View.OnClickListener() {
@@ -527,6 +535,16 @@ public class CustomeCoachActivity extends BaseActivity {
         TextView tvTicketNum = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_ticket);
         if (!TextUtils.isEmpty(userInfo.getTicketNum())) {
             tvTicketNum.setText(userInfo.getTicketNum() + "张未使用");
+        }
+
+        TextView tvCredit = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_credit);
+        if (!TextUtils.isEmpty(userInfo.getScore())) {
+            if (Integer.parseInt(userInfo.getScore()) < 0) {
+                tvCredit.setTextColor(getResources().getColor(R.color.common_header_bg));
+            } else {
+                tvCredit.setTextColor(getResources().getColor(R.color.blue_light));
+            }
+            tvCredit.setText(userInfo.getScore());
         }
 
         TextView tvGoingClasses = (TextView) scrollView.getPullRootView().findViewById(R.id.tv_my_classes);
