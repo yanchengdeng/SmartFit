@@ -1,8 +1,6 @@
 package com.smartfit.adpters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,8 +18,6 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.google.gson.JsonObject;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.sina.weibo.sdk.api.share.Base;
-import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
 import com.smartfit.activities.BaseActivity;
 import com.smartfit.activities.ConfirmOrderCourseActivity;
@@ -48,13 +44,11 @@ import butterknife.ButterKnife;
 public class MyRankClassStatusAdapter extends BaseAdapter {
     private Context context;
     private List<MyRankClass> datas;
-    private boolean isHandleShow = true;
     private EventBus eventBus;
 
     public MyRankClassStatusAdapter(Context context, List<MyRankClass> datas) {
         this.context = context;
         this.datas = datas;
-        this.isHandleShow = isHandleShow;
         eventBus = EventBus.getDefault();
 
     }
@@ -182,6 +176,9 @@ public class MyRankClassStatusAdapter extends BaseAdapter {
                 }
             }
         });
+
+
+        viewHolder.tvPayMoney.setVisibility(View.GONE);
 
 
         viewHolder.tvCancleRank.setOnClickListener(new View.OnClickListener() {

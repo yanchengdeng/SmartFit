@@ -89,4 +89,16 @@ public class MessageType {
 
     public static String AEREABICON_CLASS_OVER = "24";
 
+
+    /**
+     * 15:旷课消息【V1.1】
+     31：申诉通过【v1.1】
+     32：申诉不通过【v1.1】
+     */
+
+
+    public static String ABSENT_CLASS_MSG = "15";
+    public static String STEAGE_PASS = "31";
+    public static String SETAGE_PASS_NOT = "32";
+
 }

@@ -2,23 +2,17 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
-import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
-import com.smartfit.fragments.MyAbsentClassesFragment;
-import com.smartfit.fragments.MyAddClassesFragment;
 import com.smartfit.fragments.MyAddCreditRecordFragment;
 import com.smartfit.fragments.MyAllCreditRecordFragment;
-import com.smartfit.fragments.MyClassesOverFragment;
-import com.smartfit.fragments.MyQueueClassesFragment;
 import com.smartfit.fragments.MyReduceCreditRecordFragment;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +49,13 @@ public class MyCreditActivity extends BaseActivity {
 
     private void initView() {
         tvTittle.setText("我的信用");
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

@@ -217,6 +217,11 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                     viewHolderInfo.tvName.setText(item.getMessageContent().getTitle());
                     viewHolderInfo.tvTittle.setText(item.getMessageContent().getContent());
                 }
+            } else if (item.getType().equals(MessageType.ABSENT_CLASS_MSG) || item.getType().equals(MessageType.STEAGE_PASS) || item.getType().equals(MessageType.SETAGE_PASS_NOT)) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle()) && !TextUtils.isEmpty(item.getMessageContent().getContent())) {
+                    viewHolderInfo.tvName.setText(item.getMessageContent().getTitle());
+                    viewHolderInfo.tvTittle.setText(item.getMessageContent().getContent());
+                }
             } else {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
                     viewHolderInfo.tvTittle.setText(String.format(context.getString(R.string.course_aggree_info), new Object[]{item.getMessageContent().getCourseName()}));

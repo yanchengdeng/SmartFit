@@ -217,7 +217,8 @@ public class Constants {
     public static final String USER_CANCELBOOK = "/User/cancelBook";
     public static final String USER_APPEALPUNISH = "/User/appealPunish";
     public static final String USER_LISTUSERSCORE = "/User/listUserScore";
-
+    public static final String CLASSIF_GETQRCODE = "/ClassIf/getQRCode";
+    public static final String ORDER_BOOKAEROBIC = "/order/bookAerobic";
 
     public static final int SIZE = 20;
     public static final String SEX_MAN = "0";

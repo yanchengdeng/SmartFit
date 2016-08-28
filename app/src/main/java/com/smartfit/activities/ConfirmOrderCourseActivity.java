@@ -315,7 +315,11 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
     private void getOrderId() {
         if (pageIndex == 4) {
             if (TextUtils.isEmpty(orderCode)) {
-                payAreao();
+                if (isAddRand) {
+                    bookArec();
+                } else {
+                    payAreao();
+                }
             } else {
                 orderID = orderCode;
                 goPay();
@@ -509,12 +513,47 @@ public class ConfirmOrderCourseActivity extends BaseActivity {
 
     private String areaCourseId;
 
+
+    /***
+     * 加入排队支付
+     */
+    private void bookArec() {
+        mSVProgressHUD.showWithStatus("排队中", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        Map<String, String> map = new HashMap<>();
+        map.put("classroomId", classRoomId);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        PostRequest request = new PostRequest(Constants.ORDER_BOOKAEROBIC, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                OrderCourse orderCourse = JsonUtils.objectFromJson(response.toString(), OrderCourse.class);
+                if (orderCourse != null) {
+                    areaCourseId = orderCourse.getGoodsId();
+                    if (!TextUtils.isEmpty(orderCourse.getOrderCode())) {
+                        orderID = orderCourse.getOrderCode();
+                    }
+                }
+
+                goPay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                messsge = error.getMessage();
+                mSVProgressHUD.dismiss();
+                mSVProgressHUD.showInfoWithStatus(error.getMessage(), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(ConfirmOrderCourseActivity.this);
+        mQueue.add(request);
+    }
+
+
     /***
      * 支付有氧课程
      */
     private void payAreao() {
-
-
         mSVProgressHUD.showWithStatus("创建订单中", SVProgressHUD.SVProgressHUDMaskType.Clear);
         Map<String, String> map = new HashMap<>();
         map.put("classroomId", classRoomId);

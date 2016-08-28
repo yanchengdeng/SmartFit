@@ -236,29 +236,29 @@ public class ConfirmPayActivity extends BaseActivity {
 
         count = ((slectMoutNum > 0) ? slectMoutNum : 0) + ((cardNums != null && cardNums.size() > 0) ? cardNums.size() : 0);
 
-        if (count > 0) {
+        if (ticketInfos != null && ticketInfos.size() > 0) {
             UseableEventInfo cashEventInfo = null;
-            if (ticketInfos != null && ticketInfos.size() > 0) {
-                for (UseableEventInfo item : ticketInfos) {
-                    if (item.getEventType().equals("21")) {
-                        cashEventInfo = item;
-                    }
+            for (UseableEventInfo item : ticketInfos) {
+                if (item.getEventType().equals("21")) {
+                    cashEventInfo = item;
                 }
             }
 
             if (cashEventInfo != null) {
                 Float ticketValue = 0f;
                 if (cashEventInfo.getCashEventType().equals("0")) {
-                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice()) + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
+                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice());
+//                            + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
                 } else if (cashEventInfo.getCashEventType().equals("1")) {
-                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice()) + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
+                    ticketValue = Float.parseFloat(cashEventInfo.getTicketPrice());
+//                            + Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (ticketInfos.size() - 1);
                 } else if (cashEventInfo.getCashEventType().equals("2")) {
                     float discount = (1 - Float.parseFloat(cashEventInfo.getTicketPrice()) / 10) * Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num);
                     discount = Float.parseFloat(String.format("%.2f", discount));
                     ticketValue = discount;
                 }
-                tvTicketValue.setText(String.format("-￥%.2f", ticketValue));
-                Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - (count - slectMoutNum)) - ticketValue;
+                tvTicketValue.setText(String.format("-￥%.2f", Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * slectMoutNum + ticketValue));
+                Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - slectMoutNum) - ticketValue;
                 tvPayMoney.setText(String.format("￥%.2f", payFloat));
             } else {
                 tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));
@@ -295,8 +295,6 @@ public class ConfirmPayActivity extends BaseActivity {
                         selectMouth = selectMouth + 3;
                     } else if (datas.get(i).getEventType().equals("16")) {
                         selectMouth = selectMouth + 12;
-                    } else if (datas.get(i).getEventType().equals("21")) {
-                        selectMouth = selectMouth + 1;
                     }
                 }
             }

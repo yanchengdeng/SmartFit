@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -130,6 +131,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     private String cashEventId;
     private String courseId;
     private String cashEventName;
+
+    private CountDownTimer countDownTimer;
 
 
     @Override
@@ -295,6 +298,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
+            countDownTimer.start();
         }
 
 
@@ -348,12 +352,14 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                  * 0:未开始1:正在进行2:已结束3:已排队 4:已排到
                  */
                 if (detail.getCourseStatus().equals("0")) {
+                    btnOrder.setVisibility(View.GONE);
                     rlRank.setVisibility(View.VISIBLE);
                     tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
                     btnAddRank.setVisibility(View.VISIBLE);
                 } else if (detail.getCourseStatus().equals("3")) {
+                    btnOrder.setVisibility(View.GONE);
                     rlRank.setVisibility(View.VISIBLE);
-                    tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                    tvRankNum.setText(String.format("我的排队序号：%s", detail.getBookNumber()));
                     btnAddRank.setVisibility(View.GONE);
                 } else if (detail.getCourseStatus().equals("4")) {
                     rlRank.setVisibility(View.GONE);
@@ -390,6 +396,19 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         openTime = getIntent().getStringExtra("open_time");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
+        countDownTimer = new CountDownTimer(60*1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.w("dyc","倒计时结束");
+                ivScanBar.setImageResource(R.mipmap.error_scan);
+
+            }
+        };
 
     }
 
@@ -592,6 +611,69 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                 showCashDialog();
             }
         });
+        ivScanBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNewScanCode();
+            }
+        });
+
+        //加入排队
+        btnAddRank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRandLink();
+            }
+
+
+
+
+        });
+    }
+
+    private void addRandLink() {
+        if (detail != null) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.PAGE_INDEX, 4);
+            bundle.putString(Constants.COURSE_ID, detail.getId());
+            bundle.putString(Constants.COURSE_MONEY, detail.getClassroomPrice());
+            bundle.putString("start_time", startTime);
+            bundle.putString("end_time", endTime);
+            bundle.putString("classroom", detail.getId());
+            bundle.putString(Constants.COURSE_TYPE, "3");
+            bundle.putBoolean("add_rank", true);
+            bundle.putString(Constants.COURSE_ORDER_CODE, detail.getOrderCode());
+            openActivity(ConfirmOrderCourseActivity.class, bundle);
+        }
+    }
+
+    /**
+     * 获取新的二维码
+     */
+    private void getNewScanCode() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseId", courseId);
+        PostRequest request = new PostRequest(Constants.CLASSIF_GETQRCODE, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.get("data").getAsString());
+                if (!TextUtils.isEmpty(response.toString())) {
+                    ImageLoader.getInstance().displayImage(response.get("data").getAsString(), ivScanBar);
+                    countDownTimer.cancel();
+                    countDownTimer.start();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(AerobicAppratusDetailActivity.this);
+        mQueue.add(request);
+
     }
 
     private void showCashDialog() {
@@ -883,4 +965,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (countDownTimer!=null){
+            countDownTimer.cancel();
+        }
+    }
 }

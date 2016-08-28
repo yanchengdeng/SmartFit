@@ -76,8 +76,10 @@ public class MyCreditRecordAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getScore())) {
             if (Integer.parseInt(item.getScore()) < 0) {
                 viewHolder.tvCreditScore.setTextColor(context.getResources().getColor(R.color.common_header_bg));
+                viewHolder.ivRecordIcon.setImageResource(R.mipmap.reduce_score);
             } else {
                 viewHolder.tvCreditScore.setTextColor(context.getResources().getColor(R.color.blue_light));
+                viewHolder.ivRecordIcon.setImageResource(R.mipmap.ad_score);
             }
             viewHolder.tvCreditScore.setText(item.getScore());
         }

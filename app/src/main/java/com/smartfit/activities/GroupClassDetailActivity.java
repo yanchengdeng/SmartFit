@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -39,7 +40,6 @@ import com.smartfit.R;
 import com.smartfit.adpters.DiscussItemAdapter;
 import com.smartfit.beans.CashTickeInfo;
 import com.smartfit.beans.ClassCommend;
-import com.smartfit.beans.ClassInfo;
 import com.smartfit.beans.ClassInfoDetail;
 import com.smartfit.beans.CourseNotition;
 import com.smartfit.beans.LingyunListInfo;
@@ -191,6 +191,8 @@ public class GroupClassDetailActivity extends BaseActivity {
 
     private EventBus eventBus;
 
+    private CountDownTimer countDownTimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +222,19 @@ public class GroupClassDetailActivity extends BaseActivity {
         loadData();
         addLisener();
 //        showCashTicketButton();
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.w("dyc", "倒计时结束");
+                ivScanBar.setImageResource(R.mipmap.error_scan);
+
+            }
+        };
 
     }
 
@@ -469,7 +484,6 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
         if (TextUtils.isEmpty(detail.getOrderStatus())) {
-            detail.setOrderStatus("1");
             //去订购
             btnOrder.setVisibility(View.VISIBLE);
             tvWaitingAccept.setVisibility(View.GONE);
@@ -480,6 +494,8 @@ public class GroupClassDetailActivity extends BaseActivity {
             //TODO  暂时隐藏
             llScanBar.setVisibility(View.GONE);//发送朋友 二维码
             llOrderSuccess.setVisibility(View.GONE);//订购成功底部
+
+            showRankView(detail);
 
         } else {
             if (detail.getOrderStatus().equals("2")) {
@@ -567,75 +583,76 @@ public class GroupClassDetailActivity extends BaseActivity {
                 llOrderSuccess.setVisibility(View.GONE);//订购成功底部
 
             }
-        }
 
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-            llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-        }
-        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+            if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                llScanBar.setVisibility(View.VISIBLE);
+                ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                codeBar = detail.getQrcodeUrl();
+                countDownTimer.start();
+            }
+            if (!TextUtils.isEmpty(detail.getOrderStatus())) {
 
-            if (DateUtils.isQeWorked(detail.getStartTime())) {
-                llViewScanCode.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setVisibility(View.GONE);
-                tvSaveToPhone.setText(getString(R.string.save_to_phone));
-            } else {
-                llViewScanCode.setVisibility(View.GONE);
-                tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                tvSaveToPhone.setText(getString(R.string.copy_link));
+                if (DateUtils.isQeWorked(detail.getStartTime())) {
+                    llViewScanCode.setVisibility(View.VISIBLE);
+                    tvScanCodeInfo.setVisibility(View.GONE);
+                    tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                } else {
+                    llViewScanCode.setVisibility(View.GONE);
+                    tvScanCodeInfo.setVisibility(View.VISIBLE);
+                    tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
+                    tvSaveToPhone.setText(getString(R.string.copy_link));
+                }
+
             }
 
-        }
 
+            if (!TextUtils.isEmpty(detail.getCourseStatus())) {
+                if (detail.getCourseStatus().equals("0")) {
+                    btnOrder.setVisibility(View.VISIBLE);
+                    tvWaitingAccept.setVisibility(View.GONE);
+                    if (!TextUtils.isEmpty(detail.getIsParted())) {
+                        if (detail.getIsParted().equals("0")) {
+                            btnOrder.setVisibility(View.VISIBLE);
+                            llOrderSuccess.setVisibility(View.GONE);
+                        } else {
+                            btnOrder.setVisibility(View.GONE);
+                            llOrderSuccess.setVisibility(View.VISIBLE);
+                        }
+                    }
+                } else if (detail.getCourseStatus().equals("1")) {
 
-        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
-            if (detail.getCourseStatus().equals("0")) {
-                btnOrder.setVisibility(View.VISIBLE);
-                tvWaitingAccept.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    tvWaitingAccept.setVisibility(View.VISIBLE);
+                    tvWaitingAccept.setText("课程进行中...");
+                    if (!TextUtils.isEmpty(detail.getIsParted())) {
+                        if (detail.getIsParted().equals("0")) {
+                            btnOrder.setVisibility(View.GONE);
+                            llOrderSuccess.setVisibility(View.GONE);
+                        } else {
+                            btnOrder.setVisibility(View.GONE);
+                            llOrderSuccess.setVisibility(View.GONE);
+                        }
+                    }
+                } else if (detail.getCourseStatus().equals("2")) {
+                    tvWaitingAccept.setVisibility(View.GONE);
+                    btnOrder.setVisibility(View.GONE);
                     if (detail.getIsParted().equals("0")) {
-                        btnOrder.setVisibility(View.VISIBLE);
                         llOrderSuccess.setVisibility(View.GONE);
                     } else {
-                        btnOrder.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.VISIBLE);
                     }
                 }
-            } else if (detail.getCourseStatus().equals("1")) {
-
-                tvWaitingAccept.setVisibility(View.VISIBLE);
-                tvWaitingAccept.setText("课程进行中...");
-                if (!TextUtils.isEmpty(detail.getIsParted())) {
-                    if (detail.getIsParted().equals("0")) {
-                        btnOrder.setVisibility(View.GONE);
-                        llOrderSuccess.setVisibility(View.GONE);
-                    } else {
-                        btnOrder.setVisibility(View.GONE);
-                        llOrderSuccess.setVisibility(View.GONE);
-                    }
-                }
-            } else if (detail.getCourseStatus().equals("2")) {
-                tvWaitingAccept.setVisibility(View.GONE);
-                btnOrder.setVisibility(View.GONE);
-                if (detail.getIsParted().equals("0")) {
+                if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
+                    tvWaitingAccept.setVisibility(View.GONE);
+                    btnOrder.setVisibility(View.GONE);
                     llOrderSuccess.setVisibility(View.GONE);
-                } else {
-                    llOrderSuccess.setVisibility(View.VISIBLE);
+                }
+
+                if (detail.getOrderStatus().equals("8")) {
+                    showCashTicketDialog();
                 }
             }
-        }
 
-        if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
-            tvWaitingAccept.setVisibility(View.GONE);
-            btnOrder.setVisibility(View.GONE);
-            llOrderSuccess.setVisibility(View.GONE);
-        }
-
-        if (detail.getOrderStatus().equals("8")) {
-            showCashTicketDialog();
         }
 
 
@@ -651,6 +668,31 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
         }
         LogUtil.w("dyc", detail.getIsFull() + "....." + detail.getBookNumber());
+        showRankView(detail);
+
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }, 1000);
+    }
+
+    /**
+     * 显示排队视图
+     *
+     * @param detail
+     */
+    private void showRankView(ClassInfoDetail detail) {
         // 显示 排队
         if (!TextUtils.isEmpty(detail.getIsFull())) {
             if (detail.getIsFull().equals("1")) {
@@ -661,14 +703,15 @@ public class GroupClassDetailActivity extends BaseActivity {
                      * 0:未开始1:正在进行2:已结束3:已排队 4:已排到
                      */
                     if (detail.getCourseStatus().equals("0")) {
-
+                        btnOrder.setVisibility(View.GONE);
                         rlRank.setVisibility(View.VISIBLE);
                         tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
                         btnAddRank.setVisibility(View.VISIBLE);
                         llOrderSuccess.setVisibility(View.GONE);
                     } else if (detail.getCourseStatus().equals("3")) {
+                        btnOrder.setVisibility(View.GONE);
                         rlRank.setVisibility(View.VISIBLE);
-                        tvRankNum.setText(String.format("预约已满,当前排队人数：%s", detail.getBookTotal()));
+                        tvRankNum.setText(String.format("我的排队序号：%s", detail.getBookNumber()));
                         btnAddRank.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.GONE);
                     } else if (detail.getCourseStatus().equals("4")) {
@@ -690,22 +733,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                 }
             }
         }
-
-
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.setVisibility(View.VISIBLE);
-            }
-        }, 1000);
     }
 
 
@@ -895,6 +922,41 @@ public class GroupClassDetailActivity extends BaseActivity {
 
 
         });
+        ivScanBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNewScanCode();
+            }
+        });
+    }
+
+    /**
+     * 获取新的二维码
+     */
+    private void getNewScanCode() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseId", classInfoDetail.getCourseId());
+        PostRequest request = new PostRequest(Constants.CLASSIF_GETQRCODE, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.get("data").getAsString());
+                if (!TextUtils.isEmpty(response.toString())) {
+                    ImageLoader.getInstance().displayImage(response.get("data").getAsString(), ivScanBar);
+                    countDownTimer.cancel();
+                    countDownTimer.start();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(GroupClassDetailActivity.this);
+        mQueue.add(request);
+
     }
 
 
@@ -1245,5 +1307,13 @@ public class GroupClassDetailActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
 
 }

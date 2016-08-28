@@ -3,6 +3,7 @@ package com.smartfit.activities;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -126,6 +127,9 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     private String cashEventId;
     private String cashEventName;
 
+    private CountDownTimer countDownTimer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,6 +235,20 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 openActivity(OtherCustomeMainActivity.class, bundle);
             }
         });
+
+        countDownTimer = new CountDownTimer(60*1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.w("dyc","倒计时结束");
+                ivScanBar.setImageResource(R.mipmap.error_scan);
+
+            }
+        };
     }
 
     @Subscribe
@@ -262,6 +280,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                         llScanBar.setVisibility(View.VISIBLE);
                         ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
                         codeBar = detail.getQrcodeUrl();
+                        countDownTimer.start();
                     }
                     if (!TextUtils.isEmpty(detail.getOrderStatus())) {
 
@@ -338,6 +357,41 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 showCashDialog();
             }
         });
+        ivScanBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNewScanCode();
+            }
+        });
+    }
+
+    /**
+     * 获取新的二维码
+     */
+    private void getNewScanCode() {
+        Map<String, String> map = new HashMap<>();
+        map.put("courseId", courseId);
+        PostRequest request = new PostRequest(Constants.CLASSIF_GETQRCODE, map, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                LogUtil.w("dyc", response.get("data").getAsString());
+                if (!TextUtils.isEmpty(response.toString())) {
+                    ImageLoader.getInstance().displayImage(response.get("data").getAsString(), ivScanBar);
+                    countDownTimer.cancel();
+                    countDownTimer.start();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.w("dyc", error.getMessage());
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(OrderPrivateEducationClassActivity.this);
+        mQueue.add(request);
+
     }
 
 
@@ -675,5 +729,13 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         mQueue.add(request);
 
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (countDownTimer!=null){
+            countDownTimer.cancel();
+        }
     }
 }

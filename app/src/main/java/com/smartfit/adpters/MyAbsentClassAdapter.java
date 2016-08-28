@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.MessageEvent.AllegeClassOver;
-import com.smartfit.MessageEvent.CancleClass;
 import com.smartfit.R;
 import com.smartfit.activities.AllegeAbsentClassActivity;
 import com.smartfit.activities.BaseActivity;
@@ -163,6 +162,7 @@ public class MyAbsentClassAdapter extends BaseAdapter {
 
     public void setData(List<MyAbsentClass> datas) {
         this.datas = datas;
+        notifyDataSetChanged();
     }
 
 

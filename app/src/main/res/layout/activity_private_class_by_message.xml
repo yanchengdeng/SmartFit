@@ -350,6 +350,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:visibility="gone"
                             android:padding="@dimen/image_padding_big"
                             android:text="@string/save_to_phone"
                             android:textColor="@color/black"
