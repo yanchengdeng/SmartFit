@@ -120,7 +120,8 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
          * 4课程已经结束
          * 5我退出该课程，
          * 6该课程被取消了
-         * ，7课程已结束未评论8已评论）
+         * 7课程已结束未评论
+         * 8已评论）
          * 9 正在排队
          * 10 已排到对
          * 11 迟到
@@ -134,7 +135,7 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
                 viewHolder.tvStatus.setText("等待接单");
                 viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("3")) {
-                viewHolder.tvStatus.setText("进行中");
+                viewHolder.tvStatus.setText("已支付");
                 viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("4")) {
                 viewHolder.tvStatus.setText("已结束");

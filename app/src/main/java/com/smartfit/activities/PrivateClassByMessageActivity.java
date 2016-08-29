@@ -44,7 +44,6 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.MyListView;
 import com.smartfit.views.ShareBottomDialog;
@@ -131,6 +130,8 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     LinearLayout llMackScore;
     @Bind(R.id.tv_warning_tips)
     TextView tvWarningTips;
+    @Bind(R.id.tv_scan_bar_tips)
+    TextView tvScanBarTips;
     private String couseId;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
@@ -173,7 +174,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         btnOrder.setVisibility(View.GONE);
         ratingBarForCoach.setStar(starts);
         ratingBarMyClass.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 24));
-        countDownTimer = new CountDownTimer(60*1000,1000) {
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -181,7 +182,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                LogUtil.w("dyc","倒计时结束");
+                LogUtil.w("dyc", "倒计时结束");
                 ivScanBar.setImageResource(R.mipmap.error_scan);
 
             }
@@ -506,19 +507,25 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             codeBar = detail.getQrcodeUrl();
             countDownTimer.start();
         }
-        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-
+        if (detail.getIsParted().equals("1")) {
+            llScanBar.setVisibility(View.VISIBLE);
+            llViewScanCode.setVisibility(View.VISIBLE);
+            tvScanCodeInfo.setVisibility(View.VISIBLE);
             if (DateUtils.isQeWorked(detail.getStartTime())) {
-                llViewScanCode.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setVisibility(View.GONE);
-                tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                    ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                    codeBar = detail.getQrcodeUrl();
+                    countDownTimer.start();
+                } else {
+                    ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                    tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                }
             } else {
-                llViewScanCode.setVisibility(View.GONE);
-                tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                tvSaveToPhone.setText(getString(R.string.copy_link));
+                ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
             }
         }
+
 
         if (detail.getOrderStatus().equals("8")) {
             //已评论
@@ -734,7 +741,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (checkBox.isChecked()&&checkBox.getVisibility()==View.VISIBLE) {
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
                     saveHaveReaderProtocol();
                     dialog.dismiss();
                 } else {
@@ -802,7 +809,6 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     }
 
 
-
     /**
      * 预约私教课
      */
@@ -822,7 +828,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
     }

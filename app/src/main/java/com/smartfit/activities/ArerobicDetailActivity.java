@@ -44,7 +44,6 @@ import com.smartfit.utils.LogUtil;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
-import com.smartfit.utils.SharedPreferencesUtils;
 import com.smartfit.utils.Util;
 import com.smartfit.views.ShareBottomDialog;
 
@@ -59,7 +58,7 @@ import butterknife.ButterKnife;
 
 /**
  * 有氧器械详情课程
- * <p/>
+ * <p>
  * 只为查看课程详情
  */
 public class ArerobicDetailActivity extends BaseActivity {
@@ -117,6 +116,8 @@ public class ArerobicDetailActivity extends BaseActivity {
     RelativeLayout rlRank;
     @Bind(R.id.tv_waiting_accept)
     TextView tvWaitingAccept;
+    @Bind(R.id.tv_scan_bar_tips)
+    TextView tvScanBarTips;
     private String courseId, startTime, endTime;
     private EventBus eventBus;
 
@@ -162,7 +163,7 @@ public class ArerobicDetailActivity extends BaseActivity {
         endTime = getIntent().getStringExtra("end");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
-        countDownTimer = new CountDownTimer(60*1000,1000) {
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -170,7 +171,7 @@ public class ArerobicDetailActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                LogUtil.w("dyc","倒计时结束");
+                LogUtil.w("dyc", "倒计时结束");
                 ivScanBar.setImageResource(R.mipmap.error_scan);
 
             }
@@ -180,13 +181,13 @@ public class ArerobicDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      *
      * @param id
@@ -268,28 +269,30 @@ public class ArerobicDetailActivity extends BaseActivity {
                 btnOrder.setVisibility(View.VISIBLE);
             }
             llScanBar.setVisibility(View.VISIBLE);
-            if (DateUtils.isQeWorked(detail.getStartTime())) {
-                llViewScanCode.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setVisibility(View.GONE);
-                tvSaveToPhone.setText(getString(R.string.save_to_phone));
-            } else {
-                llViewScanCode.setVisibility(View.GONE);
-                tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                tvSaveToPhone.setText(getString(R.string.copy_link));
-            }
+
 
             if (detail.getOrderStatus().equals("3") || detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
                 showCashTicketButton(courseId);
             }
         }
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+
+        if (detail.getIsParted().equals("1")) {
             llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-            countDownTimer.start();
-        } else {
-            llScanBar.setVisibility(View.GONE);
+            llViewScanCode.setVisibility(View.VISIBLE);
+            tvScanCodeInfo.setVisibility(View.VISIBLE);
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                    ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                    codeBar = detail.getQrcodeUrl();
+                    countDownTimer.start();
+                }else{
+                    ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                    tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                }
+            } else {
+                ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+            }
         }
 
 
@@ -690,7 +693,7 @@ public class ArerobicDetailActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
     }

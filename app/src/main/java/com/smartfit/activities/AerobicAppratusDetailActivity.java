@@ -123,6 +123,8 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     TextView btnAddRank;
     @Bind(R.id.rl_rank)
     RelativeLayout rlRank;
+    @Bind(R.id.tv_scan_bar_tips)
+    TextView tvScanBarTips;
     private String classroomid;
     private String startTime, endTime, openTime;
 
@@ -169,13 +171,13 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      *
      * @param id
@@ -282,23 +284,25 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (Integer.parseInt(detail.getState()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
-            if (DateUtils.isQeWorked(detail.getStartTime())) {
-                llViewScanCode.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setVisibility(View.GONE);
-                tvSaveToPhone.setText(getString(R.string.save_to_phone));
-            } else {
-                llViewScanCode.setVisibility(View.GONE);
-                tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                tvSaveToPhone.setText(getString(R.string.copy_link));
-            }
         }
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+        if (detail.getIsParted().equals("1")) {
             llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-            countDownTimer.start();
+            llViewScanCode.setVisibility(View.VISIBLE);
+            tvScanCodeInfo.setVisibility(View.VISIBLE);
+            if (DateUtils.isQeWorked(detail.getStartTime())) {
+                if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                    ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                    codeBar = detail.getQrcodeUrl();
+                    countDownTimer.start();
+                }else{
+                    ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                    tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                }
+            } else {
+                ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+            }
         }
 
 
@@ -337,6 +341,9 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             tvWaitingAccept.setText(DateUtils.getDayOFWeek(AerobicAppratusDetailActivity.this, DateUtils.getInteger(DateUtils.getDate(openTime), Calendar.DAY_OF_WEEK)) + DateUtils.getData(openTime, " HH:mm") + "开放预约");
         }
 
+        if (detail.getIsParted().equals("1")) {
+            btnOrder.setVisibility(View.GONE);
+        }
         rollViewPager.setPlayDelay(3000);
         rollViewPager.setAnimationDurtion(500);
         rollViewPager.setAdapter(new TestNomalAdapter(detail.getClassroomPics(), detail.getClassroomName()));
@@ -396,7 +403,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         openTime = getIntent().getStringExtra("open_time");
         rollViewPager.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (DeviceUtil.getWidth(this) * 0.75)));
         getClassInfo();
-        countDownTimer = new CountDownTimer(60*1000,1000) {
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -404,7 +411,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                LogUtil.w("dyc","倒计时结束");
+                LogUtil.w("dyc", "倒计时结束");
                 ivScanBar.setImageResource(R.mipmap.error_scan);
 
             }
@@ -462,15 +469,14 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             if (Integer.parseInt(detail.getOrderStatus()) >= 4) {
                 tvSaveToPhone.setVisibility(View.GONE);
             }
-            if (DateUtils.isQeWorked(detail.getStartTime())) {
-                llViewScanCode.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setVisibility(View.GONE);
-                tvSaveToPhone.setText(getString(R.string.save_to_phone));
-            } else {
-                llViewScanCode.setVisibility(View.GONE);
-                tvScanCodeInfo.setVisibility(View.VISIBLE);
-                tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, courseId, SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                tvSaveToPhone.setText(getString(R.string.copy_link));
+            if (detail.getIsParted().equals("1")) {
+                if (DateUtils.isQeWorked(detail.getStartTime())) {
+                    llScanBar.setVisibility(View.VISIBLE);
+                    llViewScanCode.setVisibility(View.VISIBLE);
+                    ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                    tvScanCodeInfo.setVisibility(View.VISIBLE);
+                    tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                }
             }
         }
 
@@ -541,6 +547,10 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             }
         }
         scrollView.fullScroll(ScrollView.FOCUS_UP);
+
+        if (detail.getIsParted().equals("1")) {
+            btnOrder.setVisibility(View.GONE);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -624,8 +634,6 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 addRandLink();
             }
-
-
 
 
         });
@@ -968,7 +976,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
     }

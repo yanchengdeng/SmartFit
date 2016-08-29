@@ -122,6 +122,51 @@ public class SystemMesageAdatper extends BaseAdapter {
                     viewHolder.tvContent.setText(item.getMessageContent().getDetail());
                 }
             }
+        }else if(item.getType().equals(MessageType.ABSENT_CLASS_MSG)){
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
+        }else if(item.getType().equals(MessageType.STEAGE_PASS)){
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
+        }else if(item.getType().equals(MessageType.SETAGE_PASS_NOT)){
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
+        }else if(item.getType().equals(MessageType.ONE_HOUR_TIPS_BEFORE_OPREN_CLASS)){
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
+        }else {
+            if (item.getMessageContent() != null) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvName.setText(item.getMessageContent().getTitle());
+                }
+                if (!TextUtils.isEmpty(item.getMessageContent().getDetail())) {
+                    viewHolder.tvContent.setText(item.getMessageContent().getDetail());
+                }
+            }
         }
 
         viewHolder.tvAccepte.setOnClickListener(new View.OnClickListener() {

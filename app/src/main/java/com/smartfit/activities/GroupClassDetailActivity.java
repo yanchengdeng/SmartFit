@@ -177,6 +177,8 @@ public class GroupClassDetailActivity extends BaseActivity {
     TextView btnAddRank;
     @Bind(R.id.rl_rank)
     RelativeLayout rlRank;
+    @Bind(R.id.tv_scan_bar_tips)
+    TextView tvScanBarTips;
 
 
     private DiscussItemAdapter adapter;
@@ -243,13 +245,13 @@ public class GroupClassDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p/>
+     * <p>
      * 1:小班课
-     * <p/>
+     * <p>
      * 2:私教课
-     * <p/>
+     * <p>
      * 3:器械课
-     * <p/>
+     * <p>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -591,19 +593,23 @@ public class GroupClassDetailActivity extends BaseActivity {
                 codeBar = detail.getQrcodeUrl();
                 countDownTimer.start();
             }
-            if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-
+            if (detail.getIsParted().equals("1")) {
+                llScanBar.setVisibility(View.VISIBLE);
+                llViewScanCode.setVisibility(View.VISIBLE);
+                tvScanCodeInfo.setVisibility(View.VISIBLE);
                 if (DateUtils.isQeWorked(detail.getStartTime())) {
-                    llViewScanCode.setVisibility(View.VISIBLE);
-                    tvScanCodeInfo.setVisibility(View.GONE);
-                    tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                    if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                        ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                        codeBar = detail.getQrcodeUrl();
+                        countDownTimer.start();
+                    }else{
+                        ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                        tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                    }
                 } else {
-                    llViewScanCode.setVisibility(View.GONE);
-                    tvScanCodeInfo.setVisibility(View.VISIBLE);
-                    tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                    tvSaveToPhone.setText(getString(R.string.copy_link));
+                    ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                    tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
                 }
-
             }
 
 

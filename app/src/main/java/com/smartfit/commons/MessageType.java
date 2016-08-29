@@ -101,4 +101,14 @@ public class MessageType {
     public static String STEAGE_PASS = "31";
     public static String SETAGE_PASS_NOT = "32";
 
+    /**
+     * 14.团操课和器械区在课前1小时进行短信和系统消息的提示［v1.1］
+     */
+    public static String ONE_HOUR_TIPS_BEFORE_OPREN_CLASS = "14";
+
+    /**
+     * 排队消息（未排到）
+     */
+    public static String RANK_LINE_ING = "17";
+
 }

@@ -66,6 +66,7 @@ import com.smartfit.commons.AppManager;
 import com.smartfit.commons.Constants;
 import com.smartfit.fragments.CustomAnimationDemoFragment;
 import com.smartfit.utils.DateUtils;
+import com.smartfit.utils.DeviceUtil;
 import com.smartfit.utils.GetSingleRequestUtils;
 import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.LogUtil;
@@ -220,8 +221,11 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onResponse(JsonObject response) {
                 VersionInfo versionInfo = JsonUtils.objectFromJson(response.toString(), VersionInfo.class);
-                if (versionInfo != null)
+                if (Integer.parseInt(versionInfo.getVersionCode())==(DeviceUtil.getVersionCode(MainActivity.this))) {
+                    mSVProgressHUD.showSuccessWithStatus("已是最新版本", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
                     showUpdateDialog(versionInfo);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1042,6 +1046,10 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             locationClient.onDestroy();
             locationClient = null;
             locationOption = null;
+        }
+
+        if (receiver!=null){
+            unregisterReceiver(receiver);
         }
 
         EMClient.getInstance().chatManager().removeMessageListener(msgListener);

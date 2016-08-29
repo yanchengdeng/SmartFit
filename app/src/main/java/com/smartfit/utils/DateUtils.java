@@ -481,7 +481,7 @@ public class DateUtils {
     }
 
     /**
-     * 与当前系统时间比较  如果大于系统时间 1 个小时 则二维码生效
+     * 与当前系统时间比较  如果大于系统时间 2 个小时 则二维码生效
      *
      * @param millionTimes
      * @return

@@ -109,7 +109,7 @@ public class AboutUsActivity extends BaseActivity {
             public void onResponse(JsonObject response) {
                 VersionInfo versionInfo = JsonUtils.objectFromJson(response.toString(), VersionInfo.class);
                 if (versionInfo != null) {
-                    if (versionInfo.getVersionCode().equals(DeviceUtil.getVersionCode(AboutUsActivity.this))) {
+                    if (Integer.parseInt(versionInfo.getVersionCode())==(DeviceUtil.getVersionCode(AboutUsActivity.this))) {
                         mSVProgressHUD.showSuccessWithStatus("已是最新版本", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     } else {
                         showUpdateDialog(versionInfo);
@@ -207,5 +207,11 @@ public class AboutUsActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiver!=null){
+            unregisterReceiver(receiver);
+        }
+    }
 }

@@ -114,6 +114,8 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     ScrollView scrollView;
     @Bind(R.id.tv_warning_tips)
     TextView tvWarningTips;
+    @Bind(R.id.tv_scan_bar_tips)
+    TextView tvScanBarTips;
     private PrivateEducationOrderAdapter adapter;
     private ArrayList<PrivateEducationClass> privateEducationClasses;
     private IdleClassListInfo idleClassListInfo;
@@ -236,7 +238,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
             }
         });
 
-        countDownTimer = new CountDownTimer(60*1000,1000) {
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -244,7 +246,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                LogUtil.w("dyc","倒计时结束");
+                LogUtil.w("dyc", "倒计时结束");
                 ivScanBar.setImageResource(R.mipmap.error_scan);
 
             }
@@ -276,25 +278,23 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 @Override
                 public void onResponse(JsonObject response) {
                     ClassInfoDetail detail = JsonUtils.objectFromJson(response.toString(), ClassInfoDetail.class);
-                    if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                    if (null != detail && detail.getIsParted().equals("1")) {
                         llScanBar.setVisibility(View.VISIBLE);
-                        ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-                        codeBar = detail.getQrcodeUrl();
-                        countDownTimer.start();
-                    }
-                    if (!TextUtils.isEmpty(detail.getOrderStatus())) {
-
+                        llViewScanCode.setVisibility(View.VISIBLE);
+                        tvScanCodeInfo.setVisibility(View.VISIBLE);
                         if (DateUtils.isQeWorked(detail.getStartTime())) {
-                            llViewScanCode.setVisibility(View.VISIBLE);
-                            tvScanCodeInfo.setVisibility(View.GONE);
-                            tvSaveToPhone.setText(getString(R.string.save_to_phone));
+                            if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+                                ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+                                codeBar = detail.getQrcodeUrl();
+                                countDownTimer.start();
+                            } else {
+                                ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                                tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
+                            }
                         } else {
-                            llViewScanCode.setVisibility(View.GONE);
-                            tvScanCodeInfo.setVisibility(View.VISIBLE);
-                            tvScanCodeInfo.setText(String.format("课程二维码在开课前两个小时才会生效，您可以将如下链接保存：%1$s/sys/upload/qrCodeImg?courseId=%2$s&uid=%3$s", new Object[]{Constants.Net.URL, detail.getCourseId(), SharedPreferencesUtils.getInstance().getString(Constants.UID, "")}));
-                            tvSaveToPhone.setText(getString(R.string.copy_link));
+                            ivScanBar.setImageResource(R.mipmap.code_pre_src);
+                            tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
                         }
-
                     }
                 }
             }, new Response.ErrorListener() {
@@ -734,7 +734,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
     }

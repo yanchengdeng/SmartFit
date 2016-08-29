@@ -6,7 +6,7 @@
     android:background="@null"
     android:fitsSystemWindows="true"
     tools:context="com.smartfit.activities.PublishCustomeDynamicActivity">
-    <include layout="@layout/common_header_view"></include>
+    <include layout="@layout/common_header_view"/>
 
     <EditText
         android:id="@+id/et_mood_content"

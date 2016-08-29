@@ -470,5 +470,6 @@
     <string name="add_rank">加入排队</string>
     <string name="cancle_rank">取消排队</string>
     <string name="allege_tips">只有1次申诉机会，请仔细填写哦~</string>
+    <string name="have_not_genery_code_image">课程二维码在开课前两个小时才会生成</string>
 
 </resources>

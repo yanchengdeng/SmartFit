@@ -269,6 +269,14 @@ public class MessageActivity extends BaseActivity {
                             openActivity(SystemMessageListActivity.class);
                         } else if (item.getSysMessage().getType().equals(MessageType.AEREABICON_CLASS_OVER)) {
                             openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.ABSENT_CLASS_MSG)) {
+                            openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.STEAGE_PASS)) {
+                            openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.SETAGE_PASS_NOT)) {
+                            openActivity(SystemMessageListActivity.class);
+                        } else if (item.getSysMessage().getType().equals(MessageType.ONE_HOUR_TIPS_BEFORE_OPREN_CLASS)) {
+                            openActivity(SystemMessageListActivity.class);
                         } else {
                             openActivity(CourseMessageActivity.class);
                         }

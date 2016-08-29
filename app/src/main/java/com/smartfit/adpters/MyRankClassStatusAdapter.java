@@ -128,7 +128,7 @@ public class MyRankClassStatusAdapter extends BaseAdapter {
                 viewHolder.tvPayMoney.setVisibility(View.GONE);
                 viewHolder.tvCancleRank.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("3")) {
-                viewHolder.tvStatus.setText("进行中");
+                viewHolder.tvStatus.setText("已支付");
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("4")) {
                 viewHolder.tvStatus.setText("已结束");
