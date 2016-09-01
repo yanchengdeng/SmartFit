@@ -89,15 +89,17 @@ public class MyCreditRecordAdapter extends BaseAdapter {
         }
 
         if (!TextUtils.isEmpty(item.getStartTime()) && !TextUtils.isEmpty(item.getEndTime())) {
-            viewHolder.tvClassTime.setText(DateUtils.getData(item.getStartTime(), "yyyy-MM-dd HH:mm") + (DateUtils.getData(item.getEndTime(), "HH:mm")));
+            viewHolder.tvClassTime.setText(DateUtils.getData(item.getStartTime(), "yyyy-MM-dd HH:mm") +"-"+(DateUtils.getData(item.getEndTime(), "HH:mm")));
         }
 
         if (!TextUtils.isEmpty(item.getCourseName())) {
             viewHolder.tvClassName.setText(item.getCourseName());
         }
 
-        if (!TextUtils.isEmpty(item.getSignTime())) {
-            viewHolder.tvSignTime.setText(DateUtils.getData(item.getSignTime(), "yyyy-MM-dd HH:mm"));
+        if (!TextUtils.isEmpty(item.getSignTime()) && !item.getSignTime().equals("0")) {
+            viewHolder.tvSignTime.setText("签到时间："+DateUtils.getData(item.getSignTime(), "yyyy-MM-dd HH:mm"));
+        }else{
+            viewHolder.tvSignTime.setText("签到时间：未签到");
         }
 
         return convertView;

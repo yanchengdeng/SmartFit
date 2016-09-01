@@ -501,12 +501,12 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         }
         initRoom(0, detail);
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+      /*  if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
             llScanBar.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
             codeBar = detail.getQrcodeUrl();
             countDownTimer.start();
-        }
+        }*/
         if (detail.getIsParted().equals("1")) {
             llScanBar.setVisibility(View.VISIBLE);
             llViewScanCode.setVisibility(View.VISIBLE);
