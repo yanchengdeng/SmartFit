@@ -277,7 +277,9 @@ public class MessageActivity extends BaseActivity {
                             openActivity(SystemMessageListActivity.class);
                         } else if (item.getSysMessage().getType().equals(MessageType.ONE_HOUR_TIPS_BEFORE_OPREN_CLASS)) {
                             openActivity(SystemMessageListActivity.class);
-                        } else {
+                        } else if (item.getSysMessage().getType().equals(MessageType.RANK_LINE_ING)){
+                            openActivity(SystemMessageListActivity.class);
+                        }else {
                             openActivity(CourseMessageActivity.class);
                         }
                     }

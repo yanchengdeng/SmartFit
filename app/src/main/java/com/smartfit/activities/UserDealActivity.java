@@ -2,6 +2,7 @@ package com.smartfit.activities;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,13 @@ public class UserDealActivity extends BaseActivity {
         if (!TextUtils.isEmpty(adName)) {
             tvTittle.setText(adName);
         }
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         getContent();
     }

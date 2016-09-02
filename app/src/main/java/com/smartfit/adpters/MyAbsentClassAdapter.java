@@ -124,15 +124,19 @@ public class MyAbsentClassAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(item.getStatus())) {
             if (item.getStatus().equals("0")) {
                 viewHolder.tvStatus.setText("旷课");
+                viewHolder.tvStatus.setTextColor(context.getResources().getColor(R.color.common_header_bg));
                 viewHolder.llHandleFunciton.setVisibility(View.VISIBLE);
             } else if (item.getStatus().equals("1")) {
-                viewHolder.tvStatus.setText("已申述");
+                viewHolder.tvStatus.setText("申述中");
+                viewHolder.tvStatus.setTextColor(context.getResources().getColor(R.color.common_header_bg));
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("2")) {
-                viewHolder.tvStatus.setText("申述中");
+                viewHolder.tvStatus.setText("申述通过");
+                viewHolder.tvStatus.setTextColor(context.getResources().getColor(R.color.blue_light));
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             } else if (item.getStatus().equals("3")) {
                 viewHolder.tvStatus.setText("申述不通过");
+                viewHolder.tvStatus.setTextColor(context.getResources().getColor(R.color.common_header_bg));
                 viewHolder.llHandleFunciton.setVisibility(View.GONE);
             }
         }
@@ -144,7 +148,7 @@ public class MyAbsentClassAdapter extends BaseAdapter {
             } else {
                 time = String.valueOf(Long.parseLong(time) / 60 / 60);
             }
-            viewHolder.tvCredit.setText(String.format("信用值：%s  限制：%sH", new Object[]{item.getScore(), time}));
+            viewHolder.tvCredit.setText(String.format("信用值：%s  限制约课：%sH", new Object[]{item.getScore(), time}));
         }
 
         viewHolder.tvAbsentStatus.setOnClickListener(new View.OnClickListener() {

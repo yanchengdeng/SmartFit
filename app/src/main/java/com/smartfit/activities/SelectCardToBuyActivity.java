@@ -96,11 +96,7 @@ public class SelectCardToBuyActivity extends BaseActivity {
         tvVertifyCardCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (vertifyCards.size() < selectMaxNum) {
                     vertyfiyCode(etCardCode.getEditableText().toString());
-                } else {
-                    mSVProgressHUD.showInfoWithStatus(String.format("最多只能选%s", selectMaxNum), SVProgressHUD.SVProgressHUDMaskType.Clear);
-                }
             }
         });
 
@@ -152,10 +148,10 @@ public class SelectCardToBuyActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 EntityType entityType = JsonUtils.objectFromJson(response, EntityType.class);
-                vertifyCards.add(new EntityCardInfo(code, entityType.getData()));
-                etCardCode.setText("");
-                etCardCode.setHint(getString(R.string.card_tips));
-                adapter.setData(vertifyCards);
+                EntityCardInfo entityCardInfo = new EntityCardInfo(code, entityType.getData());
+               if (!checkCardsMouth(vertifyCards,entityCardInfo)) {
+                   tvCardCodePayTips.setText(getString(R.string.card_pay_tips));
+               }
                 mSVProgressHUD.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -170,4 +166,54 @@ public class SelectCardToBuyActivity extends BaseActivity {
         mQueue.add(request);
     }
 
+    /**
+     * 计算 所添加的实体卡是否 大于需要购买的 月数
+     * @param vertifyCards
+     * @param entityCardInfo
+     * @return  true: 大于
+     */
+    private boolean checkCardsMouth(ArrayList<EntityCardInfo> vertifyCards, EntityCardInfo entityCardInfo) {
+        if (vertifyCards!=null&& vertifyCards.size()>0){
+            vertifyCards.add(entityCardInfo);
+            int maxMouth = 0 ;
+            for (EntityCardInfo item:vertifyCards){
+                if (item.getType().equals("14")){
+                    maxMouth = maxMouth + 1;
+                }else if(item.getType().equals("15")){
+                    maxMouth = maxMouth + 3;
+                }else if (item.getType().equals("16")){
+                    maxMouth = maxMouth + 12;
+                }
+            }
+            if (maxMouth>selectMaxNum){
+                tvCardCodePayTips.setText(String.format("您的实体卡支持购买%s个月包月服务，目前只选择%s个月，请返回重新选择。",new Object[]{maxMouth,selectMaxNum}));
+                return true;
+            }else{
+                vertifyCards.add(entityCardInfo);
+                etCardCode.setText("");
+                etCardCode.setHint(getString(R.string.card_tips));
+                adapter.setData(vertifyCards);
+                return false;
+            }
+        }else{
+            int maxMouth = 0;
+            if (entityCardInfo.getType().equals("14")){
+                maxMouth = maxMouth + 1;
+            }else if (entityCardInfo.getType().equals("15")){
+                maxMouth = maxMouth + 3;
+            }else if(entityCardInfo.getType().equals("16")){
+                maxMouth = maxMouth + 12;
+            }
+            if (maxMouth>selectMaxNum){
+                tvCardCodePayTips.setText(String.format("您的实体卡支持购买%s个月包月服务，目前只选择%s个月，请返回重新选择。",new Object[]{maxMouth,selectMaxNum}));
+                return true;
+            }else{
+                vertifyCards.add(entityCardInfo);
+                etCardCode.setText("");
+                etCardCode.setHint(getString(R.string.card_tips));
+                adapter.setData(vertifyCards);
+                return false;
+            }
+        }
+    }
 }

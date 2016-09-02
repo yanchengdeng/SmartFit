@@ -119,8 +119,8 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                     viewHolder.tvTittle.setText("邀请您加入课程");
                 }
             } else {
-                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
-                    viewHolder.tvTittle.setText(String.format(context.getString(R.string.course_aggree_info), new Object[]{item.getMessageContent().getCourseName()}));
+                if (!TextUtils.isEmpty(item.getMessageContent().getTitle())) {
+                    viewHolder.tvTittle.setText(item.getMessageContent().getTitle());
                 }
             }
 
@@ -212,10 +212,13 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                 if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) && !TextUtils.isEmpty(item.getMessageContent().getInvitedUserName())) {
                     viewHolderInfo.tvTittle.setText(String.format(context.getString(R.string.accept_your_course), new Object[]{item.getMessageContent().getInvitedUserName(), item.getMessageContent().getCourseName()}));
                 }
-            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_SMALL_CLASS_NOTICE_COACH) || item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_CANCLE_CLASS_NOTCI_COACH) || item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER)) {
-                if (!TextUtils.isEmpty(item.getMessageContent().getTitle()) && !TextUtils.isEmpty(item.getMessageContent().getContent())) {
-                    viewHolderInfo.tvName.setText(item.getMessageContent().getTitle());
-                    viewHolderInfo.tvTittle.setText(item.getMessageContent().getContent());
+            } else if (item.getType().equals(MessageType.MESSAGE_TYPE_SMALL_CLASS_NOTICE_COACH)  ) {
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName()) ) {
+                    viewHolderInfo.tvTittle.setText(String.format("參加了您的“%s”课程", item.getMessageContent().getCourseName()));
+                }
+            }else if( item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER)|| item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_CANCLE_CLASS_NOTCI_COACH)){
+                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
+                    viewHolderInfo.tvTittle.setText(String.format("取消了您的“%s”课程", item.getMessageContent().getCourseName()));
                 }
             } else if (item.getType().equals(MessageType.ABSENT_CLASS_MSG) || item.getType().equals(MessageType.STEAGE_PASS) || item.getType().equals(MessageType.SETAGE_PASS_NOT)) {
                 if (!TextUtils.isEmpty(item.getMessageContent().getTitle()) && !TextUtils.isEmpty(item.getMessageContent().getContent())) {
@@ -223,8 +226,8 @@ public class CourseMessagItemAdapter extends BaseAdapter {
                     viewHolderInfo.tvTittle.setText(item.getMessageContent().getContent());
                 }
             } else {
-                if (!TextUtils.isEmpty(item.getMessageContent().getCourseName())) {
-                    viewHolderInfo.tvTittle.setText(String.format(context.getString(R.string.course_aggree_info), new Object[]{item.getMessageContent().getCourseName()}));
+                if (!TextUtils.isEmpty(item.getTitle())) {
+                    viewHolderInfo.tvTittle.setText(item.getTitle());
                 }
             }
 
@@ -267,6 +270,8 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             } else if (item.getMessageContent().getCourseType().equals("2")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getMessageContent().getCourseId());
+                bundle.putString("start", item.getMessageContent().getStartTime());
+                bundle.putString("end", item.getMessageContent().getEndTime());
                 ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class, bundle);
 
             } else if (item.getMessageContent().getCourseType().equals("3")) {

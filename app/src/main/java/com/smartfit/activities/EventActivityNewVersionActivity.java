@@ -211,7 +211,7 @@ public class EventActivityNewVersionActivity extends BaseActivity {
             if (data.getIntExtra(Constants.PASS_STRING, 0) != 0) {
                 mouth = data.getIntExtra(Constants.PASS_STRING, 1);
                 tvSelectNum.setText(String.format("数量*%d", mouth));
-                tvCountMoney.setText("￥" + (Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * mouth));
+                tvCountMoney.setText(String.format ("￥%.2f",Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * mouth));
                 updateMouthInfo();
             }
         }

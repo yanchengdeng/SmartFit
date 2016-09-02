@@ -12,6 +12,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartfit.R;
+import com.smartfit.beans.CoachInfoCertify;
 import com.smartfit.beans.UserInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.utils.JsonUtils;
@@ -54,7 +55,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
     @Bind(R.id.tv_age)
     TextView tvAge;
 
-    private String uid;
+    private String coachId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
         setContentView(R.layout.activity_coach_authentition);
         if (getIntent() != null) {
             if (getIntent().getExtras() != null) {
-                uid = getIntent().getStringExtra(Constants.PASS_STRING);
+                coachId = getIntent().getStringExtra(Constants.PASS_STRING);
             }
         }
         ButterKnife.bind(this);
@@ -89,22 +90,18 @@ public class CoachAuthentitionActivity extends BaseActivity {
         mSVProgressHUD.showWithStatus(getString(R.string.loading), SVProgressHUD.SVProgressHUDMaskType.ClearCancel);
         Map<String, String> maps = new HashMap<>();
 
-        if (TextUtils.isEmpty(uid)) {
-            maps.put("uid", SharedPreferencesUtils.getInstance().getString(Constants.UID, ""));
+        if (TextUtils.isEmpty(coachId)) {
+            maps.put("coachId", SharedPreferencesUtils.getInstance().getString(Constants.COACH_ID, ""));
         } else {
-            maps.put("uid", uid);
+            maps.put("coachId", coachId);
         }
 
-        if (SharedPreferencesUtils.getInstance().getBoolean(Constants.OPEN_COACH_AUTH, false)) {
-            maps.put("isCoach", "1");
-        } else {
-            maps.put("isCoach", "0");
-        }
-        PostRequest request = new PostRequest(Constants.MAIN_PAGE_INFO, maps, new Response.Listener<JsonObject>() {
+
+        PostRequest request = new PostRequest(Constants.COACH_GETCOACHINFO, maps, new Response.Listener<JsonObject>() {
             @Override
             public void onResponse(JsonObject response) {
                 mSVProgressHUD.dismiss();
-                UserInfo userInfo = JsonUtils.objectFromJson(response, UserInfo.class);
+                CoachInfoCertify userInfo = JsonUtils.objectFromJson(response, CoachInfoCertify.class);
                 if (null != userInfo) {
                     fillData(userInfo);
                 }
@@ -120,7 +117,7 @@ public class CoachAuthentitionActivity extends BaseActivity {
         mQueue.add(request);
     }
 
-    private void fillData(UserInfo userInfo) {
+    private void fillData(CoachInfoCertify userInfo) {
         ImageLoader.getInstance().displayImage(userInfo.getUserPicUrl(), ivIcon, Options.getHeaderOptions());
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
             tvName.setText(userInfo.getNickName() + " 教练");

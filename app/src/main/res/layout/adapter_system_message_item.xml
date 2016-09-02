@@ -51,4 +51,15 @@
         android:background="@drawable/bg_dialog_selector_red"/>
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_sys_time"
+         android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:text="2016-02-02 10:23"
+        android:layout_marginTop="@dimen/image_padding"
+        android:textSize="@dimen/text_normal"/>
+
+
 </RelativeLayout>

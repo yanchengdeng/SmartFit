@@ -213,6 +213,8 @@ public class CoachClassGoingStatusAdapter extends BaseAdapter {
             } else if (item.getCourseType().equals("2")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.PASS_STRING, item.getId());
+                bundle.putString("start", item.getStartTime());
+                bundle.putString("end", item.getEndTime());
                 ((BaseActivity) context).openActivity(PrivateClassByMessageActivity.class, bundle);
 
             } else if (item.getCourseType().equals("3")) {

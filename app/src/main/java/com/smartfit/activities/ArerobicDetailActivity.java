@@ -364,6 +364,17 @@ public class ArerobicDetailActivity extends BaseActivity {
                     rlRank.setVisibility(View.GONE);
                     tvWaitingAccept.setVisibility(View.GONE);
                 }
+            } else {
+                if (detail.getCourseStatus().equals("1")) {
+                    btnOrder.setVisibility(View.GONE);
+                    rlRank.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.VISIBLE);
+                    tvWaitingAccept.setText("课程进行中...");
+                } else if (detail.getCourseStatus().equals("2")) {
+                    btnOrder.setVisibility(View.GONE);
+                    rlRank.setVisibility(View.GONE);
+                    tvWaitingAccept.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -482,7 +493,7 @@ public class ArerobicDetailActivity extends BaseActivity {
 
     private void getCourseNotition(ClassInfoDetail detail) {
         Map<String, String> map = new HashMap<>();
-        map.put("beginTime", detail.getStartTime());
+        map.put("beginTime", startTime);
         map.put("courseType", "3");
         PostRequest request = new PostRequest(Constants.COURSE_GETNOTIFICATION, map, new Response.Listener<JsonObject>() {
             @Override
@@ -526,7 +537,7 @@ public class ArerobicDetailActivity extends BaseActivity {
         final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
         if (courseNotition.getType().equals("1")) {
             tvTittle.setText("器械区预约协议");
-            tvRightButton.setText("同意协议，马山预约");
+            tvRightButton.setText("同意协议，马上预约");
             checkBox.setVisibility(View.VISIBLE);
             checkBox.setChecked(false);
         } else if (courseNotition.getType().equals("2")) {

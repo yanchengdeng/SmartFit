@@ -19,6 +19,7 @@ import com.smartfit.activities.BaseActivity;
 import com.smartfit.beans.MesageInfo;
 import com.smartfit.commons.Constants;
 import com.smartfit.commons.MessageType;
+import com.smartfit.utils.DateUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -72,6 +73,9 @@ public class SystemMesageAdatper extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         final MesageInfo item = messageLists.get(position);
+        if (!TextUtils.isEmpty(item.getTime())){
+            viewHolder.tvTime.setText(DateUtils.getData(item.getTime()));
+        }
 
         if (item.getType().equals(MessageType.MESSAGE_TYPE_SYTEM)) {
             if (!TextUtils.isEmpty(item.getMessageContent().getContent())) {
@@ -217,6 +221,8 @@ public class SystemMesageAdatper extends BaseAdapter {
         TextView tvContent;
         @Bind(R.id.tv_accpet)
         TextView tvAccepte;
+        @Bind(R.id.tv_sys_time)
+        TextView tvTime;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

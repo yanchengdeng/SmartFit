@@ -527,22 +527,23 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         }
 
 
-        if (detail.getOrderStatus().equals("8")) {
-            //已评论
-            llMyclassScore.setVisibility(View.VISIBLE);
-            llMackScore.setVisibility(View.GONE);
-            if (!TextUtils.isEmpty(detail.getCommentStar())) {
-                ratingBarMyClass.setRating(Float.parseFloat(detail.getCommentStar()));
+        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+            if (detail.getOrderStatus().equals("8")) {
+                //已评论
+                llMyclassScore.setVisibility(View.VISIBLE);
+                llMackScore.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(detail.getCommentStar())) {
+                    ratingBarMyClass.setRating(Float.parseFloat(detail.getCommentStar()));
+                }
+                if (!TextUtils.isEmpty(detail.getCommentContent())) {
+                    tvMyClassScore.setText(detail.getCommentContent());
+                }
+                showCashTicketButton();
+            } else if (detail.getOrderStatus().equals("7")) {
+                llMyclassScore.setVisibility(View.GONE);
+                llMackScore.setVisibility(View.VISIBLE);
             }
-            if (!TextUtils.isEmpty(detail.getCommentContent())) {
-                tvMyClassScore.setText(detail.getCommentContent());
-            }
-            showCashTicketButton();
-        } else if (detail.getOrderStatus().equals("7")) {
-            llMyclassScore.setVisibility(View.GONE);
-            llMackScore.setVisibility(View.VISIBLE);
         }
-
         if (!TextUtils.isEmpty(detail.getCourseStatus())) {
             if (detail.getCourseStatus().equals("0")) {
                 btnOrder.setVisibility(View.VISIBLE);
@@ -669,7 +670,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
 
     private void getCourseNotition() {
         Map<String, String> map = new HashMap<>();
-        map.put("beginTime", String.valueOf(DateUtils.getTheDateTimeMillions(startTime)));
+        map.put("beginTime", startTime);
         map.put("courseType", "2");
         PostRequest request = new PostRequest(Constants.COURSE_GETNOTIFICATION, map, new Response.Listener<JsonObject>() {
             @Override
@@ -712,7 +713,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
         final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
         if (courseNotition.getType().equals("1")) {
             tvTittle.setText("器械区预约协议");
-            tvRightButton.setText("同意协议，马山预约");
+            tvRightButton.setText("同意协议，马上预约");
             checkBox.setVisibility(View.VISIBLE);
             checkBox.setChecked(false);
         } else if (courseNotition.getType().equals("2")) {

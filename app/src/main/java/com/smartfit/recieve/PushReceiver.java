@@ -163,7 +163,7 @@ public class PushReceiver extends BroadcastReceiver {
                     public void onBtnClick() {
                         dialog.dismiss();
                         Intent intent = new Intent(context, MessageActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
 
                     }

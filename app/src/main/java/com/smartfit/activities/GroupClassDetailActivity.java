@@ -613,52 +613,57 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
 
 
-            if (!TextUtils.isEmpty(detail.getCourseStatus())) {
-                if (detail.getCourseStatus().equals("0")) {
-                    btnOrder.setVisibility(View.VISIBLE);
-                    tvWaitingAccept.setVisibility(View.GONE);
-                    if (!TextUtils.isEmpty(detail.getIsParted())) {
-                        if (detail.getIsParted().equals("0")) {
-                            btnOrder.setVisibility(View.VISIBLE);
-                            llOrderSuccess.setVisibility(View.GONE);
-                        } else {
-                            btnOrder.setVisibility(View.GONE);
-                            llOrderSuccess.setVisibility(View.VISIBLE);
-                        }
-                    }
-                } else if (detail.getCourseStatus().equals("1")) {
 
-                    tvWaitingAccept.setVisibility(View.VISIBLE);
-                    tvWaitingAccept.setText("课程进行中...");
-                    if (!TextUtils.isEmpty(detail.getIsParted())) {
-                        if (detail.getIsParted().equals("0")) {
-                            btnOrder.setVisibility(View.GONE);
-                            llOrderSuccess.setVisibility(View.GONE);
-                        } else {
-                            btnOrder.setVisibility(View.GONE);
-                            llOrderSuccess.setVisibility(View.GONE);
-                        }
-                    }
-                } else if (detail.getCourseStatus().equals("2")) {
-                    tvWaitingAccept.setVisibility(View.GONE);
-                    btnOrder.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(detail.getCourseStatus())) {
+            if (detail.getCourseStatus().equals("0")) {
+                btnOrder.setVisibility(View.VISIBLE);
+                tvWaitingAccept.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
                     if (detail.getIsParted().equals("0")) {
+                        btnOrder.setVisibility(View.VISIBLE);
                         llOrderSuccess.setVisibility(View.GONE);
                     } else {
+                        btnOrder.setVisibility(View.GONE);
                         llOrderSuccess.setVisibility(View.VISIBLE);
                     }
                 }
-                if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
-                    tvWaitingAccept.setVisibility(View.GONE);
-                    btnOrder.setVisibility(View.GONE);
-                    llOrderSuccess.setVisibility(View.GONE);
-                }
+            } else if (detail.getCourseStatus().equals("1")) {
 
-                if (detail.getOrderStatus().equals("8")) {
-                    showCashTicketDialog();
+                tvWaitingAccept.setVisibility(View.VISIBLE);
+                tvWaitingAccept.setText("课程进行中...");
+                if (!TextUtils.isEmpty(detail.getIsParted())) {
+                    if (detail.getIsParted().equals("0")) {
+                        btnOrder.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.GONE);
+                    } else {
+                        btnOrder.setVisibility(View.GONE);
+                        llOrderSuccess.setVisibility(View.GONE);
+                    }
+                }
+            } else if (detail.getCourseStatus().equals("2")) {
+                tvWaitingAccept.setVisibility(View.GONE);
+                btnOrder.setVisibility(View.GONE);
+                if (detail.getIsParted().equals("0")) {
+                    llOrderSuccess.setVisibility(View.GONE);
+                } else {
+                    llOrderSuccess.setVisibility(View.VISIBLE);
                 }
             }
 
+        }
+
+        if (!TextUtils.isEmpty(detail.getOrderStatus())) {
+            if (detail.getOrderStatus().equals("4") || detail.getOrderStatus().equals("5") || detail.getOrderStatus().equals("6") || detail.getOrderStatus().equals("7") || detail.getOrderStatus().equals("8")) {
+                tvWaitingAccept.setVisibility(View.GONE);
+                btnOrder.setVisibility(View.GONE);
+                llOrderSuccess.setVisibility(View.GONE);
+            }
+
+            if (detail.getOrderStatus().equals("8")) {
+                showCashTicketDialog();
+            }
         }
 
 
@@ -1127,8 +1132,12 @@ public class GroupClassDetailActivity extends BaseActivity {
         TextView tvLeftButton = (TextView) dialog.getWindow().findViewById(R.id.cancel_action);
         final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
         if (courseNotition.getType().equals("1")) {
-            tvTittle.setText("器械区预约协议");
-            tvRightButton.setText("同意协议，马山预约");
+            if (type.equals("0")){
+                tvTittle.setText("团操预约协议");
+            }else{
+                tvTittle.setText("小班预约协议");
+            }
+            tvRightButton.setText("同意协议，马上预约");
             checkBox.setVisibility(View.VISIBLE);
             checkBox.setChecked(false);
         } else if (courseNotition.getType().equals("2")) {

@@ -303,7 +303,7 @@ public class CoachInfoActivity extends BaseActivity {
                     return;
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, userInfo.getUid());
+                bundle.putString(Constants.PASS_STRING, userInfo.getCoachId());
                 openActivity(CoachAuthentitionActivity.class, bundle);
             }
         });

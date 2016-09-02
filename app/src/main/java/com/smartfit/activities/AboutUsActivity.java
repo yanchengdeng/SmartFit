@@ -84,17 +84,16 @@ public class AboutUsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_new_function:
-                intent.putExtra(Constants.PASS_STRING, Constants.VERSIONMANAGER_GETINTRODUCE);
-                intent.putExtra("name", "新功能介绍");
-                startActivity(intent);
+                openActivity(DealInfoActivity.class);
                 break;
             case R.id.tv_check_udpate:
                 getLastVersion();
                 break;
             case R.id.tv_user_deal:
-                intent.putExtra(Constants.PASS_STRING, Constants.VERSIONMANAGER_GETPROTOCOL);
-                intent.putExtra("name", "使用协议");
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, "http://toutiao.com/a6322291444678066434/");
+                bundle.putString("name", "使用协议");
+                openActivity(AdActivity.class, bundle);
                 break;
         }
     }
