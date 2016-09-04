@@ -22,7 +22,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -245,13 +244,13 @@ public class GroupClassDetailActivity extends BaseActivity {
     /**
      * 获取现金券id
      * 0:团操课
-     * <p>
+     * <p/>
      * 1:小班课
-     * <p>
+     * <p/>
      * 2:私教课
-     * <p>
+     * <p/>
      * 3:器械课
-     * <p>
+     * <p/>
      * 4:月卡
      */
     private void showCashTicketDialog() {
@@ -602,7 +601,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                         ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
                         codeBar = detail.getQrcodeUrl();
                         countDownTimer.start();
-                    }else{
+                    } else {
                         ivScanBar.setImageResource(R.mipmap.code_pre_src);
                         tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
                     }
@@ -611,7 +610,6 @@ public class GroupClassDetailActivity extends BaseActivity {
                     tvScanBarTips.setText(getString(R.string.have_not_genery_code_image));
                 }
             }
-
 
 
         }
@@ -1132,9 +1130,9 @@ public class GroupClassDetailActivity extends BaseActivity {
         TextView tvLeftButton = (TextView) dialog.getWindow().findViewById(R.id.cancel_action);
         final CheckBox checkBox = (CheckBox) dialog.getWindow().findViewById(R.id.ck_remeber);
         if (courseNotition.getType().equals("1")) {
-            if (type.equals("0")){
+            if (type.equals("0")) {
                 tvTittle.setText("团操预约协议");
-            }else{
+            } else {
                 tvTittle.setText("小班预约协议");
             }
             tvRightButton.setText("同意协议，马上预约");
@@ -1169,19 +1167,17 @@ public class GroupClassDetailActivity extends BaseActivity {
         dialog.getWindow().findViewById(R.id.commit_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
                     dialog.dismiss();
                     saveHaveReaderProtocol();
-                } else if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
-                    if (courseNotition.getType().equals("2")) {
+                }
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")){
                         goBuyCourseUI();
                         dialog.dismiss();
-                    } else if (courseNotition.getType().equals("3")) {
+                    }else if (courseNotition.getType().equals("3")) {
                         dialog.dismiss();
                     }
-                } else {
-                    Toast.makeText(GroupClassDetailActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
                 }
             }
         });

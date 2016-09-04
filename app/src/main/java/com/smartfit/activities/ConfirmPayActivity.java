@@ -171,9 +171,16 @@ public class ConfirmPayActivity extends BaseActivity {
                 tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
             }
             if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
+                tvUserTicketUsable.setVisibility(View.VISIBLE);
+                tvUserTicketUsable.setText(String.format("%d张可用", newMonthServerInfo.getEventListDTOs().size()));
                 numTicket = num;
             }
         } else {
+            if (newMonthServerInfo.getEventListDTOs() != null && newMonthServerInfo.getEventListDTOs().size() > 0) {
+                tvUserTicketUsable.setVisibility(View.VISIBLE);
+                tvUserTicketUsable.setText(String.format("%d张可用", newMonthServerInfo.getEventListDTOs().size()));
+            }
+
             tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * num)));
         }
         changePayButtonContent();
@@ -259,6 +266,9 @@ public class ConfirmPayActivity extends BaseActivity {
                 }
                 tvTicketValue.setText(String.format("-￥%.2f", Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * slectMoutNum + ticketValue));
                 Float payFloat = Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - slectMoutNum) - ticketValue;
+                if (payFloat<0){
+                    payFloat  = 0f;
+                }
                 tvPayMoney.setText(String.format("￥%.2f", payFloat));
             } else {
                 tvPayMoney.setText(String.format("￥%s", String.valueOf(Float.parseFloat(newMonthServerInfo.getDefaultMonthPrice()) * (num - count))));

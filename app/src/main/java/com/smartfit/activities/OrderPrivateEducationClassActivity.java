@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -611,15 +610,14 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                 if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
                     dialog.dismiss();
                     saveHaveReaderProtocol();
-                } else if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
-                    if (courseNotition.getType().equals("2")) {
+                }
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")){
                         orderPrivateClass();
                         dialog.dismiss();
-                    } else if (courseNotition.getType().equals("3")) {
+                    }else if (courseNotition.getType().equals("3")) {
                         dialog.dismiss();
                     }
-                } else {
-                    Toast.makeText(OrderPrivateEducationClassActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
                 }
             }
         });

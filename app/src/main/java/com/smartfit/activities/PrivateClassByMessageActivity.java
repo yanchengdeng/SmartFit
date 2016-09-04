@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -701,7 +700,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
      *
      * @param courseNotition
      */
-    private void showCourseNotiton(CourseNotition courseNotition) {
+    private void showCourseNotiton(final CourseNotition courseNotition) {
         final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
         dialog.show();
         dialog.getWindow().setContentView(R.layout.dialog_course_notition);
@@ -743,10 +742,16 @@ public class PrivateClassByMessageActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
-                    saveHaveReaderProtocol();
                     dialog.dismiss();
-                } else {
-                    Toast.makeText(PrivateClassByMessageActivity.this, getString(R.string.cancel_course_tips), Toast.LENGTH_SHORT).show();
+                    saveHaveReaderProtocol();
+                }
+                if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                    if (courseNotition.getType().equals("2")){
+                        orderPrivateClass();
+                        dialog.dismiss();
+                    }else if (courseNotition.getType().equals("3")) {
+                        dialog.dismiss();
+                    }
                 }
             }
         });

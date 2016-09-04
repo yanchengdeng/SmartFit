@@ -20,7 +20,6 @@ import com.smartfit.MessageEvent.LoginOut;
 import com.smartfit.R;
 import com.smartfit.beans.UserInfoDetail;
 import com.smartfit.commons.Constants;
-import com.smartfit.utils.JsonUtils;
 import com.smartfit.utils.NetUtil;
 import com.smartfit.utils.Options;
 import com.smartfit.utils.PostRequest;
@@ -117,7 +116,7 @@ public class SettingActivity extends BaseActivity {
             }
 
 
-            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader);
+            ImageLoader.getInstance().displayImage(userInfoDetail.getUserPicUrl(), ivHeader,Options.getHeaderOptions());
             if (!TextUtils.isEmpty(userInfoDetail.getNickName())) {
                 tvName.setText(userInfoDetail.getNickName());
             }
