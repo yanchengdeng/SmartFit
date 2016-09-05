@@ -151,6 +151,18 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             } else {
                 viewHolder.btnAggren.setVisibility(View.VISIBLE);
                 viewHolder.btnRefuse.setVisibility(View.VISIBLE);
+                //课程请求消息  4
+                if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_REQUEST)){
+                    viewHolder.btnAggren.setText(context.getString(R.string.aggree_to_instead_class));
+                    viewHolder.btnRefuse.setText(context.getString(R.string.refuse_to_instead_class));
+                    //课程代课申请---发给教练 8
+                }else if(item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_SUBSTITUTE_TO_COACH)){
+                    viewHolder.btnAggren.setText("同意代课");
+                    viewHolder.btnRefuse.setText("拒绝代课");
+                }else {
+                    viewHolder.btnAggren.setText("同意代课");
+                    viewHolder.btnRefuse.setText("拒绝代课");
+                }
             }
 
 
@@ -164,14 +176,22 @@ public class CourseMessagItemAdapter extends BaseAdapter {
             viewHolder.btnAggren.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getId(), position, item.getMessageContent().getCourseId(), 1);
+                    if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_REQUEST)){
+                        aggreeClass(item.getId(), position, item.getMessageContent().getCourseId(), 1);
+                    }else {
+                        aggree(item.getId(), position, item.getMessageContent().getCourseId(), 1);
+                    }
                 }
             });
 
             viewHolder.btnRefuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    aggree(item.getId(), position, item.getMessageContent().getCourseId(), 2);
+                    if (item.getType().equals(MessageType.MESSAGE_TYPE_COURSE_REQUEST)){
+                        aggreeClass(item.getId(), position, item.getMessageContent().getCourseId(), 2);
+                    }else {
+                        aggree(item.getId(), position, item.getMessageContent().getCourseId(), 2);
+                    }
                 }
             });
 
@@ -322,6 +342,45 @@ public class CourseMessagItemAdapter extends BaseAdapter {
         request.headers = NetUtil.getRequestBody(context);
         ((BaseActivity) context).mQueue.add(request);
     }
+
+    /**
+     * 同意課程
+     *
+     * @param courseId
+     * @param flag     1  同意  2  拒绝
+     */
+    private void aggreeClass(final String messageId, final int posiotn, String courseId, final int flag) {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("courseId", courseId);
+        String host;
+        if (flag == 1) {
+            host = Constants.COACH_JION_COURSE;
+        } else {
+            host = Constants.COACH_REJECT_COURSE;
+        }
+
+        PostRequest request = new PostRequest(host, maps, new Response.Listener<JsonObject>() {
+            @Override
+            public void onResponse(JsonObject response) {
+                if (flag == 1) {
+                    ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("已同意", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                } else {
+                    ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus("已拒绝", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                }
+
+                ignoreFriends(messageId, posiotn);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((BaseActivity) context).mSVProgressHUD.showInfoWithStatus(context.getString(R.string.do_later), SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        });
+        request.setTag(new Object());
+        request.headers = NetUtil.getRequestBody(context);
+        ((BaseActivity) context).mQueue.add(request);
+    }
+
 
 
     private void ignoreFriends(String id, final int psoiton) {

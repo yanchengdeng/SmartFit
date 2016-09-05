@@ -882,16 +882,19 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (checkBox.isChecked() && checkBox.getVisibility() == View.VISIBLE) {
-                    dialog.dismiss();
-                    saveHaveReaderProtocol();
-                }
-                if (checkBox.isChecked() && checkBox.getVisibility() == View.GONE) {
+                if ( checkBox.getVisibility() == View.GONE) {
                     if (courseNotition.getType().equals("2")){
                         goBuyCourseUI();
                         dialog.dismiss();
                     }else if (courseNotition.getType().equals("3")) {
                         dialog.dismiss();
+                    }
+                }else{
+                    if (checkBox.isChecked()){
+                        dialog.dismiss();
+                        saveHaveReaderProtocol();
+                    }else{
+                        goBuyCourseUI();
                     }
                 }
             }

@@ -362,13 +362,11 @@ public class Util {
      * @return
      */
     public static boolean isInApp(Context context) {
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        @SuppressWarnings("deprecation")
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
-        if (tasks != null && !tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
             ComponentName topActivity = tasks.get(0).topActivity;
-            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
-            LogUtil.w("dyc", "topActivity:" + topActivity.flattenToString());
             if (!topActivity.getPackageName().equals(context.getPackageName())) {
                 return true;
             }

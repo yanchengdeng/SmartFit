@@ -148,8 +148,18 @@ public class MyAbsentClassAdapter extends BaseAdapter {
             } else {
                 time = String.valueOf(Long.parseLong(time) / 60 / 60);
             }
-            viewHolder.tvCredit.setText(String.format("信用值：%s  限制约课：%sH", new Object[]{item.getScore(), time}));
+
+            if (!TextUtils.isEmpty(item.getCourseType())) {
+                if (item.getCourseType().equals("3")){
+                    viewHolder.tvCredit.setText(String.format("限制约课：%sH", new Object[]{ time}));
+                }else{
+                    viewHolder.tvCredit.setText(String.format("信用值：%s  限制约课：%sH", new Object[]{item.getScore(), time}));
+                }
+            }
+
         }
+
+
 
         viewHolder.tvAbsentStatus.setOnClickListener(new View.OnClickListener() {
             @Override

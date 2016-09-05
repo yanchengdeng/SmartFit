@@ -84,16 +84,16 @@ public class AboutUsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_new_function:
-                openActivity(DealInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PASS_STRING, "http://smartfit.esaydo.com/index/html/introduce.html");
+                bundle.putString("name", "新功能");
+                openActivity(AdActivity.class, bundle);
                 break;
             case R.id.tv_check_udpate:
                 getLastVersion();
                 break;
             case R.id.tv_user_deal:
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.PASS_STRING, "http://toutiao.com/a6322291444678066434/");
-                bundle.putString("name", "使用协议");
-                openActivity(AdActivity.class, bundle);
+                openActivity(DealInfoActivity.class);
                 break;
         }
     }

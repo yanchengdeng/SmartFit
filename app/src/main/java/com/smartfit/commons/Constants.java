@@ -185,6 +185,8 @@ public class Constants {
     public static final String COACH_RECEIVESUBSTITUTECOACH = "/coach/receiveSubstituteCoach";
     public static final String COACH_REJECTSUBSTITUTECOACH = "/coach/rejectSubstituteCoach";
     public static final String CLASSIF_INVITEFRIENDS = "/ClassIf/inviteFriends";
+    public  static final String COACH_JION_COURSE = "/course/coachJoinCourse";
+    public  static final String COACH_REJECT_COURSE = "/course/coachRejectCourse";
 
 
     //v.1.0.3

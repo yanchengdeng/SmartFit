@@ -498,7 +498,7 @@ public class CustomeCoachActivity extends BaseActivity {
             if (!TextUtils.isEmpty(userInfo.getMonthExpiredTime())) {
                 long time = Long.parseLong(userInfo.getMonthExpiredTime()) - System.currentTimeMillis() / 1000;
                 int day = (int) (time / (60 * 60 * 24));
-                tvMouthSeaver.setText(String.format("剩余：%d天", day));
+                tvMouthSeaver.setText(String.format("剩余：%d天", day+1));
             }
         } else {
             tvVip.setVisibility(View.INVISIBLE);

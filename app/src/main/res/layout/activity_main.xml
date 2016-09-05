@@ -185,7 +185,7 @@
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/icon_pic_surfer" />
 
 

@@ -71,9 +71,11 @@ public class PushReceiver extends BroadcastReceiver {
                         PushBean msg = JsonUtils.objectFromJson(data, PushBean.class);
                         if (msg != null) {
                             if (!Util.isInApp(context)) {
+                                LogUtil.w("dyc","app内："+msg.getTitle());
                                 NormalDialogStyleOne(context, msg.getTitle());
                             } else {
                                 showNotificaiton(context, msg);
+                                LogUtil.w("dyc","app外："+msg.getTitle());
                             }
                         }
                     }

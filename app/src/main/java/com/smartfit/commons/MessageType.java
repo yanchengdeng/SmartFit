@@ -64,6 +64,36 @@ public class MessageType {
      */
     public static String MESSAGE_TYPE_COURSE_COACH_CANCLE_CLASS_NOTICE_USER = "13";
 
+
+
+    /***
+     * 有氧器械课程结束
+     */
+
+    public static String AEREABICON_CLASS_OVER = "24";
+
+    /**
+     * 14.团操课和器械区在课前1小时进行短信和系统消息的提示［v1.1］
+     */
+    public static String ONE_HOUR_TIPS_BEFORE_OPREN_CLASS = "14";
+    /**
+     * 15:旷课消息【V1.1】
+     31：申诉通过【v1.1】
+     32：申诉不通过【v1.1】
+     */
+
+
+    public static String ABSENT_CLASS_MSG = "15";
+    /**16：排队消息（排到）【v1.1】
+     *
+     */
+
+    public static String RANK_LINE_SUCCESS = "16";
+
+    /**
+     * 排队消息（未排到）
+     */
+    public static String RANK_LINE_ING = "17";
     /**
      * 礼券赠送消息
      */
@@ -81,34 +111,16 @@ public class MessageType {
      * 券退回
      */
     public static String TICKET_BACK_MESSAGE = "23";
-
-
-    /***
-     * 有氧器械课程结束
-     */
-
-    public static String AEREABICON_CLASS_OVER = "24";
-
-
     /**
-     * 15:旷课消息【V1.1】
-     31：申诉通过【v1.1】
-     32：申诉不通过【v1.1】
+     * 24;器械课完结后通知领券
      */
 
-
-    public static String ABSENT_CLASS_MSG = "15";
+    public static String AREO_OVER_CLASS_GET_TICKT = "24";
     public static String STEAGE_PASS = "31";
     public static String SETAGE_PASS_NOT = "32";
 
-    /**
-     * 14.团操课和器械区在课前1小时进行短信和系统消息的提示［v1.1］
-     */
-    public static String ONE_HOUR_TIPS_BEFORE_OPREN_CLASS = "14";
 
-    /**
-     * 排队消息（未排到）
-     */
-    public static String RANK_LINE_ING = "17";
+
+
 
 }

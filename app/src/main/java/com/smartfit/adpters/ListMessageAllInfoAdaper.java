@@ -88,7 +88,9 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                     viewHolder.tvName.setText("订单成功消息");
                 } else if (item.getSysMessage().getType().equals("7")) {
                     viewHolder.tvName.setText("代课邀请消息");
-                } else if (item.getSysMessage().getType().equals("21")) {
+                }else if (item.getSysMessage().getType().equals("15")){
+                    viewHolder.tvName.setText("系统消息");
+                }else if (item.getSysMessage().getType().equals("21")) {
                     //领取券
                     viewHolder.tvName.setText("系统消息");
                 } else if (item.getSysMessage().getType().equals("22")) {
@@ -99,6 +101,8 @@ public class ListMessageAllInfoAdaper extends BaseAdapter {
                     viewHolder.tvName.setText("系统消息");
                 } else if (item.getSysMessage().getType().equals("24")) {
                     //器械课完结后通知
+                    viewHolder.tvName.setText("系统消息");
+                }else{
                     viewHolder.tvName.setText("系统消息");
                 }
             }
