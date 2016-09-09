@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:padding="@dimen/activity_horizontal_margin"
-        android:text="3、排队截止课前15分钟，到期未排到自动取消排队，退还课时费"
+        android:text="3、排队截止课前60分钟，到期未排到自动取消排队，退还课时费"
         android:textColor="@color/text_color_gray"
         android:textSize="@dimen/text_normal" />
 

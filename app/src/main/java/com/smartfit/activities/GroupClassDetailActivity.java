@@ -1180,6 +1180,7 @@ public class GroupClassDetailActivity extends BaseActivity {
                         saveHaveReaderProtocol();
                     }else{
                         goBuyCourseUI();
+                        dialog.dismiss();
                     }
                 }
             }

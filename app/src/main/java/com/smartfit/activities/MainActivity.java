@@ -813,7 +813,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         tvGoServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NormalDialogStyleTwo();
+//                NormalDialogStyleTwo();
+                openActivity(HelpActivity.class);
             }
         });
     }

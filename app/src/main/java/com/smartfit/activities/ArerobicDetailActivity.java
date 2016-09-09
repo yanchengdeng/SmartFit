@@ -583,6 +583,7 @@ public class ArerobicDetailActivity extends BaseActivity {
                         saveHaveReaderProtocol();
                     }else{
                         goBuyCourseUI();
+                        dialog.dismiss();
                     }
                 }
             }

@@ -71,12 +71,7 @@ public class HelpActivity extends BaseActivity {
     TextView tvFaq17;
     @Bind(R.id.tv_faq_18)
     TextView tvFaq18;
-    @Bind(R.id.tv_faq_19)
-    TextView tvFaq19;
-    @Bind(R.id.tv_faq_20)
-    TextView tvFaq20;
-    @Bind(R.id.tv_faq_21)
-    TextView tvFaq21;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +105,7 @@ public class HelpActivity extends BaseActivity {
         tvFaq16.setText(tittles[15]);
         tvFaq17.setText(tittles[16]);
         tvFaq18.setText(tittles[17]);
-        tvFaq19.setText(tittles[18]);
-        tvFaq20.setText(tittles[19]);
-        tvFaq21.setText(tittles[20]);
+
 
     }
 
@@ -173,7 +166,7 @@ public class HelpActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_faq_1, R.id.tv_faq_2, R.id.tv_faq_3, R.id.tv_faq_4, R.id.tv_faq_5, R.id.tv_faq_6, R.id.tv_faq_7, R.id.tv_faq_8, R.id.tv_faq_9, R.id.tv_faq_10, R.id.tv_faq_11, R.id.tv_faq_12, R.id.tv_faq_13, R.id.tv_faq_14, R.id.tv_faq_15, R.id.tv_faq_16, R.id.tv_faq_17, R.id.tv_faq_18, R.id.tv_faq_19, R.id.tv_faq_20, R.id.tv_faq_21})
+    @OnClick({R.id.tv_faq_1, R.id.tv_faq_2, R.id.tv_faq_3, R.id.tv_faq_4, R.id.tv_faq_5, R.id.tv_faq_6, R.id.tv_faq_7, R.id.tv_faq_8, R.id.tv_faq_9, R.id.tv_faq_10, R.id.tv_faq_11, R.id.tv_faq_12, R.id.tv_faq_13, R.id.tv_faq_14, R.id.tv_faq_15, R.id.tv_faq_16, R.id.tv_faq_17, R.id.tv_faq_18})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
 
@@ -250,18 +243,7 @@ public class HelpActivity extends BaseActivity {
                 bundle.putInt("key", 17);
                 openActivity(FaqContentActivity.class, bundle);
                 break;
-            case R.id.tv_faq_19:
-                bundle.putInt("key", 18);
-                openActivity(FaqContentActivity.class, bundle);
-                break;
-            case R.id.tv_faq_20:
-                bundle.putInt("key", 19);
-                openActivity(FaqContentActivity.class, bundle);
-                break;
-            case R.id.tv_faq_21:
-                bundle.putInt("key", 20);
-                openActivity(FaqContentActivity.class, bundle);
-                break;
+
         }
     }
 }

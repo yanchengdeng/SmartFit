@@ -894,7 +894,7 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
                         dialog.dismiss();
                         saveHaveReaderProtocol();
                     }else{
-                        goBuyCourseUI();
+                        goBuyCourseUI(); dialog.dismiss();
                     }
                 }
             }

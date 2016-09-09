@@ -619,7 +619,7 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
                         dialog.dismiss();
                         saveHaveReaderProtocol();
                     }else{
-                        orderPrivateClass();
+                        orderPrivateClass(); dialog.dismiss();
                     }
                 }
             }

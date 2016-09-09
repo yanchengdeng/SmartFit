@@ -754,6 +754,7 @@ public class PrivateClassByMessageActivity extends BaseActivity {
                         saveHaveReaderProtocol();
                     }else{
                         orderPrivateClass();
+                        dialog.dismiss();
                     }
                 }
             }
