@@ -490,11 +490,11 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
             }
         }
 
-        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-            llScanBar.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-            codeBar = detail.getQrcodeUrl();
-        }
+//        if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
+//            llScanBar.setVisibility(View.VISIBLE);
+//            ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+//            codeBar = detail.getQrcodeUrl();
+//        }
 
 
         if (!TextUtils.isEmpty(detail.getVenueName())) {
@@ -645,7 +645,9 @@ public class AerobicAppratusDetailActivity extends BaseActivity {
         ivScanBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNewScanCode();
+                if (DateUtils.isQeWorked(detail.getStartTime())) {
+                    getNewScanCode();
+                }
             }
         });
 

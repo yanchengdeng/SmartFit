@@ -586,12 +586,12 @@ public class GroupClassDetailActivity extends BaseActivity {
             }
 
 
-            if (!TextUtils.isEmpty(detail.getQrcodeUrl())) {
-                llScanBar.setVisibility(View.VISIBLE);
-                ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
-                codeBar = detail.getQrcodeUrl();
-                countDownTimer.start();
-            }
+//            if (!TextUtils.isEmpty(detail.getQrcodeUrl())  && DateUtils.isQeWorked(detail.getStartTime())) {
+//                llScanBar.setVisibility(View.VISIBLE);
+//                ImageLoader.getInstance().displayImage(detail.getQrcodeUrl(), ivScanBar, Options.getListOptions());
+//                codeBar = detail.getQrcodeUrl();
+//                countDownTimer.start();
+//            }
             if (detail.getIsParted().equals("1")) {
                 llScanBar.setVisibility(View.VISIBLE);
                 llViewScanCode.setVisibility(View.VISIBLE);
@@ -934,7 +934,10 @@ public class GroupClassDetailActivity extends BaseActivity {
         ivScanBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNewScanCode();
+                if (DateUtils.isQeWorked(classInfoDetail.getStartTime())){
+                    getNewScanCode();
+                }
+
             }
         });
     }

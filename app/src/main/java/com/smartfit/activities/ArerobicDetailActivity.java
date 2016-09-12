@@ -456,7 +456,9 @@ public class ArerobicDetailActivity extends BaseActivity {
         ivScanBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNewScanCode();
+                if (DateUtils.isQeWorked(detail.getStartTime())) {
+                    getNewScanCode();
+                }
             }
         });
     }

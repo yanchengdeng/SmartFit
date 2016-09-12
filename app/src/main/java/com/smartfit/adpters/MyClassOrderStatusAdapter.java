@@ -179,15 +179,19 @@ public class MyClassOrderStatusAdapter extends BaseAdapter {
         viewHolder.tvCancleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(item.getStartTime())) {
-                    if (Long.parseLong(item.getStartTime()) - (System.currentTimeMillis() / 1000) < 60 * 60 * 2) {
-                        NormalDialogStyleTwoDel(item.getId(), "课前2小时内取消课程将全额扣除课时费哦！确定要取消课程？");
-                    } else {
+                if (!TextUtils.isEmpty(item.getCourseType())){
+                    if (item.getCourseType().equals("0") || item.getCourseType().equals("3")){
                         NormalDialogStyleTwoDel(item.getId(), "确认取消该课程吗？");
+                    }else{
+                        if (!TextUtils.isEmpty(item.getStartTime())) {
+                            if (Long.parseLong(item.getStartTime()) - (System.currentTimeMillis() / 1000) < 60 * 60 * 2) {
+                                NormalDialogStyleTwoDel(item.getId(), "课前2小时内取消课程将全额扣除课时费哦！确定要取消课程？");
+                            } else {
+                                NormalDialogStyleTwoDel(item.getId(), "确认取消该课程吗？");
+                            }
+                        }
                     }
                 }
-
-
             }
         });
 

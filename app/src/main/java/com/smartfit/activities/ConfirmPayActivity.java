@@ -301,6 +301,8 @@ public class ConfirmPayActivity extends BaseActivity {
                 if (datas.get(i).isCheck() == true) {
                     if (datas.get(i).getEventType().equals("3")) {
                         selectMouth = selectMouth + 1;
+                    }else if(datas.get(i).getEventType().equals("11")){
+                        selectMouth = selectMouth + 1;
                     } else if (datas.get(i).getEventType().equals("15")) {
                         selectMouth = selectMouth + 3;
                     } else if (datas.get(i).getEventType().equals("16")) {

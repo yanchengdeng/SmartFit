@@ -359,7 +359,9 @@ public class OrderPrivateEducationClassActivity extends BaseActivity {
         ivScanBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNewScanCode();
+                if (DateUtils.isQeWorked(String.valueOf(DateUtils.getTheDateTimeMillions(startTime)))) {
+                    getNewScanCode();
+                }
             }
         });
     }
