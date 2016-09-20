@@ -303,6 +303,12 @@ public class ConfirmPayActivity extends BaseActivity {
                         selectMouth = selectMouth + 1;
                     }else if(datas.get(i).getEventType().equals("11")){
                         selectMouth = selectMouth + 1;
+                    }else if(datas.get(i).getEventType().equals("12")){
+                        selectMouth = selectMouth + 3;
+                    }else if(datas.get(i).getEventType().equals("13")){
+                        selectMouth = selectMouth + 12;
+                    }else if(datas.get(i).getEventType().equals("14")){
+                        selectMouth = selectMouth + 1;
                     } else if (datas.get(i).getEventType().equals("15")) {
                         selectMouth = selectMouth + 3;
                     } else if (datas.get(i).getEventType().equals("16")) {
@@ -364,7 +370,7 @@ public class ConfirmPayActivity extends BaseActivity {
             StringCashIds = new StringBuffer();
             for (UseableEventInfo ticket : ticketInfos) {
 
-                if (ticket.getEventType().equals("3") || ticket.getEventType().equals("15") || ticket.getEventType().equals("16")) {
+                if (ticket.getEventType().equals("3")||ticket.getEventType().equals("11")||ticket.getEventType().equals("12") ||ticket.getEventType().equals("13")||ticket.getEventType().equals("14")|| ticket.getEventType().equals("15") || ticket.getEventType().equals("16")) {
                     eventUserIds.append(ticket.getId()).append("|");
                 }
                 if (ticket.getEventType().equals("21")) {

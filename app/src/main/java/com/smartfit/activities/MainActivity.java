@@ -221,10 +221,12 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             @Override
             public void onResponse(JsonObject response) {
                 VersionInfo versionInfo = JsonUtils.objectFromJson(response.toString(), VersionInfo.class);
-                if (Integer.parseInt(versionInfo.getVersionCode())==(DeviceUtil.getVersionCode(MainActivity.this))) {
-                    mSVProgressHUD.showSuccessWithStatus("已是最新版本", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                } else {
-                    showUpdateDialog(versionInfo);
+                if (versionInfo!=null && !TextUtils.isEmpty(versionInfo.getVersionCode())) {
+                    if (Integer.parseInt(versionInfo.getVersionCode()) == (DeviceUtil.getVersionCode(MainActivity.this))) {
+//                        mSVProgressHUD.showSuccessWithStatus("已是最新版本", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    } else {
+                        showUpdateDialog(versionInfo);
+                    }
                 }
             }
         }, new Response.ErrorListener() {

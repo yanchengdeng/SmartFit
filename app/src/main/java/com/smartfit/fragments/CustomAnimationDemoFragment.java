@@ -61,6 +61,7 @@ public class CustomAnimationDemoFragment extends Fragment {
                     if (!MainActivity.class.getName().equals(IntentUtils.getRunningActivityName(getActivity()))) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                     }
 //

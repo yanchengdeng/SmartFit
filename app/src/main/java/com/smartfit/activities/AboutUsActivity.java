@@ -107,7 +107,7 @@ public class AboutUsActivity extends BaseActivity {
             @Override
             public void onResponse(JsonObject response) {
                 VersionInfo versionInfo = JsonUtils.objectFromJson(response.toString(), VersionInfo.class);
-                if (versionInfo != null) {
+                if (versionInfo != null &&!TextUtils.isEmpty(versionInfo.getVersionCode())) {
                     if (Integer.parseInt(versionInfo.getVersionCode())==(DeviceUtil.getVersionCode(AboutUsActivity.this))) {
                         mSVProgressHUD.showSuccessWithStatus("已是最新版本", SVProgressHUD.SVProgressHUDMaskType.Clear);
                     } else {
